@@ -1,6 +1,16 @@
+<script setup lang="ts">
+import { Toaster } from '@/components/ui/sonner'
+import 'vue-sonner/style.css'
+import HomeView from './views/HomeView.vue'
+</script>
+
 <template>
-  <body>
-    <h1 class="text-3xl font-bold underline">Hello world!</h1>
-    <p class="text-3xl font-bold underline">Hello world!</p>
-  </body>
+  <Toaster />
+
+  <ClientOnly>
+    <Toaster />
+    <HomeView />
+  </ClientOnly>
+
+  <Toaster />
 </template>
