@@ -1,14 +1,19 @@
 <template>
-  <div class="min-h-screen bg-gray-50">
+  <div class="min-h-screen bg-background">
     <!-- Header -->
-    <header class="bg-white border-b border-gray-200">
+    <header class="bg-card border-b border-border">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between items-center py-6">
           <div>
-            <h1 class="text-3xl font-bold text-gray-900">UI Components Showcase</h1>
-            <p class="text-gray-600 mt-1">Development reference for all available components</p>
+            <h1 class="text-3xl font-bold text-foreground">UI Components Showcase</h1>
+            <p class="text-muted-foreground mt-1">
+              Development reference for all available components
+            </p>
           </div>
-          <Button @click="notify" variant="outline"> Test Toast </Button>
+          <div class="flex items-center gap-2">
+            <ThemeToggle />
+            <Button @click="notify" variant="outline"> Test Toast </Button>
+          </div>
         </div>
       </div>
     </header>
@@ -168,7 +173,7 @@
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                <p class="text-sm text-gray-600">
+                <p class="text-sm text-muted-foreground">
                   Cards are perfect for grouping related content and creating visual hierarchy.
                 </p>
               </CardContent>
@@ -176,6 +181,33 @@
                 <Button size="sm">Take Action</Button>
               </CardFooter>
             </Card>
+          </CardContent>
+        </Card>
+
+        <!-- Dark Mode Section -->
+        <Card class="lg:col-span-2">
+          <CardHeader>
+            <CardTitle class="flex items-center gap-2">
+              <span class="text-purple-600">🌙</span>
+              Dark Mode Toggle
+            </CardTitle>
+            <CardDescription> Switch between light and dark themes </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div class="flex items-center justify-between">
+              <div class="space-y-2">
+                <p class="text-sm text-muted-foreground">
+                  Current theme:
+                  <span class="font-medium text-foreground">{{
+                    themeStore.isDark ? 'Dark' : 'Light'
+                  }}</span>
+                </p>
+                <p class="text-xs text-muted-foreground">
+                  The theme preference is saved in localStorage and will persist across sessions.
+                </p>
+              </div>
+              <ThemeToggle />
+            </div>
           </CardContent>
         </Card>
 
@@ -281,6 +313,10 @@ import {
 } from '@/components/ui/select'
 import { Textarea } from '@/components/ui/textarea'
 import { Switch } from '@/components/ui/switch'
+import ThemeToggle from '@/components/ThemeToggle.vue'
+import { useThemeStore } from '@/stores/theme'
+
+const themeStore = useThemeStore()
 
 const notify = () => {
   toast('This is a toast notification!', {
