@@ -13,6 +13,7 @@
           <div class="flex items-center gap-2">
             <ThemeToggle />
             <Button @click="notify" variant="outline"> Test Toast </Button>
+            <Button @click="navigateToLogin" variant="outline"> Login </Button>
           </div>
         </div>
       </div>
@@ -61,11 +62,16 @@ import {
   InteractiveDemo,
   NewComponents,
 } from '@/components/custom'
+import router from '@/router'
 
 const notify = () => {
   toast('This is a toast notification!', {
     description: 'You can customize the toast message and styling.',
   })
+}
+
+const navigateToLogin = () => {
+  router.push({ name: 'login' })
 }
 </script>
 
