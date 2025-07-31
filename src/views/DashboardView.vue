@@ -17,6 +17,9 @@
             </p>
           </div>
           <div class="flex items-center gap-2">
+            <Button variant="outline" size="icon" @click="logoutFunc">
+              <LogOut class="w-4 h-4" />
+            </Button>
             <ThemeToggle />
             <Button
               v-if="activeTab === 'users'"
@@ -502,6 +505,8 @@ import {
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
 import ThemeToggle from '@/components/ThemeToggle.vue'
+import { LogOut } from 'lucide-vue-next'
+import router from '@/router'
 
 // Active tab state - Users tab is active by default
 const activeTab = ref('users')
@@ -801,5 +806,14 @@ const getRoleBadgeClass = (role: string) => {
 const formatDate = (dateString: string) => {
   const date = new Date(dateString)
   return date.toLocaleDateString()
+}
+
+function logoutFunc() {
+  // Clear any authentication tokens or user data
+  // localStorage.removeItem('token')
+  // localStorage.removeItem('user')
+
+  // Navigate to home page
+  router.push({ name: 'home' })
 }
 </script>
