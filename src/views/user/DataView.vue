@@ -35,6 +35,11 @@ import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/ca
 import IproTable from '@/components/custom/tables/IproTable.vue'
 import IprosTable from '@/components/custom/tables/IprosTable.vue'
 import IpropTable from '@/components/custom/tables/IpropTable.vue'
+import { useUserStore } from '@/stores/userStores'
+
+const userStore = useUserStore()
+
+console.log(userStore.token)
 
 const dataDummy = {
   openness: 85,

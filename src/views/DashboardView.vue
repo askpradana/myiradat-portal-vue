@@ -39,10 +39,16 @@ import UserManagementView from './admin/UserManagementView.vue'
 import UserProfileView from './user/UserProfileView.vue'
 import DashboardMainView from './DashboardMainView.vue'
 import DataView from './user/DataView.vue'
+import { useUserStore } from '@/stores/userStores'
+
+const userStore = useUserStore()
+userStore.initializeAuth()
+
+const role = userStore.user?.role_id === 1 ? 'admin' : 'user'
 
 // Active tab state - Users tab is active by default
 const activeTab = ref<'dashboard' | 'users' | 'data' | 'profile'>('dashboard')
-const roleUser = ref<'admin' | 'user'>('admin')
+const roleUser = ref<'admin' | 'user'>(role)
 
 const changeTab = (activeValue: 'dashboard' | 'users' | 'data' | 'profile') => {
   activeTab.value = activeValue

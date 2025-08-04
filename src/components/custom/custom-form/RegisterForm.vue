@@ -3,25 +3,59 @@ import Button from '../../ui/button/Button.vue'
 import Input from '../../ui/input/Input.vue'
 import Label from '../../ui/label/Label.vue'
 import { Card, CardTitle, CardDescription, CardHeader, CardContent } from '../../ui/card'
+import { useField, useForm } from 'vee-validate'
+import { toTypedSchema } from '@vee-validate/zod'
+import * as zod from 'zod'
+import { registerNewUser } from '@/api/register'
+import { toast } from 'vue-sonner'
+import { useRouter } from 'vue-router'
 import { ref } from 'vue'
 
-interface RegisterDataInterface {
-  name: string
-  phone: string
-  email: string
-  password: string
-}
+const router = useRouter()
+const loading = ref(false)
 
-const registerData = ref<RegisterDataInterface>({
-  name: '',
-  phone: '',
-  email: '',
-  password: '',
+const validationSchema = toTypedSchema(
+  zod.object({
+    email: zod.email({ message: 'Must be a valid email' }).min(1, { message: 'This is required' }),
+    password: zod
+      .string()
+      .min(1, { message: 'This is required' })
+      .min(8, { message: 'Password minimum containing 8 characters' }),
+    phone: zod
+      .string()
+      .min(1, { message: 'This is required' })
+      .min(6, { message: 'Phone minimum containing 6 characters' }),
+    name: zod
+      .string()
+      .min(1, { message: 'This is required' })
+      .min(3, { message: 'Username minimum containing 8 characters' }),
+  }),
+)
+const { handleSubmit, errors } = useForm({
+  validationSchema,
 })
 
-const handleSubmit = () => {
-  console.log(registerData.value)
-}
+const { value: email } = useField<string>('email')
+const { value: password } = useField<string>('password')
+const { value: name } = useField<string>('name')
+const { value: phone } = useField<string>('phone')
+
+const onSubmit = handleSubmit(async (values) => {
+  loading.value = true
+  const response = await registerNewUser(values)
+  loading.value = false
+
+  if (response.success) {
+    toast('Success', {
+      description: `${response?.message}`,
+    })
+    router.push('/login')
+  } else {
+    toast('Error', {
+      description: `${response?.message}`,
+    })
+  }
+})
 </script>
 
 <template>
@@ -36,7 +70,7 @@ const handleSubmit = () => {
     </CardHeader>
 
     <CardContent class="space-y-6">
-      <form @submit.prevent="handleSubmit" class="space-y-4">
+      <form @submit="onSubmit" class="space-y-4">
         <div class="space-y-2">
           <Label for="name" class="text-sm font-medium text-foreground">Username</Label>
           <Input
@@ -45,8 +79,9 @@ const handleSubmit = () => {
             placeholder="Enter your username"
             class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
             required
-            v-model="registerData.name"
+            v-model="name"
           />
+          <span class="text-xs text-red-400">{{ errors.name }}</span>
         </div>
 
         <div class="space-y-2">
@@ -57,8 +92,9 @@ const handleSubmit = () => {
             placeholder="Enter your phone number"
             class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
             required
-            v-model="registerData.phone"
+            v-model="phone"
           />
+          <span class="text-xs text-red-400">{{ errors.phone }}</span>
         </div>
 
         <div class="space-y-2">
@@ -69,8 +105,9 @@ const handleSubmit = () => {
             placeholder="Enter your email"
             class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
             required
-            v-model="registerData.email"
+            v-model="email"
           />
+          <span class="text-xs text-red-400">{{ errors.email }}</span>
         </div>
 
         <div class="space-y-2">
@@ -81,15 +118,18 @@ const handleSubmit = () => {
             placeholder="Enter your password"
             class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
             required
-            v-model="registerData.password"
+            v-model="password"
           />
+          <span class="text-xs text-red-400">{{ errors.password }}</span>
         </div>
         <Button
           size="sm"
           type="submit"
           class="w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground font-medium transition-all duration-200 shadow-sm hover:shadow-md"
+          :disabled="loading"
+          :class="loading && 'bg-gray-500 pointer-events-none'"
         >
-          Sign up
+          {{ loading ? 'Please wait...' : 'Sign up' }}
         </Button>
       </form>
     </CardContent>

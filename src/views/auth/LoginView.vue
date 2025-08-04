@@ -1,7 +1,3 @@
-<script lang="ts">
-export const description = 'A modern and beautiful login form with enhanced styling.'
-</script>
-
 <script setup lang="ts">
 import LoginForm from '../../components/custom/custom-form/LoginForm.vue'
 </script>

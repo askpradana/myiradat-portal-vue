@@ -6,7 +6,7 @@
           <h1 class="text-3xl font-bold text-foreground">
             {{ roleUser === 'admin' ? 'Admin Dashboard' : 'User Dashboard' }}
           </h1>
-          <p v-if="roleUser === 'user'" class="text-muted-foreground mt-1">Welcome username</p>
+          <p class="text-muted-foreground mt-1">Welcome {{ userStore.user?.name }}</p>
           <!-- <p class="text-muted-foreground mt-1">
             {{
               activeTab === 'users'
@@ -59,6 +59,9 @@
 import ThemeToggle from '@/components/ThemeToggle.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { LogOut } from 'lucide-vue-next'
+import { useUserStore } from '@/stores/userStores'
+
+const userStore = useUserStore()
 
 const { roleUser } = defineProps<{
   roleUser: 'admin' | 'user'
