@@ -50,10 +50,10 @@ import {
 } from '@/components/ui/table'
 
 const props = defineProps<{
-  openness: number
-  neuroticism: number
-  extraversion: number
-  agreeableness: number
-  conscientiousness: number
+  openness: number | undefined
+  neuroticism: number | undefined
+  extraversion: number | undefined
+  agreeableness: number | undefined
+  conscientiousness: number | undefined
 }>()
 </script>

@@ -227,7 +227,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import {
   Table,
   TableBody,
@@ -247,9 +247,23 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination'
 import { Input } from '@/components/ui/input'
-import { allUsers, usersData } from '@/data/usersData'
+import { allUsers } from '@/data/usersData'
+import { getListUser } from '@/api/getListUser'
 
-const userData = usersData.users
+interface UserDataInterface {
+  id: string
+  email: string
+  phone: string
+  role_id: number
+  name: string
+}
+
+const datas = ref<UserDataInterface[]>([])
+
+onMounted(async () => {
+  const users = await getListUser()
+  datas.value = users
+})
 
 // Pagination state
 const currentPage = ref(1)
@@ -307,7 +321,7 @@ const getRoleBadgeClass = (role: number) => {
 
 // Computed properties for search and filtering
 const filteredUsers = computed(() => {
-  let filtered = userData
+  let filtered = datas.value
 
   // Apply search filter
   if (searchQuery.value.trim()) {

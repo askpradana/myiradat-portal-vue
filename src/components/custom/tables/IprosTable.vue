@@ -13,24 +13,20 @@
         </TableHeader>
         <TableBody>
           <TableRow>
-            <TableCell class="font-medium">Openness</TableCell>
-            <TableCell class="text-center">{{ props.openness }}</TableCell>
+            <TableCell class="font-medium">Driver</TableCell>
+            <TableCell class="text-center">{{ props.driver }}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell class="font-medium">Neuroticism</TableCell>
-            <TableCell class="text-center">{{ props.neuroticism }}</TableCell>
+            <TableCell class="font-medium">Amiable</TableCell>
+            <TableCell class="text-center">{{ props.amiable }}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell class="font-medium">Extraversion</TableCell>
-            <TableCell class="text-center">{{ props.extraversion }}</TableCell>
+            <TableCell class="font-medium">Analytical</TableCell>
+            <TableCell class="text-center">{{ props.analytical }}</TableCell>
           </TableRow>
           <TableRow>
-            <TableCell class="font-medium">Agreeableness</TableCell>
-            <TableCell class="text-center">{{ props.agreeableness }}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell class="font-medium">Conscientiousness</TableCell>
-            <TableCell class="text-center">{{ props.conscientiousness }}</TableCell>
+            <TableCell class="font-medium">Expressive</TableCell>
+            <TableCell class="text-center">{{ props.expressive }}</TableCell>
           </TableRow>
         </TableBody>
       </Table>
@@ -50,10 +46,9 @@ import {
 } from '@/components/ui/table'
 
 const props = defineProps<{
-  openness: number
-  neuroticism: number
-  extraversion: number
-  agreeableness: number
-  conscientiousness: number
+  driver: number | undefined
+  amiable: number | undefined
+  analytical: number | undefined
+  expressive: number | undefined
 }>()
 </script>
