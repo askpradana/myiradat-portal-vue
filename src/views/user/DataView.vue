@@ -3,6 +3,10 @@
     <CardHeader>
       <CardTitle class="text-foreground">User Data</CardTitle>
       <CardDescription class="text-muted-foreground"> A list of all user scores. </CardDescription>
+
+      <!-- <p class="text-muted-foreground">{{ profilesData?.last_analyzed.date }}</p>
+      <p class="text-muted-foreground">{{ profilesData?.last_analyzed.score }}</p>
+      <p class="text-muted-foreground">{{ profilesData?.last_analyzed.service }}</p> -->
     </CardHeader>
   </Card>
 
@@ -12,6 +16,7 @@
     :extraversion="profilesData?.ipro?.extraversion"
     :neuroticism="profilesData?.ipro?.neuroticism"
     :conscientiousness="profilesData?.ipro?.conscientiousness"
+    :is-loading="loading"
   />
 
   <IprosTable
@@ -19,6 +24,7 @@
     :amiable="profilesData?.ipros?.amiable"
     :analytical="profilesData?.ipros?.analytical"
     :expressive="profilesData?.ipros?.expressive"
+    :is-loading="loading"
   />
 
   <IpropTable
@@ -27,6 +33,7 @@
     :extraversion="profilesData?.iprob?.extraversion"
     :neuroticism="profilesData?.iprob?.neuroticism"
     :conscientiousness="profilesData?.iprob?.conscientiousness"
+    :is-loading="loading"
   />
 </template>
 
@@ -53,19 +60,28 @@ interface IprosScore {
   expressive: number
 }
 
+interface AnalyzedInterface {
+  date: Date
+  score: number
+  service: string
+}
+
 interface UserProfileInterface {
   id: string
   name: string
   ipro: IproScore
   iprob: IproScore
   ipros: IprosScore
+  last_analyzed: AnalyzedInterface
   created_at: string
   updated_at: string
 }
 
 const profilesData = ref<UserProfileInterface>()
+const loading = ref(false)
 
 onMounted(async () => {
+  loading.value = true
   const data = await getProfile()
 
   if (data) {
@@ -74,8 +90,10 @@ onMounted(async () => {
       ipro: JSON.parse(data.ipro),
       iprob: JSON.parse(data.iprob),
       ipros: JSON.parse(data.ipros),
+      last_analyzed: JSON.parse(data.last_analyzed),
     }
     profilesData.value = processedData
   }
+  loading.value = false
 })
 </script>

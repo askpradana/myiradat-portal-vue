@@ -55,19 +55,21 @@
 </template>
 
 <script setup lang="ts">
-// import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 import ThemeToggle from '@/components/ThemeToggle.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { LogOut } from 'lucide-vue-next'
 import { useUserStore } from '@/stores/userStores'
 
 const userStore = useUserStore()
+const router = useRouter()
 
 const { roleUser } = defineProps<{
   roleUser: 'admin' | 'user'
 }>()
 
 const logoutFunc = () => {
-  alert('log out')
+  userStore.clearAuthData()
+  router.push('/login')
 }
 </script>

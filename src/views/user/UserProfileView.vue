@@ -10,8 +10,7 @@
             >
               {{ currentUser.name.charAt(0) }}
             </div>
-            <h3 class="text-xl font-semibold text-foreground">{{ currentUser.name }}</h3>
-            <p class="text-sm text-muted-foreground">{{ currentUser.role }}</p>
+            <h3 class="font-semibold text-foreground">{{ userStore.user?.name }}</h3>
             <div
               class="mt-4 inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-800"
             >
@@ -22,7 +21,7 @@
                   clip-rule="evenodd"
                 />
               </svg>
-              Active
+              {{ userStore.user?.role_id === 1 ? 'Admin' : 'User' }}
             </div>
           </div>
         </CardContent>
@@ -48,7 +47,7 @@
                   >Full Name</label
                 >
                 <div class="text-sm text-foreground bg-muted px-3 py-2 rounded-md">
-                  {{ currentUser.name }}
+                  {{ userStore.user?.name }}
                 </div>
               </div>
               <div>
@@ -56,7 +55,7 @@
                   >Email Address</label
                 >
                 <div class="text-sm text-foreground bg-muted px-3 py-2 rounded-md">
-                  {{ currentUser.email }}
+                  {{ userStore.user?.email }}
                 </div>
               </div>
               <div>
@@ -67,14 +66,14 @@
                   {{ currentUser.phone }}
                 </div>
               </div>
-              <div>
+              <!-- <div>
                 <label class="block text-sm font-medium text-muted-foreground mb-1"
                   >Date of Birth</label
                 >
                 <div class="text-sm text-foreground bg-muted px-3 py-2 rounded-md">
                   {{ currentUser.dateOfBirth }}
                 </div>
-              </div>
+              </div> -->
             </div>
           </div>
 
@@ -124,7 +123,7 @@
           </div> -->
 
           <!-- Additional Information -->
-          <div>
+          <!-- <div>
             <h4 class="text-lg font-medium text-foreground mb-4">Additional Information</h4>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -148,7 +147,7 @@
                 </div>
               </div>
             </div>
-          </div>
+          </div> -->
         </CardContent>
       </Card>
     </div>
@@ -158,6 +157,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { useUserStore } from '@/stores/userStores'
+
+const userStore = useUserStore()
 
 // Helper functions
 // const getRoleBadgeClass = (role: string) => {

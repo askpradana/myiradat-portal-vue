@@ -12,26 +12,47 @@
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow>
-            <TableCell class="font-medium">Openness</TableCell>
-            <TableCell class="text-center">{{ props.openness }}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell class="font-medium">Neuroticism</TableCell>
-            <TableCell class="text-center">{{ props.neuroticism }}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell class="font-medium">Extraversion</TableCell>
-            <TableCell class="text-center">{{ props.extraversion }}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell class="font-medium">Agreeableness</TableCell>
-            <TableCell class="text-center">{{ props.agreeableness }}</TableCell>
-          </TableRow>
-          <TableRow>
-            <TableCell class="font-medium">Conscientiousness</TableCell>
-            <TableCell class="text-center">{{ props.conscientiousness }}</TableCell>
-          </TableRow>
+          <template v-if="isLoading">
+            <TableRow v-for="i in 5" :key="i">
+              <TableCell class="font-medium">
+                <Skeleton class="h-4 w-32" />
+              </TableCell>
+              <TableCell class="text-center">
+                <Skeleton class="h-4 w-16 mx-auto" />
+              </TableCell>
+            </TableRow>
+          </template>
+
+          <template v-else>
+            <TableRow>
+              <TableCell class="font-medium">Openness</TableCell>
+              <TableCell class="text-center">{{ props.openness ? props.openness : '-' }}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell class="font-medium">Neuroticism</TableCell>
+              <TableCell class="text-center">{{
+                props.neuroticism ? props.neuroticism : '-'
+              }}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell class="font-medium">Extraversion</TableCell>
+              <TableCell class="text-center">{{
+                props.extraversion ? props.extraversion : '-'
+              }}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell class="font-medium">Agreeableness</TableCell>
+              <TableCell class="text-center">{{
+                props.agreeableness ? props.agreeableness : '-'
+              }}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell class="font-medium">Conscientiousness</TableCell>
+              <TableCell class="text-center">{{
+                props.conscientiousness ? props.conscientiousness : '-'
+              }}</TableCell>
+            </TableRow>
+          </template>
         </TableBody>
       </Table>
     </CardContent>
@@ -40,6 +61,7 @@
 
 <script setup lang="ts">
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import Skeleton from '@/components/ui/skeleton/Skeleton.vue'
 import {
   Table,
   TableBody,
@@ -55,5 +77,6 @@ const props = defineProps<{
   extraversion: number | undefined
   agreeableness: number | undefined
   conscientiousness: number | undefined
+  isLoading: boolean
 }>()
 </script>
