@@ -15,6 +15,7 @@
           Dashboard
         </button>
         <button
+          v-if="userStore.user?.role_id === 1"
           @click="selectTab('users')"
           :class="[
             'py-2 px-1 border-b-2 font-medium text-sm',
@@ -26,6 +27,7 @@
           Users Management
         </button>
         <button
+          v-if="userStore.user?.role_id === 2"
           @click="selectTab('data')"
           :class="[
             'py-2 px-1 border-b-2 font-medium text-sm',
@@ -37,6 +39,7 @@
           User Data
         </button>
         <button
+          v-if="userStore.user?.role_id === 2"
           @click="selectTab('profile')"
           :class="[
             'py-2 px-1 border-b-2 font-medium text-sm',
@@ -53,6 +56,10 @@
 </template>
 
 <script setup lang="ts">
+import { useUserStore } from '@/stores/userStores'
+
+const userStore = useUserStore()
+
 const { activeTab } = defineProps<{
   activeTab: 'dashboard' | 'users' | 'profile' | 'data'
 }>()
