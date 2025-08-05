@@ -19,7 +19,7 @@
         </svg>
       </CardHeader>
       <CardContent>
-        <div class="text-2xl font-bold text-foreground">{{ filteredUsers.length }}</div>
+        <div class="text-2xl font-bold text-foreground">{{ filteredUsers?.length }}</div>
         <p class="text-xs text-muted-foreground">
           {{ searchQuery ? 'Filtered results' : '+12% from last month' }}
         </p>
@@ -154,7 +154,7 @@
           </TableRow>
         </TableHeader>
         <TableBody>
-          <template v-if="isLoading">
+          <template v-if="isPending">
             <TableRow v-for="i in 10" :key="i">
               <TableCell class="font-medium">
                 <Skeleton class="h-4 w-32" />
@@ -222,7 +222,7 @@
         <Pagination
           v-model:page="currentPage"
           :items-per-page="itemsPerPage"
-          :total="filteredUsers.length"
+          :total="filteredUsers?.length"
           :sibling-count="1"
         >
           <PaginationContent>
@@ -246,7 +246,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, onMounted } from 'vue'
+import { ref, computed, watch } from 'vue'
 import {
   Table,
   TableBody,
@@ -269,6 +269,7 @@ import {
 import { Input } from '@/components/ui/input'
 import { allUsers } from '@/data/usersData'
 import { getListUser } from '@/api/getListUser'
+import { useQuery } from '@tanstack/vue-query'
 
 interface UserDataInterface {
   id: string
@@ -278,14 +279,10 @@ interface UserDataInterface {
   name: string
 }
 
-const datas = ref<UserDataInterface[]>([])
-const isLoading = ref(false)
-
-onMounted(async () => {
-  isLoading.value = true
-  const users = await getListUser()
-  datas.value = users
-  isLoading.value = false
+const { isPending, data } = useQuery<UserDataInterface[]>({
+  queryKey: ['users'],
+  queryFn: getListUser,
+  staleTime: 1000 * 60 * 5, // 5 menit
 })
 
 // Pagination state
@@ -298,7 +295,7 @@ const searchQuery = ref('')
 const paginatedUsers = computed(() => {
   const start = (currentPage.value - 1) * itemsPerPage.value
   const end = start + itemsPerPage.value
-  return filteredUsers.value.slice(start, end)
+  return (filteredUsers.value ?? []).slice(start, end)
 })
 
 // Watch for filter changes and reset to page 1
@@ -319,7 +316,7 @@ const visiblePages = computed(() => {
 })
 
 // Computed properties for pagination
-const totalPages = computed(() => Math.ceil(filteredUsers.value.length / itemsPerPage.value))
+const totalPages = computed(() => Math.ceil(filteredUsers.value?.length ?? 0 / itemsPerPage.value))
 
 // Computed properties for stats
 const activeUsersCount = computed(() => allUsers.filter((user) => user.status === 'Active').length)
@@ -344,12 +341,12 @@ const getRoleBadgeClass = (role: number) => {
 
 // Computed properties for search and filtering
 const filteredUsers = computed(() => {
-  let filtered = datas.value
+  let filtered = data.value
 
   // Apply search filter
   if (searchQuery.value.trim()) {
     const query = searchQuery.value.toLowerCase().trim()
-    filtered = filtered.filter(
+    filtered = filtered?.filter(
       (user) => user.name.toLowerCase().includes(query) || user.email.toLowerCase().includes(query),
     )
   }
