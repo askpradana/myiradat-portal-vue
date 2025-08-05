@@ -8,7 +8,7 @@
             'flex items-center justify-center w-8 h-8 rounded-full border-2 transition-all duration-200',
             {
               'bg-primary border-primary text-primary-foreground': index < currentStep,
-              'bg-primary border-primary text-primary-foreground': index === currentStep,
+              'bg-primary border-primary/90 text-primary-foreground': index === currentStep,
               'bg-muted border-muted-foreground text-muted-foreground': index > currentStep,
             },
           ]"

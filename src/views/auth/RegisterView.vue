@@ -3,7 +3,7 @@ export const description = 'A modern and beautiful login form with enhanced styl
 </script>
 
 <script setup lang="ts">
-import LoginForm from '../components/LoginForm.vue'
+import RegisterForm from '../../components/custom/custom-form/RegisterForm.vue'
 </script>
 
 <template>
@@ -51,27 +51,7 @@ import LoginForm from '../components/LoginForm.vue'
         </div>
 
         <!-- Login form -->
-        <LoginForm />
-
-        <!-- Footer -->
-        <div class="mt-8 text-center">
-          <p class="text-xs text-muted-foreground">
-            By continuing, you agree to our
-            <a
-              href="#"
-              class="text-primary hover:text-primary/80 transition-colors duration-200 underline-offset-4 hover:underline"
-            >
-              Terms of Service
-            </a>
-            and
-            <a
-              href="#"
-              class="text-primary hover:text-primary/80 transition-colors duration-200 underline-offset-4 hover:underline"
-            >
-              Privacy Policy
-            </a>
-          </p>
-        </div>
+        <RegisterForm />
       </div>
     </div>
   </div>
