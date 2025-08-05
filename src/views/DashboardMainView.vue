@@ -2,14 +2,12 @@
   <div class="mb-8 grid gap-6 grid-cols-1 sm:grid-cols-2">
     <Card>
       <CardHeader>
-        <CardTitle class="text-sm font-bold text-foreground"
-          >DEV - Psychological Evaluation</CardTitle
-        >
+        <CardTitle class="text-sm font-bold text-foreground">Ipro</CardTitle>
 
         <CardContent class="px-0">
           <div class="flex justify-between items-center w-full gap-2 mt-2">
             <a
-              href="https://google.com"
+              href="https://ipro.iradatkonsultan.com/"
               target="_blank"
               class="text-sm text-slate-500 hover:underline hover:text-violet-500 dark:text-slate-300 dark:hover:text-white"
               >Visit website</a
@@ -25,14 +23,11 @@
 
     <Card>
       <CardHeader>
-        <CardTitle class="text-sm font-bold text-foreground"
-          >DEV - Psychological Evaluation</CardTitle
-        >
-
+        <CardTitle class="text-sm font-bold text-foreground">Ipro Business</CardTitle>
         <CardContent class="px-0">
           <div class="flex justify-between items-center w-full gap-2 mt-2">
             <a
-              href="https://google.com"
+              href="https://iprob.iradatkonsultan.com/"
               target="_blank"
               class="text-sm text-slate-500 hover:underline hover:text-violet-500 dark:text-slate-300 dark:hover:text-white"
               >Visit website</a
@@ -48,14 +43,11 @@
 
     <Card>
       <CardHeader>
-        <CardTitle class="text-sm font-bold text-foreground"
-          >DEV - Psychological Evaluation</CardTitle
-        >
-
+        <CardTitle class="text-sm font-bold text-foreground">Ipro Student</CardTitle>
         <CardContent class="px-0">
           <div class="flex justify-between items-center w-full gap-2 mt-2">
             <a
-              href="https://google.com"
+              href="http://ipros.iradatkonsultan.com/"
               target="_blank"
               class="text-sm text-slate-500 hover:underline hover:text-violet-500 dark:text-slate-300 dark:hover:text-white"
               >Visit website</a
@@ -71,14 +63,11 @@
 
     <Card>
       <CardHeader>
-        <CardTitle class="text-sm font-bold text-foreground"
-          >DEV - Psychological Evaluation</CardTitle
-        >
-
+        <CardTitle class="text-sm font-bold text-foreground">Improve Care</CardTitle>
         <CardContent class="px-0">
           <div class="flex justify-between items-center w-full gap-2 mt-2">
             <a
-              href="https://google.com"
+              href="https://improvecare.iradatkonsultan.com/"
               target="_blank"
               class="text-sm text-slate-500 hover:underline hover:text-violet-500 dark:text-slate-300 dark:hover:text-white"
               >Visit website</a
