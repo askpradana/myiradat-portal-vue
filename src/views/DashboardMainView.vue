@@ -7,7 +7,7 @@
         <CardContent class="px-0">
           <div class="flex justify-between items-center w-full gap-2 mt-2">
             <a
-              href="https://ipro.iradatkonsultan.com/"
+              href="https://ipro-student.vercel.app/"
               target="_blank"
               class="text-sm text-slate-500 hover:underline hover:text-violet-500 dark:text-slate-300 dark:hover:text-white"
               >Visit website</a

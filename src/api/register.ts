@@ -1,7 +1,7 @@
 import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
 
-interface NewUserInterface {
+export interface NewUserInterface {
   name: string
   phone: string
   email: string

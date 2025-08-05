@@ -75,6 +75,6 @@ const addNewUser = () => {
 
 const logoutFunc = () => {
   userStore.clearAuthData()
-  router.push('/login')
+  router.push('/')
 }
 </script>

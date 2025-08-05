@@ -13,11 +13,9 @@ import {
 import { useField, useForm } from 'vee-validate'
 import { toTypedSchema } from '@vee-validate/zod'
 import * as zod from 'zod'
-import { registerNewUser } from '@/api/register'
+import { registerNewUser, type NewUserInterface } from '@/api/register'
 import { toast } from 'vue-sonner'
-import { ref } from 'vue'
-
-const loading = ref(false)
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
 
 const validationSchema = toTypedSchema(
   zod.object({
@@ -47,31 +45,28 @@ const { value: name } = useField<string>('name')
 const { value: phone } = useField<string>('phone')
 const { value: role } = useField<string>('role')
 
-const onSubmit = handleSubmit(async (values) => {
-  loading.value = true
-  const response = await registerNewUser(values, 1)
+const queryClient = useQueryClient()
+const { mutate, isPending } = useMutation({
+  mutationFn: async ({ values, roleId }: { values: NewUserInterface; roleId: number }) => {
+    return await registerNewUser(values, roleId)
+  },
 
-  loading.value = false
-
-  if (response.success) {
+  onSuccess: (response) => {
     toast('Success', {
       description: `${response?.message}`,
     })
-
-    resetForm({
-      values: {
-        name: '',
-        phone: '',
-        email: '',
-        password: '',
-        role: '',
-      },
-    })
-  } else {
+    queryClient.invalidateQueries({ queryKey: ['users'] })
+    resetForm()
+  },
+  onError: (error) => {
     toast('Error', {
-      description: `${response?.message}`,
+      description: `Failed to add user: ${error.message}`,
     })
-  }
+  },
+})
+
+const onSubmit = handleSubmit(async (values) => {
+  mutate({ values, roleId: 1 })
 })
 </script>
 
@@ -154,10 +149,10 @@ const onSubmit = handleSubmit(async (values) => {
           size="sm"
           type="submit"
           class="w-full h-11 bg-primary hover:bg-primary/90 text-primary-foreground font-medium transition-all duration-200 shadow-sm hover:shadow-md"
-          :disabled="loading"
-          :class="loading && 'bg-gray-500 pointer-events-none'"
+          :disabled="isPending"
+          :class="isPending && 'bg-gray-500 pointer-events-none'"
         >
-          {{ loading ? 'Please wait...' : 'Add User' }}
+          {{ isPending ? 'Please wait...' : 'Add User' }}
         </Button>
       </form>
     </CardContent>
