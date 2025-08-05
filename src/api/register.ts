@@ -1,19 +1,31 @@
 import { toast } from 'vue-sonner'
+import { useUserStore } from '@/stores/userStores'
 
 interface NewUserInterface {
   name: string
   phone: string
   email: string
   password: string
-  role_id?: number
+  role?: string
 }
 
-export const registerNewUser = async (newUserData: NewUserInterface) => {
+export const registerNewUser = async (newUserData: NewUserInterface, role?: number) => {
   try {
+    const userStore = useUserStore()
+    const token = userStore.token
+    const newData = {
+      name: newUserData.name,
+      phone: newUserData.phone,
+      email: newUserData.email,
+      password: newUserData.password,
+      role_type: newUserData.role === '1' ? 'admin' : '',
+    }
+
     const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
       method: 'POST',
-      body: JSON.stringify(newUserData),
+      body: role === 1 ? JSON.stringify(newData) : JSON.stringify(newUserData),
       headers: {
+        Authorization: role === 1 ? `bearer ${token}` : '',
         'Content-Type': 'application/json',
       },
     })

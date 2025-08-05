@@ -11,12 +11,12 @@
   </Card>
 
   <IproTable
-    :openness="profilesData?.ipro.openness"
+    :openness="profilesData?.ipro?.openness"
     :agreeableness="profilesData?.ipro?.agreeableness"
     :extraversion="profilesData?.ipro?.extraversion"
     :neuroticism="profilesData?.ipro?.neuroticism"
     :conscientiousness="profilesData?.ipro?.conscientiousness"
-    :is-loading="loading"
+    :is-loading="isLoading"
   />
 
   <IprosTable
@@ -24,7 +24,7 @@
     :amiable="profilesData?.ipros?.amiable"
     :analytical="profilesData?.ipros?.analytical"
     :expressive="profilesData?.ipros?.expressive"
-    :is-loading="loading"
+    :is-loading="isLoading"
   />
 
   <IpropTable
@@ -33,7 +33,7 @@
     :extraversion="profilesData?.iprob?.extraversion"
     :neuroticism="profilesData?.iprob?.neuroticism"
     :conscientiousness="profilesData?.iprob?.conscientiousness"
-    :is-loading="loading"
+    :is-loading="isLoading"
   />
 </template>
 
@@ -69,31 +69,33 @@ interface AnalyzedInterface {
 interface UserProfileInterface {
   id: string
   name: string
-  ipro: IproScore
-  iprob: IproScore
-  ipros: IprosScore
+  ipro?: IproScore
+  iprob?: IproScore
+  ipros?: IprosScore
   last_analyzed: AnalyzedInterface
   created_at: string
   updated_at: string
 }
 
 const profilesData = ref<UserProfileInterface>()
-const loading = ref(false)
+const isLoading = ref(false)
 
 onMounted(async () => {
-  loading.value = true
+  isLoading.value = true
   const data = await getProfile()
 
   if (data) {
-    const processedData: UserProfileInterface = {
-      ...data,
-      ipro: JSON.parse(data.ipro),
-      iprob: JSON.parse(data.iprob),
-      ipros: JSON.parse(data.ipros),
-      last_analyzed: JSON.parse(data.last_analyzed),
+    if (data.ipro || data.iprob || data.ipros) {
+      const processedData: UserProfileInterface = {
+        ...data,
+        ipro: JSON.parse(data.ipro),
+        iprob: JSON.parse(data.iprob),
+        ipros: JSON.parse(data.ipros),
+        last_analyzed: JSON.parse(data.last_analyzed),
+      }
+      profilesData.value = processedData
     }
-    profilesData.value = processedData
   }
-  loading.value = false
+  isLoading.value = false
 })
 </script>
