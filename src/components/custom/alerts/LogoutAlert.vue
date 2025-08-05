@@ -5,7 +5,6 @@ import { useUserStore } from '@/stores/userStores'
 import { AlertDialogOverlay, AlertDialogPortal, AlertDialogRoot, AlertDialogTrigger } from 'reka-ui'
 import {
   AlertDialogContent,
-  AlertDialogAction,
   AlertDialogCancel,
   AlertDialogDescription,
   AlertDialogTitle,
@@ -18,24 +17,40 @@ import { Button } from '@/components/ui/button'
 const userStore = useUserStore()
 const router = useRouter()
 const isLoading = ref(false)
+const open = ref(false)
 
 const logoutFunc = async () => {
   isLoading.value = true
-  const response = await logout()
-
-  if (response.success) {
-    toast('Success', {
-      description: `${response?.message}`,
+  try {
+    const response = await logout()
+    if (response.success) {
+      toast('Success', {
+        description: `${response?.message}`,
+      })
+      userStore.clearAuthData()
+      router.push('/')
+      open.value = false
+    } else {
+      toast('Error', {
+        description: `${response?.message || 'Logout failed'}`,
+      })
+    }
+  } catch (error) {
+    console.error('Logout API error:', error)
+    toast('Error', {
+      description: 'An unexpected error occurred. Please try again.',
     })
     userStore.clearAuthData()
     router.push('/')
+    open.value = false
+  } finally {
+    isLoading.value = false
   }
-  isLoading.value = false
 }
 </script>
 
 <template>
-  <AlertDialogRoot>
+  <AlertDialogRoot v-model:open="open">
     <AlertDialogTrigger class="">
       <Button variant="outline" size="icon">
         <LogOut class="w-4 h-4" />
@@ -52,21 +67,22 @@ const logoutFunc = async () => {
           Logout
         </AlertDialogTitle>
         <AlertDialogDescription class="mb-5 text-sm leading-normal">
-          Are you sure want to end this session?
+          Are you sure you want to end this session?
         </AlertDialogDescription>
         <div class="flex justify-end gap-4">
           <AlertDialogCancel
+            v-if="!isLoading"
             class="text-mauve11 bg-mauve4 hover:bg-mauve5 focus:shadow-mauve7 inline-flex h-[35px] items-center justify-center rounded-md px-[15px] font-semibold leading-none outline-none focus:shadow-[0_0_0_2px]"
-            :class="isLoading ? 'hidden' : ''"
           >
             Cancel
           </AlertDialogCancel>
-          <AlertDialogAction
-            class="text-white bg-red-400 hover:bg-red-500 focus:shadow-red-700 inline-flex h-[35px] items-center justify-center rounded-md px-[15px] font-semibold leading-none outline-none focus:shadow-[0_0_0_2px]"
+          <Button
             @click="logoutFunc"
+            :disabled="isLoading"
+            class="text-white bg-red-400 hover:bg-red-500 focus:shadow-red-700 inline-flex h-[35px] items-center justify-center rounded-md px-[15px] font-semibold leading-none outline-none focus:shadow-[0_0_0_2px]"
           >
             {{ isLoading ? 'Please wait...' : 'Yes, end session' }}
-          </AlertDialogAction>
+          </Button>
         </div>
       </AlertDialogContent>
     </AlertDialogPortal>
