@@ -4,33 +4,16 @@ import Input from '../../ui/input/Input.vue'
 import Label from '../../ui/label/Label.vue'
 import { Card, CardTitle, CardDescription, CardHeader, CardContent } from '../../ui/card'
 import { useField, useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import * as zod from 'zod'
 import { registerNewUser } from '@/api/register'
 import { toast } from 'vue-sonner'
 import { useRouter } from 'vue-router'
 import { ref } from 'vue'
+import { RegisterFormSchema } from '@/lib/zod-schemas/registerFormSchema'
 
 const router = useRouter()
 const loading = ref(false)
 
-const validationSchema = toTypedSchema(
-  zod.object({
-    email: zod.email({ message: 'Must be a valid email' }).min(1, { message: 'This is required' }),
-    password: zod
-      .string()
-      .min(1, { message: 'This is required' })
-      .min(8, { message: 'Password minimum containing 8 characters' }),
-    phone: zod
-      .string()
-      .min(1, { message: 'This is required' })
-      .min(6, { message: 'Phone minimum containing 6 characters' }),
-    name: zod
-      .string()
-      .min(1, { message: 'This is required' })
-      .min(3, { message: 'Username minimum containing 8 characters' }),
-  }),
-)
+const validationSchema = RegisterFormSchema
 const { handleSubmit, errors } = useForm({
   validationSchema,
 })

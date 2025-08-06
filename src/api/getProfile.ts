@@ -4,7 +4,7 @@ import { useUserStore } from '@/stores/userStores'
 export const getProfile = async () => {
   try {
     const userStore = useUserStore()
-    const token = userStore.token
+    const token = userStore.auth?.token
 
     // Periksa apakah token ada
     if (!token) {
@@ -29,6 +29,7 @@ export const getProfile = async () => {
     }
 
     const data = await response.json()
+    console.log(data)
 
     return data.data
   } catch (error) {

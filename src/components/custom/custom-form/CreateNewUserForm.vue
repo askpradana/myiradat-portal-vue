@@ -11,30 +11,12 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { useField, useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import * as zod from 'zod'
 import { registerNewUser, type NewUserInterface } from '@/api/register'
 import { toast } from 'vue-sonner'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
+import { CreateNewUserSchema } from '@/lib/zod-schemas/registerFormSchema'
 
-const validationSchema = toTypedSchema(
-  zod.object({
-    email: zod.email({ message: 'Must be a valid email' }).min(1, { message: 'This is required' }),
-    password: zod
-      .string()
-      .min(1, { message: 'This is required' })
-      .min(8, { message: 'Password minimum containing 8 characters' }),
-    phone: zod
-      .string()
-      .min(1, { message: 'This is required' })
-      .min(6, { message: 'Phone minimum containing 6 characters' }),
-    name: zod
-      .string()
-      .min(1, { message: 'This is required' })
-      .min(3, { message: 'Username minimum containing 8 characters' }),
-    role: zod.string().min(1, { message: 'This is required' }).nonempty(),
-  }),
-)
+const validationSchema = CreateNewUserSchema
 const { handleSubmit, errors, resetForm } = useForm({
   validationSchema,
 })
@@ -52,11 +34,15 @@ const { mutate, isPending } = useMutation({
   },
 
   onSuccess: (response) => {
-    toast('Success', {
-      description: `${response?.message}`,
-    })
-    queryClient.invalidateQueries({ queryKey: ['users'] })
-    resetForm()
+    if (response) {
+      console.log(response)
+
+      toast('Success', {
+        description: `${response?.message}`,
+      })
+      queryClient.invalidateQueries({ queryKey: ['users'] })
+      resetForm()
+    }
   },
   onError: (error) => {
     toast('Error', {

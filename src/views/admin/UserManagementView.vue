@@ -270,16 +270,19 @@ import { Input } from '@/components/ui/input'
 import { allUsers } from '@/data/usersData'
 import { getListUser } from '@/api/getListUser'
 import { useQuery } from '@tanstack/vue-query'
+import type { UserProfileInterface } from '@/types/userType'
 
-interface UserDataInterface {
-  id: string
-  email: string
-  phone: string
-  role_id: number
-  name: string
+export type UsersDataInterface = Omit<UserProfileInterface, 'avatar_picture' | 'date_of_birth'>
+
+interface ResponseAPIUsersInterface {
+  page: number
+  page_size: number
+  total: number
+  total_pages: number
+  users: UsersDataInterface[]
 }
 
-const { isPending, data } = useQuery<UserDataInterface[]>({
+const { isPending, data } = useQuery<ResponseAPIUsersInterface>({
   queryKey: ['users'],
   queryFn: getListUser,
   staleTime: 1000 * 60 * 5, // 5 menit
@@ -341,7 +344,7 @@ const getRoleBadgeClass = (role: number) => {
 
 // Computed properties for search and filtering
 const filteredUsers = computed(() => {
-  let filtered = data.value
+  let filtered = data.value?.users
 
   // Apply search filter
   if (searchQuery.value.trim()) {

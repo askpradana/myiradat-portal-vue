@@ -12,7 +12,7 @@ export interface NewUserInterface {
 export const registerNewUser = async (newUserData: NewUserInterface, role?: number) => {
   try {
     const userStore = useUserStore()
-    const token = userStore.token
+    const token = userStore.auth?.token
     const newData = {
       name: newUserData.name,
       phone: newUserData.phone,
@@ -31,6 +31,8 @@ export const registerNewUser = async (newUserData: NewUserInterface, role?: numb
     })
 
     if (!response.ok) {
+      console.log(response)
+
       if (response.status === 404) {
         throw new Error(`HTTP error! status: ${response.status}`)
       } else if (response.status === 401) {
@@ -43,6 +45,7 @@ export const registerNewUser = async (newUserData: NewUserInterface, role?: numb
     }
 
     const data = await response.json()
+    console.log(data.data)
 
     return data
   } catch (error) {

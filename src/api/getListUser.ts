@@ -4,14 +4,14 @@ import { useUserStore } from '@/stores/userStores'
 export const getListUser = async () => {
   try {
     const userStore = useUserStore()
-    const token = userStore.token
+    const token = userStore.auth?.token
 
     // Periksa apakah token ada
     if (!token) {
       throw new Error('Authentication token not found.')
     }
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/user/list`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/users`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -29,6 +29,8 @@ export const getListUser = async () => {
     }
 
     const data = await response.json()
+
+    console.log(data)
 
     return data.data
   } catch (error) {

@@ -4,7 +4,7 @@ import { useUserStore } from '@/stores/userStores'
 export const logout = async () => {
   try {
     const userStore = useUserStore()
-    const token = userStore.token
+    const token = userStore.auth?.token
 
     const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/logout`, {
       method: 'POST',
