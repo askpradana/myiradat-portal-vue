@@ -7,18 +7,9 @@
             {{ roleUser === 'admin' ? 'Admin Dashboard' : 'User Dashboard' }}
           </h1>
           <p class="text-muted-foreground mt-1">Welcome {{ userStore.user?.name }}</p>
-          <!-- <p class="text-muted-foreground mt-1">
-            {{
-              activeTab === 'users'
-                ? 'Manage your application users and settings'
-                : 'View and manage your profile information'
-            }}
-          </p> -->
         </div>
         <div class="flex items-center gap-2">
-          <Button variant="outline" size="icon" @click="logoutFunc">
-            <LogOut class="w-4 h-4" />
-          </Button>
+          <LogoutAlert />
           <ThemeToggle />
           <Button
             v-if="roleUser === 'admin'"
@@ -59,8 +50,8 @@
 import { useRouter } from 'vue-router'
 import ThemeToggle from '@/components/ThemeToggle.vue'
 import Button from '@/components/ui/button/Button.vue'
-import { LogOut } from 'lucide-vue-next'
 import { useUserStore } from '@/stores/userStores'
+import LogoutAlert from '../alerts/LogoutAlert.vue'
 
 const userStore = useUserStore()
 const router = useRouter()
@@ -71,10 +62,5 @@ const { roleUser } = defineProps<{
 
 const addNewUser = () => {
   router.push('/dashboard/admin/create-user')
-}
-
-const logoutFunc = () => {
-  userStore.clearAuthData()
-  router.push('/')
 }
 </script>

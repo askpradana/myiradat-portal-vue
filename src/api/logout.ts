@@ -1,25 +1,25 @@
 import { toast } from 'vue-sonner'
+import { useUserStore } from '@/stores/userStores'
 
-interface UserDataInterface {
-  email: string
-  password: string
-}
-
-export const logout = async (userData: UserDataInterface) => {
+export const logout = async () => {
   try {
+    const userStore = useUserStore()
+    const token = userStore.token
+
     const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/logout`, {
       method: 'POST',
-      body: JSON.stringify(userData),
       headers: {
-        'Content-Type': 'application/json',
+        Authorization: `Bearer ${token}`,
       },
     })
 
     if (!response.ok) {
+      console.log(response)
+
       if (response.status === 404) {
         throw new Error(`HTTP error! status: ${response.status}`)
       } else if (response.status === 401) {
-        throw new Error(`Please check email & password`)
+        throw new Error(`Token Not found or already expired`)
       } else {
         throw new Error(`Internal server error`)
       }
