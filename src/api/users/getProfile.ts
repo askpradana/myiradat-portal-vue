@@ -1,19 +1,18 @@
 import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
-import { refreshToken } from './refreshToken'
-import type { ResponseAPIUsersInterface } from '@/views/admin/UserManagementView.vue'
+import { refreshToken } from '../refreshToken'
+import type { UserDataInterface } from '@/types/userType'
 
-export const getListUser = async (): Promise<ResponseAPIUsersInterface> => {
+export const getProfile = async (): Promise<UserDataInterface> => {
   try {
     const userStore = useUserStore()
     const token = userStore.auth?.token
 
-    // Periksa apakah token ada
     if (!token) {
       throw new Error('Authentication token not found.')
     }
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/users`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/profile`, {
       method: 'GET',
       headers: {
         Authorization: `Bearer ${token}`,
@@ -38,7 +37,7 @@ export const getListUser = async (): Promise<ResponseAPIUsersInterface> => {
             }
             sessionStorage.setItem('auth_token', JSON.stringify(auth))
 
-            return await getListUser()
+            return await getProfile()
           } else {
             throw new Error('Session expired, please login again')
           }
@@ -52,7 +51,6 @@ export const getListUser = async (): Promise<ResponseAPIUsersInterface> => {
     }
 
     const data = await response.json()
-
     console.log(data)
 
     return data.data

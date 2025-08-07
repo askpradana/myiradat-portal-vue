@@ -42,7 +42,7 @@ import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/ca
 import IproTable from '@/components/custom/tables/IproTable.vue'
 import IprosTable from '@/components/custom/tables/IprosTable.vue'
 import IpropTable from '@/components/custom/tables/IpropTable.vue'
-import { getProfile } from '@/api/getProfile'
+import { getProfile } from '@/api/users/getProfile'
 import type { UserDataInterface } from '@/types/userType'
 
 const profilesData = ref<UserDataInterface>()

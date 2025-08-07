@@ -26,6 +26,7 @@ export const login = async (userData: UserDataInterface) => {
     }
 
     const data = await response.json()
+    console.log(data)
 
     return data
   } catch (error) {

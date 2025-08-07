@@ -63,17 +63,19 @@
                   >Phone Number</label
                 >
                 <div class="text-sm text-foreground bg-muted px-3 py-2 rounded-md">
-                  {{ currentUser.phone }}
+                  {{ userStore.user?.phone }}
                 </div>
               </div>
-              <!-- <div>
+              <div>
                 <label class="block text-sm font-medium text-muted-foreground mb-1"
                   >Date of Birth</label
                 >
                 <div class="text-sm text-foreground bg-muted px-3 py-2 rounded-md">
-                  {{ currentUser.dateOfBirth }}
+                  {{
+                    formatDate(userStore.user?.date_of_birth ? userStore.user?.date_of_birth : '')
+                  }}
                 </div>
-              </div> -->
+              </div>
             </div>
           </div>
 
@@ -158,6 +160,7 @@
 import { ref } from 'vue'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useUserStore } from '@/stores/userStores'
+import { formatDate } from '@/lib/dateFromate'
 
 const userStore = useUserStore()
 
@@ -187,10 +190,4 @@ const currentUser = ref({
   location: 'New York, NY',
   bio: 'Experienced IT professional with over 10 years of experience in system administration and team leadership. Passionate about technology and helping organizations achieve their digital transformation goals.',
 })
-
-// Helper function for date formatting
-// const formatDate = (dateString: string) => {
-//   const date = new Date(dateString)
-//   return date.toLocaleDateString()
-// }
 </script>

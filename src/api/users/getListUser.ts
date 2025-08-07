@@ -1,23 +1,45 @@
 import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
-import { refreshToken } from './refreshToken'
-import type { UserDataInterface } from '@/types/userType'
+import { refreshToken } from '../refreshToken'
+import type { UserListInterface as ResponseAPIUsersInterface } from '@/types/userListType'
 
-export const getProfile = async (): Promise<UserDataInterface> => {
+interface GetListUserParams {
+  page?: number
+  search?: string
+  page_size?: number
+}
+
+export const getListUser = async (
+  params: GetListUserParams = {},
+): Promise<ResponseAPIUsersInterface> => {
   try {
+    const { page = 1, search, page_size = 10 } = params
     const userStore = useUserStore()
     const token = userStore.auth?.token
 
+    // Periksa apakah token ada
     if (!token) {
       throw new Error('Authentication token not found.')
     }
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/profile`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${token}`,
+    // Build query string
+    const queryParams = new URLSearchParams()
+    queryParams.append('page', page.toString())
+    queryParams.append('page_size', page_size.toString())
+
+    if (search && search.trim()) {
+      queryParams.append('search', search.trim())
+    }
+
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/admin/users?${queryParams.toString()}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    })
+    )
 
     if (!response.ok) {
       if (response.status === 404) {
@@ -37,7 +59,8 @@ export const getProfile = async (): Promise<UserDataInterface> => {
             }
             sessionStorage.setItem('auth_token', JSON.stringify(auth))
 
-            return await getProfile()
+            // Retry with new token and same parameters
+            return await getListUser(params)
           } else {
             throw new Error('Session expired, please login again')
           }
@@ -51,6 +74,7 @@ export const getProfile = async (): Promise<UserDataInterface> => {
     }
 
     const data = await response.json()
+
     console.log(data)
 
     return data.data
