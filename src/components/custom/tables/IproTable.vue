@@ -13,14 +13,7 @@
         </TableHeader>
         <TableBody>
           <template v-if="isLoading">
-            <TableRow v-for="i in 5" :key="i">
-              <TableCell class="font-medium">
-                <Skeleton class="h-4 w-32" />
-              </TableCell>
-              <TableCell class="text-center">
-                <Skeleton class="h-4 w-16 mx-auto" />
-              </TableCell>
-            </TableRow>
+            <DataViewTableSkeleton />
           </template>
 
           <template v-else>
@@ -61,7 +54,6 @@
 
 <script setup lang="ts">
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import Skeleton from '@/components/ui/skeleton/Skeleton.vue'
 import {
   Table,
   TableBody,
@@ -70,13 +62,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import type { IPROInterface } from '@/types/userType'
+import DataViewTableSkeleton from '../skeletons/DataViewTableSkeleton.vue'
 
-const props = defineProps<{
-  openness: number | undefined
-  neuroticism: number | undefined
-  extraversion: number | undefined
-  agreeableness: number | undefined
-  conscientiousness: number | undefined
+interface IproInterface extends IPROInterface {
   isLoading: boolean
-}>()
+}
+
+const props = defineProps<IproInterface>()
 </script>

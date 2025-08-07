@@ -149,26 +149,14 @@
           <TableRow>
             <TableHead class="text-foreground">Name</TableHead>
             <TableHead class="text-foreground">Email</TableHead>
+            <TableHead class="text-foreground">Phone</TableHead>
             <TableHead class="text-foreground">Role</TableHead>
             <TableHead class="text-right text-foreground">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           <template v-if="isPending">
-            <TableRow v-for="i in 10" :key="i">
-              <TableCell class="font-medium">
-                <Skeleton class="h-4 w-32" />
-              </TableCell>
-              <TableCell class="text-center">
-                <Skeleton class="h-4 w-16 mx-auto" />
-              </TableCell>
-              <TableCell class="text-center">
-                <Skeleton class="h-4 w-16 mx-auto" />
-              </TableCell>
-              <TableCell class="text-center">
-                <Skeleton class="h-4 w-16 mx-auto" />
-              </TableCell>
-            </TableRow>
+            <ListUserTableSkeleton />
           </template>
 
           <template v-else>
@@ -179,6 +167,7 @@
                 </div>
               </TableCell>
               <TableCell class="text-foreground">{{ user.email }}</TableCell>
+              <TableCell class="text-foreground">{{ user.phone }}</TableCell>
               <TableCell>
                 <span :class="getRoleBadgeClass(user.role_id)">
                   {{ user.role_id === 1 ? 'Admin' : user.role_id === 2 ? 'User' : 'Moderator' }}
@@ -255,7 +244,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Skeleton } from '@/components/ui/skeleton'
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Pagination,
@@ -270,16 +259,15 @@ import { Input } from '@/components/ui/input'
 import { allUsers } from '@/data/usersData'
 import { getListUser } from '@/api/getListUser'
 import { useQuery } from '@tanstack/vue-query'
-import type { UserProfileInterface } from '@/types/userType'
+import type { UserDataInterface } from '@/types/userType'
+import ListUserTableSkeleton from '@/components/custom/skeletons/ListUserTableSkeleton.vue'
 
-export type UsersDataInterface = Omit<UserProfileInterface, 'avatar_picture' | 'date_of_birth'>
-
-interface ResponseAPIUsersInterface {
+export interface ResponseAPIUsersInterface {
   page: number
   page_size: number
   total: number
   total_pages: number
-  users: UsersDataInterface[]
+  users: UserDataInterface[]
 }
 
 const { isPending, data } = useQuery<ResponseAPIUsersInterface>({

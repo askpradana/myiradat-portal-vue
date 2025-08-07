@@ -1,7 +1,9 @@
 import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
+import { refreshToken } from './refreshToken'
+import type { ResponseAPIUsersInterface } from '@/views/admin/UserManagementView.vue'
 
-export const getListUser = async () => {
+export const getListUser = async (): Promise<ResponseAPIUsersInterface> => {
   try {
     const userStore = useUserStore()
     const token = userStore.auth?.token
@@ -23,6 +25,27 @@ export const getListUser = async () => {
         throw new Error(`HTTP error! status: ${response.status}`)
       } else if (response.status === 400) {
         throw new Error(`Bad Request`)
+      } else if (response.status === 401) {
+        try {
+          const refreshResponse = await refreshToken()
+          if (userStore.auth && refreshResponse.data) {
+            userStore.auth.token = refreshResponse.data.token
+            userStore.auth.expires_at = refreshResponse.data.expires_at
+
+            const auth = {
+              token: refreshResponse.data.token,
+              expires_at: refreshResponse.data.expires_at,
+            }
+            sessionStorage.setItem('auth_token', JSON.stringify(auth))
+
+            return await getListUser()
+          } else {
+            throw new Error('Session expired, please login again')
+          }
+        } catch (error) {
+          console.error('Token refresh error:', error)
+          throw error
+        }
       } else {
         throw new Error(`Internal server error`)
       }
@@ -38,5 +61,6 @@ export const getListUser = async () => {
     toast('Error', {
       description: `${error}`,
     })
+    throw error
   }
 }

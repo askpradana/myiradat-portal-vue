@@ -28,11 +28,10 @@
   />
 
   <IpropTable
-    :openness="profilesData?.iprob?.openness"
-    :agreeableness="profilesData?.iprob?.agreeableness"
-    :extraversion="profilesData?.iprob?.extraversion"
-    :neuroticism="profilesData?.iprob?.neuroticism"
-    :conscientiousness="profilesData?.iprob?.conscientiousness"
+    :compliance="profilesData?.iprob?.compliance"
+    :dominant="profilesData?.iprob?.dominant"
+    :influence="profilesData?.iprob?.influence"
+    :steadiness="profilesData?.iprob?.steadiness"
     :is-loading="isLoading"
   />
 </template>
@@ -44,40 +43,9 @@ import IproTable from '@/components/custom/tables/IproTable.vue'
 import IprosTable from '@/components/custom/tables/IprosTable.vue'
 import IpropTable from '@/components/custom/tables/IpropTable.vue'
 import { getProfile } from '@/api/getProfile'
+import type { UserDataInterface } from '@/types/userType'
 
-interface IproScore {
-  openness: number
-  neuroticism: number
-  extraversion: number
-  agreeableness: number
-  conscientiousness: number
-}
-
-interface IprosScore {
-  driver: number
-  amiable: number
-  analytical: number
-  expressive: number
-}
-
-interface AnalyzedInterface {
-  date: Date
-  score: number
-  service: string
-}
-
-interface UserProfileInterface {
-  id: string
-  name: string
-  ipro?: IproScore
-  iprob?: IproScore
-  ipros?: IprosScore
-  last_analyzed: AnalyzedInterface
-  created_at: string
-  updated_at: string
-}
-
-const profilesData = ref<UserProfileInterface>()
+const profilesData = ref<UserDataInterface>()
 const isLoading = ref(false)
 
 onMounted(async () => {
@@ -86,12 +54,15 @@ onMounted(async () => {
 
   if (data) {
     if (data.ipro || data.iprob || data.ipros) {
-      const processedData: UserProfileInterface = {
+      const processedData: UserDataInterface = {
         ...data,
-        ipro: JSON.parse(data.ipro),
-        iprob: JSON.parse(data.iprob),
-        ipros: JSON.parse(data.ipros),
-        last_analyzed: JSON.parse(data.last_analyzed),
+        ipro: typeof data.ipro === 'string' ? JSON.parse(data.ipro) : data.ipro,
+        iprob: typeof data.iprob === 'string' ? JSON.parse(data.iprob) : data.iprob,
+        ipros: typeof data.ipros === 'string' ? JSON.parse(data.ipros) : data.ipros,
+        last_analyzed:
+          typeof data.last_analyzed === 'string'
+            ? JSON.parse(data.last_analyzed)
+            : data.last_analyzed,
       }
       profilesData.value = processedData
     }

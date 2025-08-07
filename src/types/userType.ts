@@ -11,29 +11,36 @@ export interface UserProfileInterface {
 }
 
 export interface IPROInterface {
-  openness: number
-  neuroticism: number
-  extraversion: number
-  agreeableness: number
-  conscientiousness: number
+  openness: number | undefined | null
+  neuroticism: number | undefined | null
+  extraversion: number | undefined | null
+  agreeableness: number | undefined | null
+  conscientiousness: number | undefined | null
 }
 
 export interface IPROBInterface {
-  dominant: number
-  influence: number
-  compliance: number
-  steadiness: number
+  dominant: number | undefined | null
+  influence: number | undefined | null
+  compliance: number | undefined | null
+  steadiness: number | undefined | null
 }
 
 export interface IPROSInterface {
-  driver: number
-  amiable: number
-  analytical: number
-  expressive: number
+  driver: number | undefined | null
+  amiable: number | undefined | null
+  analytical: number | undefined | null
+  expressive: number | undefined | null
 }
 
 export interface LastAnalyzedInterface {
   date: string
   score: number
   service: string
+}
+
+export interface UserDataInterface extends UserProfileInterface {
+  ipro?: IPROInterface
+  iprob?: IPROBInterface
+  ipros?: IPROSInterface
+  last_analyzed?: LastAnalyzedInterface
 }

@@ -1,5 +1,6 @@
 import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
+import { refreshToken } from './refreshToken'
 
 export interface NewUserInterface {
   name: string
@@ -9,7 +10,20 @@ export interface NewUserInterface {
   role?: string
 }
 
-export const registerNewUser = async (newUserData: NewUserInterface, role?: number) => {
+export interface RegisterAPIResponse {
+  data: {
+    email: string
+    user_id: string
+  }
+  message: string
+  success: boolean
+  timestamp: string
+}
+
+export const registerNewUser = async (
+  newUserData: NewUserInterface,
+  role?: number,
+): Promise<RegisterAPIResponse> => {
   try {
     const userStore = useUserStore()
     const token = userStore.auth?.token
@@ -36,7 +50,26 @@ export const registerNewUser = async (newUserData: NewUserInterface, role?: numb
       if (response.status === 404) {
         throw new Error(`HTTP error! status: ${response.status}`)
       } else if (response.status === 401) {
-        throw new Error(`Please check email & password`)
+        try {
+          const refreshResponse = await refreshToken()
+          if (userStore.auth && refreshResponse.data) {
+            userStore.auth.token = refreshResponse.data.token
+            userStore.auth.expires_at = refreshResponse.data.expires_at
+
+            const auth = {
+              token: refreshResponse.data.token,
+              expires_at: refreshResponse.data.expires_at,
+            }
+            sessionStorage.setItem('auth_token', JSON.stringify(auth))
+
+            return await registerNewUser(newData, 1)
+          } else {
+            throw new Error('Session expired, please login again')
+          }
+        } catch (error) {
+          console.error('Token refresh error:', error)
+          throw error
+        }
       } else if (response.status === 400) {
         throw new Error(`Data already exist`)
       } else {
@@ -45,7 +78,6 @@ export const registerNewUser = async (newUserData: NewUserInterface, role?: numb
     }
 
     const data = await response.json()
-    console.log(data.data)
 
     return data
   } catch (error) {
@@ -53,5 +85,6 @@ export const registerNewUser = async (newUserData: NewUserInterface, role?: numb
     toast('Error', {
       description: `${error}`,
     })
+    throw error
   }
 }

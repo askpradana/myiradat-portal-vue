@@ -13,43 +13,30 @@
         </TableHeader>
         <TableBody>
           <template v-if="isLoading">
-            <TableRow v-for="i in 5" :key="i">
-              <TableCell class="font-medium">
-                <Skeleton class="h-4 w-32" />
-              </TableCell>
-              <TableCell class="text-center">
-                <Skeleton class="h-4 w-16 mx-auto" />
-              </TableCell>
-            </TableRow>
+            <DataViewTableSkeleton />
           </template>
 
           <template v-else>
             <TableRow>
-              <TableCell class="font-medium">Openness</TableCell>
-              <TableCell class="text-center">{{ props.openness ? props.openness : '-' }}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell class="font-medium">Neuroticism</TableCell>
+              <TableCell class="font-medium">Compliance</TableCell>
               <TableCell class="text-center">{{
-                props.neuroticism ? props.neuroticism : '-'
+                props.compliance ? props.compliance : '-'
               }}</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell class="font-medium">Extraversion</TableCell>
+              <TableCell class="font-medium">Dominant</TableCell>
+              <TableCell class="text-center">{{ props.dominant ? props.dominant : '-' }}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell class="font-medium">Influence</TableCell>
               <TableCell class="text-center">{{
-                props.extraversion ? props.extraversion : '-'
+                props.influence ? props.influence : '-'
               }}</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell class="font-medium">Agreeableness</TableCell>
+              <TableCell class="font-medium">Steadiness</TableCell>
               <TableCell class="text-center">{{
-                props.agreeableness ? props.agreeableness : '-'
-              }}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell class="font-medium">Conscientiousness</TableCell>
-              <TableCell class="text-center">{{
-                props.conscientiousness ? props.conscientiousness : '-'
+                props.steadiness ? props.steadiness : '-'
               }}</TableCell>
             </TableRow>
           </template>
@@ -61,7 +48,6 @@
 
 <script setup lang="ts">
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton'
 import {
   Table,
   TableBody,
@@ -70,13 +56,12 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import DataViewTableSkeleton from '../skeletons/DataViewTableSkeleton.vue'
+import type { IPROBInterface } from '@/types/userType'
 
-const props = defineProps<{
-  openness: number | undefined
-  neuroticism: number | undefined
-  extraversion: number | undefined
-  agreeableness: number | undefined
-  conscientiousness: number | undefined
+interface IprobInterface extends IPROBInterface {
   isLoading: boolean
-}>()
+}
+
+const props = defineProps<IprobInterface>()
 </script>

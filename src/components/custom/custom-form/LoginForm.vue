@@ -35,7 +35,7 @@ const onSubmit = handleSubmit(async (values) => {
         expires_at: response.data.expires_at,
       },
       user: response.data.user,
-      // services: response.data.services,
+      services: response.data.services,
     })
     toast('Success', {
       description: `${response?.message}`,
