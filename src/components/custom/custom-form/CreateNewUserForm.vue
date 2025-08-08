@@ -35,8 +35,6 @@ const { mutate, isPending } = useMutation({
 
   onSuccess: (response) => {
     if (response) {
-      console.log(response)
-
       toast('Success', {
         description: `${response?.message}`,
       })

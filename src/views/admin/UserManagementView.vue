@@ -68,16 +68,16 @@
               <TableCell class="text-foreground">{{ user.phone }}</TableCell>
               <TableCell>
                 <span :class="getRoleBadgeClass(user.role_id)">
-                  {{ user.role_id === 1 ? 'Admin' : user.role_id === 2 ? 'User' : 'Moderator' }}
+                  {{ user.role_name }}
                 </span>
               </TableCell>
               <TableCell class="text-right">
                 <div class="flex items-center justify-end space-x-2">
-                  <button
-                    class="rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-muted"
-                  >
-                    <Pencil :size="18" />
-                  </button>
+                  <EditUserAlert
+                    :user-i-d="user.id"
+                    :data-user="user"
+                    :current-page="currentPage"
+                  />
                   <DeleteUserAlert :user-i-d="user.id" :name-of-user="user.name" />
                 </div>
               </TableCell>
@@ -153,10 +153,11 @@ import { allUsers } from '@/data/usersData'
 import { getListUser } from '@/api/users/getListUser'
 import { useQuery } from '@tanstack/vue-query'
 import ListUserTableSkeleton from '@/components/custom/skeletons/ListUserTableSkeleton.vue'
-import { Pencil, SearchIcon, X } from 'lucide-vue-next'
+import { SearchIcon, X } from 'lucide-vue-next'
 import type { UserListInterface as ResponseAPIUsersInterface } from '@/types/userListType'
 import UserListHeaderCards from '@/components/custom/cards/UserListHeaderCards.vue'
 import DeleteUserAlert from '@/components/custom/alerts/DeleteUserAlert.vue'
+import EditUserAlert from '@/components/custom/alerts/EditUserAlert.vue'
 
 // Pagination state
 const currentPage = ref(1)
