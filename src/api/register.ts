@@ -45,8 +45,6 @@ export const registerNewUser = async (
     })
 
     if (!response.ok) {
-      console.log(response)
-
       if (response.status === 404) {
         throw new Error(`HTTP error! status: ${response.status}`)
       } else if (response.status === 401) {

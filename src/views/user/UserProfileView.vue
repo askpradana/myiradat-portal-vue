@@ -8,7 +8,7 @@
             <div
               class="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 text-2xl font-semibold text-primary"
             >
-              {{ currentUser.name.charAt(0) }}
+              {{ userStore.user?.name.charAt(0) }}
             </div>
             <h3 class="font-semibold text-foreground">{{ userStore.user?.name }}</h3>
             <div
@@ -41,30 +41,49 @@
           <!-- Personal Information -->
           <div>
             <h4 class="text-lg font-medium text-foreground mb-4">Personal Information</h4>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+
+            <form class="grid grid-cols-1 md:grid-cols-2 gap-4" @submit="onSubmit">
               <div>
                 <label class="block text-sm font-medium text-muted-foreground mb-1"
                   >Full Name</label
                 >
-                <div class="text-sm text-foreground bg-muted px-3 py-2 rounded-md">
-                  {{ userStore.user?.name }}
-                </div>
+                <Input
+                  id="name"
+                  type="text"
+                  placeholder="Enter your username"
+                  class="text-sm text-foreground bg-muted px-3 py-2 rounded-md"
+                  required
+                  v-model="name"
+                />
+                <span class="text-xs text-red-400">{{ errors.name }}</span>
               </div>
               <div>
                 <label class="block text-sm font-medium text-muted-foreground mb-1"
                   >Email Address</label
                 >
-                <div class="text-sm text-foreground bg-muted px-3 py-2 rounded-md">
-                  {{ userStore.user?.email }}
-                </div>
+                <Input
+                  id="email"
+                  type="text"
+                  placeholder="Enter your email"
+                  class="text-sm text-foreground bg-muted px-3 py-2 rounded-md"
+                  required
+                  v-model="email"
+                />
+                <span class="text-xs text-red-400">{{ errors.email }}</span>
               </div>
               <div>
                 <label class="block text-sm font-medium text-muted-foreground mb-1"
                   >Phone Number</label
                 >
-                <div class="text-sm text-foreground bg-muted px-3 py-2 rounded-md">
-                  {{ userStore.user?.phone }}
-                </div>
+                <Input
+                  id="phone"
+                  type="text"
+                  placeholder="Enter your phone number"
+                  class="text-sm text-foreground bg-muted px-3 py-2 rounded-md"
+                  required
+                  v-model="phone"
+                />
+                <span class="text-xs text-red-400">{{ errors.phone }}</span>
               </div>
               <div>
                 <label class="block text-sm font-medium text-muted-foreground mb-1"
@@ -76,53 +95,18 @@
                   }}
                 </div>
               </div>
-            </div>
+            </form>
+            <Button
+              size="sm"
+              type="submit"
+              class="w-full mt-6 h-11 bg-primary hover:bg-primary/90 text-primary-foreground font-medium transition-all duration-200 shadow-sm hover:shadow-md"
+              :disabled="isPending || isFormUnchanged"
+              :class="isPending && 'bg-gray-500 pointer-events-none'"
+              @click="onSubmit"
+            >
+              {{ isPending ? 'Please wait...' : 'Update User' }}
+            </Button>
           </div>
-
-          <!-- Account Information -->
-          <!-- <div>
-            <h4 class="text-lg font-medium text-foreground mb-4">Account Information</h4>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm font-medium text-muted-foreground mb-1"
-                  >User Role</label
-                >
-                <div class="text-sm text-foreground bg-muted px-3 py-2 rounded-md">
-                  <span :class="getRoleBadgeClass(currentUser.role)">
-                    {{ currentUser.role }}
-                  </span>
-                </div>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-muted-foreground mb-1"
-                  >Account Status</label
-                >
-                <div class="text-sm text-foreground bg-muted px-3 py-2 rounded-md">
-                  <span
-                    class="inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800"
-                  >
-                    {{ currentUser.status }}
-                  </span>
-                </div>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-muted-foreground mb-1"
-                  >Member Since</label
-                >
-                <div class="text-sm text-foreground bg-muted px-3 py-2 rounded-md">
-                  {{ formatDate(currentUser.createdAt) }}
-                </div>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-muted-foreground mb-1"
-                  >Last Login</label
-                >
-                <div class="text-sm text-foreground bg-muted px-3 py-2 rounded-md">
-                  {{ formatDate(currentUser.lastLogin) }}
-                </div>
-              </div>
-            </div>
-          </div> -->
 
           <!-- Additional Information -->
           <!-- <div>
@@ -157,37 +141,77 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { useUserStore } from '@/stores/userStores'
 import { formatDate } from '@/lib/dateFromate'
+import Input from '@/components/ui/input/Input.vue'
+import Button from '@/components/ui/button/Button.vue'
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
+import { useForm, useField } from 'vee-validate'
+import { EditUserShcema } from '@/lib/zod-schemas/EditUserFormSchema'
+import { toast } from 'vue-sonner'
+import { editUserData } from '@/api/users/editUser'
+import { computed } from 'vue'
+
+interface DataUserInterface {
+  name: string
+  phone: string
+  email: string
+  date_of_birth?: string
+}
 
 const userStore = useUserStore()
+const dataUser = userStore.user
 
-// Helper functions
-// const getRoleBadgeClass = (role: string) => {
-//   const classes = {
-//     Admin:
-//       'inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800',
-//     Moderator:
-//       'inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800',
-//     User: 'inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800',
-//   }
-//   return classes[role as keyof typeof classes] || classes.User
-// }
+const validationSchema = EditUserShcema
+const { handleSubmit, errors } = useForm({
+  validationSchema,
+  initialValues: {
+    name: dataUser?.name,
+    phone: dataUser?.phone,
+    email: dataUser?.email,
+    role: dataUser?.role_name,
+  },
+})
 
-// Current user data for profile
-const currentUser = ref({
-  name: 'John Doe',
-  email: 'john.doe@example.com',
-  phone: '+1 (555) 123-4567',
-  dateOfBirth: 'January 15, 1990',
-  role: 'Admin',
-  status: 'Active',
-  createdAt: '2024-01-15T10:30:00Z',
-  lastLogin: '2024-03-15T14:30:00Z',
-  department: 'IT Management',
-  location: 'New York, NY',
-  bio: 'Experienced IT professional with over 10 years of experience in system administration and team leadership. Passionate about technology and helping organizations achieve their digital transformation goals.',
+const { value: email } = useField<string>('email')
+const { value: name } = useField<string>('name')
+const { value: phone } = useField<string>('phone')
+
+const queryClient = useQueryClient()
+const { mutate, isPending } = useMutation({
+  mutationFn: ({ userID, data }: { data: DataUserInterface; userID: string }) =>
+    editUserData(data, userID),
+  onSuccess: (response) => {
+    if (response) {
+      toast('Success', {
+        description: `${response?.message}`,
+      })
+      queryClient.invalidateQueries({
+        queryKey: ['profile', dataUser?.id],
+        exact: false, // Ini akan refetch semua data query yang dimulai dengan 'users'
+      })
+    }
+  },
+  onError: (error: Error) => {
+    toast('Error', {
+      description: `Failed to update user data: ${error.message}`,
+    })
+  },
+})
+
+const isFormUnchanged = computed(() => {
+  return (
+    name.value === userStore.user?.name &&
+    email.value === userStore.user?.email &&
+    phone.value === userStore.user?.phone
+  )
+})
+
+const onSubmit = handleSubmit((values) => {
+  mutate({
+    userID: dataUser?.id ? dataUser?.id : '',
+    data: { ...values },
+  })
 })
 </script>

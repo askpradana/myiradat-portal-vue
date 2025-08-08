@@ -1,4 +1,3 @@
-import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
 import { refreshToken } from '../refreshToken'
 import type { UserProfileInterface, UserDataInterface } from '@/types/userType'
@@ -29,7 +28,7 @@ export const editUserData = async (
     const token = userStore.auth?.token
 
     const adminAPI = `${import.meta.env.VITE_API_URL}/admin/users/${userID}`
-    const userAPI = `${import.meta.env.VITE_API_URL}/admin/profile`
+    const userAPI = `${import.meta.env.VITE_API_URL}/profile`
 
     const response = await fetch(role === 1 ? adminAPI : userAPI, {
       method: 'PUT',
@@ -41,8 +40,12 @@ export const editUserData = async (
     })
 
     if (!response.ok) {
+      // Parsing respons JSON untuk mendapatkan pesan error
+      const errorData = await response.json()
+      const errorMessage = errorData.message || 'Terjadi kesalahan pada server'
+
       if (response.status === 404) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        throw new Error(errorMessage) // Gunakan pesan dari API
       } else if (response.status === 401) {
         try {
           const refreshResponse = await refreshToken()
@@ -56,28 +59,27 @@ export const editUserData = async (
             }
             sessionStorage.setItem('auth_token', JSON.stringify(auth))
 
+            // Coba lagi setelah refresh token
             return await editUserData(newUserData, userID, role)
           } else {
-            throw new Error('Session expired, please login again')
+            throw new Error(errorMessage || 'Sesi telah berakhir, silakan login lagi')
           }
         } catch (error) {
           console.error('Token refresh error:', error)
-          throw error
+          throw new Error(errorMessage || 'Gagal memperbarui token')
         }
       } else if (response.status === 400) {
-        throw new Error(`Data already exist`)
+        throw new Error(errorMessage) // Gunakan pesan dari API, misalnya "Invalid name format"
       } else {
-        throw new Error(`Internal server error`)
+        throw new Error(errorMessage) // Gunakan pesan dari API untuk error lainnya
       }
     }
 
     const data = await response.json()
+    userStore.setUserProfileData(data.data.user)
     return data
   } catch (error) {
     console.error('Error:', error)
-    toast('Error', {
-      description: `${error}`,
-    })
     throw error
   }
 }

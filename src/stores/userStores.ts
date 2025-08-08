@@ -59,6 +59,22 @@ export const useUserStore = defineStore('user', () => {
     sessionStorage.setItem('data_services', JSON.stringify(authData.services))
   }
 
+  const setUserProfileData = (userData: Partial<UserLoginInterface>) => {
+    if (user.value) {
+      // Gabungkan properti dari userData ke user.value
+      user.value = {
+        ...user.value,
+        ...userData,
+      }
+      // Perbarui data_user di sessionStorage
+      sessionStorage.setItem('data_user', JSON.stringify(user.value))
+    } else {
+      // Jika user.value belum ada, inisialisasi dengan userData
+      user.value = userData as UserLoginInterface
+      sessionStorage.setItem('data_user', JSON.stringify(userData))
+    }
+  }
+
   const clearUserData = () => {
     auth.value = null
     user.value = null
@@ -89,6 +105,7 @@ export const useUserStore = defineStore('user', () => {
     services,
     isAuthenticated,
     setUserData,
+    setUserProfileData,
     clearAuthData: clearUserData,
     initializeAuth,
   }
