@@ -1,38 +1,23 @@
 import { useUserStore } from '@/stores/userStores'
 import { refreshToken } from '../refreshToken'
-import type { UserProfileInterface, UserDataInterface } from '@/types/userType'
+import type { ServiceInterface } from './../../types/serviceType'
 
-export interface DataUserProps {
-  name: string
-  phone: string
-  email: string
-  date_of_birth?: string
-  role_type?: string
-  avatar_picture?: string
-}
-
-export interface EditUserAPIResponse {
-  data: UserProfileInterface | UserDataInterface
-  message?: string
+export interface UserServiceResponse {
   success: boolean
-  timestamp: string
+  message: string
+  data: {
+    user_id: string
+    services: ServiceInterface[]
+  }
 }
 
-export const editUserData = async (
-  newUserData: DataUserProps,
-  userID?: string,
-  role?: number,
-): Promise<EditUserAPIResponse> => {
+export const getUserService = async (userID?: string): Promise<UserServiceResponse> => {
   try {
     const userStore = useUserStore()
     const token = userStore.auth?.token
 
-    const adminAPI = `${import.meta.env.VITE_API_URL}/admin/users/${userID}`
-    const userAPI = `${import.meta.env.VITE_API_URL}/profile`
-
-    const response = await fetch(role === 1 ? adminAPI : userAPI, {
-      method: 'PUT',
-      body: JSON.stringify(newUserData),
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/users/${userID}/services`, {
+      method: 'GET',
       headers: {
         Authorization: `bearer ${token}`,
         'Content-Type': 'application/json',
@@ -58,8 +43,7 @@ export const editUserData = async (
             }
             sessionStorage.setItem('auth_token', JSON.stringify(auth))
 
-            // Coba lagi setelah refresh token
-            return await editUserData(newUserData, userID, role)
+            return await getUserService(userID)
           } else {
             throw new Error(errorMessage || 'The session has ended, please login again')
           }
@@ -75,9 +59,8 @@ export const editUserData = async (
     }
 
     const data = await response.json()
-    if (!role) {
-      userStore.setUserProfileData(data.data.user)
-    }
+    console.log(data)
+
     return data
   } catch (error) {
     console.error('Error:', error)

@@ -1,43 +1,36 @@
 import { useUserStore } from '@/stores/userStores'
 import { refreshToken } from '../refreshToken'
-import type { UserProfileInterface, UserDataInterface } from '@/types/userType'
 
-export interface DataUserProps {
-  name: string
-  phone: string
-  email: string
-  date_of_birth?: string
-  role_type?: string
-  avatar_picture?: string
-}
-
-export interface EditUserAPIResponse {
-  data: UserProfileInterface | UserDataInterface
-  message?: string
+interface ResponseAPIUnlinkServiceInterface {
   success: boolean
+  message: string
   timestamp: string
 }
 
-export const editUserData = async (
-  newUserData: DataUserProps,
-  userID?: string,
-  role?: number,
-): Promise<EditUserAPIResponse> => {
+export const unlinkService = async ({
+  userID,
+  codeService,
+}: {
+  userID: string
+  codeService: string
+}): Promise<ResponseAPIUnlinkServiceInterface> => {
   try {
     const userStore = useUserStore()
     const token = userStore.auth?.token
 
-    const adminAPI = `${import.meta.env.VITE_API_URL}/admin/users/${userID}`
-    const userAPI = `${import.meta.env.VITE_API_URL}/profile`
+    if (!token) {
+      throw new Error('Authentication token not found.')
+    }
 
-    const response = await fetch(role === 1 ? adminAPI : userAPI, {
-      method: 'PUT',
-      body: JSON.stringify(newUserData),
-      headers: {
-        Authorization: `bearer ${token}`,
-        'Content-Type': 'application/json',
+    const response = await fetch(
+      `${import.meta.env.VITE_API_URL}/admin/users/${userID}/services?service_code=${codeService}`,
+      {
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       },
-    })
+    )
 
     if (!response.ok) {
       const errorData = await response.json()
@@ -59,7 +52,7 @@ export const editUserData = async (
             sessionStorage.setItem('auth_token', JSON.stringify(auth))
 
             // Coba lagi setelah refresh token
-            return await editUserData(newUserData, userID, role)
+            return await unlinkService({ userID, codeService })
           } else {
             throw new Error(errorMessage || 'The session has ended, please login again')
           }
@@ -75,9 +68,7 @@ export const editUserData = async (
     }
 
     const data = await response.json()
-    if (!role) {
-      userStore.setUserProfileData(data.data.user)
-    }
+
     return data
   } catch (error) {
     console.error('Error:', error)

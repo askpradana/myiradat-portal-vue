@@ -73,6 +73,14 @@
               </TableCell>
               <TableCell class="text-right">
                 <div class="flex items-center justify-end space-x-2">
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    class="rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-muted"
+                    @click="goToLinks(user.id)"
+                  >
+                    <Link2 :size="18" />
+                  </Button>
                   <EditUserAlert
                     :user-i-d="user.id"
                     :data-user="user"
@@ -149,19 +157,23 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination'
 import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import { allUsers } from '@/data/usersData'
 import { getListUser } from '@/api/users/getListUser'
 import { useQuery } from '@tanstack/vue-query'
 import ListUserTableSkeleton from '@/components/custom/skeletons/ListUserTableSkeleton.vue'
-import { SearchIcon, X } from 'lucide-vue-next'
+import { SearchIcon, X, Link2 } from 'lucide-vue-next'
 import type { UserListInterface as ResponseAPIUsersInterface } from '@/types/userListType'
 import UserListHeaderCards from '@/components/custom/cards/UserListHeaderCards.vue'
 import DeleteUserAlert from '@/components/custom/alerts/DeleteUserAlert.vue'
 import EditUserAlert from '@/components/custom/alerts/EditUserAlert.vue'
+import { useRouter } from 'vue-router'
 
 // Pagination state
 const currentPage = ref(1)
 const searchQuery = ref('')
+
+const router = useRouter()
 
 // Reactive query with pagination
 const { isPending, data, refetch } = useQuery({
@@ -220,6 +232,10 @@ const visiblePages = computed(() => {
 watch(currentPage, () => {
   refetch()
 })
+
+const goToLinks = (user_id: string) => {
+  router.push(`/dashboard/${user_id}/services`)
+}
 
 // Computed properties for stats (keep using allUsers for now, or modify as needed)
 const activeUsersCount = computed(() => allUsers.filter((user) => user.status === 'Active').length)

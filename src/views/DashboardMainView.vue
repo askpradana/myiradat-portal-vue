@@ -90,8 +90,7 @@
 </template>
 
 <script setup lang="ts">
-import { Card, CardHeader, CardTitle } from '@/components/ui/card'
-import CardContent from '@/components/ui/card/CardContent.vue'
+import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
 import { SquareArrowOutUpRight } from 'lucide-vue-next'
 import { Server, ChartPie, ClipboardCheck, Hospital } from 'lucide-vue-next'
 import { useUserStore } from '@/stores/userStores'
