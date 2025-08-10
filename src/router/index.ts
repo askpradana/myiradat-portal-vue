@@ -4,6 +4,7 @@ import DashboardView from '@/views/DashboardView.vue'
 import RegisterView from '@/views/auth/RegisterView.vue'
 import CreateNewUserView from '@/views/admin/CreateNewUserView.vue'
 import UserServicesListView from '@/views/admin/UserServicesListView.vue'
+import CreateUserBatchView from '@/views/admin/CreateUserBatchView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -32,6 +33,11 @@ const router = createRouter({
       path: '/dashboard/admin/create-user',
       name: 'create-user-page',
       component: CreateNewUserView,
+    },
+    {
+      path: '/dashboard/admin/create-user-batch',
+      name: 'create-user-batch-page',
+      component: CreateUserBatchView,
     },
     {
       path: '/dashboard/:id/services',

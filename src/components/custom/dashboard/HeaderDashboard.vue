@@ -6,7 +6,7 @@
           <h1 class="text-3xl font-bold text-foreground">
             {{ roleUser === 'admin' ? 'Admin Dashboard' : 'User Dashboard' }}
           </h1>
-          <p class="text-muted-foreground mt-1">Welcome {{ userStore.user?.name }}</p>
+          <p class="text-muted-foreground mt-1 text-sm">Welcome {{ userStore.user?.name }}</p>
         </div>
         <div class="flex items-center gap-2">
           <LogoutAlert />
@@ -16,16 +16,19 @@
             class="inline-flex items-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/85"
             @click="addNewUser"
           >
-            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-              />
-            </svg>
+            <User :size="20" />
             Add User
           </Button>
+
+          <Button
+            v-if="roleUser === 'admin'"
+            class="inline-flex items-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/85"
+            @click="addNewUserBatch"
+          >
+            <Users :size="20" />
+            Add User Batch
+          </Button>
+
           <Button
             v-if="roleUser === 'user'"
             class="inline-flex items-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/85"
@@ -52,6 +55,7 @@ import ThemeToggle from '@/components/ThemeToggle.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { useUserStore } from '@/stores/userStores'
 import LogoutAlert from '../alerts/LogoutAlert.vue'
+import { Users, User } from 'lucide-vue-next'
 
 const userStore = useUserStore()
 const router = useRouter()
@@ -62,5 +66,9 @@ const { roleUser } = defineProps<{
 
 const addNewUser = () => {
   router.push('/dashboard/admin/create-user')
+}
+
+const addNewUserBatch = () => {
+  router.push('/dashboard/admin/create-user-batch')
 }
 </script>

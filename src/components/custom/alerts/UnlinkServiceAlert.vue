@@ -78,7 +78,7 @@ const unlinkFunc = () => {
           <span class="font-semibold"> {{ nameOfService }}</span> service? <br /><br />
           Please enter the word according to this service name: <br />
           <div class="w-full text-center my-4">
-            <span class="text-red-600 font-semibold text-xl">{{ nameOfService }}</span>
+            <span class="text-red-600 font-semibold">{{ nameOfService }}</span>
           </div>
           <Input v-model="serviceName" placeholder="Enter the word above" class="mt-2" />
           <span :class="isMatch ? 'block text-red-500 text-sm mt-4 ml-1' : 'hidden'">{{

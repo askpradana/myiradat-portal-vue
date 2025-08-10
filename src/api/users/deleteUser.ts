@@ -1,4 +1,4 @@
-import { toast } from 'vue-sonner'
+// import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
 import { refreshToken } from '../refreshToken'
 
@@ -29,10 +29,11 @@ export const deleteUser = async (userID: string): Promise<ResponseAPIDeleteUserI
     })
 
     if (!response.ok) {
+      const errorData = await response.json()
+      const errorMessage = errorData.message || 'An error occurs on the server'
+
       if (response.status === 404) {
-        throw new Error(`HTTP error! status: ${response.status}`)
-      } else if (response.status === 400) {
-        throw new Error(`Bad Request`)
+        throw new Error(errorMessage)
       } else if (response.status === 401) {
         try {
           const refreshResponse = await refreshToken()
@@ -48,14 +49,16 @@ export const deleteUser = async (userID: string): Promise<ResponseAPIDeleteUserI
 
             return await deleteUser(userID)
           } else {
-            throw new Error('Session expired, please login again')
+            throw new Error(errorMessage || 'The session has ended, please login again')
           }
         } catch (error) {
           console.error('Token refresh error:', error)
-          throw error
+          throw new Error(errorMessage || 'Failed to update the token')
         }
+      } else if (response.status === 400) {
+        throw new Error(errorMessage)
       } else {
-        throw new Error(`Internal server error`)
+        throw new Error(errorMessage)
       }
     }
 
@@ -64,9 +67,9 @@ export const deleteUser = async (userID: string): Promise<ResponseAPIDeleteUserI
     return data
   } catch (error) {
     console.error('Error:', error)
-    toast('Error', {
-      description: `${error}`,
-    })
+    // toast('Error', {
+    //   description: `${error}`,
+    // })
     throw error
   }
 }

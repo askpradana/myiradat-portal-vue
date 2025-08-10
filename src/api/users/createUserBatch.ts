@@ -1,45 +1,51 @@
 import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
-import { refreshToken } from './refreshToken'
+import { refreshToken } from '../refreshToken'
 
-export interface NewUserInterface {
+export interface BatchUserInterface {
   name: string
   phone: string
   email: string
   password: string
-  role?: string
+  role_type: string
 }
 
-export interface RegisterAPIResponse {
+export interface BatchRegisterRequest {
+  users: BatchUserInterface[]
+}
+
+export interface BatchRegisterAPIResponse {
   data: {
-    email: string
-    user_id: string
+    successful: string[]
+    total: number
   }
   message: string
   success: boolean
   timestamp: string
 }
 
-export const registerNewUser = async (
-  newUserData: NewUserInterface,
-  role?: number,
-): Promise<RegisterAPIResponse> => {
+export const batchRegisterUsers = async (
+  users: BatchUserInterface[],
+): Promise<BatchRegisterAPIResponse> => {
   try {
     const userStore = useUserStore()
     const token = userStore.auth?.token
-    const newData = {
-      name: newUserData.name,
-      phone: newUserData.phone,
-      email: newUserData.email,
-      password: newUserData.password,
-      role_type: newUserData.role === '1' ? 'admin' : '',
+
+    const requestData: BatchRegisterRequest = {
+      users: users.map((user) => ({
+        name: user.name,
+        phone: user.phone,
+        email: user.email,
+        password: user.password,
+        role_type: user.role_type,
+      })),
     }
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/batch-register`, {
       method: 'POST',
-      body: role === 1 ? JSON.stringify(newData) : JSON.stringify(newUserData),
+      body: JSON.stringify(requestData),
       headers: {
-        Authorization: role === 1 ? `bearer ${token}` : '',
+        Authorization: `bearer ${token}`,
         'Content-Type': 'application/json',
       },
     })
@@ -64,7 +70,7 @@ export const registerNewUser = async (
             sessionStorage.setItem('auth_token', JSON.stringify(auth))
 
             // Coba lagi setelah refresh token
-            return await registerNewUser(newData, 1)
+            return await batchRegisterUsers(users)
           } else {
             throw new Error(errorMessage || 'The session has ended, please login again')
           }
@@ -80,10 +86,25 @@ export const registerNewUser = async (
     }
 
     const data = await response.json()
-
     return data
+    // return {
+    //   success: true,
+    //   message: 'Users registered successfully',
+    //   data: {
+    //     successful: [
+    //       'USR-Batch+25Aug061140',
+    //       'CS-Batch+25Aug061140',
+    //       'asdasdasdas',
+    //       'hsadiohasiodh',
+    //       'wqioejkojndsajdoijaoisjd',
+    //       'poasdjosaasdasdde',
+    //     ],
+    //     total: 6,
+    //   },
+    //   timestamp: '2025-08-06T11:40:20.10343442Z',
+    // }
   } catch (error) {
-    console.error('Error:', error)
+    console.error('Batch register error:', error)
     toast('Error', {
       description: `${error}`,
     })

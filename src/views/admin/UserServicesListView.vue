@@ -1,6 +1,6 @@
 <template>
   <DashboardLayout>
-    <Button @click="backToDashboard" variant="default"> <ArrowLeft /> Back to dashboard </Button>
+    <BackToDashboardButton />
 
     <h2 class="my-8 font-bold text-xl">Admin Services</h2>
     <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
@@ -24,23 +24,23 @@
     <span class="flex items-end gap-2">
       <TagsInputRoot
         v-model="modelValue"
-        class="flex gap-2 items-center border p-1.5 rounded-lg w-full max-w-[340px] flex-wrap bg-white shadow-sm mt-8"
+        class="flex gap-2 items-center border p-1.5 rounded-lg w-full max-w-[340px] flex-wrap shadow-sm mt-8"
       >
         <TagsInputItem
           v-for="item in modelValue"
           :key="item"
           :value="item"
-          class="text-white bg-violet-500 font-medium flex items-center justify-center gap-2 bg-grass8 aria-[current=true]:bg-grass9 rounded p-0.5"
+          class="text-white bg-violet-500 font-medium flex items-center justify-center gap-2 aria-[current=true]:bg-violet-600 rounded p-0.5"
         >
           <TagsInputItemText class="text-xs pl-1" />
-          <TagsInputItemDelete class="p-0.5 rounded bg-transparent hover:bg-blackA4">
+          <TagsInputItemDelete class="p-0.5 rounded bg-transparent hover:bg-black/70">
             <X :size="10" />
           </TagsInputItemDelete>
         </TagsInputItem>
 
         <TagsInputInput
           placeholder="Service code..."
-          class="text-sm focus:outline-none flex-1 rounded text-grass9 bg-transparent placeholder:text-mauve9 px-1"
+          class="text-sm flex-1 rounded bg-transparent px-1 focus:outline-none"
         />
       </TagsInputRoot>
       <Button
@@ -84,8 +84,7 @@
 import DashboardLayout from '../layouts/DashboardLayout.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { Card, CardHeader, CardTitle, CardContent } from '@/components/ui/card'
-import { ArrowLeft } from 'lucide-vue-next'
-import { useRouter, useRoute } from 'vue-router'
+import { useRoute } from 'vue-router'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/vue-query'
 import { useUserStore } from '@/stores/userStores'
 import { getUserService, type UserServiceResponse } from '@/api/services/getUserServices'
@@ -100,11 +99,11 @@ import {
   TagsInputItemText,
   TagsInputRoot,
 } from 'reka-ui'
+import BackToDashboardButton from '@/components/custom/buttons/BackToDashboardButton.vue'
 import { ref } from 'vue'
 import { toast } from 'vue-sonner'
 import { postUserServiceData } from '@/api/services/postUserService'
 
-const router = useRouter()
 const route = useRoute()
 const userStore = useUserStore()
 
@@ -118,10 +117,6 @@ const { isPending: isetUserServiveLoading, data } = useQuery({
 }) as {
   isPending: Ref<boolean>
   data: Ref<UserServiceResponse | undefined>
-}
-
-const backToDashboard = () => {
-  router.push('/dashboard')
 }
 
 const copyCodeService = async (serviceCode: string) => {
@@ -155,12 +150,16 @@ const { mutate, isPending: isSubmitService } = useMutation({
 })
 
 const onSubmit = () => {
-  const newData = {
-    service_code: modelValue.value,
+  if (modelValue.value.length != 0) {
+    const newData = {
+      service_code: modelValue.value,
+    }
+    mutate({
+      data: newData,
+      userID: userID as string,
+    })
+  } else {
+    toast('Please fill the form')
   }
-  mutate({
-    data: newData,
-    userID: userID as string,
-  })
 }
 </script>
