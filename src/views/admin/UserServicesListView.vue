@@ -3,23 +3,33 @@
     <BackToDashboardButton />
 
     <h2 class="my-8 font-bold text-xl">Admin Services</h2>
-    <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
-      <Card v-for="service in userStore.services" :key="service.code" class="w-full">
-        <CardHeader>
-          <CardTitle class="text-xs font-bold text-foreground">{{ service.name }}</CardTitle>
-          <CardContent class="px-0">
-            <span class="flex items-center gap-4">
-              <p class="text-xs">{{ service.code }}</p>
-              <Copy
-                :size="14"
-                class="text-primary cursor-pointer hover:text-primary/80"
-                @click="copyCodeService(service.code)"
-              />
-            </span>
-          </CardContent>
-        </CardHeader>
+    <template v-if="userStore.services">
+      <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-4">
+        <Card v-for="service in userStore.services" :key="service.code" class="w-full">
+          <CardHeader>
+            <CardTitle class="text-xs font-bold text-foreground">{{ service.name }}</CardTitle>
+            <CardContent class="px-0">
+              <span class="flex items-center gap-4">
+                <p class="text-xs">{{ service.code }}</p>
+                <Copy
+                  :size="14"
+                  class="text-primary cursor-pointer hover:text-primary/80"
+                  @click="copyCodeService(service.code)"
+                />
+              </span>
+            </CardContent>
+          </CardHeader>
+        </Card>
+      </div>
+    </template>
+
+    <template v-else>
+      <Card>
+        <div class="flex justify-center items-center w-full">
+          <h1 class="text-xl font-bold text-foreground">Admin doesn't have a service</h1>
+        </div>
       </Card>
-    </div>
+    </template>
 
     <span class="flex items-end gap-2">
       <TagsInputRoot

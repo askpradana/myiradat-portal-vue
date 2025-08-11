@@ -9,38 +9,32 @@
       </div>
 
       <div class="flex gap-3">
-        <Button @click="importFromCSV" variant="outline" class="flex items-center gap-2">
+        <Button @click="console.log('upload')" variant="outline" class="flex items-center gap-2">
           <Upload class="w-4 h-4" />
           Import CSV
         </Button>
       </div>
     </div>
 
-    <!-- Hidden file input for CSV import -->
-    <input ref="csvInput" type="file" accept=".csv" @change="handleCSVUpload" class="hidden" />
-
     <form @submit.prevent="onSubmit" class="space-y-6">
       <!-- Users Card -->
       <Card>
         <CardHeader>
           <CardTitle class="flex items-center justify-between">
-            <span>Users to Register ({{ values.users?.length || 0 }})</span>
-            <span
-              v-if="values.users?.length"
-              class="px-2 py-1 bg-gray-100 text-gray-600 rounded text-sm"
-            >
-              {{ values.users.length }} users
+            <span>Users to Register ({{ users.length }})</span>
+            <span v-if="users.length" class="px-2 py-1 bg-gray-100 text-gray-600 rounded text-sm">
+              {{ users.length }} users
             </span>
           </CardTitle>
         </CardHeader>
 
         <CardContent class="space-y-6">
           <!-- Empty state -->
-          <div v-if="!values.users || values.users.length === 0" class="text-center py-12">
+          <div v-if="users.length === 0" class="text-center py-12">
             <Users class="w-12 h-12 mx-auto text-gray-400 mb-4" />
             <p class="text-gray-500 text-lg font-medium">No users added yet</p>
             <p class="text-gray-400 text-sm mb-6">Click "Add User" to start or import from CSV</p>
-            <Button @click="addUser" class="flex items-center gap-2 mx-auto">
+            <Button @click="addUser" class="flex items-center gap-2 mx-auto" type="button">
               <Plus class="w-4 h-4" />
               Add First User
             </Button>
@@ -48,7 +42,7 @@
 
           <!-- User forms -->
           <div v-else class="space-y-6">
-            <Card v-for="(user, index) in values.users" :key="`user-${index}`" class="relative">
+            <Card v-for="(user, index) in users" :key="`user-${index}`" class="relative">
               <CardHeader class="pb-3">
                 <CardTitle class="flex items-center justify-between">
                   <span class="text-lg">User {{ index + 1 }}</span>
@@ -70,10 +64,9 @@
                   <div class="space-y-2">
                     <Label>Name <span class="text-red-500">*</span></Label>
                     <Input
-                      :name="`users[${index}].name`"
-                      :model-value="values.users[index]?.name"
-                      @update:model-value="(value) => updateUserField(index, 'name', String(value))"
-                      @blur="() => validateField(`users[${index}].name`)"
+                      v-model="users[index].name"
+                      @blur="() => validateField(index, 'name')"
+                      @input="() => clearFieldError(index, 'name')"
                       type="text"
                       placeholder="Full name"
                       :class="{
@@ -92,12 +85,9 @@
                   <div class="space-y-2">
                     <Label>Email <span class="text-red-500">*</span></Label>
                     <Input
-                      :name="`users[${index}].email`"
-                      :model-value="values.users[index]?.email"
-                      @update:model-value="
-                        (value) => updateUserField(index, 'email', String(value))
-                      "
-                      @blur="() => validateField(`users[${index}].email`)"
+                      v-model="users[index].email"
+                      @blur="() => validateField(index, 'email')"
+                      @input="() => clearFieldError(index, 'email')"
                       type="email"
                       placeholder="email@example.com"
                       :class="{
@@ -116,12 +106,9 @@
                   <div class="space-y-2">
                     <Label>Phone <span class="text-red-500">*</span></Label>
                     <Input
-                      :name="`users[${index}].phone`"
-                      :model-value="values.users[index]?.phone"
-                      @update:model-value="
-                        (value) => updateUserField(index, 'phone', String(value))
-                      "
-                      @blur="() => validateField(`users[${index}].phone`)"
+                      v-model="users[index].phone"
+                      @blur="() => validateField(index, 'phone')"
+                      @input="() => clearFieldError(index, 'phone')"
                       type="text"
                       placeholder="+62XXXXXXXXXX"
                       :class="{
@@ -140,12 +127,9 @@
                   <div class="space-y-2">
                     <Label>Password <span class="text-red-500">*</span></Label>
                     <Input
-                      :name="`users[${index}].password`"
-                      :model-value="values.users[index]?.password"
-                      @update:model-value="
-                        (value) => updateUserField(index, 'password', String(value))
-                      "
-                      @blur="() => validateField(`users[${index}].password`)"
+                      v-model="users[index].password"
+                      @blur="() => validateField(index, 'password')"
+                      @input="() => clearFieldError(index, 'password')"
                       type="password"
                       placeholder="Min. 8 characters"
                       :class="{
@@ -164,11 +148,8 @@
                   <div class="space-y-2">
                     <Label>Role <span class="text-red-500">*</span></Label>
                     <Select
-                      :name="`users[${index}].role_type`"
-                      :model-value="values.users[index]?.role_type"
-                      @update:model-value="
-                        (value) => updateUserField(index, 'role_type', String(value))
-                      "
+                      v-model="users[index].role_type"
+                      @update:model-value="() => validateField(index, 'role_type')"
                     >
                       <SelectTrigger
                         :class="{
@@ -194,11 +175,8 @@
               </CardContent>
             </Card>
           </div>
-          <span
-            class="flex justify-end"
-            :class="values.users && values.users.length === 0 ? 'hidden' : ''"
-          >
-            <Button @click="addUser" class="flex items-center gap-2">
+          <span class="flex justify-end" :class="users.length === 0 ? 'hidden' : ''">
+            <Button @click="addUser" class="flex items-center gap-2" type="button">
               <Plus class="w-4 h-4" />
               Add User
             </Button>
@@ -213,7 +191,7 @@
             <div class="flex items-center gap-2 text-sm text-gray-600">
               <span class="px-2 py-1 border border-gray-300 rounded flex items-center gap-1">
                 <Users class="w-3 h-3" />
-                {{ values.users?.length || 0 }}
+                {{ users.length }}
               </span>
               <span>user(s) ready to register</span>
             </div>
@@ -223,7 +201,7 @@
                 type="button"
                 variant="outline"
                 @click="clearAll"
-                :disabled="!values.users?.length"
+                :disabled="users.length === 0"
               >
                 <X class="w-4 h-4 mr-2" />
                 Clear All
@@ -231,7 +209,7 @@
 
               <Button
                 type="submit"
-                :disabled="isSubmitting || !values.users?.length"
+                :disabled="isSubmitting || users.length === 0"
                 class="flex items-center gap-2"
               >
                 <Loader2 v-if="isSubmitting" class="w-4 h-4 animate-spin" />
@@ -314,8 +292,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import { useForm } from 'vee-validate'
+import { ref, reactive } from 'vue'
 import { useMutation } from '@tanstack/vue-query'
 import { toast } from 'vue-sonner'
 import {
@@ -350,31 +327,155 @@ import {
   AlertDialogFooter,
 } from '@/components/ui/alert-dialog'
 import { ScrollAreaRoot, ScrollAreaViewport } from 'reka-ui'
-import { BatchRegisterSchema } from '@/lib/zod-schemas/registerFormSchema'
 import { batchRegisterUsers, type BatchUserInterface } from '@/api/users/createUserBatch'
 import DashboardLayout from '../layouts/DashboardLayout.vue'
 import AlertDialogDescription from '@/components/ui/alert-dialog/AlertDialogDescription.vue'
 import BackToDashboardButton from '@/components/custom/buttons/BackToDashboardButton.vue'
 
-interface FormValues {
-  users: BatchUserInterface[]
+// Types
+interface ValidationErrors {
+  [key: number]: {
+    [key in keyof BatchUserInterface]?: string
+  }
 }
 
-const csvInput = ref<HTMLInputElement>()
+// Reactive data
+const users = reactive<BatchUserInterface[]>([])
+const errors = reactive<ValidationErrors>({})
 const showResults = ref(false)
 const registrationResults = ref<{
   successful: Array<string>
   total: number
 } | null>(null)
 
-const { handleSubmit, values, errors, setFieldValue, resetForm, validate, validateField } =
-  useForm<FormValues>({
-    validationSchema: BatchRegisterSchema,
-    initialValues: {
-      users: [],
-    },
-  })
+// Validation functions
+const validateName = (name: string): string | null => {
+  if (!name || name.trim() === '') {
+    return 'Name is required'
+  }
+  if (name.trim().length < 2) {
+    return 'Name must be at least 2 characters long'
+  }
+  return null
+}
 
+const validateEmail = (email: string): string | null => {
+  if (!email || email.trim() === '') {
+    return 'Email is required'
+  }
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+  if (!emailRegex.test(email)) {
+    return 'Please enter a valid email address'
+  }
+  return null
+}
+
+const validatePhone = (phone: string): string | null => {
+  if (!phone || phone.trim() === '') {
+    return 'Phone is required'
+  }
+  if (phone.trim().length < 6) {
+    return 'Phone must be at least 6 characters long'
+  }
+  return null
+}
+
+const validatePassword = (password: string): string | null => {
+  if (!password || password.trim() === '') {
+    return 'Password is required'
+  }
+  if (password.length < 8) {
+    return 'Password must be at least 8 characters long'
+  }
+  return null
+}
+
+const validateRole = (role: string): string | null => {
+  if (!role || role.trim() === '') {
+    return 'Role is required'
+  }
+  const validRoles = ['admin', 'user', 'cs']
+  if (!validRoles.includes(role)) {
+    return 'Role must be admin, user, or cs'
+  }
+  return null
+}
+
+// Field validation
+const validateField = (userIndex: number, field: keyof BatchUserInterface) => {
+  const user = users[userIndex]
+  if (!user) return
+
+  let error: string | null = null
+
+  switch (field) {
+    case 'name':
+      error = validateName(user.name)
+      break
+    case 'email':
+      error = validateEmail(user.email)
+      break
+    case 'phone':
+      error = validatePhone(user.phone)
+      break
+    case 'password':
+      error = validatePassword(user.password)
+      break
+    case 'role_type':
+      error = validateRole(user.role_type)
+      break
+  }
+
+  // Set or clear error
+  if (error) {
+    if (!errors[userIndex]) {
+      errors[userIndex] = {}
+    }
+    errors[userIndex][field] = error
+  } else {
+    if (errors[userIndex]) {
+      delete errors[userIndex][field]
+      // Clean up empty error objects
+      if (Object.keys(errors[userIndex]).length === 0) {
+        delete errors[userIndex]
+      }
+    }
+  }
+}
+
+// Validate all fields for a user
+const validateUser = (userIndex: number): boolean => {
+  const fields: (keyof BatchUserInterface)[] = ['name', 'email', 'phone', 'password', 'role_type']
+  fields.forEach((field) => validateField(userIndex, field))
+  return !errors[userIndex] || Object.keys(errors[userIndex]).length === 0
+}
+
+// Validate all users
+const validateAllUsers = (): boolean => {
+  let isValid = true
+  users.forEach((_, index) => {
+    const userValid = validateUser(index)
+    if (!userValid) isValid = false
+  })
+  return isValid
+}
+
+// Clear field error
+const clearFieldError = (userIndex: number, field: keyof BatchUserInterface) => {
+  if (errors[userIndex] && errors[userIndex][field]) {
+    delete errors[userIndex][field]
+    if (Object.keys(errors[userIndex]).length === 0) {
+      delete errors[userIndex]
+    }
+  }
+}
+
+// Get user error
+const getUserError = (userIndex: number, field: keyof BatchUserInterface): string | undefined => {
+  return errors[userIndex]?.[field]
+}
+
+// Mutation for batch registration
 const { mutate: submitBatchRegister, isPending: isSubmitting } = useMutation({
   mutationFn: (users: BatchUserInterface[]) => batchRegisterUsers(users),
   onSuccess: (data) => {
@@ -388,7 +489,7 @@ const { mutate: submitBatchRegister, isPending: isSubmitting } = useMutation({
     }
 
     if (data.data.successful.length > 0) {
-      resetForm()
+      clearAll()
     }
   },
   onError: (error) => {
@@ -398,113 +499,86 @@ const { mutate: submitBatchRegister, isPending: isSubmitting } = useMutation({
   },
 })
 
-const onSubmit = handleSubmit(async (values) => {
-  console.log('Form values:', values.users)
-  console.log('Form errors:', errors.value)
-
-  if (!values.users || values.users.length === 0) {
+// Form submission
+const onSubmit = async () => {
+  if (users.length === 0) {
     toast.error('No users to register')
     return
   }
 
-  // Validate all fields before submission
-  const { valid } = await validate()
-  if (!valid) {
+  // Validate all users
+  const isValid = validateAllUsers()
+
+  if (!isValid) {
     toast.error('Please fix all validation errors before submitting')
     return
   }
 
-  submitBatchRegister(values.users)
-})
-
-const addUser = () => {
-  const currentUsers = values.users || []
-  setFieldValue('users', [
-    ...currentUsers,
-    {
-      name: '',
-      email: '',
-      phone: '',
-      password: '',
-      role_type: '',
-    },
-  ])
+  // Submit the form
+  submitBatchRegister([...users])
 }
 
-const removeUser = (index: number) => {
-  const currentUsers = values.users || []
-  const newUsers = currentUsers.filter((_, i) => i !== index)
-  setFieldValue('users', newUsers)
-}
-
-const clearAll = () => {
-  resetForm({
-    values: { users: [] },
-  })
-}
-
-const getUserError = (userIndex: number, field: keyof BatchUserInterface) => {
-  const errorKey = `users[${userIndex}].${field}` as keyof typeof errors.value
-  return errors.value[errorKey]
-}
-
-// Function to update individual user fields
-const updateUserField = async (index: number, field: keyof BatchUserInterface, value: string) => {
-  const currentUsers = [...(values.users || [])]
-  if (currentUsers[index]) {
-    currentUsers[index] = { ...currentUsers[index], [field]: value }
-    setFieldValue('users', currentUsers)
-
-    // Trigger validation for the specific field
-    setTimeout(() => {
-      validateField(`users[${index}].${field}`)
-    }, 0)
+// User management functions
+const addUser = (event?: Event) => {
+  // Prevent form submission if this is called from within a form
+  if (event) {
+    event.preventDefault()
+    event.stopPropagation()
   }
-}
 
-const importFromCSV = () => {
-  csvInput.value?.click()
-}
+  // Check if existing users have errors
+  if (users.length > 0) {
+    // Validate existing users first to populate errors
+    let hasErrors = false
+    users.forEach((_, index) => {
+      const userValid = validateUser(index)
+      if (!userValid) hasErrors = true
+    })
 
-const handleCSVUpload = (event: Event) => {
-  const file = (event.target as HTMLInputElement).files?.[0]
-  if (!file) return
-
-  const reader = new FileReader()
-  reader.onload = (e) => {
-    try {
-      const csv = e.target?.result as string
-      const lines = csv.split('\n')
-      // Skip header line - format expected: name,email,phone,password,role_type
-
-      const users: BatchUserInterface[] = []
-
-      for (let i = 1; i < lines.length; i++) {
-        const line = lines[i].trim()
-        if (!line) continue
-
-        const values = line.split(',').map((v) => v.trim().replace(/"/g, ''))
-
-        if (values.length >= 5) {
-          users.push({
-            name: values[0] || '',
-            email: values[1] || '',
-            phone: values[2] || '',
-            password: values[3] || '',
-            role_type: values[4] || '',
-          })
-        }
-      }
-
-      setFieldValue('users', users)
-      toast.success(`Imported ${users.length} users from CSV`)
-    } catch (error) {
-      toast.error('Failed to parse CSV file')
-      console.error(error)
+    if (hasErrors) {
+      toast('Error', {
+        description: 'Please fix all validation errors in existing forms before adding a new user',
+      })
+      return
     }
   }
 
-  reader.readAsText(file)
+  users.push({
+    name: '',
+    email: '',
+    phone: '',
+    password: '',
+    role_type: '',
+  })
+}
+
+const removeUser = (index: number) => {
+  users.splice(index, 1)
+
+  // Clean up errors for removed user and reindex
+  const newErrors: ValidationErrors = {}
+  Object.keys(errors).forEach((key) => {
+    const userIndex = parseInt(key)
+    if (userIndex < index) {
+      // Keep errors for users before the removed one
+      newErrors[userIndex] = errors[userIndex]
+    } else if (userIndex > index) {
+      // Reindex errors for users after the removed one
+      newErrors[userIndex - 1] = errors[userIndex]
+    }
+    // Skip errors for the removed user (userIndex === index)
+  })
+
+  // Clear all errors and set new ones
+  Object.keys(errors).forEach((key) => delete errors[parseInt(key)])
+  Object.keys(newErrors).forEach((key) => {
+    errors[parseInt(key)] = newErrors[parseInt(key)]
+  })
+}
+
+const clearAll = () => {
+  users.splice(0, users.length)
+  Object.keys(errors).forEach((key) => delete errors[parseInt(key)])
 }
 
 const closeResults = () => {

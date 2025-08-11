@@ -87,22 +87,6 @@ export const batchRegisterUsers = async (
 
     const data = await response.json()
     return data
-    // return {
-    //   success: true,
-    //   message: 'Users registered successfully',
-    //   data: {
-    //     successful: [
-    //       'USR-Batch+25Aug061140',
-    //       'CS-Batch+25Aug061140',
-    //       'asdasdasdas',
-    //       'hsadiohasiodh',
-    //       'wqioejkojndsajdoijaoisjd',
-    //       'poasdjosaasdasdde',
-    //     ],
-    //     total: 6,
-    //   },
-    //   timestamp: '2025-08-06T11:40:20.10343442Z',
-    // }
   } catch (error) {
     console.error('Batch register error:', error)
     toast('Error', {
