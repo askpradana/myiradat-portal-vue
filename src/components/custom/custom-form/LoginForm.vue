@@ -29,6 +29,23 @@ const onSubmit = handleSubmit(async (values) => {
   loading.value = false
 
   if (response?.success) {
+    // Check if email verification is required
+    if (response.data?.requires_verification) {
+      // Redirect to email verification page with user data
+      router.push({
+        path: '/verify-email',
+        query: {
+          email: response.data.email,
+          user_id: response.data.user_id,
+        },
+      })
+      toast('Email Verification Required', {
+        description: response.data.message || 'Please verify your email address to continue',
+      })
+      return
+    }
+
+    // Normal login success flow
     userStore.setUserData({
       auth: {
         token: response.data.token,

@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import LoginView from '../views/auth/LoginView.vue'
 import DashboardView from '@/views/DashboardView.vue'
 import RegisterView from '@/views/auth/RegisterView.vue'
+import EmailVerificationView from '@/views/auth/EmailVerificationView.vue'
 import CreateNewUserView from '@/views/admin/CreateNewUserView.vue'
 import UserServicesListView from '@/views/admin/UserServicesListView.vue'
 import CreateUserBatchView from '@/views/admin/CreateUserBatchView.vue'
@@ -23,6 +24,15 @@ const router = createRouter({
       path: '/login',
       name: 'login',
       component: LoginView,
+    },
+    {
+      path: '/verify-email',
+      name: 'verify-email',
+      component: EmailVerificationView,
+      meta: {
+        requiresAuth: false,
+        title: 'Verify Email'
+      }
     },
     {
       path: '/dashboard',
