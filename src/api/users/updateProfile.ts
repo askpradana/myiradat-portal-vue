@@ -3,7 +3,15 @@ import { useUserStore } from '@/stores/userStores'
 import { refreshToken } from '../refreshToken'
 import type { UserDataInterface } from '@/types/userType'
 
-export const getProfile = async (): Promise<{user: UserDataInterface}> => {
+export interface UpdateProfilePayload {
+  name?: string
+  phone?: string
+  email?: string
+  avatar_picture?: string
+  date_of_birth?: string
+}
+
+export const updateProfile = async (payload: UpdateProfilePayload): Promise<{user: UserDataInterface}> => {
   try {
     const userStore = useUserStore()
     const token = userStore.auth?.token
@@ -12,18 +20,29 @@ export const getProfile = async (): Promise<{user: UserDataInterface}> => {
       throw new Error('Authentication token not found.')
     }
 
+    // Validate payload is not empty
+    if (Object.keys(payload).length === 0) {
+      throw new Error('No fields to update provided.')
+    }
+
     const response = await fetch(`${import.meta.env.VITE_API_URL}/profile`, {
-      method: 'GET',
+      method: 'PUT',
       headers: {
-        Authorization: `Bearer ${token}`,
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
       },
+      body: JSON.stringify(payload),
     })
 
     if (!response.ok) {
       if (response.status === 404) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        throw new Error(`Profile not found`)
       } else if (response.status === 400) {
-        throw new Error(`Bad Request`)
+        const errorData = await response.json()
+        throw new Error(errorData.message || 'Bad Request')
+      } else if (response.status === 422) {
+        const errorData = await response.json()
+        throw new Error(errorData.message || 'Validation failed')
       } else if (response.status === 401) {
         try {
           const refreshResponse = await refreshToken()
@@ -37,7 +56,7 @@ export const getProfile = async (): Promise<{user: UserDataInterface}> => {
             }
             sessionStorage.setItem('auth_token', JSON.stringify(auth))
 
-            return await getProfile()
+            return await updateProfile(payload)
           } else {
             throw new Error('Session expired, please login again')
           }
@@ -51,12 +70,16 @@ export const getProfile = async (): Promise<{user: UserDataInterface}> => {
     }
 
     const data = await response.json()
-    console.log(data)
+    console.log('Profile updated successfully:', data)
+
+    toast.success('Profile Updated', {
+      description: 'Your profile has been updated successfully',
+    })
 
     return data.data
   } catch (error) {
-    console.error('Error:', error)
-    toast('Error', {
+    console.error('Update profile error:', error)
+    toast.error('Update Failed', {
       description: `${error}`,
     })
     throw error

@@ -83,7 +83,7 @@
                   </Button>
                   <EditUserAlert
                     :user-i-d="user.id"
-                    :data-user="user"
+                    :data-user="user as any"
                     :current-page="currentPage"
                   />
                   <DeleteUserAlert :user-i-d="user.id" :name-of-user="user.name" />

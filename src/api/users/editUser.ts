@@ -6,9 +6,9 @@ export interface DataUserProps {
   name: string
   phone: string
   email: string
-  date_of_birth?: string
+  date_of_birth?: string | null | undefined
   role_type?: string
-  avatar_picture?: string
+  avatar_picture?: string | null
 }
 
 export interface EditUserAPIResponse {

@@ -1,217 +1,516 @@
 <template>
-  <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-    <!-- Profile Card -->
-    <div class="lg:col-span-1">
-      <Card>
-        <CardContent class="p-6">
-          <div class="text-center">
-            <div
-              class="mx-auto mb-4 flex h-24 w-24 items-center justify-center rounded-full bg-primary/10 text-2xl font-semibold text-primary"
-            >
-              {{ userStore.user?.name.charAt(0) }}
-            </div>
-            <h3 class="font-semibold text-foreground">{{ userStore.user?.name }}</h3>
-            <div
-              class="mt-4 inline-flex items-center rounded-full bg-green-100 px-3 py-1 text-xs font-medium text-green-800"
-            >
-              <svg class="mr-1 h-3 w-3" fill="currentColor" viewBox="0 0 20 20">
-                <path
-                  fill-rule="evenodd"
-                  d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
-                  clip-rule="evenodd"
-                />
-              </svg>
-              {{ userStore.user?.role_id === 1 ? 'Admin' : 'User' }}
-            </div>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
+  <div class="space-y-6">
+    <!-- Profile Header -->
+    <ProfileHeader>
+      <template #actions>
+        <Button
+          v-if="profileQuery.isLoading.value"
+          size="sm"
+          variant="outline"
+          disabled
+          class="w-full"
+        >
+          <div
+            class="w-4 h-4 border-2 border-gray-300 border-t-gray-600 rounded-full animate-spin mr-2"
+          ></div>
+          Loading...
+        </Button>
+        <Button
+          v-else-if="error"
+          size="sm"
+          variant="outline"
+          @click="refreshProfile"
+          class="w-full"
+        >
+          <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            />
+          </svg>
+          Retry
+        </Button>
+      </template>
+    </ProfileHeader>
 
-    <!-- Profile Details -->
-    <div class="lg:col-span-2">
-      <Card>
-        <CardHeader>
-          <CardTitle class="text-foreground">Profile Information</CardTitle>
-          <CardDescription class="text-muted-foreground">
-            Your personal information and account details.
-          </CardDescription>
-        </CardHeader>
-        <CardContent class="space-y-6">
-          <!-- Personal Information -->
-          <div>
-            <h4 class="text-lg font-medium text-foreground mb-4">Personal Information</h4>
-
-            <form class="grid grid-cols-1 md:grid-cols-2 gap-4" @submit="onSubmit">
-              <div>
-                <label class="block text-sm font-medium text-muted-foreground mb-1"
-                  >Full Name</label
-                >
-                <Input
-                  id="name"
-                  type="text"
-                  placeholder="Enter your username"
-                  class="text-sm text-foreground bg-muted px-3 py-2 rounded-md"
-                  required
-                  v-model="name"
-                />
-                <span class="text-xs text-red-400">{{ errors.name }}</span>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-muted-foreground mb-1"
-                  >Email Address</label
-                >
-                <Input
-                  id="email"
-                  type="text"
-                  placeholder="Enter your email"
-                  class="text-sm text-foreground bg-muted px-3 py-2 rounded-md"
-                  required
-                  v-model="email"
-                />
-                <span class="text-xs text-red-400">{{ errors.email }}</span>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-muted-foreground mb-1"
-                  >Phone Number</label
-                >
-                <Input
-                  id="phone"
-                  type="text"
-                  placeholder="Enter your phone number"
-                  class="text-sm text-foreground bg-muted px-3 py-2 rounded-md"
-                  required
-                  v-model="phone"
-                />
-                <span class="text-xs text-red-400">{{ errors.phone }}</span>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-muted-foreground mb-1"
-                  >Date of Birth</label
-                >
-                <div class="text-sm text-foreground bg-muted px-3 py-2 rounded-md">
-                  {{
-                    formatDate(userStore.user?.date_of_birth ? userStore.user?.date_of_birth : '')
-                  }}
-                </div>
-              </div>
-            </form>
-            <Button
-              size="sm"
-              type="submit"
-              class="w-full mt-6 h-11 bg-primary hover:bg-primary/90 text-primary-foreground font-medium transition-all duration-200 shadow-sm hover:shadow-md"
-              :disabled="isPending || isFormUnchanged"
-              :class="isPending && 'bg-gray-500 pointer-events-none'"
-              @click="onSubmit"
-            >
-              {{ isPending ? 'Please wait...' : 'Update User' }}
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Left Column -->
+      <div class="lg:col-span-1 space-y-6">
+        <!-- Profile Completion Widget -->
+        <ProfileCompletionWidget>
+          <template #action>
+            <Button size="sm" variant="outline" class="w-full mt-3" @click="scrollToForm">
+              Complete Profile
             </Button>
-          </div>
+          </template>
+        </ProfileCompletionWidget>
 
-          <!-- Additional Information -->
-          <!-- <div>
-            <h4 class="text-lg font-medium text-foreground mb-4">Additional Information</h4>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <!-- Quick Stats -->
+        <Card>
+          <CardHeader>
+            <CardTitle class="text-lg">Quick Stats</CardTitle>
+          </CardHeader>
+          <CardContent class="space-y-4">
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-muted-foreground">Profile Completion</span>
+              <span class="font-semibold text-foreground"
+                >{{ profileStats.completionPercentage }}%</span
+              >
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-muted-foreground">Assessments Taken</span>
+              <span class="font-semibold text-foreground"
+                >{{ profileStats.assessmentsTaken }}/3</span
+              >
+            </div>
+            <div class="flex items-center justify-between">
+              <span class="text-sm text-muted-foreground">Last Updated</span>
+              <span class="text-sm text-foreground">{{ formatLastUpdated() }}</span>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      <!-- Right Column -->
+      <div class="lg:col-span-2 space-y-6">
+        <!-- Profile Form -->
+        <Card ref="formCard">
+          <CardHeader>
+            <div class="flex items-center justify-between">
               <div>
-                <label class="block text-sm font-medium text-muted-foreground mb-1"
-                  >Department</label
-                >
-                <div class="text-sm text-foreground bg-muted px-3 py-2 rounded-md">
-                  {{ currentUser.department }}
-                </div>
-              </div>
-              <div>
-                <label class="block text-sm font-medium text-muted-foreground mb-1">Location</label>
-                <div class="text-sm text-foreground bg-muted px-3 py-2 rounded-md">
-                  {{ currentUser.location }}
-                </div>
-              </div>
-              <div class="md:col-span-2">
-                <label class="block text-sm font-medium text-muted-foreground mb-1">Bio</label>
-                <div class="text-sm text-foreground bg-muted px-3 py-2 rounded-md">
-                  {{ currentUser.bio }}
-                </div>
+                <CardTitle class="text-foreground flex items-center">
+                  <svg
+                    v-if="!isEditing"
+                    class="w-5 h-5 mr-2 text-muted-foreground"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
+                    />
+                  </svg>
+                  <svg
+                    v-else
+                    class="w-5 h-5 mr-2 text-blue-600"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke="currentColor"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                    />
+                  </svg>
+                  {{ isEditing ? 'Edit Profile Information' : 'Profile Information' }}
+                </CardTitle>
               </div>
             </div>
-          </div> -->
-        </CardContent>
-      </Card>
+          </CardHeader>
+          <CardContent>
+            <!-- Form Loading State -->
+            <div v-if="profileQuery.isLoading.value" class="space-y-4">
+              <div v-for="i in 3" :key="i" class="space-y-2">
+                <div class="h-4 bg-gray-200 rounded w-1/4 animate-pulse"></div>
+                <div class="h-10 bg-gray-200 rounded animate-pulse"></div>
+              </div>
+            </div>
+
+            <!-- Form Error State -->
+            <div v-else-if="error" class="text-center py-8">
+              <div
+                class="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center"
+              >
+                <svg
+                  class="w-8 h-8 text-red-600"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+              <p class="text-red-600 font-medium">Failed to load profile data</p>
+              <p class="text-sm text-muted-foreground mt-1">{{ error.message }}</p>
+              <Button variant="outline" size="sm" @click="refreshProfile" class="mt-4">
+                Try Again
+              </Button>
+            </div>
+
+            <!-- Profile Form -->
+            <div v-else class="space-y-6">
+              <form
+                @submit.prevent="handleFormSubmit"
+                class="space-y-6 transition-all duration-200 ease-[cubic-bezier(0.4,0,0.2,1)]"
+              >
+                <!-- Personal Information Section -->
+                <div>
+                  <h4 class="text-lg font-semibold text-foreground mb-4 flex items-center">
+                    <svg
+                      class="w-5 h-5 mr-2 text-blue-600"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      stroke="currentColor"
+                    >
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                      />
+                    </svg>
+                    Personal Information
+                  </h4>
+
+                  <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Name Field -->
+                    <div class="space-y-2">
+                      <label for="name" class="text-sm font-medium text-foreground">
+                        Full Name *
+                      </label>
+                      <!-- Edit Mode -->
+                      <Input
+                        v-if="isEditing"
+                        id="name"
+                        v-model="fields.name.value.value"
+                        type="text"
+                        placeholder="Enter your full name"
+                        :class="{
+                          'border-red-300 focus:border-red-500': fields.name.errorMessage.value,
+                        }"
+                        class="transition-colors"
+                        aria-describedby="name-error"
+                      />
+                      <!-- View Mode -->
+                      <div
+                        v-else
+                        class="px-3 py-2 bg-muted/50 hover:bg-muted/70 text-foreground rounded-md border border-transparent text-sm min-h-[40px] flex items-center transition-colors duration-200"
+                      >
+                        {{ user?.name || 'Not provided' }}
+                      </div>
+                      <p
+                        v-if="isEditing && fields.name.errorMessage.value"
+                        id="name-error"
+                        class="text-sm text-red-600"
+                      >
+                        {{ fields.name.errorMessage.value }}
+                      </p>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="space-y-2">
+                      <label for="email" class="text-sm font-medium text-foreground">
+                        Email Address *
+                      </label>
+                      <!-- Edit Mode -->
+                      <Input
+                        v-if="isEditing"
+                        id="email"
+                        v-model="fields.email.value.value"
+                        type="email"
+                        placeholder="Enter your email"
+                        :class="{
+                          'border-red-300 focus:border-red-500': fields.email.errorMessage.value,
+                        }"
+                        class="transition-colors"
+                        aria-describedby="email-error"
+                      />
+                      <!-- View Mode -->
+                      <div
+                        v-else
+                        class="px-3 py-2 bg-muted/50 hover:bg-muted/70 text-foreground rounded-md border border-transparent text-sm min-h-[40px] flex items-center transition-colors duration-200"
+                      >
+                        {{ user?.email || 'Not provided' }}
+                      </div>
+                      <p
+                        v-if="isEditing && fields.email.errorMessage.value"
+                        id="email-error"
+                        class="text-sm text-red-600"
+                      >
+                        {{ fields.email.errorMessage.value }}
+                      </p>
+                    </div>
+
+                    <!-- Phone Field -->
+                    <div class="space-y-2">
+                      <label for="phone" class="text-sm font-medium text-foreground">
+                        Phone Number *
+                      </label>
+                      <!-- Edit Mode -->
+                      <Input
+                        v-if="isEditing"
+                        id="phone"
+                        v-model="fields.phone.value.value"
+                        type="tel"
+                        placeholder="Enter your phone number"
+                        :class="{
+                          'border-red-300 focus:border-red-500': fields.phone.errorMessage.value,
+                        }"
+                        class="transition-colors"
+                        aria-describedby="phone-error"
+                      />
+                      <!-- View Mode -->
+                      <div
+                        v-else
+                        class="px-3 py-2 bg-muted/50 hover:bg-muted/70 text-foreground rounded-md border border-transparent text-sm min-h-[40px] flex items-center transition-colors duration-200"
+                      >
+                        {{ user?.phone || 'Not provided' }}
+                      </div>
+                      <p
+                        v-if="isEditing && fields.phone.errorMessage.value"
+                        id="phone-error"
+                        class="text-sm text-red-600"
+                      >
+                        {{ fields.phone.errorMessage.value }}
+                      </p>
+                    </div>
+
+                    <!-- Date of Birth Field (Read Only) -->
+                    <div class="space-y-2">
+                      <label class="text-sm font-medium text-foreground"> Date of Birth </label>
+                      <div
+                        class="px-3 py-2 bg-muted text-muted-foreground rounded-md border text-sm min-h-[40px] flex items-center"
+                      >
+                        {{ formatDate(user?.date_of_birth || '') || 'Not provided' }}
+                      </div>
+                      <p class="text-xs text-muted-foreground">
+                        Contact support to change your date of birth
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Form Actions -->
+                <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-border">
+                  <!-- View Mode - Edit Button -->
+                  <Button v-if="!isEditing" type="button" @click="enterEditMode" class="sm:w-auto">
+                    <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"
+                      />
+                    </svg>
+                    Edit Profile
+                  </Button>
+
+                  <!-- Edit Mode - Cancel and Update Buttons -->
+                  <template v-else>
+                    <Button
+                      type="button"
+                      variant="outline"
+                      @click="cancelEdit"
+                      :disabled="isSubmitting"
+                      class="sm:w-auto"
+                    >
+                      <svg
+                        class="w-4 h-4 mr-2"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                      Cancel
+                    </Button>
+
+                    <Button
+                      type="submit"
+                      :disabled="isSubmitting || !isFormValid || !hasChanges"
+                      class="sm:flex-1 sm:max-w-xs"
+                      @click="
+                        console.log(
+                          'Button clicked - isSubmitting:',
+                          isSubmitting,
+                          'isFormValid:',
+                          isFormValid,
+                          'hasChanges:',
+                          hasChanges,
+                        )
+                      "
+                    >
+                      <div
+                        v-if="isSubmitting"
+                        class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"
+                      ></div>
+                      <svg
+                        v-else
+                        class="w-4 h-4 mr-2"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M5 13l4 4L19 7"
+                        />
+                      </svg>
+                      {{ isSubmitting ? 'Updating...' : 'Update Profile' }}
+                    </Button>
+                  </template>
+                </div>
+
+                <!-- Form Status -->
+                <div
+                  v-if="isEditing && hasChanges"
+                  class="text-sm text-muted-foreground bg-yellow-50 dark:bg-yellow-950/20 p-3 rounded-lg border border-yellow-200 dark:border-yellow-800"
+                >
+                  <div class="flex items-center">
+                    <svg
+                      class="w-4 h-4 text-yellow-600 mr-2"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                    You have unsaved changes
+                  </div>
+                </div>
+              </form>
+            </div>
+          </CardContent>
+        </Card>
+      </div>
     </div>
+
+    <!-- Confirmation Dialog -->
+    <AlertDialog :open="showConfirmDialog">
+      <AlertDialogContent>
+        <AlertDialogHeader>
+          <AlertDialogTitle>Discard Changes?</AlertDialogTitle>
+          <AlertDialogDescription>
+            You have unsaved changes. Are you sure you want to discard them? This action cannot be
+            undone.
+          </AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+          <AlertDialogCancel @click="dismissCancel"> Keep Editing </AlertDialogCancel>
+          <AlertDialogAction @click="confirmCancel" variant="destructive">
+            Discard Changes
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
   </div>
 </template>
 
 <script setup lang="ts">
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { useUserStore } from '@/stores/userStores'
+import { ref, nextTick } from 'vue'
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 import { formatDate } from '@/lib/dateFromate'
-import Input from '@/components/ui/input/Input.vue'
-import Button from '@/components/ui/button/Button.vue'
-import { useMutation, useQueryClient } from '@tanstack/vue-query'
-import { useForm, useField } from 'vee-validate'
-import { EditUserShcema } from '@/lib/zod-schemas/EditUserFormSchema'
-import { toast } from 'vue-sonner'
-import { editUserData } from '@/api/users/editUser'
-import { computed } from 'vue'
 
-interface DataUserInterface {
-  name: string
-  phone: string
-  email: string
-  date_of_birth?: string
+// Import new components
+import ProfileHeader from '@/components/profile/ProfileHeader.vue'
+import ProfileCompletionWidget from '@/components/profile/ProfileCompletionWidget.vue'
+
+// Import new composables
+import { useUserProfile } from '@/composables/auth/useUserProfile'
+import { useProfileForm } from '@/composables/forms/useProfileForm'
+
+// Composables
+const { user, profileStats, profileQuery, updateProfile, error, refreshProfile } = useUserProfile()
+
+const {
+  fields,
+  isFormValid,
+  hasChanges,
+  isSubmitting,
+  handleSubmit,
+  isEditing,
+  enterEditMode,
+  exitEditMode,
+  cancelEdit,
+  showConfirmDialog,
+  confirmCancel,
+  dismissCancel,
+} = useProfileForm()
+
+// Refs
+const formCard = ref<HTMLElement>()
+
+// Methods
+const handleFormSubmit = async () => {
+  console.log('Form submit initiated')
+  try {
+    await handleSubmit(async (changedFields) => {
+      console.log('Changed fields:', changedFields)
+      // Only proceed if there are changes
+      if (Object.keys(changedFields).length === 0) {
+        console.log('No changes detected, skipping update')
+        return
+      }
+
+      console.log('Calling updateProfile with:', changedFields)
+      await updateProfile(changedFields)
+      console.log('Profile updated successfully, exiting edit mode')
+      exitEditMode()
+    })
+  } catch (error) {
+    console.error('Form submission error:', error)
+  }
 }
 
-const userStore = useUserStore()
-const dataUser = userStore.user
+const scrollToForm = async () => {
+  await nextTick()
+  formCard.value?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+}
 
-const validationSchema = EditUserShcema
-const { handleSubmit, errors } = useForm({
-  validationSchema,
-  initialValues: {
-    name: dataUser?.name,
-    phone: dataUser?.phone,
-    email: dataUser?.email,
-    role: dataUser?.role_name,
-  },
-})
+const formatLastUpdated = (): string => {
+  const lastUpdated = profileStats.value.lastUpdated
+  if (!lastUpdated) return 'Never'
 
-const { value: email } = useField<string>('email')
-const { value: name } = useField<string>('name')
-const { value: phone } = useField<string>('phone')
+  try {
+    const date = new Date(lastUpdated)
+    const now = new Date()
+    const diffInMs = now.getTime() - date.getTime()
+    const diffInDays = Math.floor(diffInMs / (1000 * 60 * 60 * 24))
 
-const queryClient = useQueryClient()
-const { mutate, isPending } = useMutation({
-  mutationFn: ({ userID, data }: { data: DataUserInterface; userID: string }) =>
-    editUserData(data, userID),
-  onSuccess: (response) => {
-    if (response) {
-      toast('Success', {
-        description: `${response?.message}`,
-      })
-      queryClient.invalidateQueries({
-        queryKey: ['profile', dataUser?.id],
-        exact: false, // Ini akan refetch semua data query yang dimulai dengan 'users'
-      })
-    }
-  },
-  onError: (error: Error) => {
-    toast('Error', {
-      description: `Failed to update user data: ${error.message}`,
+    if (diffInDays === 0) return 'Today'
+    if (diffInDays === 1) return 'Yesterday'
+    if (diffInDays < 7) return `${diffInDays} days ago`
+
+    return date.toLocaleDateString('id-ID', {
+      month: 'short',
+      day: 'numeric',
     })
-  },
-})
-
-const isFormUnchanged = computed(() => {
-  return (
-    name.value === userStore.user?.name &&
-    email.value === userStore.user?.email &&
-    phone.value === userStore.user?.phone
-  )
-})
-
-const onSubmit = handleSubmit((values) => {
-  mutate({
-    userID: dataUser?.id ? dataUser?.id : '',
-    data: { ...values },
-  })
-})
+  } catch {
+    return 'Unknown'
+  }
+}
 </script>

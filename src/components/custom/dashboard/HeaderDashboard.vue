@@ -2,47 +2,38 @@
   <header class="bg-card border-b border-border">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center py-6">
+        <!-- Left: Title & Subtitle -->
         <div>
           <h1 class="text-3xl font-bold text-foreground">
-            {{ roleUser === 'admin' ? 'Admin Dashboard' : 'User Dashboard' }}
+            {{ roleUser === 'admin' ? 'Admin Dashboard' : 'My.Iradat' }}
           </h1>
           <p class="text-muted-foreground mt-1 text-sm">Welcome {{ userStore.user?.name }}</p>
         </div>
+
+        <!-- Right: Actions -->
         <div class="flex items-center gap-2">
           <LogoutAlert />
           <ThemeToggle />
-          <Button
-            v-if="roleUser === 'admin'"
-            class="inline-flex items-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/85"
-            @click="addNewUser"
-          >
-            <User :size="20" />
-            Add User
-          </Button>
 
-          <Button
-            v-if="roleUser === 'admin'"
-            class="inline-flex items-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/85"
-            @click="addNewUserBatch"
-          >
-            <Users :size="20" />
-            Add User Batch
-          </Button>
+          <!-- Admin Actions -->
+          <template v-if="roleUser === 'admin'">
+            <Button class="btn-primary" @click="addNewUser">
+              <User :size="20" />
+              <span>Add User</span>
+            </Button>
+            <Button class="btn-primary" @click="addNewUserBatch">
+              <Users :size="20" />
+              <span>Add User Batch</span>
+            </Button>
+          </template>
 
-          <Button
-            v-if="roleUser === 'user'"
-            class="inline-flex items-center rounded-lg bg-primary px-4 py-2 text-sm font-medium text-white hover:bg-primary/85"
-          >
-            <svg class="mr-2 h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-              />
-            </svg>
-            Edit Profile
-          </Button>
+          <!-- User Actions -->
+          <template v-else-if="roleUser === 'user'">
+            <Button class="btn-primary">
+              <Edit3 :size="18" />
+              <span>Edit Profile</span>
+            </Button>
+          </template>
         </div>
       </div>
     </div>
@@ -55,7 +46,7 @@ import ThemeToggle from '@/components/ThemeToggle.vue'
 import Button from '@/components/ui/button/Button.vue'
 import { useUserStore } from '@/stores/userStores'
 import LogoutAlert from '../alerts/LogoutAlert.vue'
-import { Users, User } from 'lucide-vue-next'
+import { Users, User, Edit3 } from 'lucide-vue-next'
 
 const userStore = useUserStore()
 const router = useRouter()

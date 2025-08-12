@@ -1,41 +1,82 @@
 export interface UserProfileInterface {
   id: string
   email: string
-  role_id: number
-  name: string
-  avatar_picture: string
-  date_of_birth: string
   phone: string
-  profile_id: string
+  role_id: number
   role_name: string
+  profile_id: string
+  name: string
+  avatar_picture: string | null
+  date_of_birth: string | null
+  organization_id: string | null
+  verified_at: string
 }
 
 export interface IPROInterface {
-  openness: number | undefined | null
-  neuroticism: number | undefined | null
-  extraversion: number | undefined | null
-  agreeableness: number | undefined | null
-  conscientiousness: number | undefined | null
+  inisiatif: string
+  kerjasama: string
+  kepemimpinan: string
+  fleksibilitas: string
+  komitmenTugas: string
+  kecerdasanUmum: string
+  logikaBerpikir: string
+  kelincahanPikir: string
+  kepercayaanDiri: string
+  penyesuaianDiri: string
+  stabilitasEmosi: string
+  sistematikaKerja: string
+  dayaAnalisaSintesa: string
+  dayaBerpikirAbtrak: string
+  dayaTahanKerjaRutin: string
+  motivasiBerprestasi: string
+  dayaTahanKerjaStress: string
+  pengambilanKeputusan: string
+  hubunganInterpersonal: string
+  perencanaanDanPerorganisasian: string
 }
 
 export interface IPROBInterface {
-  dominant: number | undefined | null
-  influence: number | undefined | null
-  compliance: number | undefined | null
-  steadiness: number | undefined | null
+  inisiatif: string
+  kerjasama: string
+  kepemimpinan: string
+  fleksibilitas: string
+  komitmenTugas: string
+  kecerdasanUmum: string
+  logikaBerpikir: string
+  kelincahanPikir: string
+  kepercayaanDiri: string
+  penyesuaianDiri: string
+  stabilitasEmosi: string
+  sistematikaKerja: string
+  dayaAnalisaSintesa: string
+  dayaBerpikirAbtrak: string
+  dayaTahanKerjaRutin: string
+  motivasiBerprestasi: string
+  dayaTahanKerjaStress: string
+  pengambilanKeputusan: string
+  hubunganInterpersonal: string
+  perencanaanDanPerorganisasian: string
 }
 
 export interface IPROSInterface {
-  driver: number | undefined | null
-  amiable: number | undefined | null
-  analytical: number | undefined | null
-  expressive: number | undefined | null
+  kemandirian: string
+  ketangguhan: string
+  kecerdasanUmum: string
+  ketelitianKerja: string
+  penalaranVerbal: string
+  penyesuaianDiri: string
+  penalaranNumerik: string
+  sistematikaKerja: string
+  penalaranNonVerbal: string
+  kecepatanPerseptual: string
+  motivasiBerprestasi: string
+  hubunganInterpersonal: string
 }
 
 export interface LastAnalyzedInterface {
-  date: string
-  score: number
-  service: string
+  comment: string
+  analyzed_at: string
+  last_analyzed: string
 }
 
 export interface UserDataInterface extends UserProfileInterface {
