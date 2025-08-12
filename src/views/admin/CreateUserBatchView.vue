@@ -4,15 +4,16 @@
     <div class="flex items-center justify-between mb-8">
       <BackToDashboardButton />
       <div class="text-center">
-        <h1 class="text-2xl font-bold text-gray-900">Batch Register Users</h1>
+        <h1 class="text-2xl font-bold">Batch Register Users</h1>
         <p class="text-gray-600 mt-1">Create multiple user accounts at once</p>
       </div>
 
       <div class="flex gap-3">
-        <Button @click="console.log('upload')" variant="outline" class="flex items-center gap-2">
-          <Upload class="w-4 h-4" />
+        <UploadCSVBatch />
+        <!-- <Button @click="console.log('upload')" variant="outline" class="flex items-center gap-2">
+          <Upload />
           Import CSV
-        </Button>
+        </Button> -->
       </div>
     </div>
 
@@ -295,17 +296,7 @@
 import { ref, reactive } from 'vue'
 import { useMutation } from '@tanstack/vue-query'
 import { toast } from 'vue-sonner'
-import {
-  Plus,
-  Upload,
-  Users,
-  Trash2,
-  X,
-  UserPlus,
-  Loader2,
-  CheckCircle,
-  XCircle,
-} from 'lucide-vue-next'
+import { Plus, Users, Trash2, X, UserPlus, Loader2, CheckCircle, XCircle } from 'lucide-vue-next'
 
 // Reka UI Components
 import { Button } from '@/components/ui/button'
@@ -331,6 +322,7 @@ import { batchRegisterUsers, type BatchUserInterface } from '@/api/users/createU
 import DashboardLayout from '../layouts/DashboardLayout.vue'
 import AlertDialogDescription from '@/components/ui/alert-dialog/AlertDialogDescription.vue'
 import BackToDashboardButton from '@/components/custom/buttons/BackToDashboardButton.vue'
+import UploadCSVBatch from '@/components/custom/alerts/UploadCSVBatch.vue'
 
 // Types
 interface ValidationErrors {
