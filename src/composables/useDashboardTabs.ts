@@ -29,7 +29,7 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
     defaultTab = 'dashboard',
     persistToUrl = true,
     persistToStorage = true,
-    storageKey = 'dashboard-active-tab'
+    storageKey = 'dashboard-active-tab',
   } = options
 
   const router = useRouter()
@@ -46,32 +46,38 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
       id: 'dashboard',
       label: 'Dashboard',
       icon: 'LayoutDashboard',
-      requiresAdmin: false
+      requiresAdmin: false,
     },
     users: {
       id: 'users',
       label: 'User Management',
       icon: 'Users',
-      requiresAdmin: true
+      requiresAdmin: true,
+    },
+    organizations: {
+      id: 'organizations',
+      label: 'organizations Management',
+      icon: 'Building',
+      requiresAdmin: true,
     },
     data: {
       id: 'data',
       label: 'Data',
       icon: 'Database',
-      requiresAdmin: false
+      requiresAdmin: false,
     },
     profile: {
       id: 'profile',
       label: 'Profile',
       icon: 'User',
-      requiresAdmin: false
-    }
+      requiresAdmin: false,
+    },
   }
 
   // Computed available tabs based on user role
   const availableTabs = computed<TabConfig[]>(() => {
     const accessibleTabIds = getAccessibleTabs(userRole.value)
-    return accessibleTabIds.map(tabId => tabConfigs[tabId])
+    return accessibleTabIds.map((tabId) => tabConfigs[tabId])
   })
 
   // Utility functions
@@ -118,7 +124,7 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
   const updateUrlWithTab = (tab: DashboardTab) => {
     if (persistToUrl) {
       const query = { ...route.query, tab }
-      router.replace({ query }).catch(error => {
+      router.replace({ query }).catch((error) => {
         console.warn('Failed to update URL with tab:', error)
       })
     }
@@ -146,8 +152,7 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
       updateUrlWithTab(tab)
 
       // Simulate async tab loading (if needed for data fetching)
-      await new Promise(resolve => setTimeout(resolve, 100))
-
+      await new Promise((resolve) => setTimeout(resolve, 100))
     } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to change tab'
       tabError.value = message
@@ -180,7 +185,6 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
 
       // Set the initial tab
       await changeTab(initialTab)
-
     } catch (error) {
       console.error('Failed to initialize tabs:', error)
       tabError.value = 'Failed to initialize dashboard tabs'
@@ -188,18 +192,22 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
   }
 
   // Watch for user role changes and reinitialize if needed
-  watch(userRole, async (newRole, oldRole) => {
-    if (newRole !== oldRole) {
-      // Check if current tab is still accessible
-      if (!canAccessTab(activeTab.value)) {
-        // Switch to first available tab
-        const accessibleTabs = getAccessibleTabs(newRole)
-        if (accessibleTabs.length > 0) {
-          await changeTab(accessibleTabs[0])
+  watch(
+    userRole,
+    async (newRole, oldRole) => {
+      if (newRole !== oldRole) {
+        // Check if current tab is still accessible
+        if (!canAccessTab(activeTab.value)) {
+          // Switch to first available tab
+          const accessibleTabs = getAccessibleTabs(newRole)
+          if (accessibleTabs.length > 0) {
+            await changeTab(accessibleTabs[0])
+          }
         }
       }
-    }
-  }, { immediate: false })
+    },
+    { immediate: false },
+  )
 
   // Auto-initialize on mount
   onMounted(() => {
@@ -214,6 +222,6 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
     changeTab,
     canAccessTab,
     getTabLabel,
-    initializeTabs
+    initializeTabs,
   }
 }

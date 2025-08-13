@@ -83,6 +83,11 @@
               <TableCell>
                 <a
                   class="bg-primary hover:bg-primary/80 text-white px-2 py-1 rounded-md"
+                  :class="
+                    organization.website_url
+                      ? ''
+                      : 'pointer-events-none cursor-not-allowed !bg-gray-200'
+                  "
                   :href="organization.website_url"
                   target="_blank"
                   >Visit web</a
@@ -94,9 +99,9 @@
                     variant="outline"
                     size="icon"
                     class="rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-muted"
-                    @click="goToLinks(organization.id)"
+                    @click="goToDetails(organization.id)"
                   >
-                    <Link2 :size="18" />
+                    <FileSearch2 :size="18" />
                   </Button>
                   <EditUserAlert
                     :user-i-d="organization.id"
@@ -179,7 +184,7 @@ import { allUsers } from '@/data/usersData'
 import { getListOrganization } from '@/api/organizations/getListOrganizations'
 import { useQuery } from '@tanstack/vue-query'
 import ListUserTableSkeleton from '@/components/custom/skeletons/ListUserTableSkeleton.vue'
-import { SearchIcon, X, Link2, Building } from 'lucide-vue-next'
+import { SearchIcon, X, Building, FileSearch2 } from 'lucide-vue-next'
 import UserListHeaderCards from '@/components/custom/cards/UserListHeaderCards.vue'
 import DeleteUserAlert from '@/components/custom/alerts/DeleteUserAlert.vue'
 import EditUserAlert from '@/components/custom/alerts/EditUserAlert.vue'
@@ -201,7 +206,7 @@ const { isPending, data, refetch } = useQuery({
     getListOrganization({
       page: currentPage?.value,
       search: searchQuery.value || undefined,
-    }),
+  }),
   staleTime: 1000 * 60 * 5, // 5 minutes
 }) as {
   isPending: Ref<boolean>
@@ -252,8 +257,8 @@ watch(currentPage, () => {
   refetch()
 })
 
-const goToLinks = (user_id: string) => {
-  router.push(`/dashboard/${user_id}/services`)
+const goToDetails = (organization_id: string) => {
+  router.push(`/dashboard/admin/organization/${organization_id}/details`)
 }
 
 // Admin navigation functions

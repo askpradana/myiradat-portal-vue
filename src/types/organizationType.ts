@@ -6,8 +6,8 @@ export interface OrganizationInterface {
   size_category: 'small' | 'medium' | 'large'
   email: string
   phone: string
-  website_url: string
-  logo_url: string
+  website_url?: string | undefined
+  logo_url?: string | undefined
   address: AddressOfOrganizationInterface | string
   status: string
   created_at: string

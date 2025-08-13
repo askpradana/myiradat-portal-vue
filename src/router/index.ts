@@ -6,6 +6,8 @@ import EmailVerificationView from '@/views/auth/EmailVerificationView.vue'
 import CreateNewUserView from '@/views/admin/CreateNewUserView.vue'
 import UserServicesListView from '@/views/admin/UserServicesListView.vue'
 import CreateUserBatchView from '@/views/admin/CreateUserBatchView.vue'
+import CreateNewOrganizationView from '@/views/admin/CreateNewOrganizationView.vue'
+import OrganizationDetailView from '@/views/admin/OrganizationDetailView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -31,8 +33,8 @@ const router = createRouter({
       component: EmailVerificationView,
       meta: {
         requiresAuth: false,
-        title: 'Verify Email'
-      }
+        title: 'Verify Email',
+      },
     },
     {
       path: '/dashboard',
@@ -53,6 +55,16 @@ const router = createRouter({
       path: '/dashboard/:id/services',
       name: 'user-service-list',
       component: UserServicesListView,
+    },
+    {
+      path: '/dashboard/admin/create-organization',
+      name: 'create-organization-page',
+      component: CreateNewOrganizationView,
+    },
+    {
+      path: '/dashboard/admin/organization/:id/details',
+      name: 'organization-detail-page',
+      component: OrganizationDetailView,
     },
 
     // {
