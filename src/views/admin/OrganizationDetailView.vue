@@ -46,7 +46,7 @@
       </Card>
 
       <!-- Stats Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
         <Card class="group border-l-4 border-l-blue-500">
           <CardContent class="p-6">
             <div class="flex items-center justify-between">
@@ -75,31 +75,16 @@
           </CardContent>
         </Card>
 
-        <Card class="group border-l-4 border-l-purple-500">
-          <CardContent class="p-6">
-            <div class="flex items-center justify-between">
-              <div>
-                <span class="text-sm font-semibold flex items-center gap-2"
-                  ><UserCheck class="text-purple-500" /> Members</span
-                >
-                <p class="text-lg font-bold mt-2">
-                  {{ data?.member_count?.toLocaleString() }}
-                </p>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
         <Card class="group border-l-4 border-l-orange-500">
           <CardContent class="p-6">
             <div class="flex items-center justify-between">
               <div>
-                <span class="text-sm font-semibold flex items-center gap-2">
-                  <Activity class="text-orange-500" />Status</span
+                <span class="text-sm font-semibold flex items-center gap-2"
+                  ><UserCheck class="text-orange-500" /> Members</span
                 >
-                <span :class="getStatusBadgeClass(data?.status)" class="text-sm font-semibold mt-2">
-                  {{ data?.status.toUpperCase() }}
-                </span>
+                <p class="text-xl font-bold mt-2">
+                  {{ data?.member_count?.toLocaleString() }}
+                </p>
               </div>
             </div>
           </CardContent>
@@ -190,7 +175,7 @@
                   <span class="text-sm font-semibold flex items-center gap-2">
                     <Home :size="18" /> Street:</span
                   >
-                  <p class="font-medium ml-6">{{ parsedAddress.street }}</p>
+                  <p class="font-medium ml-6.5 mt-2">{{ parsedAddress.street }}</p>
                 </div>
               </div>
 
@@ -199,7 +184,7 @@
                   <span class="text-sm font-semibold flex items-center gap-2">
                     <Building :size="18" />City:</span
                   >
-                  <p class="font-medium ml-6">{{ parsedAddress.city }}</p>
+                  <p class="font-medium ml-6.5 mt-2">{{ parsedAddress.city }}</p>
                 </div>
               </div>
 
@@ -208,7 +193,7 @@
                   <span class="text-sm font-semibold flex items-center gap-2"
                     ><Map :size="18" />State:</span
                   >
-                  <p class="font-medium ml-6">{{ parsedAddress.state }}</p>
+                  <p class="font-medium ml-6.5 mt-2">{{ parsedAddress.state }}</p>
                 </div>
               </div>
 
@@ -217,7 +202,7 @@
                   <span class="text-sm font-semibold flex items-center gap-2">
                     <Hash :size="18" />Postal Code:</span
                   >
-                  <p class="font-medium ml-6">{{ parsedAddress.postal_code }}</p>
+                  <p class="font-medium ml-6.5 mt-2">{{ parsedAddress.postal_code }}</p>
                 </div>
               </div>
             </div>
@@ -227,7 +212,7 @@
                   <span class="text-sm font-semibold flex items-center gap-2">
                     <Flag :size="18" /> Country:</span
                   >
-                  <p class="font-medium ml-6">{{ parsedAddress.country }}</p>
+                  <p class="font-medium ml-6.5 mt-2">{{ parsedAddress.country }}</p>
                 </div>
               </div>
             </div>
@@ -265,7 +250,6 @@ import {
   Building2,
   Users,
   UserCheck,
-  Activity,
   Mail,
   Phone,
   Globe,
@@ -307,19 +291,19 @@ const parsedAddress = computed(() => {
 
 const getStatusBadgeClass = (status: string | undefined) => {
   const classes = {
-    'non-active':
+    inactive:
       'inline-flex items-center rounded-full bg-red-100 px-3 py-1.5 text-sm font-semibold text-red-800 ring-1 ring-red-200',
     active:
       'inline-flex items-center rounded-full bg-green-100 px-3 py-1.5 text-sm font-semibold text-green-800 ring-1 ring-green-200',
   }
-  return classes[status as keyof typeof classes] || classes['non-active']
+  return classes[status as keyof typeof classes] || classes['inactive']
 }
 
 const getStatusDotClass = (status: string | undefined) => {
   const classes = {
-    'non-active': 'bg-red-500',
+    inactive: 'bg-red-500',
     active: 'bg-green-500',
   }
-  return classes[status as keyof typeof classes] || classes['non-active']
+  return classes[status as keyof typeof classes] || classes['inactive']
 }
 </script>

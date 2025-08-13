@@ -101,13 +101,16 @@
                     class="rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-muted"
                     @click="goToDetails(organization.id)"
                   >
-                    <FileSearch2 :size="18" />
+                    <FileSearch :size="18" />
                   </Button>
-                  <EditUserAlert
-                    :user-i-d="organization.id"
-                    :data-user="organization as any"
-                    :current-page="currentPage"
-                  />
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    class="rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-muted"
+                    @click="goToUpdateOrganization(organization.id)"
+                  >
+                    <Pencil :size="18" />
+                  </Button>
                   <DeleteOrganizationAlert
                     :organization-i-d="organization.id"
                     :name-of-organization="organization.name"
@@ -187,10 +190,9 @@ import { allUsers } from '@/data/usersData'
 import { getListOrganization } from '@/api/organizations/getListOrganizations'
 import { useQuery } from '@tanstack/vue-query'
 import ListUserTableSkeleton from '@/components/custom/skeletons/ListUserTableSkeleton.vue'
-import { SearchIcon, X, Building, FileSearch2 } from 'lucide-vue-next'
+import { SearchIcon, X, Building, FileSearch, Pencil } from 'lucide-vue-next'
 import UserListHeaderCards from '@/components/custom/cards/UserListHeaderCards.vue'
 import DeleteOrganizationAlert from '@/components/custom/alerts/DeleteOrganizationAlert.vue'
-import EditUserAlert from '@/components/custom/alerts/EditUserAlert.vue'
 import { useRouter } from 'vue-router'
 import { useUserRole } from '@/composables/useUserRole'
 import type { ResponseAPIGetOrganizationsData } from '@/types/organizationType'
@@ -262,6 +264,10 @@ watch(currentPage, () => {
 
 const goToDetails = (organization_id: string) => {
   router.push(`/dashboard/admin/organization/${organization_id}/details`)
+}
+
+const goToUpdateOrganization = (organization_id: string) => {
+  router.push(`/dashboard/admin/organization/${organization_id}/update`)
 }
 
 // Admin navigation functions

@@ -8,6 +8,7 @@ import UserServicesListView from '@/views/admin/UserServicesListView.vue'
 import CreateUserBatchView from '@/views/admin/CreateUserBatchView.vue'
 import CreateNewOrganizationView from '@/views/admin/CreateNewOrganizationView.vue'
 import OrganizationDetailView from '@/views/admin/OrganizationDetailView.vue'
+import EditOrganizationView from '@/views/admin/EditOrganizationView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -60,6 +61,11 @@ const router = createRouter({
       path: '/dashboard/admin/create-organization',
       name: 'create-organization-page',
       component: CreateNewOrganizationView,
+    },
+    {
+      path: '/dashboard/admin/organization/:id/update',
+      name: 'edit-organization-page',
+      component: EditOrganizationView,
     },
     {
       path: '/dashboard/admin/organization/:id/details',

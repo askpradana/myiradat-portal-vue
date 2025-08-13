@@ -38,8 +38,17 @@ const CreateOrganizationZodSchema = zod.object({
   address: AddressSchema,
 })
 
+// Schema untuk edit organization (dengan tambahan status field)
+const EditOrganizationZodSchema = CreateOrganizationZodSchema.extend({
+  status: zod.enum(['active', 'inactive'], {
+    message: 'Please select a valid status',
+  }),
+})
+
 // TypedSchema untuk vee-validate
 export const CreateOrganizationSchema = toTypedSchema(CreateOrganizationZodSchema)
+export const EditOrganizationSchema = toTypedSchema(EditOrganizationZodSchema)
 
 // Type inference dari raw Zod schema
 export type CreateOrganizationFormType = zod.infer<typeof CreateOrganizationZodSchema>
+export type EditOrganizationFormType = zod.infer<typeof EditOrganizationZodSchema>
