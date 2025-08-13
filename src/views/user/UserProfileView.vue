@@ -293,9 +293,17 @@
                 </div>
 
                 <!-- Form Actions -->
-                <div class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-border">
-                  <!-- View Mode - Edit Button -->
-                  <Button v-if="!isEditing" type="button" @click="enterEditMode" class="sm:w-auto">
+                <div
+                  class="flex flex-col sm:flex-row gap-3 pt-6 border-t border-border justify-end"
+                >
+                  <!-- View Mode -->
+                  <Button
+                    v-if="!isEditing"
+                    type="button"
+                    size="sm"
+                    @click="enterEditMode"
+                    class="w-full sm:w-auto"
+                  >
                     <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path
                         stroke-linecap="round"
@@ -307,49 +315,18 @@
                     Edit Profile
                   </Button>
 
-                  <!-- Edit Mode - Cancel and Update Buttons -->
+                  <!-- Edit Mode -->
                   <template v-else>
-                    <Button
-                      type="button"
-                      variant="outline"
-                      @click="cancelEdit"
-                      :disabled="isSubmitting"
-                      class="sm:w-auto"
-                    >
-                      <svg
-                        class="w-4 h-4 mr-2"
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          stroke-linecap="round"
-                          stroke-linejoin="round"
-                          stroke-width="2"
-                          d="M6 18L18 6M6 6l12 12"
-                        />
-                      </svg>
-                      Cancel
-                    </Button>
-
+                    <!-- Update -->
                     <Button
                       type="submit"
+                      size="sm"
                       :disabled="isSubmitting || !isFormValid || !hasChanges"
-                      class="sm:flex-1 sm:max-w-xs"
-                      @click="
-                        console.log(
-                          'Button clicked - isSubmitting:',
-                          isSubmitting,
-                          'isFormValid:',
-                          isFormValid,
-                          'hasChanges:',
-                          hasChanges,
-                        )
-                      "
+                      class="w-full sm:w-36 order-1"
                     >
                       <div
                         v-if="isSubmitting"
-                        class="w-4 h-4 border-2 border-white border-t-transparent rounded-full animate-spin mr-2"
+                        class="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"
                       ></div>
                       <svg
                         v-else
@@ -365,7 +342,32 @@
                           d="M5 13l4 4L19 7"
                         />
                       </svg>
-                      {{ isSubmitting ? 'Updating...' : 'Update Profile' }}
+                      {{ isSubmitting ? 'Updating...' : 'Update' }}
+                    </Button>
+
+                    <!-- Cancel -->
+                    <Button
+                      type="button"
+                      variant="outline"
+                      size="sm"
+                      @click="cancelEdit"
+                      :disabled="isSubmitting"
+                      class="w-full sm:w-auto order-2"
+                    >
+                      <svg
+                        class="w-4 h-4 mr-2"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          stroke-width="2"
+                          d="M6 18L18 6M6 6l12 12"
+                        />
+                      </svg>
+                      Cancel
                     </Button>
                   </template>
                 </div>

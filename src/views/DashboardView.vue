@@ -1,56 +1,124 @@
 <template>
-  <div class="min-h-screen bg-background">
-    <!-- Header -->
-    <HeaderDashboard :role-user="roleUser" />
+  <DashboardLayout
+    :active-tab="activeTab"
+    :user-role="userRole"
+    :is-loading="isTabLoading"
+    :error="tabError"
+    @tab-change="changeTab"
+    @retry="handleRetry"
+  >
+    <!-- Main Dashboard Tab Content -->
+    <div v-if="activeTab === 'dashboard'">
+      <Suspense>
+        <template #default>
+          <DashboardMainView />
+        </template>
+        <template #fallback>
+          <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+            <CardServiceSkeleton v-for="n in 6" :key="n" />
+          </div>
+        </template>
+      </Suspense>
+    </div>
 
-    <!-- Main Content -->
-    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-      <!-- Navigation Tab Content -->
-      <NavigationTab :active-tab="activeTab" @change-tab="changeTab" />
+    <!-- Users Tab Content -->
+    <div v-if="activeTab === 'users'" class="space-y-6">
+      <Suspense>
+        <template #default>
+          <UserManagementView />
+        </template>
+        <template #fallback>
+          <ListUserTableSkeleton />
+        </template>
+      </Suspense>
+    </div>
 
-      <!-- Main Dashboard Tab Content -->
-      <div v-if="activeTab === 'dashboard'">
-        <DashboardMainView />
-      </div>
+    <!-- Data Tab Content -->
+    <div v-if="activeTab === 'data'">
+      <Suspense>
+        <template #default>
+          <DataView />
+        </template>
+        <template #fallback>
+          <DataViewTableSkeleton />
+        </template>
+      </Suspense>
+    </div>
 
-      <!-- Users Tab Content -->
-      <div v-if="activeTab === 'users'">
-        <UserManagementView />
-      </div>
-
-      <!-- Profile Tab Content -->
-      <div v-if="activeTab === 'data'">
-        <DataView />
-      </div>
-
-      <!-- Profile Tab Content -->
-      <div v-if="activeTab === 'profile'" class="max-w-4xl mx-auto">
-        <UserProfileView />
-      </div>
-    </main>
-  </div>
+    <!-- Profile Tab Content -->
+    <div v-if="activeTab === 'profile'" class="max-w-4xl mx-auto">
+      <Suspense>
+        <template #default>
+          <UserProfileView />
+        </template>
+        <template #fallback>
+          <div class="space-y-6">
+            <Skeleton class="h-32 w-full" />
+            <Skeleton class="h-48 w-full" />
+          </div>
+        </template>
+      </Suspense>
+    </div>
+  </DashboardLayout>
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
-import HeaderDashboard from '@/components/custom/dashboard/HeaderDashboard.vue'
-import NavigationTab from '@/components/custom/dashboard/NavigationTab.vue'
-import UserManagementView from './admin/UserManagementView.vue'
-import UserProfileView from './user/UserProfileView.vue'
-import DashboardMainView from './DashboardMainView.vue'
-import DataView from './user/DataView.vue'
+import { computed, onMounted, defineAsyncComponent } from 'vue'
+import { Skeleton } from '@/components/ui/skeleton'
+
+// Lazy-loaded components for better performance
+const DashboardMainView = defineAsyncComponent(() => import('./DashboardMainView.vue'))
+const UserManagementView = defineAsyncComponent(() => import('./admin/UserManagementView.vue'))
+const UserProfileView = defineAsyncComponent(() => import('./user/UserProfileView.vue'))
+const DataView = defineAsyncComponent(() => import('./user/DataView.vue'))
+
+// Layout and skeleton components
+import DashboardLayout from '@/components/custom/dashboard/DashboardLayout.vue'
+import CardServiceSkeleton from '@/components/custom/skeletons/CardServiceSkeleton.vue'
+import ListUserTableSkeleton from '@/components/custom/skeletons/ListUserTableSkeleton.vue'
+import DataViewTableSkeleton from '@/components/custom/skeletons/DataViewTableSkeleton.vue'
+
+// Stores and composables
 import { useUserStore } from '@/stores/userStores'
+import { useDashboardTabs } from '@/composables/useDashboardTabs'
+import { getUserRole } from '@/lib/dashboard-utils'
 
+// Initialize store
 const userStore = useUserStore()
-userStore.initializeAuth()
 
-const role = userStore.user?.role_id === 1 ? 'admin' : 'user'
+// Computed user role
+const userRole = computed(() => getUserRole(userStore.user))
 
-// Active tab state - Users tab is active by default
-const activeTab = ref<'dashboard' | 'users' | 'data' | 'profile'>('dashboard')
-const roleUser = ref<'admin' | 'user'>(role)
+// Dashboard tabs composable
+const {
+  activeTab,
+  isTabLoading,
+  tabError,
+  changeTab,
+  initializeTabs
+} = useDashboardTabs({
+  userRole,
+  defaultTab: 'dashboard',
+  persistToUrl: true,
+  persistToStorage: true
+})
 
-const changeTab = (activeValue: 'dashboard' | 'users' | 'data' | 'profile') => {
-  activeTab.value = activeValue
+// Error handling
+const handleRetry = async () => {
+  try {
+    await userStore.initializeAuth()
+    await initializeTabs()
+  } catch (error) {
+    console.error('Retry failed:', error)
+  }
 }
+
+// Initialize authentication and tabs on mount
+onMounted(async () => {
+  try {
+    await userStore.initializeAuth()
+  } catch (error) {
+    console.error('Authentication initialization failed:', error)
+  }
+})
 </script>

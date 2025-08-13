@@ -7,6 +7,21 @@
     :filtered-users="data?.users || []"
   />
 
+  <!-- Admin Action Bar -->
+  <div v-if="isAdmin" class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <!-- Left: Admin Actions -->
+    <div class="flex items-center gap-3">
+      <Button variant="default" size="default" @click="addNewUser">
+        <User :size="18" />
+        <span>Add User</span>
+      </Button>
+      <Button variant="outline" size="default" @click="addNewUserBatch">
+        <Users :size="18" />
+        <span>Add User Batch</span>
+      </Button>
+    </div>
+  </div>
+
   <!-- User Table -->
   <Card>
     <CardHeader>
@@ -162,18 +177,20 @@ import { allUsers } from '@/data/usersData'
 import { getListUser } from '@/api/users/getListUser'
 import { useQuery } from '@tanstack/vue-query'
 import ListUserTableSkeleton from '@/components/custom/skeletons/ListUserTableSkeleton.vue'
-import { SearchIcon, X, Link2 } from 'lucide-vue-next'
+import { SearchIcon, X, Link2, User, Users } from 'lucide-vue-next'
 import type { UserListInterface as ResponseAPIUsersInterface } from '@/types/userListType'
 import UserListHeaderCards from '@/components/custom/cards/UserListHeaderCards.vue'
 import DeleteUserAlert from '@/components/custom/alerts/DeleteUserAlert.vue'
 import EditUserAlert from '@/components/custom/alerts/EditUserAlert.vue'
 import { useRouter } from 'vue-router'
+import { useUserRole } from '@/composables/useUserRole'
 
 // Pagination state
 const currentPage = ref(1)
 const searchQuery = ref('')
 
 const router = useRouter()
+const { isAdmin } = useUserRole()
 
 // Reactive query with pagination
 const { isPending, data, refetch } = useQuery({
@@ -235,6 +252,15 @@ watch(currentPage, () => {
 
 const goToLinks = (user_id: string) => {
   router.push(`/dashboard/${user_id}/services`)
+}
+
+// Admin navigation functions
+const addNewUser = () => {
+  router.push('/dashboard/admin/create-user')
+}
+
+const addNewUserBatch = () => {
+  router.push('/dashboard/admin/create-user-batch')
 }
 
 // Computed properties for stats (keep using allUsers for now, or modify as needed)
