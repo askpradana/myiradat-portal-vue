@@ -1,101 +1,146 @@
 <template>
-  <Card class="w-full">
-    <CardHeader>
-      <CardTitle class="text-foreground">User Data</CardTitle>
-      <CardDescription class="text-muted-foreground"> A list of all user scores. </CardDescription>
+  <div class="space-y-6">
+    <!-- Assessment Overview -->
+    <AssessmentOverview />
 
-      <!-- <p class="text-muted-foreground">{{ profilesData?.last_analyzed.date }}</p>
-      <p class="text-muted-foreground">{{ profilesData?.last_analyzed.score }}</p>
-      <p class="text-muted-foreground">{{ profilesData?.last_analyzed.service }}</p> -->
-    </CardHeader>
-  </Card>
+    <!-- Assessment Cards -->
+    <div class="space-y-6">
+      <!-- Error State -->
+      <div v-if="error && !isLoading" class="text-center py-12">
+        <div
+          class="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center"
+        >
+          <svg class="w-8 h-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+            />
+          </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-foreground mb-2">Failed to Load Assessment Data</h3>
+        <p class="text-muted-foreground mb-4">
+          {{ error.message || 'An error occurred while loading your assessment data.' }}
+        </p>
+        <Button @click="refetchAssessmentData" variant="outline">
+          <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+            />
+          </svg>
+          Try Again
+        </Button>
+      </div>
 
-  <IproTable
-    :openness="profilesData?.ipro?.openness"
-    :agreeableness="profilesData?.ipro?.agreeableness"
-    :extraversion="profilesData?.ipro?.extraversion"
-    :neuroticism="profilesData?.ipro?.neuroticism"
-    :conscientiousness="profilesData?.ipro?.conscientiousness"
-    :is-loading="isLoading"
-  />
+      <!-- Assessment Cards -->
+      <div v-else class="grid grid-cols-1 xl:grid-cols-2 gap-6">
+        <!-- IPRO Assessment -->
+        <AssessmentCard
+          title="IPRO Assessment"
+          description="Psychological assessment measuring personality traits and behavioral tendencies"
+          type="ipro"
+          :data="getAssessmentData('ipro').value"
+          :is-loading="isLoading"
+          :max-summary-items="6"
+        />
 
-  <IprosTable
-    :driver="profilesData?.ipros?.driver"
-    :amiable="profilesData?.ipros?.amiable"
-    :analytical="profilesData?.ipros?.analytical"
-    :expressive="profilesData?.ipros?.expressive"
-    :is-loading="isLoading"
-  />
+        <!-- IPROB Assessment -->
+        <AssessmentCard
+          title="IPROB Assessment"
+          description="Behavioral assessment evaluating work-related personality characteristics"
+          type="iprob"
+          :data="getAssessmentData('iprob').value"
+          :is-loading="isLoading"
+          :max-summary-items="6"
+        />
 
-  <IpropTable
-    :openness="profilesData?.iprob?.openness"
-    :agreeableness="profilesData?.iprob?.agreeableness"
-    :extraversion="profilesData?.iprob?.extraversion"
-    :neuroticism="profilesData?.iprob?.neuroticism"
-    :conscientiousness="profilesData?.iprob?.conscientiousness"
-    :is-loading="isLoading"
-  />
+        <!-- IPROS Assessment (Full Width) -->
+        <div class="xl:col-span-2">
+          <AssessmentCard
+            title="IPROS Assessment"
+            description="Comprehensive psychological evaluation measuring cognitive abilities and work competencies"
+            type="ipros"
+            :data="getAssessmentData('ipros').value"
+            :is-loading="isLoading"
+            :max-summary-items="8"
+          />
+        </div>
+      </div>
+
+      <!-- No Data State -->
+      <div v-if="!isLoading && !error && !hasAnyAssessment" class="text-center py-12">
+        <div
+          class="w-20 h-20 mx-auto mb-6 bg-blue-100 rounded-full flex items-center justify-center"
+        >
+          <svg
+            class="w-10 h-10 text-blue-600"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
+          </svg>
+        </div>
+        <h3 class="text-xl font-semibold text-foreground mb-2">No Assessment Data Available</h3>
+        <p class="text-muted-foreground mb-6 max-w-md mx-auto">
+          You haven't completed any psychological assessments yet. Complete an assessment to view
+          your results here.
+        </p>
+        <Button @click="navigateToAssessments" class="inline-flex items-center">
+          <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
+            />
+          </svg>
+          Start Assessment
+        </Button>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
-import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import IproTable from '@/components/custom/tables/IproTable.vue'
-import IprosTable from '@/components/custom/tables/IprosTable.vue'
-import IpropTable from '@/components/custom/tables/IpropTable.vue'
-import { getProfile } from '@/api/getProfile'
+import { computed } from 'vue'
+import { Button } from '@/components/ui/button'
+import { toast } from 'vue-sonner'
 
-interface IproScore {
-  openness: number
-  neuroticism: number
-  extraversion: number
-  agreeableness: number
-  conscientiousness: number
-}
+// Import new components
+import AssessmentOverview from '@/components/assessment/AssessmentOverview.vue'
+import AssessmentCard from '@/components/assessment/AssessmentCard.vue'
 
-interface IprosScore {
-  driver: number
-  amiable: number
-  analytical: number
-  expressive: number
-}
+// Import composable
+import { useAssessmentData } from '@/composables/data/useAssessmentData'
 
-interface AnalyzedInterface {
-  date: Date
-  score: number
-  service: string
-}
+// Router
+// const router = useRouter()
 
-interface UserProfileInterface {
-  id: string
-  name: string
-  ipro?: IproScore
-  iprob?: IproScore
-  ipros?: IprosScore
-  last_analyzed: AnalyzedInterface
-  created_at: string
-  updated_at: string
-}
+// Composable
+const { isLoading, error, getAssessmentData, getAssessmentCompletion, refetchAssessmentData } =
+  useAssessmentData()
 
-const profilesData = ref<UserProfileInterface>()
-const isLoading = ref(false)
-
-onMounted(async () => {
-  isLoading.value = true
-  const data = await getProfile()
-
-  if (data) {
-    if (data.ipro || data.iprob || data.ipros) {
-      const processedData: UserProfileInterface = {
-        ...data,
-        ipro: JSON.parse(data.ipro),
-        iprob: JSON.parse(data.iprob),
-        ipros: JSON.parse(data.ipros),
-        last_analyzed: JSON.parse(data.last_analyzed),
-      }
-      profilesData.value = processedData
-    }
-  }
-  isLoading.value = false
+// Computed properties
+const hasAnyAssessment = computed(() => {
+  const overview = getAssessmentCompletion().value
+  return overview.hasAnyAssessment
 })
+
+// Methods
+const navigateToAssessments = () => {
+  // Navigate to assessment page (implement based on your routing structure)
+  toast.info('Assessment Navigation', {
+    description: 'Assessment page navigation would be implemented here',
+  })
+}
 </script>

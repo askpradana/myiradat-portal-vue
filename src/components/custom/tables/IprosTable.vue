@@ -13,36 +13,57 @@
         </TableHeader>
         <TableBody>
           <template v-if="isLoading">
-            <TableRow v-for="i in 5" :key="i">
-              <TableCell class="font-medium">
-                <Skeleton class="h-4 w-32" />
-              </TableCell>
-              <TableCell class="text-center">
-                <Skeleton class="h-4 w-16 mx-auto" />
-              </TableCell>
-            </TableRow>
+            <DataViewTableSkeleton />
           </template>
 
           <template v-else>
             <TableRow>
-              <TableCell class="font-medium">Driver</TableCell>
-              <TableCell class="text-center">{{ props.driver ? props.driver : '-' }}</TableCell>
+              <TableCell class="font-medium">Kemandirian</TableCell>
+              <TableCell class="text-center">{{ props.kemandirian ? props.kemandirian : '-' }}</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell class="font-medium">Amiable</TableCell>
-              <TableCell class="text-center">{{ props.amiable ? props.amiable : '-' }}</TableCell>
+              <TableCell class="font-medium">Ketangguhan</TableCell>
+              <TableCell class="text-center">{{ props.ketangguhan ? props.ketangguhan : '-' }}</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell class="font-medium">Analytical</TableCell>
-              <TableCell class="text-center">{{
-                props.analytical ? props.analytical : '-'
-              }}</TableCell>
+              <TableCell class="font-medium">Kecerdasan Umum</TableCell>
+              <TableCell class="text-center">{{ props.kecerdasanUmum ? props.kecerdasanUmum : '-' }}</TableCell>
             </TableRow>
             <TableRow>
-              <TableCell class="font-medium">Expressive</TableCell>
-              <TableCell class="text-center">{{
-                props.expressive ? props.expressive : '-'
-              }}</TableCell>
+              <TableCell class="font-medium">Ketelitian Kerja</TableCell>
+              <TableCell class="text-center">{{ props.ketelitianKerja ? props.ketelitianKerja : '-' }}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell class="font-medium">Penalaran Verbal</TableCell>
+              <TableCell class="text-center">{{ props.penalaranVerbal ? props.penalaranVerbal : '-' }}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell class="font-medium">Penyesuaian Diri</TableCell>
+              <TableCell class="text-center">{{ props.penyesuaianDiri ? props.penyesuaianDiri : '-' }}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell class="font-medium">Penalaran Numerik</TableCell>
+              <TableCell class="text-center">{{ props.penalaranNumerik ? props.penalaranNumerik : '-' }}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell class="font-medium">Sistematika Kerja</TableCell>
+              <TableCell class="text-center">{{ props.sistematikaKerja ? props.sistematikaKerja : '-' }}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell class="font-medium">Penalaran Non Verbal</TableCell>
+              <TableCell class="text-center">{{ props.penalaranNonVerbal ? props.penalaranNonVerbal : '-' }}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell class="font-medium">Kecepatan Perseptual</TableCell>
+              <TableCell class="text-center">{{ props.kecepatanPerseptual ? props.kecepatanPerseptual : '-' }}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell class="font-medium">Motivasi Berprestasi</TableCell>
+              <TableCell class="text-center">{{ props.motivasiBerprestasi ? props.motivasiBerprestasi : '-' }}</TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell class="font-medium">Hubungan Interpersonal</TableCell>
+              <TableCell class="text-center">{{ props.hubunganInterpersonal ? props.hubunganInterpersonal : '-' }}</TableCell>
             </TableRow>
           </template>
         </TableBody>
@@ -53,7 +74,6 @@
 
 <script setup lang="ts">
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
   TableBody,
@@ -62,12 +82,11 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import DataViewTableSkeleton from '../skeletons/DataViewTableSkeleton.vue'
+import type { IPROSInterface } from '@/types/userType'
 
-const props = defineProps<{
-  driver: number | undefined
-  amiable: number | undefined
-  analytical: number | undefined
-  expressive: number | undefined
+interface IprosInterface extends Partial<IPROSInterface> {
   isLoading: boolean
-}>()
+}
+const props = defineProps<IprosInterface>()
 </script>

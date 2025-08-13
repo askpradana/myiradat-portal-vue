@@ -4,8 +4,7 @@ import Input from '../../ui/input/Input.vue'
 import Label from '../../ui/label/Label.vue'
 import { Card, CardTitle, CardDescription, CardHeader, CardContent } from '../../ui/card'
 import { useField, useForm } from 'vee-validate'
-import { toTypedSchema } from '@vee-validate/zod'
-import * as zod from 'zod'
+import { loginValidationSchema } from '@/lib/zod-schemas/loginFormSchema'
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { login } from '@/api/login'
@@ -16,15 +15,7 @@ const loading = ref(false)
 const router = useRouter()
 const userStore = useUserStore()
 
-const validationSchema = toTypedSchema(
-  zod.object({
-    email: zod.email({ message: 'Must be a valid email' }).min(1, { message: 'This is required' }),
-    password: zod
-      .string()
-      .min(1, { message: 'This is required' })
-      .min(8, { message: 'Password minimum containing 8 characters' }),
-  }),
-)
+const validationSchema = loginValidationSchema
 const { handleSubmit, errors } = useForm({
   validationSchema,
 })
@@ -38,8 +29,28 @@ const onSubmit = handleSubmit(async (values) => {
   loading.value = false
 
   if (response?.success) {
+    // Check if email verification is required
+    if (response.data?.requires_verification) {
+      // Redirect to email verification page with user data
+      router.push({
+        path: '/verify-email',
+        query: {
+          email: response.data.email,
+          user_id: response.data.user_id,
+        },
+      })
+      toast('Email Verification Required', {
+        description: response.data.message || 'Please verify your email address to continue',
+      })
+      return
+    }
+
+    // Normal login success flow
     userStore.setUserData({
-      token: response.data.token,
+      auth: {
+        token: response.data.token,
+        expires_at: response.data.expires_at,
+      },
       user: response.data.user,
       services: response.data.services,
     })
@@ -48,12 +59,6 @@ const onSubmit = handleSubmit(async (values) => {
     })
     router.push('/dashboard')
   }
-
-  // if (!response) {
-  //   toast('Error', {
-  //     description: `${response?.message}`,
-  //   })
-  // }
 })
 </script>
 

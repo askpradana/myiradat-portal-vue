@@ -1,5 +1,6 @@
 import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
+import { refreshToken } from './refreshToken'
 
 export interface NewUserInterface {
   name: string
@@ -9,10 +10,23 @@ export interface NewUserInterface {
   role?: string
 }
 
-export const registerNewUser = async (newUserData: NewUserInterface, role?: number) => {
+export interface RegisterAPIResponse {
+  data: {
+    email: string
+    user_id: string
+  }
+  message: string
+  success: boolean
+  timestamp: string
+}
+
+export const registerNewUser = async (
+  newUserData: NewUserInterface,
+  role?: number,
+): Promise<RegisterAPIResponse> => {
   try {
     const userStore = useUserStore()
-    const token = userStore.token
+    const token = userStore.auth?.token
     const newData = {
       name: newUserData.name,
       phone: newUserData.phone,
@@ -31,14 +45,37 @@ export const registerNewUser = async (newUserData: NewUserInterface, role?: numb
     })
 
     if (!response.ok) {
+      const errorData = await response.json()
+      const errorMessage = errorData.message || 'An error occurs on the server'
+
       if (response.status === 404) {
-        throw new Error(`HTTP error! status: ${response.status}`)
+        throw new Error(errorMessage)
       } else if (response.status === 401) {
-        throw new Error(`Please check email & password`)
+        try {
+          const refreshResponse = await refreshToken()
+          if (userStore.auth && refreshResponse.data) {
+            userStore.auth.token = refreshResponse.data.token
+            userStore.auth.expires_at = refreshResponse.data.expires_at
+
+            const auth = {
+              token: refreshResponse.data.token,
+              expires_at: refreshResponse.data.expires_at,
+            }
+            sessionStorage.setItem('auth_token', JSON.stringify(auth))
+
+            // Coba lagi setelah refresh token
+            return await registerNewUser(newData, 1)
+          } else {
+            throw new Error(errorMessage || 'The session has ended, please login again')
+          }
+        } catch (error) {
+          console.error('Token refresh error:', error)
+          throw new Error(errorMessage || 'Failed to update the token')
+        }
       } else if (response.status === 400) {
-        throw new Error(`Data already exist`)
+        throw new Error(errorMessage)
       } else {
-        throw new Error(`Internal server error`)
+        throw new Error(errorMessage)
       }
     }
 
@@ -50,5 +87,6 @@ export const registerNewUser = async (newUserData: NewUserInterface, role?: numb
     toast('Error', {
       description: `${error}`,
     })
+    throw error
   }
 }

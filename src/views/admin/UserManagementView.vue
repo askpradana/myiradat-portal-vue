@@ -1,99 +1,25 @@
 <template>
   <!-- Stats Cards -->
-  <div class="mb-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
-    <Card>
-      <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle class="text-sm font-medium text-foreground">Total Users</CardTitle>
-        <svg
-          class="h-4 w-4 text-muted-foreground"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
-          />
-        </svg>
-      </CardHeader>
-      <CardContent>
-        <div class="text-2xl font-bold text-foreground">{{ filteredUsers?.length }}</div>
-        <p class="text-xs text-muted-foreground">
-          {{ searchQuery ? 'Filtered results' : '+12% from last month' }}
-        </p>
-      </CardContent>
-    </Card>
+  <UserListHeaderCards
+    :active-users-count="activeUsersCount"
+    :premium-users-count="premiumUsersCount"
+    :new-users-count="newUsersCount"
+    :filtered-users="data?.users || []"
+  />
 
-    <Card>
-      <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle class="text-sm font-medium text-foreground">Active Users</CardTitle>
-        <svg
-          class="h-4 w-4 text-muted-foreground"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-          />
-        </svg>
-      </CardHeader>
-      <CardContent>
-        <div class="text-2xl font-bold text-foreground">{{ activeUsersCount }}</div>
-        <p class="text-xs text-muted-foreground">+8% from last month</p>
-      </CardContent>
-    </Card>
-
-    <Card>
-      <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle class="text-sm font-medium text-foreground">New Users</CardTitle>
-        <svg
-          class="h-4 w-4 text-muted-foreground"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"
-          />
-        </svg>
-      </CardHeader>
-      <CardContent>
-        <div class="text-2xl font-bold text-foreground">{{ newUsersCount }}</div>
-        <p class="text-xs text-muted-foreground">+23% from last month</p>
-      </CardContent>
-    </Card>
-
-    <Card>
-      <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-        <CardTitle class="text-sm font-medium text-foreground">Premium Users</CardTitle>
-        <svg
-          class="h-4 w-4 text-muted-foreground"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"
-          />
-        </svg>
-      </CardHeader>
-      <CardContent>
-        <div class="text-2xl font-bold text-foreground">{{ premiumUsersCount }}</div>
-        <p class="text-xs text-muted-foreground">+5% from last month</p>
-      </CardContent>
-    </Card>
+  <!-- Admin Action Bar -->
+  <div v-if="isAdmin" class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+    <!-- Left: Admin Actions -->
+    <div class="flex items-center gap-3">
+      <Button variant="default" size="default" @click="addNewUser">
+        <User :size="18" />
+        <span>Add User</span>
+      </Button>
+      <Button variant="outline" size="default" @click="addNewUserBatch">
+        <Users :size="18" />
+        <span>Add User Batch</span>
+      </Button>
+    </div>
   </div>
 
   <!-- User Table -->
@@ -113,33 +39,20 @@
             v-model="searchQuery"
             placeholder="Search by name or email..."
             class="w-full pl-10 pr-10 py-2 rounded-md border border-border focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 text-sm bg-background text-foreground"
+            @input="handleSearch"
           />
           <!-- Search Icon -->
           <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
-            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
-              />
-            </svg>
+            <SearchIcon :size="18" />
           </div>
           <!-- Clear "X" Button -->
           <button
             v-if="searchQuery"
-            @click="searchQuery = ''"
+            @click="clearSearch"
             type="button"
             class="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
           >
-            <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                stroke-width="2"
-                d="M6 18L18 6M6 6l12 12"
-              />
-            </svg>
+            <X :size="18" />
           </button>
         </div>
       </div>
@@ -149,67 +62,46 @@
           <TableRow>
             <TableHead class="text-foreground">Name</TableHead>
             <TableHead class="text-foreground">Email</TableHead>
+            <TableHead class="text-foreground">Phone</TableHead>
             <TableHead class="text-foreground">Role</TableHead>
             <TableHead class="text-right text-foreground">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           <template v-if="isPending">
-            <TableRow v-for="i in 10" :key="i">
-              <TableCell class="font-medium">
-                <Skeleton class="h-4 w-32" />
-              </TableCell>
-              <TableCell class="text-center">
-                <Skeleton class="h-4 w-16 mx-auto" />
-              </TableCell>
-              <TableCell class="text-center">
-                <Skeleton class="h-4 w-16 mx-auto" />
-              </TableCell>
-              <TableCell class="text-center">
-                <Skeleton class="h-4 w-16 mx-auto" />
-              </TableCell>
-            </TableRow>
+            <ListUserTableSkeleton />
           </template>
 
           <template v-else>
-            <TableRow v-for="user in paginatedUsers" :key="user.id">
+            <TableRow v-for="user in data?.users" :key="user.id">
               <TableCell class="font-medium text-foreground">
                 <div class="flex items-center space-x-3">
                   {{ user.name }}
                 </div>
               </TableCell>
               <TableCell class="text-foreground">{{ user.email }}</TableCell>
+              <TableCell class="text-foreground">{{ user.phone }}</TableCell>
               <TableCell>
                 <span :class="getRoleBadgeClass(user.role_id)">
-                  {{ user.role_id === 1 ? 'Admin' : user.role_id === 2 ? 'User' : 'Moderator' }}
+                  {{ user.role_name }}
                 </span>
               </TableCell>
               <TableCell class="text-right">
                 <div class="flex items-center justify-end space-x-2">
-                  <button
+                  <Button
+                    variant="outline"
+                    size="icon"
                     class="rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-muted"
+                    @click="goToLinks(user.id)"
                   >
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"
-                      />
-                    </svg>
-                  </button>
-                  <button
-                    class="rounded-md p-2 text-muted-foreground hover:text-red-600 hover:bg-red-50"
-                  >
-                    <svg class="h-4 w-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
-                      />
-                    </svg>
-                  </button>
+                    <Link2 :size="18" />
+                  </Button>
+                  <EditUserAlert
+                    :user-i-d="user.id"
+                    :data-user="user as any"
+                    :current-page="currentPage"
+                  />
+                  <DeleteUserAlert :user-i-d="user.id" :name-of-user="user.name" />
                 </div>
               </TableCell>
             </TableRow>
@@ -218,35 +110,48 @@
       </Table>
 
       <!-- Pagination -->
-      <div class="mt-6">
+      <div class="mt-6" v-if="data">
         <Pagination
           v-model:page="currentPage"
-          :items-per-page="itemsPerPage"
-          :total="filteredUsers?.length"
+          :items-per-page="data.page_size"
+          :total="data.total"
           :sibling-count="1"
         >
           <PaginationContent>
-            <PaginationFirst />
-            <PaginationPrevious />
+            <PaginationFirst @click="goToPage(1)" :disabled="currentPage === 1" />
+            <PaginationPrevious @click="goToPage(currentPage - 1)" :disabled="currentPage === 1" />
             <PaginationItem
               v-for="page in visiblePages"
               :key="page"
               :value="page"
               :is-active="page === currentPage"
+              @click="goToPage(page)"
             >
               {{ page }}
             </PaginationItem>
-            <PaginationNext />
-            <PaginationLast />
+            <PaginationNext
+              @click="goToPage(currentPage + 1)"
+              :disabled="currentPage === data.total_pages"
+            />
+            <PaginationLast
+              @click="goToPage(data.total_pages)"
+              :disabled="currentPage === data.total_pages"
+            />
           </PaginationContent>
         </Pagination>
+
+        <!-- Pagination Info -->
+        <div class="mt-4 text-sm text-muted-foreground text-center">
+          Showing {{ (currentPage - 1) * data.page_size + 1 }} to
+          {{ Math.min(currentPage * data.page_size, data.total) }} of {{ data.total }} results
+        </div>
       </div>
     </CardContent>
   </Card>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, type Ref } from 'vue'
 import {
   Table,
   TableBody,
@@ -255,7 +160,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
-import { Skeleton } from '@/components/ui/skeleton'
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import {
   Pagination,
@@ -267,47 +172,72 @@ import {
   PaginationPrevious,
 } from '@/components/ui/pagination'
 import { Input } from '@/components/ui/input'
+import { Button } from '@/components/ui/button'
 import { allUsers } from '@/data/usersData'
-import { getListUser } from '@/api/getListUser'
+import { getListUser } from '@/api/users/getListUser'
 import { useQuery } from '@tanstack/vue-query'
-
-interface UserDataInterface {
-  id: string
-  email: string
-  phone: string
-  role_id: number
-  name: string
-}
-
-const { isPending, data } = useQuery<UserDataInterface[]>({
-  queryKey: ['users'],
-  queryFn: getListUser,
-  staleTime: 1000 * 60 * 5, // 5 menit
-})
+import ListUserTableSkeleton from '@/components/custom/skeletons/ListUserTableSkeleton.vue'
+import { SearchIcon, X, Link2, User, Users } from 'lucide-vue-next'
+import type { UserListInterface as ResponseAPIUsersInterface } from '@/types/userListType'
+import UserListHeaderCards from '@/components/custom/cards/UserListHeaderCards.vue'
+import DeleteUserAlert from '@/components/custom/alerts/DeleteUserAlert.vue'
+import EditUserAlert from '@/components/custom/alerts/EditUserAlert.vue'
+import { useRouter } from 'vue-router'
+import { useUserRole } from '@/composables/useUserRole'
 
 // Pagination state
 const currentPage = ref(1)
-const itemsPerPage = ref(10)
-
-// Search and filter state
 const searchQuery = ref('')
 
-const paginatedUsers = computed(() => {
-  const start = (currentPage.value - 1) * itemsPerPage.value
-  const end = start + itemsPerPage.value
-  return (filteredUsers.value ?? []).slice(start, end)
-})
+const router = useRouter()
+const { isAdmin } = useUserRole()
 
-// Watch for filter changes and reset to page 1
-watch([searchQuery], () => {
+// Reactive query with pagination
+const { isPending, data, refetch } = useQuery({
+  queryKey: ['users', currentPage, searchQuery],
+  queryFn: () =>
+    getListUser({
+      page: currentPage.value,
+      search: searchQuery.value || undefined,
+    }),
+  staleTime: 1000 * 60 * 5, // 5 minutes
+}) as {
+  isPending: Ref<boolean>
+  data: Ref<ResponseAPIUsersInterface | undefined>
+  refetch: () => void
+}
+
+// Pagination functions
+const goToPage = (page: number) => {
+  if (page >= 1 && page <= (data.value?.total_pages || 1)) {
+    currentPage.value = page
+  }
+}
+
+// Search functions
+let searchTimeout: number
+const handleSearch = () => {
+  // Debounce search to avoid too many API calls
+  clearTimeout(searchTimeout)
+  searchTimeout = setTimeout(() => {
+    currentPage.value = 1 // Reset to first page when searching
+    refetch()
+  }, 500)
+}
+
+const clearSearch = () => {
+  searchQuery.value = ''
   currentPage.value = 1
-})
+  refetch()
+}
 
+// Computed for visible pages
 const visiblePages = computed(() => {
   const pages = []
   const maxVisible = 5
+  const totalPages = data.value?.total_pages || 1
   const start = Math.max(1, currentPage.value - Math.floor(maxVisible / 2))
-  const end = Math.min(totalPages.value, start + maxVisible - 1)
+  const end = Math.min(totalPages, start + maxVisible - 1)
 
   for (let i = start; i <= end; i++) {
     pages.push(i)
@@ -315,10 +245,25 @@ const visiblePages = computed(() => {
   return pages
 })
 
-// Computed properties for pagination
-const totalPages = computed(() => Math.ceil(filteredUsers.value?.length ?? 0 / itemsPerPage.value))
+// Watch currentPage changes to refetch data
+watch(currentPage, () => {
+  refetch()
+})
 
-// Computed properties for stats
+const goToLinks = (user_id: string) => {
+  router.push(`/dashboard/${user_id}/services`)
+}
+
+// Admin navigation functions
+const addNewUser = () => {
+  router.push('/dashboard/admin/create-user')
+}
+
+const addNewUserBatch = () => {
+  router.push('/dashboard/admin/create-user-batch')
+}
+
+// Computed properties for stats (keep using allUsers for now, or modify as needed)
 const activeUsersCount = computed(() => allUsers.filter((user) => user.status === 'Active').length)
 
 const newUsersCount = computed(() => {
@@ -338,19 +283,4 @@ const getRoleBadgeClass = (role: number) => {
   }
   return classes[role as keyof typeof classes] || classes[2]
 }
-
-// Computed properties for search and filtering
-const filteredUsers = computed(() => {
-  let filtered = data.value
-
-  // Apply search filter
-  if (searchQuery.value.trim()) {
-    const query = searchQuery.value.toLowerCase().trim()
-    filtered = filtered?.filter(
-      (user) => user.name.toLowerCase().includes(query) || user.email.toLowerCase().includes(query),
-    )
-  }
-
-  return filtered
-})
 </script>
