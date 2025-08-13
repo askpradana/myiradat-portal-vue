@@ -105,7 +105,7 @@
             <div class="group p-4 border rounded-xl">
               <div class="flex items-start space-x-3">
                 <div
-                  class="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center bg-blue-100 transition-colors"
+                  class="w-10 h-10 rounded-lg shadow-sm flex items-center justify-center bg-blue-100 transition-colors"
                 >
                   <Mail class="w-5 h-5 text-blue-600" />
                 </div>
@@ -121,7 +121,7 @@
             <div class="group p-4 border rounded-xl">
               <div class="flex items-start space-x-3">
                 <div
-                  class="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center bg-green-100 transition-colors"
+                  class="w-10 h-10 rounded-lg shadow-sm flex items-center justify-center bg-green-100 transition-colors"
                 >
                   <Phone class="w-5 h-5 text-green-600" />
                 </div>
@@ -137,7 +137,7 @@
             <div class="group p-4 border rounded-xl">
               <div class="flex items-start space-x-3">
                 <div
-                  class="w-10 h-10 bg-white rounded-lg shadow-sm flex items-center justify-center bg-purple-100 transition-colors"
+                  class="w-10 h-10 rounded-lg shadow-sm flex items-center justify-center bg-purple-100 transition-colors"
                 >
                   <Globe class="w-5 h-5 text-purple-600" />
                 </div>
