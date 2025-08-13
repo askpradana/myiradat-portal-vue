@@ -18,7 +18,7 @@
             <div class="relative">
               <div class="w-30 h-30 rounded-2xl overflow-hidden shadow-lg ring-4 ring-white/50">
                 <img
-                  :src="data?.logo_url"
+                  :src="data?.logo_url ? data?.logo_url : tmpImage"
                   alt="Organization Logo"
                   class="w-full h-full object-cover"
                 />
@@ -281,6 +281,9 @@ import {
   Contact as ContactIcon,
 } from 'lucide-vue-next'
 import DetailOrganizationSkeleton from '@/components/custom/skeletons/DetailOrganizationSkeleton.vue'
+
+const tmpImage =
+  'https://static.vecteezy.com/system/resources/previews/029/226/937/non_2x/city-building-silhouette-design-modern-architecture-sign-and-symbol-vector.jpg'
 
 const route = useRoute()
 const organizationID = route.params.id as string

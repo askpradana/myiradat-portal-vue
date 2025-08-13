@@ -108,7 +108,10 @@
                     :data-user="organization as any"
                     :current-page="currentPage"
                   />
-                  <DeleteUserAlert :user-i-d="organization.id" :name-of-user="organization.name" />
+                  <DeleteOrganizationAlert
+                    :organization-i-d="organization.id"
+                    :name-of-organization="organization.name"
+                  />
                 </div>
               </TableCell>
             </TableRow>
@@ -186,7 +189,7 @@ import { useQuery } from '@tanstack/vue-query'
 import ListUserTableSkeleton from '@/components/custom/skeletons/ListUserTableSkeleton.vue'
 import { SearchIcon, X, Building, FileSearch2 } from 'lucide-vue-next'
 import UserListHeaderCards from '@/components/custom/cards/UserListHeaderCards.vue'
-import DeleteUserAlert from '@/components/custom/alerts/DeleteUserAlert.vue'
+import DeleteOrganizationAlert from '@/components/custom/alerts/DeleteOrganizationAlert.vue'
 import EditUserAlert from '@/components/custom/alerts/EditUserAlert.vue'
 import { useRouter } from 'vue-router'
 import { useUserRole } from '@/composables/useUserRole'
@@ -206,7 +209,7 @@ const { isPending, data, refetch } = useQuery({
     getListOrganization({
       page: currentPage?.value,
       search: searchQuery.value || undefined,
-  }),
+    }),
   staleTime: 1000 * 60 * 5, // 5 minutes
 }) as {
   isPending: Ref<boolean>
