@@ -37,11 +37,13 @@ export interface FeatureCard {
 }
 
 export interface AnimationData {
-  type: 'pulse' | 'slide' | 'fade' | 'scale' | 'rotate'
+  type: 'pulse' | 'slide' | 'fade' | 'scale' | 'rotate' | 'data-sync' | 'progress' | 'status'
   duration: number
   delay?: number
   repeat?: boolean
   elements?: string[]
+  data?: string[]
+  interval?: number
 }
 
 export interface TestimonialWithMetrics {
@@ -180,5 +182,64 @@ export interface HomepageConfig {
     pricing: PricingPlan[]
     faq: FAQItem[]
     trustIndicators: TrustIndicator[]
+  }
+}
+
+// Bento Grid specific types
+export interface BentoCardIntegration {
+  name: string
+  short: string
+  color: string
+}
+
+export interface BentoCardTheme {
+  primary: string
+  accent: string
+  background: string
+  hover: string
+}
+
+export interface BentoCard extends Omit<FeatureCard, 'content'> {
+  type: 'hero' | 'feature' | 'metric' | 'integration' | 'placeholder'
+  theme: BentoCardTheme
+  status?: 'active' | 'coming-soon' | 'beta'
+  content: {
+    metrics?: MetricData[]
+    integrations?: BentoCardIntegration[]
+    animation?: AnimationData
+    progress?: {
+      label: string
+      value: number
+      max: number
+    }
+    statusList?: {
+      label: string
+      status: 'active' | 'verified' | 'operational'
+      color: string
+    }[]
+    highlights?: string[]
+    comingSoon?: {
+      title: string
+      description: string
+      eta: string
+    }
+  }
+}
+
+export interface BentoGridLayout {
+  desktop: string[]
+  tablet: string[]
+  mobile: string[]
+}
+
+export interface BentoGridConfig {
+  title: string
+  subtitle: string
+  description: string
+  cards: BentoCard[]
+  layout: BentoGridLayout
+  animations: {
+    enabled: boolean
+    reducedMotion: boolean
   }
 }

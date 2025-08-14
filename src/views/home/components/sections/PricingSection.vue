@@ -200,27 +200,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Enterprise CTA -->
-      <div class="text-center mt-16">
-        <div class="bg-gradient-to-r from-primary/5 to-primary/10 rounded-2xl p-8">
-          <h3 class="text-2xl font-bold text-foreground mb-4">Need an enterprise solution?</h3>
-          <p class="text-muted-foreground mb-6 max-w-2xl mx-auto">
-            Looking for multiple user licenses, custom integrations, or dedicated support? Our
-            enterprise team creates tailored solutions for organizations of all sizes.
-          </p>
-          <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" @click="contactSales">
-              Contact Sales Team
-              <Phone class="w-4 h-4 ml-2" />
-            </Button>
-            <Button size="lg" variant="outline" @click="scheduleDemo">
-              Schedule Demo
-              <Calendar class="w-4 h-4 ml-2" />
-            </Button>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 </template>
@@ -229,7 +208,7 @@
 import { ref } from 'vue'
 import { Button } from '@/components/ui/button'
 import { useRouter } from 'vue-router'
-import { Phone, Calendar, Check } from 'lucide-vue-next'
+import { Check } from 'lucide-vue-next'
 
 // TypeScript interfaces
 interface Service {
@@ -323,9 +302,5 @@ const purchasePro = () => {
 
 const contactSales = () => {
   router.push('/contact-sales')
-}
-
-const scheduleDemo = () => {
-  router.push('/demo')
 }
 </script>
