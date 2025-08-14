@@ -1,44 +1,45 @@
 <template>
   <div class="min-h-screen bg-background">
     <!-- Header Section -->
-    <header v-if="config.showHeader" class="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b">
+    <header
+      v-if="config.showHeader"
+      class="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b"
+    >
       <slot name="header">
         <HeaderDashboard :role-user="userRole" />
       </slot>
     </header>
 
     <!-- Main Content Container -->
-    <main :class="[
-      'mx-auto',
-      config.maxWidth || 'max-w-7xl',
-      config.padding || 'px-4 sm:px-6 lg:px-8 py-8'
-    ]">
+    <main
+      :class="[
+        'mx-auto',
+        config.maxWidth || 'max-w-7xl',
+        config.padding || 'px-4 sm:px-6 lg:px-8 py-8',
+      ]"
+    >
       <!-- Navigation Section -->
-      <nav 
-        v-if="config.showNavigation" 
+      <nav
+        v-if="config.showNavigation"
         class="mb-6"
         role="navigation"
         aria-label="Dashboard navigation"
       >
         <slot name="navigation">
-          <NavigationTab 
-            :active-tab="activeTab" 
+          <NavigationTab
+            :active-tab="activeTab"
             :available-tabs="availableTabs"
             :user-role="userRole"
-            @change-tab="handleTabChange" 
+            @change-tab="handleTabChange"
           />
         </slot>
       </nav>
 
       <!-- Content Section with Loading States -->
-      <section 
-        class="relative"
-        role="main"
-        :aria-label="`${activeTab} content`"
-      >
+      <section class="relative" role="main" :aria-label="`${activeTab} content`">
         <!-- Loading Overlay -->
-        <div 
-          v-if="isLoading" 
+        <div
+          v-if="isLoading"
           class="absolute inset-0 bg-background/80 backdrop-blur-sm z-10 flex items-center justify-center"
           aria-label="Loading content"
         >
@@ -49,8 +50,8 @@
         </div>
 
         <!-- Error State -->
-        <div 
-          v-else-if="error" 
+        <div
+          v-else-if="error"
           class="flex flex-col items-center justify-center py-12 px-4"
           role="alert"
           aria-live="polite"
@@ -69,11 +70,11 @@
         </div>
 
         <!-- Main Content Slot -->
-        <div 
+        <div
           v-else
           class="space-y-6"
           :class="{
-            'opacity-50 pointer-events-none': isLoading
+            'opacity-50 pointer-events-none': isLoading,
           }"
         >
           <slot />
@@ -109,12 +110,7 @@ import { AlertCircle, RefreshCw, Plus } from 'lucide-vue-next'
 import HeaderDashboard from './HeaderDashboard.vue'
 import NavigationTab from './NavigationTab.vue'
 
-import type { 
-  DashboardTab, 
-  UserRole, 
-  DashboardLayoutConfig,
-  TabConfig
-} from '@/types/dashboard'
+import type { DashboardTab, UserRole, DashboardLayoutConfig, TabConfig } from '@/types/dashboard'
 import { getAccessibleTabs } from '@/lib/dashboard-utils'
 
 interface Props {
@@ -138,7 +134,7 @@ const props = withDefaults(defineProps<Props>(), {
   isLoading: false,
   error: null,
   showFab: false,
-  availableTabs: undefined
+  availableTabs: undefined,
 })
 
 const emit = defineEmits<Emits>()
@@ -152,21 +148,19 @@ const config = computed(() => ({
   padding: 'px-4 sm:px-6 lg:px-8 py-8',
   showHeader: true,
   showNavigation: true,
-  ...props.config
+  ...props.config,
 }))
 
 // Get accessible tabs for current user
 const availableTabs = computed(() => {
   if (props.availableTabs) {
-    return props.availableTabs.filter(tab => 
-      getAccessibleTabs(props.userRole).includes(tab.id)
-    )
+    return props.availableTabs.filter((tab) => getAccessibleTabs(props.userRole).includes(tab.id))
   }
-  
-  return getAccessibleTabs(props.userRole).map(tabId => ({
+
+  return getAccessibleTabs(props.userRole).map((tabId) => ({
     id: tabId,
     label: tabId.charAt(0).toUpperCase() + tabId.slice(1),
-    requiresAdmin: tabId === 'users'
+    requiresAdmin: tabId === 'users',
   }))
 })
 

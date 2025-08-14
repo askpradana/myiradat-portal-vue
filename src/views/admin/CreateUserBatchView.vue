@@ -10,10 +10,6 @@
 
       <div class="flex gap-3">
         <UploadCSVBatch />
-        <!-- <Button @click="console.log('upload')" variant="outline" class="flex items-center gap-2">
-          <Upload />
-          Import CSV
-        </Button> -->
       </div>
     </div>
 

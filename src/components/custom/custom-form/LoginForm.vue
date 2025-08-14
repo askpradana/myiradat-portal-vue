@@ -10,10 +10,16 @@ import { useRouter } from 'vue-router'
 import { login } from '@/api/login'
 import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
+import { Eye, EyeClosed } from 'lucide-vue-next'
 
 const loading = ref(false)
+const isShowPassword = ref(false)
 const router = useRouter()
 const userStore = useUserStore()
+
+const showPassword = () => {
+  isShowPassword.value = !isShowPassword.value
+}
 
 const validationSchema = loginValidationSchema
 const { handleSubmit, errors } = useForm({
@@ -98,14 +104,28 @@ const onSubmit = handleSubmit(async (values) => {
               Forgot password?
             </a>
           </div>
-          <Input
-            id="password"
-            type="password"
-            placeholder="Enter your password"
-            class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-            required
-            v-model="password"
-          />
+          <div class="relative">
+            <Input
+              id="password"
+              :type="isShowPassword ? 'text' : 'password'"
+              placeholder="Enter your password"
+              class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+              required
+              v-model="password"
+            />
+            <Eye
+              :size="18"
+              class="absolute right-3 top-3 text-slate-400 dark:text-purple-500"
+              @click="showPassword"
+              v-if="isShowPassword"
+            />
+            <EyeClosed
+              :size="18"
+              class="absolute right-3 top-3 text-slate-400 dark:text-purple-500"
+              @click="showPassword"
+              v-else
+            />
+          </div>
           <span class="text-xs text-red-400">{{ errors.password }}</span>
         </div>
 

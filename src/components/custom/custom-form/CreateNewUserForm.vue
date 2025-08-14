@@ -15,6 +15,14 @@ import { registerNewUser, type NewUserInterface } from '@/api/register'
 import { toast } from 'vue-sonner'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { CreateNewUserSchema } from '@/lib/zod-schemas/registerFormSchema'
+import { ref } from 'vue'
+import { Eye, EyeClosed } from 'lucide-vue-next'
+
+const isShowPassword = ref(false)
+
+const showPassword = () => {
+  isShowPassword.value = !isShowPassword.value
+}
 
 const validationSchema = CreateNewUserSchema
 const { handleSubmit, errors, resetForm } = useForm({
@@ -106,16 +114,31 @@ const onSubmit = handleSubmit(async (values) => {
 
         <div class="space-y-2">
           <Label for="password" class="text-sm font-medium text-foreground">Password</Label>
-          <Input
-            id="password"
-            type="password"
-            placeholder="Enter your password"
-            class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-            required
-            v-model="password"
-          />
+          <div class="relative">
+            <Input
+              id="password"
+              :type="isShowPassword ? 'text' : 'password'"
+              placeholder="Enter your password"
+              class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+              required
+              v-model="password"
+            />
+            <Eye
+              :size="18"
+              class="absolute right-3 top-3 text-slate-400 dark:text-purple-500"
+              @click="showPassword"
+              v-if="isShowPassword"
+            />
+            <EyeClosed
+              :size="18"
+              class="absolute right-3 top-3 text-slate-400 dark:text-purple-500"
+              @click="showPassword"
+              v-else
+            />
+          </div>
           <span class="text-xs text-red-400">{{ errors.password }}</span>
         </div>
+
         <div class="space-y-2 w-full">
           <Label for="plan">Select Role</Label>
           <Select v-model="role">

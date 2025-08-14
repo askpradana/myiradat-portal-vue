@@ -27,6 +27,18 @@
           Users Management
         </button>
         <button
+          v-if="userStore.user?.role_id === 1"
+          @click="selectTab('organizations')"
+          :class="[
+            'py-2 px-1 border-b-2 font-medium text-sm',
+            activeTab === 'organizations'
+              ? 'border-primary/50 text-primary'
+              : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border',
+          ]"
+        >
+          Organizations
+        </button>
+        <button
           v-if="userStore.user?.role_id === 2"
           @click="selectTab('data')"
           :class="[
@@ -61,16 +73,16 @@ import { useUserStore } from '@/stores/userStores'
 const userStore = useUserStore()
 
 const { activeTab } = defineProps<{
-  activeTab: 'dashboard' | 'users' | 'profile' | 'data'
+  activeTab: 'dashboard' | 'users' | 'profile' | 'data' | 'organizations'
 }>()
 
 // Tentukan tipe emit, misalnya kita ingin emit event 'changeTab'
 const emit = defineEmits<{
-  (e: 'changeTab', newTab: 'dashboard' | 'users' | 'profile' | 'data'): void
+  (e: 'changeTab', newTab: 'dashboard' | 'users' | 'profile' | 'data' | 'organizations'): void
 }>()
 
 // fungsi untuk memancarkan event
-const selectTab = (tab: 'dashboard' | 'users' | 'profile' | 'data') => {
+const selectTab = (tab: 'dashboard' | 'users' | 'profile' | 'data' | 'organizations') => {
   emit('changeTab', tab)
 }
 </script>
