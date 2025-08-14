@@ -1,0 +1,184 @@
+export interface MetricData {
+  value: string | number
+  label: string
+  suffix?: string
+  prefix?: string
+  animated?: boolean
+  countUp?: boolean
+}
+
+export interface FeatureCard {
+  id: string
+  title: string
+  description: string
+  icon: string
+  iconColor?: string
+  iconBgColor?: string
+  gridArea: string
+  size: 'small' | 'medium' | 'large' | 'xl'
+  interactive?: boolean
+  image?: string
+  gradient?: {
+    from: string
+    to: string
+  }
+  content?: {
+    type: 'chart' | 'image' | 'video' | 'demo' | 'metrics' | 'animation'
+    url?: string
+    data?: unknown
+    animation?: AnimationData
+    metrics?: MetricData[]
+  }
+  stats?: {
+    label: string
+    value: string
+    trend?: 'up' | 'down' | 'stable'
+  }[]
+}
+
+export interface AnimationData {
+  type: 'pulse' | 'slide' | 'fade' | 'scale' | 'rotate'
+  duration: number
+  delay?: number
+  repeat?: boolean
+  elements?: string[]
+}
+
+export interface TestimonialWithMetrics {
+  id: string
+  name: string
+  role: string
+  company: string
+  avatar: string
+  content: string
+  metrics?: {
+    improvement: string
+    timeframe: string
+    category: string
+  }
+  rating: number
+  industry?: string
+}
+
+export interface CarouselUseCase {
+  id: string
+  title: string
+  description: string
+  industry: string
+  image: string
+  features: string[]
+  metrics?: {
+    label: string
+    value: string
+  }[]
+  cta: {
+    label: string
+    action: string
+  }
+}
+
+export interface TrustIndicator {
+  id: string
+  name: string
+  logo: string
+  category: 'client' | 'certification' | 'partner' | 'award'
+  description?: string
+  icon?: string
+  color?: string
+  bgColor?: string
+  verified?: boolean
+  link?: string
+  metrics?: {
+    label: string
+    value: string
+    icon?: string
+  }[]
+}
+
+export interface TrustPillar {
+  id: string
+  title: string
+  description: string
+  icon: string
+  iconColor: string
+  iconBgColor: string
+  metrics?: {
+    label: string
+    value: string
+    icon?: string
+  }[]
+  badges?: {
+    label: string
+    color: string
+  }[]
+  status?: {
+    label: string
+    indicator: 'online' | 'active' | 'verified'
+    pulse?: boolean
+  }
+}
+
+export interface PricingPlan {
+  id: string
+  name: string
+  price: {
+    amount: number
+    currency: string
+    period: string
+  }
+  description: string
+  features: string[]
+  popular?: boolean
+  enterprise?: boolean
+  cta: {
+    label: string
+    action: string
+  }
+}
+
+export interface FAQItem {
+  id: string
+  question: string
+  answer: string
+  category?: string
+}
+
+export interface AnimationConfig {
+  duration: number
+  delay?: number
+  easing: string
+  stagger?: number
+}
+
+export interface ViewportIntersection {
+  isVisible: boolean
+  ratio: number
+  element?: Element
+}
+
+export interface NavigationItem {
+  label: string
+  href: string
+  external?: boolean
+  children?: NavigationItem[]
+}
+
+export interface HomepageConfig {
+  hero: {
+    title: string
+    subtitle: string
+    cta: {
+      primary: NavigationItem
+      secondary?: NavigationItem
+    }
+    metrics: MetricData[]
+  }
+  sections: {
+    features: FeatureCard[]
+    testimonials: TestimonialWithMetrics[]
+    useCases: CarouselUseCase[]
+    pricing: PricingPlan[]
+    faq: FAQItem[]
+    trustIndicators: TrustIndicator[]
+  }
+}
