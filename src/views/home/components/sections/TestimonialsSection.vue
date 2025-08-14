@@ -69,11 +69,17 @@
 
             <!-- Author -->
             <div class="flex items-center">
-              <img
-                :src="testimonial.avatar"
+              <DynamicAvatar
+                :identifier="testimonial.name.toLowerCase().replace(/\s+/g, '_')"
+                type="person"
+                :size="48"
                 :alt="`${testimonial.name} avatar`"
-                class="w-12 h-12 rounded-full mr-4 object-cover"
-                loading="lazy"
+                class="mr-4"
+                :metadata="{
+                  name: testimonial.name,
+                  role: testimonial.role,
+                  company: testimonial.company
+                }"
               />
               <div>
                 <div class="font-semibold text-foreground">{{ testimonial.name }}</div>
@@ -117,6 +123,7 @@ import { computed } from 'vue'
 import { Card, CardContent } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
+import DynamicAvatar from '@/components/ui/avatar/DynamicAvatar.vue'
 import { useRouter } from 'vue-router'
 import { Star, Calendar, ExternalLink } from 'lucide-vue-next'
 

@@ -49,7 +49,7 @@ export interface TestimonialWithMetrics {
   name: string
   role: string
   company: string
-  avatar: string
+  avatar?: string // Made optional for dynamic avatar support
   content: string
   metrics?: {
     improvement: string

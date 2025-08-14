@@ -211,7 +211,6 @@ export const useHomepageStore = defineStore('homepage', () => {
           name: 'Sarah Chen',
           role: 'CTO',
           company: 'TechCorp Solutions',
-          avatar: '/avatars/sarah-chen.jpg',
           content: 'IRADAT transformed our operations, reducing processing time by 75% and eliminating manual errors.',
           metrics: {
             improvement: '75%',

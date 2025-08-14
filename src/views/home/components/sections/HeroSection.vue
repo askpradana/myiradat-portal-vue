@@ -70,12 +70,15 @@
           >
             <div class="flex items-center space-x-2">
               <div class="flex -space-x-2">
-                <img
+                <DynamicAvatar
                   v-for="i in 3"
                   :key="i"
-                  class="w-8 h-8 rounded-full border-2 border-background"
-                  :src="`/avatars/user-${i}.jpg`"
+                  :identifier="`hero_user_${i}`"
+                  type="person"
+                  :size="32"
                   :alt="`User ${i}`"
+                  class="border-2 border-background"
+                  :metadata="{ name: `User ${i}` }"
                 />
               </div>
               <span>Join thousands of satisfied users</span>
@@ -137,6 +140,7 @@
 <script setup lang="ts">
 import { ref, onMounted, nextTick } from 'vue'
 import { Button } from '@/components/ui/button'
+import DynamicAvatar from '@/components/ui/avatar/DynamicAvatar.vue'
 import { useRouter } from 'vue-router'
 import { useHomepageStore } from '@/stores/homepage'
 import { useIntersectionObserver, useAnimations } from '../../composables'
