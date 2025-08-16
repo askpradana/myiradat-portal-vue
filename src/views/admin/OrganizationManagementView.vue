@@ -1,11 +1,11 @@
 <template>
   <!-- Stats Cards -->
-  <UserListHeaderCards
+  <!-- <UserListHeaderCards
     :active-users-count="activeUsersCount"
     :premium-users-count="premiumUsersCount"
     :new-users-count="newUsersCount"
     :filtered-users="[]"
-  />
+  /> -->
 
   <!-- Admin Action Bar -->
   <div
@@ -19,7 +19,21 @@
         <span>Add Organizations</span>
       </Button>
     </div>
+
+    <!-- Right: Toggle Filter -->
+    <Button variant="outline" @click="toggleFilter">
+      <Filter :size="18" />
+      <span>{{ showFilter ? 'Hide' : 'Show' }} Filters</span>
+    </Button>
   </div>
+
+  <!-- Filter Component -->
+  <OrganizationListFilter
+    v-if="showFilter"
+    :initial-filters="currentFilters"
+    @filters-changed="handleFiltersChanged"
+    @filters-reset="handleFiltersReset"
+  />
 
   <!-- User Table -->
   <Card>
@@ -27,35 +41,12 @@
       <CardTitle class="text-foreground">Organization Management</CardTitle>
       <CardDescription class="text-muted-foreground">
         A list of all organization in your database.
+        <span v-if="hasActiveFilters" class="ml-2 text-primary">
+          ({{ data?.total || 0 }} filtered results)
+        </span>
       </CardDescription>
     </CardHeader>
     <CardContent>
-      <!-- Search and Filter Controls -->
-      <div class="mb-6 space-y-4">
-        <!-- Search Bar -->
-        <div class="relative w-full max-w-xl">
-          <Input
-            v-model="searchQuery"
-            placeholder="Search by name or email..."
-            class="w-full pl-10 pr-10 py-2 rounded-md border border-border focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 text-sm bg-background text-foreground"
-            @input="handleSearch"
-          />
-          <!-- Search Icon -->
-          <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
-            <SearchIcon :size="18" />
-          </div>
-          <!-- Clear "X" Button -->
-          <button
-            v-if="searchQuery"
-            @click="clearSearch"
-            type="button"
-            class="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
-          >
-            <X :size="18" />
-          </button>
-        </div>
-      </div>
-
       <Table>
         <TableHeader>
           <TableRow>
@@ -71,7 +62,7 @@
             <ListUserTableSkeleton />
           </template>
 
-          <template v-else>
+          <template v-else-if="data?.organizations && data.organizations.length > 0">
             <TableRow v-for="organization in data?.organizations" :key="organization.id">
               <TableCell class="font-medium text-foreground">
                 <div class="flex items-center space-x-3">
@@ -119,15 +110,38 @@
               </TableCell>
             </TableRow>
           </template>
+
+          <!-- No Results -->
+          <template v-else>
+            <TableRow>
+              <TableCell :colspan="5" class="h-24 text-center text-muted-foreground">
+                <div class="flex flex-col items-center justify-center py-8">
+                  <SearchIcon :size="48" class="mb-4 opacity-50" />
+                  <p class="text-lg font-medium">No organizations found</p>
+                  <p class="text-sm">
+                    {{ 'Try adjusting your filters' }}
+                  </p>
+                  <Button
+                    v-if="hasActiveFilters"
+                    variant="outline"
+                    @click="handleFiltersReset"
+                    class="mt-3"
+                  >
+                    Clear Filters
+                  </Button>
+                </div>
+              </TableCell>
+            </TableRow>
+          </template>
         </TableBody>
       </Table>
 
       <!-- Pagination -->
-      <div class="mt-6" v-if="data">
+      <div class="mt-6" v-if="data && data?.organizations?.length > 0">
         <Pagination
           v-model:page="currentPage"
-          :items-per-page="data?.page_size"
-          :total="data?.total"
+          :items-per-page="data.page_size"
+          :total="data.total"
           :sibling-count="1"
         >
           <PaginationContent>
@@ -144,7 +158,7 @@
             </PaginationItem>
             <PaginationNext
               @click="goToPage(currentPage + 1)"
-              :disabled="currentPage === data?.total_pages"
+              :disabled="currentPage === data.total_pages"
             />
             <PaginationLast
               @click="goToPage(data.total_pages)"
@@ -156,7 +170,10 @@
         <!-- Pagination Info -->
         <div class="mt-4 text-sm text-muted-foreground text-center">
           Showing {{ (currentPage - 1) * data.page_size + 1 }} to
-          {{ Math.min(currentPage * data.page_size, data?.total) }} of {{ data?.total }} results
+          {{ Math.min(currentPage * data.page_size, data.total) }} of {{ data.total }} results
+          <span v-if="hasActiveFilters" class="text-primary">
+            (filtered from {{ data.total }})
+          </span>
         </div>
       </div>
     </CardContent>
@@ -164,7 +181,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, type Ref } from 'vue'
+import { ref, computed, watch, type Ref, onMounted } from 'vue'
 import {
   Table,
   TableBody,
@@ -184,63 +201,83 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination'
-import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { allUsers } from '@/data/usersData'
+// import { allUsers } from '@/data/usersData'
 import { getListOrganization } from '@/api/organizations/getListOrganizations'
 import { useQuery } from '@tanstack/vue-query'
 import ListUserTableSkeleton from '@/components/custom/skeletons/ListUserTableSkeleton.vue'
-import { SearchIcon, X, Building, FileSearch, Pencil } from 'lucide-vue-next'
-import UserListHeaderCards from '@/components/custom/cards/UserListHeaderCards.vue'
+import { SearchIcon, Building, FileSearch, Pencil, Filter } from 'lucide-vue-next'
+// import UserListHeaderCards from '@/components/custom/cards/UserListHeaderCards.vue'
 import DeleteOrganizationAlert from '@/components/custom/alerts/DeleteOrganizationAlert.vue'
+import OrganizationListFilter from '@/components/custom/filters/OrganizationListFilter.vue'
 import { useRouter } from 'vue-router'
 import { useUserRole } from '@/composables/useUserRole'
 import type { ResponseAPIGetOrganizationsData } from '@/types/organizationType'
 
-// Pagination state
+// State
 const currentPage = ref(1)
-const searchQuery = ref('')
+const showFilter = ref(false)
+const currentFilters = ref<Record<string, any>>({})
 
 const router = useRouter()
 const { isAdmin } = useUserRole()
 
-// Reactive query with pagination
+// Computed for query parameters
+const queryParams = computed(() => ({
+  page: currentPage.value,
+  ...currentFilters.value,
+}))
+
+// Check if there are active filters
+const hasActiveFilters = computed(() => {
+  return Object.keys(currentFilters.value).length > 0
+})
+
+// Reactive query with all filters
 const { isPending, data, refetch } = useQuery({
-  queryKey: ['organizations', currentPage, searchQuery],
-  queryFn: () =>
-    getListOrganization({
-      page: currentPage?.value,
-      search: searchQuery.value || undefined,
-    }),
+  queryKey: ['organizations', queryParams],
+  queryFn: () => getListOrganization(queryParams.value),
   staleTime: 1000 * 60 * 5, // 5 minutes
+  enabled: false, // Disable automatic refetching
 }) as {
   isPending: Ref<boolean>
   data: Ref<ResponseAPIGetOrganizationsData | undefined>
   refetch: () => void
 }
 
+// Initial data fetch
+onMounted(() => {
+  refetch()
+})
+
+// Filter Methods
+const handleFiltersChanged = (filters: Record<string, any>) => {
+  currentFilters.value = { ...filters }
+  currentPage.value = 1 // Reset to first page when filters change
+  refetch() // Manually refetch data
+}
+
+const handleFiltersReset = () => {
+  currentFilters.value = {}
+  currentPage.value = 1
+  refetch() // Manually refetch data
+}
+
+const toggleFilter = () => {
+  showFilter.value = !showFilter.value
+  if (!showFilter.value) {
+    // When hiding filter, clear advanced filters and refetch
+    currentFilters.value = {}
+    refetch()
+  }
+}
+
 // Pagination functions
 const goToPage = (page: number) => {
   if (page >= 1 && page <= (data.value?.total_pages || 1)) {
     currentPage.value = page
-  }
-}
-
-// Search functions
-let searchTimeout: number
-const handleSearch = () => {
-  // Debounce search to avoid too many API calls
-  clearTimeout(searchTimeout)
-  searchTimeout = setTimeout(() => {
-    currentPage.value = 1 // Reset to first page when searching
     refetch()
-  }, 500)
-}
-
-const clearSearch = () => {
-  searchQuery.value = ''
-  currentPage.value = 1
-  refetch()
+  }
 }
 
 // Computed for visible pages
@@ -257,7 +294,7 @@ const visiblePages = computed(() => {
   return pages
 })
 
-// Watch currentPage changes to refetch data
+// Watch for page changes
 watch(currentPage, () => {
   refetch()
 })
@@ -276,13 +313,13 @@ const addNewOrganization = () => {
 }
 
 // Computed properties for stats (keep using allUsers for now, or modify as needed)
-const activeUsersCount = computed(() => allUsers.filter((user) => user.status === 'Active').length)
+// const activeUsersCount = computed(() => allUsers.filter((user) => user.status === 'Active').length)
 
-const newUsersCount = computed(() => {
-  const thirtyDaysAgo = new Date()
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
-  return allUsers.filter((user) => new Date(user.createdAt) > thirtyDaysAgo).length
-})
+// const newUsersCount = computed(() => {
+//   const thirtyDaysAgo = new Date()
+//   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+//   return allUsers.filter((user) => new Date(user.createdAt) > thirtyDaysAgo).length
+// })
 
-const premiumUsersCount = computed(() => allUsers.filter((user) => user.role === 'Admin').length)
+// const premiumUsersCount = computed(() => allUsers.filter((user) => user.role === 'Admin').length)
 </script>

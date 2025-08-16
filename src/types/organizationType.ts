@@ -44,3 +44,15 @@ export interface ResponseAPIGetOrganizationsData {
   total: number
   total_pages: number
 }
+
+export interface OrganizationFilterParams {
+  page?: number | string
+  page_size?: number | string
+  search_by?: 'name' | 'email' | 'phone' | 'description'
+  search_query?: string
+  filter_industry?: string
+  filter_size?: 'small' | 'medium' | 'large' | string
+  filter_status?: 'active' | 'inactive' | 'pending' | string
+  order_by?: 'name' | 'created_at' | 'updated_at'
+  order_direction?: 'asc' | 'desc'
+}

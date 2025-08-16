@@ -1,21 +1,30 @@
 import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
 import { refreshToken } from '../refreshToken'
-import type { ResponseAPIGetOrganizations } from '@/types/organizationType'
-
-interface GetListOrganizationParams {
-  page?: number
-  search?: string
-  page_size?: number
-}
+import type {
+  ResponseAPIGetOrganizations,
+  OrganizationFilterParams,
+} from '@/types/organizationType'
 
 export const getListOrganization = async (
-  params: GetListOrganizationParams = {},
+  params: OrganizationFilterParams = {},
 ): Promise<ResponseAPIGetOrganizations> => {
   try {
-    const { page = 1, search, page_size = 10 } = params
+    const {
+      page = 1,
+      page_size = 10,
+      search_by,
+      search_query,
+      filter_industry,
+      filter_size,
+      filter_status,
+      // order_by,
+      order_direction,
+    } = params
     const userStore = useUserStore()
     const token = userStore.auth?.token
+
+    console.log('organization params:', params)
 
     // Periksa apakah token ada
     if (!token) {
@@ -27,8 +36,29 @@ export const getListOrganization = async (
     queryParams.append('page', page.toString())
     queryParams.append('page_size', page_size.toString())
 
-    if (search && search.trim()) {
-      queryParams.append('search', search.trim())
+    if (search_by && search_query && search_query.trim()) {
+      queryParams.append('search_by', search_by)
+      queryParams.append('search_query', search_query.trim())
+    }
+
+    if (filter_industry && filter_industry.trim()) {
+      queryParams.append('filter_industry', filter_industry.trim())
+    }
+
+    if (filter_size && filter_size.trim()) {
+      queryParams.append('filter_size', filter_size.trim())
+    }
+
+    if (filter_status && filter_status.trim()) {
+      queryParams.append('filter_status', filter_status.trim())
+    }
+
+    // if (order_by && order_by.trim()) {
+    //   queryParams.append('order_by', order_by.trim())
+    // }
+
+    if (order_direction && ['asc', 'desc'].includes(order_direction)) {
+      queryParams.append('order_direction', order_direction)
     }
 
     const response = await fetch(
