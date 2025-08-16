@@ -1,14 +1,17 @@
 <template>
   <!-- Stats Cards -->
-  <UserListHeaderCards
+  <!-- <UserListHeaderCards
     :active-users-count="activeUsersCount"
     :premium-users-count="premiumUsersCount"
     :new-users-count="newUsersCount"
     :filtered-users="data?.users || []"
-  />
+  /> -->
 
   <!-- Admin Action Bar -->
-  <div v-if="isAdmin" class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+  <div
+    v-if="isAdmin"
+    class="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4"
+  >
     <!-- Left: Admin Actions -->
     <div class="flex items-center gap-3">
       <Button variant="default" size="default" @click="addNewUser">
@@ -20,7 +23,22 @@
         <span>Add User Batch</span>
       </Button>
     </div>
+
+    <!-- Right: Toggle Filter -->
+    <Button variant="outline" @click="toggleFilter">
+      <Filter :size="18" />
+      <span>{{ showFilter ? 'Hide' : 'Show' }} Filters</span>
+    </Button>
   </div>
+
+  <!-- Filter Component -->
+  <UserListFilter
+    v-if="showFilter"
+    :initial-filters="currentFilters"
+    :organizations="organizations"
+    @filters-changed="handleFiltersChanged"
+    @filters-reset="handleFiltersReset"
+  />
 
   <!-- User Table -->
   <Card>
@@ -28,18 +46,20 @@
       <CardTitle class="text-foreground">User Management</CardTitle>
       <CardDescription class="text-muted-foreground">
         A list of all users in your application including their name, email, and role.
+        <span v-if="hasActiveFilters" class="ml-2 text-primary">
+          ({{ data?.total || 0 }} filtered results)
+        </span>
       </CardDescription>
     </CardHeader>
     <CardContent>
-      <!-- Search and Filter Controls -->
-      <div class="mb-6 space-y-4">
-        <!-- Search Bar -->
+      <!-- Quick Search Bar (kept for backward compatibility) -->
+      <div v-if="!showFilter" class="mb-6 space-y-4">
         <div class="relative w-full max-w-xl">
           <Input
-            v-model="searchQuery"
-            placeholder="Search by name or email..."
+            v-model="quickSearch"
+            placeholder="Quick search by name or email..."
             class="w-full pl-10 pr-10 py-2 rounded-md border border-border focus:outline-none focus:ring-2 focus:ring-primary/50 focus:border-primary/50 text-sm bg-background text-foreground"
-            @input="handleSearch"
+            @input="handleQuickSearch"
           />
           <!-- Search Icon -->
           <div class="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground">
@@ -47,8 +67,8 @@
           </div>
           <!-- Clear "X" Button -->
           <button
-            v-if="searchQuery"
-            @click="clearSearch"
+            v-if="quickSearch"
+            @click="clearQuickSearch"
             type="button"
             class="absolute right-3 top-1/2 transform -translate-y-1/2 text-muted-foreground hover:text-foreground"
           >
@@ -72,8 +92,8 @@
             <ListUserTableSkeleton />
           </template>
 
-          <template v-else>
-            <TableRow v-for="user in data?.users" :key="user.id">
+          <template v-else-if="data?.users && data.users.length > 0">
+            <TableRow v-for="user in data.users" :key="user.id">
               <TableCell class="font-medium text-foreground">
                 <div class="flex items-center space-x-3">
                   {{ user.name }}
@@ -106,11 +126,38 @@
               </TableCell>
             </TableRow>
           </template>
+
+          <!-- No Results -->
+          <template v-else>
+            <TableRow>
+              <TableCell :colspan="5" class="h-24 text-center text-muted-foreground">
+                <div class="flex flex-col items-center justify-center py-8">
+                  <SearchIcon :size="48" class="mb-4 opacity-50" />
+                  <p class="text-lg font-medium">No users found</p>
+                  <p class="text-sm">
+                    {{
+                      hasActiveFilters
+                        ? 'Try adjusting your filters'
+                        : 'No users match your search criteria'
+                    }}
+                  </p>
+                  <Button
+                    v-if="hasActiveFilters"
+                    variant="outline"
+                    @click="handleFiltersReset"
+                    class="mt-3"
+                  >
+                    Clear Filters
+                  </Button>
+                </div>
+              </TableCell>
+            </TableRow>
+          </template>
         </TableBody>
       </Table>
 
       <!-- Pagination -->
-      <div class="mt-6" v-if="data">
+      <div class="mt-6" v-if="data && data?.users?.length > 0">
         <Pagination
           v-model:page="currentPage"
           :items-per-page="data.page_size"
@@ -144,6 +191,9 @@
         <div class="mt-4 text-sm text-muted-foreground text-center">
           Showing {{ (currentPage - 1) * data.page_size + 1 }} to
           {{ Math.min(currentPage * data.page_size, data.total) }} of {{ data.total }} results
+          <span v-if="hasActiveFilters" class="text-primary">
+            (filtered from {{ data.total }})
+          </span>
         </div>
       </div>
     </CardContent>
@@ -173,33 +223,54 @@ import {
 } from '@/components/ui/pagination'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
-import { allUsers } from '@/data/usersData'
+// import { allUsers } from '@/data/usersData'
 import { getListUser } from '@/api/users/getListUser'
 import { useQuery } from '@tanstack/vue-query'
 import ListUserTableSkeleton from '@/components/custom/skeletons/ListUserTableSkeleton.vue'
-import { SearchIcon, X, Link2, User, Users } from 'lucide-vue-next'
+import { SearchIcon, X, Link2, User, Users, Filter } from 'lucide-vue-next'
 import type { UserListInterface as ResponseAPIUsersInterface } from '@/types/userListType'
-import UserListHeaderCards from '@/components/custom/cards/UserListHeaderCards.vue'
+// import UserListHeaderCards from '@/components/custom/cards/UserListHeaderCards.vue'
+import UserListFilter from '@/components/custom/filters/UserListFilter.vue'
 import DeleteUserAlert from '@/components/custom/alerts/DeleteUserAlert.vue'
 import EditUserAlert from '@/components/custom/alerts/EditUserAlert.vue'
 import { useRouter } from 'vue-router'
 import { useUserRole } from '@/composables/useUserRole'
 
-// Pagination state
+// State
 const currentPage = ref(1)
-const searchQuery = ref('')
+const quickSearch = ref('') // For backward compatibility
+const showFilter = ref(false)
+const currentFilters = ref<Record<string, any>>({})
 
 const router = useRouter()
 const { isAdmin } = useUserRole()
 
-// Reactive query with pagination
-const { isPending, data, refetch } = useQuery({
-  queryKey: ['users', currentPage, searchQuery],
-  queryFn: () =>
-    getListUser({
-      page: currentPage.value,
-      search: searchQuery.value || undefined,
-    }),
+// Mock organizations data - replace with actual API call
+const organizations = ref([
+  { id: '1', name: 'Organization A' },
+  { id: '2', name: 'Organization B' },
+  { id: '3', name: 'Organization C' },
+])
+
+// Computed for query parameters
+const queryParams = computed(() => ({
+  page: currentPage.value,
+  ...currentFilters.value,
+  // Use quick search if no advanced filters are set
+  ...(Object.keys(currentFilters.value).length === 0 && quickSearch.value
+    ? { search: quickSearch.value }
+    : {}),
+}))
+
+// Check if there are active filters
+const hasActiveFilters = computed(() => {
+  return Object.keys(currentFilters.value).length > 0 || quickSearch.value.length > 0
+})
+
+// Reactive query with all filters
+const { isPending, data } = useQuery({
+  queryKey: ['users', queryParams],
+  queryFn: () => getListUser(queryParams.value),
   staleTime: 1000 * 60 * 5, // 5 minutes
 }) as {
   isPending: Ref<boolean>
@@ -207,28 +278,51 @@ const { isPending, data, refetch } = useQuery({
   refetch: () => void
 }
 
+// Filter Methods
+const handleFiltersChanged = (filters: Record<string, any>) => {
+  currentFilters.value = { ...filters }
+  currentPage.value = 1 // Reset to first page when filters change
+  quickSearch.value = '' // Clear quick search when using advanced filters
+}
+
+const handleFiltersReset = () => {
+  currentFilters.value = {}
+  currentPage.value = 1
+  quickSearch.value = ''
+}
+
+const toggleFilter = () => {
+  showFilter.value = !showFilter.value
+  if (!showFilter.value) {
+    // When hiding filter, clear advanced filters but keep quick search
+    currentFilters.value = {}
+  } else {
+    // When showing filter, clear quick search
+    quickSearch.value = ''
+  }
+}
+
+// Quick Search Methods (for backward compatibility)
+let searchTimeout: number
+const handleQuickSearch = () => {
+  clearTimeout(searchTimeout)
+  searchTimeout = setTimeout(() => {
+    currentPage.value = 1
+    // Clear advanced filters when using quick search
+    currentFilters.value = {}
+  }, 500)
+}
+
+const clearQuickSearch = () => {
+  quickSearch.value = ''
+  currentPage.value = 1
+}
+
 // Pagination functions
 const goToPage = (page: number) => {
   if (page >= 1 && page <= (data.value?.total_pages || 1)) {
     currentPage.value = page
   }
-}
-
-// Search functions
-let searchTimeout: number
-const handleSearch = () => {
-  // Debounce search to avoid too many API calls
-  clearTimeout(searchTimeout)
-  searchTimeout = setTimeout(() => {
-    currentPage.value = 1 // Reset to first page when searching
-    refetch()
-  }, 500)
-}
-
-const clearSearch = () => {
-  searchQuery.value = ''
-  currentPage.value = 1
-  refetch()
 }
 
 // Computed for visible pages
@@ -245,16 +339,11 @@ const visiblePages = computed(() => {
   return pages
 })
 
-// Watch currentPage changes to refetch data
-watch(currentPage, () => {
-  refetch()
-})
-
+// Navigation functions
 const goToLinks = (user_id: string) => {
   router.push(`/dashboard/${user_id}/services`)
 }
 
-// Admin navigation functions
 const addNewUser = () => {
   router.push('/dashboard/admin/create-user')
 }
@@ -264,15 +353,15 @@ const addNewUserBatch = () => {
 }
 
 // Computed properties for stats (keep using allUsers for now, or modify as needed)
-const activeUsersCount = computed(() => allUsers.filter((user) => user.status === 'Active').length)
+// const activeUsersCount = computed(() => allUsers.filter((user) => user.status === 'Active').length)
 
-const newUsersCount = computed(() => {
-  const thirtyDaysAgo = new Date()
-  thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
-  return allUsers.filter((user) => new Date(user.createdAt) > thirtyDaysAgo).length
-})
+// const newUsersCount = computed(() => {
+//   const thirtyDaysAgo = new Date()
+//   thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
+//   return allUsers.filter((user) => new Date(user.createdAt) > thirtyDaysAgo).length
+// })
 
-const premiumUsersCount = computed(() => allUsers.filter((user) => user.role === 'Admin').length)
+// const premiumUsersCount = computed(() => allUsers.filter((user) => user.role === 'Admin').length)
 
 // Helper functions
 const getRoleBadgeClass = (role: number) => {
@@ -283,4 +372,9 @@ const getRoleBadgeClass = (role: number) => {
   }
   return classes[role as keyof typeof classes] || classes[2]
 }
+
+// Watch for page changes
+watch(currentPage, () => {
+  // The query will automatically refetch due to queryParams being reactive
+})
 </script>
