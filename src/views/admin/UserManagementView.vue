@@ -35,7 +35,6 @@
   <UserListFilter
     v-if="showFilter"
     :initial-filters="currentFilters"
-    :organizations="organizations"
     @filters-changed="handleFiltersChanged"
     @filters-reset="handleFiltersReset"
   />
@@ -245,12 +244,7 @@ const currentFilters = ref<Record<string, any>>({})
 const router = useRouter()
 const { isAdmin } = useUserRole()
 
-// Mock organizations data - replace with actual API call
-const organizations = ref([
-  { id: '1', name: 'Organization A' },
-  { id: '2', name: 'Organization B' },
-  { id: '3', name: 'Organization C' },
-])
+
 
 // Computed for query parameters
 const queryParams = computed(() => ({

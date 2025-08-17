@@ -77,23 +77,11 @@
           </Select>
         </div>
 
-        <!-- Organization Filter (if applicable) -->
-        <!-- <div class="space-y-2" v-if="organizations.length > 0">
-          <Label for="filter-organization" class="text-sm font-medium text-foreground"
-            >Organization</Label
-          >
-          <Select v-model="localFilters.filter_organization">
-            <SelectTrigger>
-              <SelectValue placeholder="Select organization" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="">All Organizations</SelectItem>
-              <SelectItem v-for="org in organizations" :key="org.id" :value="org.id">
-                {{ org.name }}
-              </SelectItem>
-            </SelectContent>
-          </Select>
-        </div> -->
+        <!-- Organization Filter -->
+        <div class="space-y-2">
+          <Label for="filter-organization" class="text-sm font-medium text-foreground">Organization</Label>
+          <OrganizationCombobox v-model="localFilters.filter_organization" />
+        </div>
 
         <!-- Sort Field -->
         <!-- <div class="space-y-2">
@@ -190,9 +178,10 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue,
+  SelectValue
 } from '@/components/ui/select'
 import { Filter, RotateCcw, X } from 'lucide-vue-next'
+import OrganizationCombobox from '@/components/custom/combobox/OrganizationCombobox.vue'
 
 // Types
 interface FilterParams {
@@ -206,20 +195,13 @@ interface FilterParams {
   page_size?: string
 }
 
-interface Organization {
-  id: string
-  name: string
-}
-
 // Props
 interface Props {
   initialFilters?: FilterParams
-  organizations?: Organization[]
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  initialFilters: () => ({}),
-  organizations: () => [],
+  initialFilters: () => ({})
 })
 
 // Emits
@@ -277,10 +259,9 @@ const activeFiltersDisplay = computed(() => {
   }
 
   if (localFilters.value.filter_organization) {
-    const org = props.organizations.find((o) => o.id === localFilters.value.filter_organization)
     filters.filter_organization = {
       label: 'Organization',
-      value: org?.name || localFilters.value.filter_organization,
+      value: localFilters.value.filter_organization,
     }
   }
 
