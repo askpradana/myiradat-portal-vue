@@ -1,42 +1,57 @@
 <template>
   <div class="min-h-screen bg-background">
     <!-- Header -->
-    <HeaderHomeComponents />
+    <HeaderSection />
 
-    <!-- Hero Banner Section -->
-    <BannerHomeComponents />
+    <!-- Hero Section with Metrics -->
+    <HeroSection />
 
-    <!-- Trusted By Section -->
-    <TrustedByHomeComponents />
+    <!-- Trust Indicators -->
+    <TrustIndicatorsSection />
 
-    <!-- Showcase Carousel Section -->
-    <CarouselHomeComponents />
+    <!-- Interactive Bento Grid Features -->
+    <BentoGridSection />
 
-    <!-- Features Bento Grid Section -->
-    <BentoHomeComponents />
+    <!-- Use Case Carousel -->
+    <UseCaseCarouselSection />
 
-    <!-- Testimonials Section -->
-    <TestimonialSectionComponents />
+    <!-- Enhanced Testimonials -->
+    <TestimonialsSection />
 
     <!-- Pricing Section -->
-    <PricingSectionComponents />
+    <PricingSection />
 
     <!-- FAQ Section -->
-    <FAQHomeComponents />
+    <FAQSection />
 
     <!-- Footer -->
-    <FooterHomeComponents />
+    <FooterSection />
   </div>
 </template>
 
 <script setup lang="ts">
-import PricingSectionComponents from './components/PricingSectionComponents.vue'
-import FooterHomeComponents from './components/FooterHomeComponents.vue'
-import FAQHomeComponents from './components/FAQHomeComponents.vue'
-import TestimonialSectionComponents from './components/TestimonialSectionComponents.vue'
-import BentoHomeComponents from './components/BentoHomeComponents.vue'
-import CarouselHomeComponents from './components/CarouselHomeComponents.vue'
-import TrustedByHomeComponents from './components/TrustedByHomeComponents.vue'
-import BannerHomeComponents from './components/BannerHomeComponents.vue'
-import HeaderHomeComponents from './components/HeaderHomeComponents.vue'
+import { onMounted } from 'vue'
+import { useHomepageStore } from '@/stores/homepage'
+import { useViewportTracker } from './composables'
+import {
+  HeaderSection,
+  HeroSection,
+  TrustIndicatorsSection,
+  BentoGridSection,
+  UseCaseCarouselSection,
+  TestimonialsSection,
+  PricingSection,
+  FAQSection,
+  FooterSection
+} from './components/sections'
+
+const homepageStore = useHomepageStore()
+
+// Initialize viewport tracking
+useViewportTracker()
+
+onMounted(() => {
+  // Initialize the homepage store and any global setup
+  homepageStore.initializeAnimations()
+})
 </script>
