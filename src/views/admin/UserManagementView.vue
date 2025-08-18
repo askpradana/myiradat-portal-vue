@@ -82,6 +82,7 @@
             <TableHead class="text-foreground">Name</TableHead>
             <TableHead class="text-foreground">Email</TableHead>
             <TableHead class="text-foreground">Phone</TableHead>
+            <TableHead class="text-foreground">Organization</TableHead>
             <TableHead class="text-foreground">Role</TableHead>
             <TableHead class="text-right text-foreground">Actions</TableHead>
           </TableRow>
@@ -100,6 +101,7 @@
               </TableCell>
               <TableCell class="text-foreground">{{ user.email }}</TableCell>
               <TableCell class="text-foreground">{{ user.phone }}</TableCell>
+              <TableCell class="text-foreground">{{ user.organization_name || '-' }}</TableCell>
               <TableCell>
                 <span :class="getRoleBadgeClass(user.role_id)">
                   {{ user.role_name }}
@@ -129,7 +131,7 @@
           <!-- No Results -->
           <template v-else>
             <TableRow>
-              <TableCell :colspan="5" class="h-24 text-center text-muted-foreground">
+              <TableCell :colspan="6" class="h-24 text-center text-muted-foreground">
                 <div class="flex flex-col items-center justify-center py-8">
                   <SearchIcon :size="48" class="mb-4 opacity-50" />
                   <p class="text-lg font-medium">No users found</p>
@@ -360,9 +362,9 @@ const addNewUserBatch = () => {
 // Helper functions
 const getRoleBadgeClass = (role: number) => {
   const classes = {
-    1: 'inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800',
-    3: 'inline-flex items-center rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800',
-    2: 'inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800',
+    1: 'inline-flex items-center rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-700',
+    3: 'inline-flex items-center rounded-full bg-purple-100 px-2.5 py-0.5 text-xs font-medium text-purple-700',
+    2: 'inline-flex items-center rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-700',
   }
   return classes[role as keyof typeof classes] || classes[2]
 }
