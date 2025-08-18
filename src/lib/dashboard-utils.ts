@@ -9,27 +9,48 @@ export const isUser = (user: { role_id?: number } | null): boolean => {
   return user?.role_id === 2
 }
 
+export const isCS = (user: { role_id?: number } | null): boolean => {
+  return user?.role_id === 3
+}
+
 // Get user role based on role_id
 export const getUserRole = (user: { role_id?: number } | null): UserRole => {
-  return isAdmin(user) ? 'admin' : 'user'
+  if (isAdmin(user)) return 'admin'
+  if (isCS(user)) return 'cs'
+  return 'user'
+}
+
+// Define role-based tab access
+const ROLE_TAB_ACCESS: Record<UserRole, DashboardTab[]> = {
+  admin: ['dashboard', 'users', 'organizations', 'data'],
+  user: ['dashboard', 'data', 'profile'],
+  cs: ['dashboard', 'users', 'organizations', 'data', 'profile']
 }
 
 // Check if tab is accessible for user role
 export const isTabAccessible = (tab: DashboardTab, userRole: UserRole): boolean => {
-  const adminOnlyTabs: DashboardTab[] = ['users']
-  
-  if (adminOnlyTabs.includes(tab)) {
-    return userRole === 'admin'
-  }
-  
-  return true
+  return ROLE_TAB_ACCESS[userRole]?.includes(tab) ?? false
 }
 
 // Filter tabs based on user role
 export const getAccessibleTabs = (userRole: UserRole): DashboardTab[] => {
-  const allTabs: DashboardTab[] = ['dashboard', 'users', 'data', 'profile']
-  
-  return allTabs.filter(tab => isTabAccessible(tab, userRole))
+  return ROLE_TAB_ACCESS[userRole] || []
+}
+
+// Get default landing tab for user role
+export const getDefaultTabForRole = (userRole: UserRole): DashboardTab => {
+  const defaults: Record<UserRole, DashboardTab> = {
+    admin: 'users',
+    user: 'dashboard', 
+    cs: 'dashboard'
+  }
+  return defaults[userRole] || 'dashboard'
+}
+
+// Get role-appropriate redirect path
+export const getRoleRedirectPath = (userRole: UserRole): string => {
+  const defaultTab = getDefaultTabForRole(userRole)
+  return `/dashboard?tab=${defaultTab}`
 }
 
 

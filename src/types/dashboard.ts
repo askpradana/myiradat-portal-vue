@@ -1,10 +1,10 @@
 import type { ServiceInterface } from './serviceType'
 
 // Dashboard tab types
-export type DashboardTab = 'dashboard' | 'users' | 'data' | 'profile'
+export type DashboardTab = 'dashboard' | 'users' | 'data' | 'profile' | 'organizations'
 
 // User role types
-export type UserRole = 'admin' | 'user'
+export type UserRole = 'admin' | 'user' | 'cs'
 
 // Use the real API ServiceInterface directly for dashboard
 export type DashboardServiceInterface = ServiceInterface
@@ -43,12 +43,12 @@ export const DEFAULT_TAB_CONFIG: TabConfig[] = [
   { id: 'dashboard', label: 'Dashboard', requiresAdmin: false },
   { id: 'users', label: 'User Management', requiresAdmin: true },
   { id: 'data', label: 'Data', requiresAdmin: false },
-  { id: 'profile', label: 'Profile', requiresAdmin: false }
+  { id: 'profile', label: 'Profile', requiresAdmin: false },
 ]
 
 export const DEFAULT_LAYOUT_CONFIG: DashboardLayoutConfig = {
   maxWidth: 'max-w-7xl',
   padding: 'px-4 sm:px-6 lg:px-8 py-8',
   showHeader: true,
-  showNavigation: true
+  showNavigation: true,
 }

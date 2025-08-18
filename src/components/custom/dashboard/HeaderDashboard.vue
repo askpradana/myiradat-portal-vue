@@ -5,7 +5,7 @@
         <!-- Left: Title & Subtitle -->
         <div>
           <h1 class="text-3xl font-bold text-foreground">
-            {{ roleUser === 'admin' ? 'Admin Dashboard' : 'Iradat' }}
+            {{ roleUser === 'admin' ? 'Admin Dashboard' : roleUser === 'cs' ? 'CS Dashboard' : 'Iradat' }}
           </h1>
         </div>
 
@@ -24,8 +24,10 @@
 import ThemeToggle from '@/components/ThemeToggle.vue'
 import LogoutAlert from '../alerts/LogoutAlert.vue'
 
+import type { UserRole } from '@/types/dashboard'
+
 const { roleUser } = defineProps<{
-  roleUser: 'admin' | 'user'
+  roleUser: UserRole
 }>()
 
 </script>

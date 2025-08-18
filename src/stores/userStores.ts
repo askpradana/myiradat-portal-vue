@@ -86,16 +86,39 @@ export const useUserStore = defineStore('user', () => {
     sessionStorage.removeItem('data_services')
   }
 
+  const isTokenValid = (): boolean => {
+    if (!auth.value?.expires_at) return false
+    const now = new Date().getTime()
+    const expiresAt = new Date(auth.value.expires_at).getTime()
+    return now < expiresAt
+  }
+
   const initializeAuth = () => {
     const storedToken = sessionStorage.getItem('auth_token')
     const storedUser = sessionStorage.getItem('data_user')
     const storedServices = sessionStorage.getItem('data_services')
 
     if (storedToken && storedUser) {
-      auth.value = JSON.parse(storedToken)
-      user.value = JSON.parse(storedUser)
-      services.value = storedServices ? JSON.parse(storedServices) : ''
-      isAuthenticated.value = true
+      try {
+        const tokenData = JSON.parse(storedToken)
+        const now = new Date().getTime()
+        const expiresAt = new Date(tokenData.expires_at).getTime()
+
+        // Check if token is still valid
+        if (now < expiresAt) {
+          auth.value = tokenData
+          user.value = JSON.parse(storedUser)
+          services.value = storedServices ? JSON.parse(storedServices) : null
+          isAuthenticated.value = true
+        } else {
+          // Token expired, clear all data
+          clearUserData()
+        }
+      } catch (error) {
+        // Invalid token data, clear everything
+        console.warn('Invalid token data found, clearing authentication state')
+        clearUserData()
+      }
     }
   }
 
@@ -108,5 +131,6 @@ export const useUserStore = defineStore('user', () => {
     setUserProfileData,
     clearAuthData: clearUserData,
     initializeAuth,
+    isTokenValid,
   }
 })

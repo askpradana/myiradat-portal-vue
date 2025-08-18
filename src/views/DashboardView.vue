@@ -7,6 +7,9 @@
     @tab-change="changeTab"
     @retry="handleRetry"
   >
+    <!-- Redirect notifications -->
+    <RedirectNotification />
+    
     <!-- Main Dashboard Tab Content -->
     <div v-if="activeTab === 'dashboard'">
       <Suspense>
@@ -26,6 +29,18 @@
       <Suspense>
         <template #default>
           <UserManagementView />
+        </template>
+        <template #fallback>
+          <ListUserTableSkeleton />
+        </template>
+      </Suspense>
+    </div>
+
+    <!-- Users Tab Content -->
+    <div v-if="activeTab === 'organizations'" class="space-y-6">
+      <Suspense>
+        <template #default>
+          <OrganizationManagementView />
         </template>
         <template #fallback>
           <ListUserTableSkeleton />
@@ -82,6 +97,8 @@ import DataViewTableSkeleton from '@/components/custom/skeletons/DataViewTableSk
 import { useUserStore } from '@/stores/userStores'
 import { useDashboardTabs } from '@/composables/useDashboardTabs'
 import { getUserRole } from '@/lib/dashboard-utils'
+import OrganizationManagementView from './admin/OrganizationManagementView.vue'
+import RedirectNotification from '@/components/custom/notifications/RedirectNotification.vue'
 
 // Initialize store
 const userStore = useUserStore()
@@ -90,17 +107,11 @@ const userStore = useUserStore()
 const userRole = computed(() => getUserRole(userStore.user))
 
 // Dashboard tabs composable
-const {
-  activeTab,
-  isTabLoading,
-  tabError,
-  changeTab,
-  initializeTabs
-} = useDashboardTabs({
+const { activeTab, isTabLoading, tabError, changeTab, initializeTabs } = useDashboardTabs({
   userRole,
   defaultTab: 'dashboard',
   persistToUrl: true,
-  persistToStorage: true
+  persistToStorage: true,
 })
 
 // Error handling

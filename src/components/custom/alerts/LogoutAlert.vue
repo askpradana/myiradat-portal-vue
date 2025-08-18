@@ -28,7 +28,7 @@ const logoutFunc = async () => {
         description: `${response?.message}`,
       })
       userStore.clearAuthData()
-      router.push('/')
+      router.push('/login')
       open.value = false
     } else {
       toast('Error', {
