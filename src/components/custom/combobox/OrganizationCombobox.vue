@@ -1,48 +1,89 @@
+<template>
+  <div ref="comboboxEl" class="relative w-full">
+    <div class="relative">
+      <Input
+        v-model="searchTerm"
+        :placeholder="isFetchingInitialName ? 'Loading...' : 'Search organization...'"
+        class="w-full pr-10"
+        :disabled="isFetchingInitialName"
+        @focus="handleFocus"
+        @blur="handleBlur"
+        @input="handleInput"
+      />
+      <button
+        type="button"
+        class="absolute inset-y-0 right-0 flex items-center pr-3"
+        :disabled="isFetchingInitialName"
+        @click="isOpen = !isOpen"
+      >
+        <ChevronsUpDown class="h-4 w-4 opacity-50" />
+      </button>
+    </div>
+
+    <div
+      v-if="isOpen && (organizationsResponse?.organizations?.length || isLoading || error)"
+      class="absolute z-10 w-full mt-1 bg-popover text-popover-foreground rounded-md shadow-lg border"
+    >
+      <div class="p-1">
+        <div v-if="isLoading" class="text-muted-foreground text-sm text-center py-2">
+          Loading...
+        </div>
+        <div v-else-if="error" class="text-muted-foreground text-sm text-center py-2">
+          Error loading organizations
+        </div>
+        <div
+          v-else-if="!organizationsResponse?.organizations?.length"
+          class="text-muted-foreground text-sm text-center py-2"
+        >
+          No organization found.
+        </div>
+        <ul v-else class="max-h-60 overflow-auto">
+          <li
+            v-for="org in organizationsResponse.organizations"
+            :key="org.id"
+            class="text-sm rounded-sm flex items-center p-2 relative select-none cursor-pointer hover:bg-accent hover:text-accent-foreground"
+            @mousedown="selectOrganization(org)"
+          >
+            <Check v-if="selectedValue === org.id" class="h-4 w-4 mr-2" />
+            <span :class="{ 'ml-6': selectedValue !== org.id }">{{ org.name }}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</template>
+
 <script setup lang="ts">
 import { ref, watch, onMounted, type Ref } from 'vue'
 import { useQuery } from '@tanstack/vue-query'
 import { getListOrganization } from '@/api/organizations/getListOrganizations'
+import { getOrganizationDetail } from '@/api/organizations/getOrganizationDetail'
 import { ChevronsUpDown, Check } from 'lucide-vue-next'
-import {
-  ComboboxAnchor,
-  ComboboxContent,
-  ComboboxEmpty,
-  ComboboxGroup,
-  ComboboxInput,
-  ComboboxItem,
-  ComboboxItemIndicator,
-  ComboboxRoot,
-  ComboboxTrigger,
-  ComboboxViewport,
-} from 'reka-ui'
-import type { ResponseAPIGetOrganizationsData } from '@/types/organizationType'
+import { Input } from '@/components/ui/input'
+import { onClickOutside } from '@vueuse/core'
+import type {
+  OrganizationInterface,
+  ResponseAPIGetOrganizationsData,
+} from '@/types/organizationType'
+
+const props = defineProps<{
+  modelValue?: string | null
+}>()
+
+const emit = defineEmits(['update:modelValue'])
 
 const searchTerm = ref('')
 const debouncedSearchTerm = ref('')
-const selectedValue = ref<string | null>(null)
+const selectedValue = ref(props.modelValue)
 const isOpen = ref(false)
+const comboboxEl = ref(null)
+const isFetchingInitialName = ref(false)
 
 let debounceTimer: number | undefined
+let blurTimeout: number | undefined
 
-// Load initial data on component mount
-onMounted(() => {
-  debouncedSearchTerm.value = ''
-})
-
-watch(searchTerm, (newValue) => {
-  // Do not clear search term when a value is selected
-  if (
-    selectedValue.value &&
-    organizationsResponse.value?.organizations?.find((org) => org.id === selectedValue.value)
-      ?.name === newValue
-  ) {
-    return
-  }
-
-  clearTimeout(debounceTimer)
-  debounceTimer = setTimeout(() => {
-    debouncedSearchTerm.value = newValue
-  }, 300) // Reduced debounce time for better UX
+onClickOutside(comboboxEl, () => {
+  isOpen.value = false
 })
 
 const {
@@ -60,76 +101,105 @@ const {
     }),
   enabled: true,
   retry: 1,
-  staleTime: 30000, // 30 seconds
+  staleTime: 30000,
 }) as {
   data: Ref<ResponseAPIGetOrganizationsData | undefined>
   isLoading: Ref<boolean>
   error: Ref<boolean>
 }
 
-const emit = defineEmits(['update:modelValue'])
+const selectOrganization = (org: OrganizationInterface) => {
+  selectedValue.value = org.id
+  searchTerm.value = org.name
+  isOpen.value = false
+  emit('update:modelValue', org.id)
+}
 
-watch(selectedValue, (newValue) => {
-  const selectedOrg = organizationsResponse.value?.organizations?.find((org) => org.id === newValue)
-  if (selectedOrg) {
-    searchTerm.value = selectedOrg.name
-  }
-
-  emit('update:modelValue', newValue)
-})
-
-// Handle combobox open/close
-const handleFocus = () => {
-  isOpen.value = true
-  // Only clear search term if no value is selected
-  if (!selectedValue.value) {
+const fetchAndSetOrgName = async (orgId: string) => {
+  if (!orgId) {
     searchTerm.value = ''
+    return
+  }
+  isFetchingInitialName.value = true
+  try {
+    const org = await getOrganizationDetail(orgId)
+    if (org) {
+      searchTerm.value = org.data.name
+    }
+  } catch (e) {
+    console.error('Failed to fetch organization detail', e)
+    searchTerm.value = ''
+    selectedValue.value = null
+    emit('update:modelValue', null)
+  } finally {
+    isFetchingInitialName.value = false
   }
 }
+
+watch(
+  () => props.modelValue,
+  (newValue) => {
+    if (newValue && newValue !== selectedValue.value) {
+      selectedValue.value = newValue
+      fetchAndSetOrgName(newValue)
+    } else if (!newValue) {
+      selectedValue.value = null
+      searchTerm.value = ''
+    }
+  },
+)
+
+watch(searchTerm, (newValue) => {
+  const selectedOrg = organizationsResponse.value?.organizations?.find(
+    (org) => org.id === selectedValue.value,
+  )
+  if (selectedOrg && newValue === selectedOrg.name) {
+    return
+  }
+
+  clearTimeout(debounceTimer)
+  debounceTimer = setTimeout(() => {
+    debouncedSearchTerm.value = newValue
+  }, 300)
+})
+
+const handleFocus = () => {
+  isOpen.value = true
+  clearTimeout(blurTimeout)
+}
+
+const handleBlur = () => {
+  blurTimeout = setTimeout(() => {
+    isOpen.value = false
+    const selectedOrg = organizationsResponse.value?.organizations?.find(
+      (org) => org.id === selectedValue.value,
+    )
+
+    if (selectedValue.value && !selectedOrg) {
+      fetchAndSetOrgName(selectedValue.value)
+    } else if (selectedOrg && searchTerm.value !== selectedOrg.name) {
+      searchTerm.value = selectedOrg.name
+    } else if (!selectedValue.value) {
+      searchTerm.value = ''
+    }
+  }, 200)
+}
+
+const handleInput = () => {
+  isOpen.value = true
+  const selectedOrg = organizationsResponse.value?.organizations?.find(
+    (org) => org.id === selectedValue.value,
+  )
+  if (selectedOrg && searchTerm.value !== selectedOrg.name) {
+    selectedValue.value = null
+    emit('update:modelValue', null)
+  }
+}
+
+onMounted(() => {
+  if (props.modelValue) {
+    fetchAndSetOrgName(props.modelValue)
+  }
+  debouncedSearchTerm.value = ''
+})
 </script>
-
-<template>
-  <ComboboxRoot v-model="selectedValue" v-model:open="isOpen" class="relative">
-    <ComboboxAnchor
-      class="min-w-[160px] w-full inline-flex items-center justify-between rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
-    >
-      <ComboboxInput
-        v-model="searchTerm"
-        placeholder="Search organization..."
-        class="!bg-transparent outline-none placeholder-muted-foreground w-full"
-        @focus="handleFocus"
-      />
-      <ComboboxTrigger>
-        <ChevronsUpDown class="h-4 w-4 opacity-50" />
-      </ComboboxTrigger>
-    </ComboboxAnchor>
-
-    <ComboboxContent
-      class="absolute z-10 w-[--radix-combobox-trigger-width] mt-1 min-w-[160px] bg-popover text-popover-foreground overflow-hidden rounded-md shadow-md border will-change-[opacity,transform] data-[side=top]:animate-in data-[side=top]:fade-in-0 data-[side=top]:zoom-in-95 data-[side=bottom]:animate-in data-[side=bottom]:fade-in-0 data-[side=bottom]:zoom-in-95"
-    >
-      <ComboboxViewport class="p-1">
-        <ComboboxEmpty class="text-muted-foreground text-sm text-center py-2">
-          <span v-if="isLoading">Loading...</span>
-          <span v-else-if="error">Error loading organizations</span>
-          <span v-else>No organization found.</span>
-        </ComboboxEmpty>
-
-        <ComboboxGroup v-if="organizationsResponse?.organizations?.length ?? 0 > 0">
-          <ComboboxItem
-            v-for="org in organizationsResponse?.organizations"
-            :key="org.id"
-            :value="org.id"
-            class="text-sm rounded-sm flex items-center p-2 relative select-none data-[disabled]:pointer-events-none data-[highlighted]:outline-none data-[highlighted]:bg-accent data-[highlighted]:text-accent-foreground"
-          >
-            <ComboboxItemIndicator
-              class="absolute left-2 w-4 inline-flex items-center justify-center"
-            >
-              <Check class="h-4 w-4" />
-            </ComboboxItemIndicator>
-            <span class="ml-6">{{ org.name }}</span>
-          </ComboboxItem>
-        </ComboboxGroup>
-      </ComboboxViewport>
-    </ComboboxContent>
-  </ComboboxRoot>
-</template>
