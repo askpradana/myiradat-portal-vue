@@ -10,6 +10,8 @@ import CreateNewOrganizationView from '@/views/admin/CreateNewOrganizationView.v
 import OrganizationDetailView from '@/views/admin/OrganizationDetailView.vue'
 import EditOrganizationView from '@/views/admin/EditOrganizationView.vue'
 import { useUserStore } from '@/stores/userStores'
+import { getUserRole, getRoleRedirectPath, isTabAccessible } from '@/lib/dashboard-utils'
+import type { DashboardTab } from '@/types/dashboard'
 import '@/types/router'
 
 // Route configuration helpers
@@ -64,12 +66,32 @@ const guestOnlyRoutes: RouteRecordRaw[] = [
 
 const protectedRoutes: RouteRecordRaw[] = [
   createProtectedRoute('/dashboard', 'dashboard', DashboardView, 'Dashboard'),
-  createProtectedRoute('/dashboard/admin/create-user', 'create-user-page', CreateNewUserView, 'Create User'),
-  createProtectedRoute('/dashboard/admin/create-user-batch', 'create-user-batch-page', CreateUserBatchView, 'Create User Batch'),
+  createRoute('/dashboard/admin/create-user', 'create-user-page', CreateNewUserView, 'Create User', {
+    requiresAuth: true,
+    requiredRoles: ['admin'],
+    fallbackRoute: '/dashboard?tab=dashboard'
+  }),
+  createRoute('/dashboard/admin/create-user-batch', 'create-user-batch-page', CreateUserBatchView, 'Create User Batch', {
+    requiresAuth: true,
+    requiredRoles: ['admin'],
+    fallbackRoute: '/dashboard?tab=dashboard'
+  }),
   createProtectedRoute('/dashboard/:id/services', 'user-service-list', UserServicesListView, 'User Services'),
-  createProtectedRoute('/dashboard/admin/create-organization', 'create-organization-page', CreateNewOrganizationView, 'Create Organization'),
-  createProtectedRoute('/dashboard/admin/organization/:id/update', 'edit-organization-page', EditOrganizationView, 'Edit Organization'),
-  createProtectedRoute('/dashboard/admin/organization/:id/details', 'organization-detail-page', OrganizationDetailView, 'Organization Details'),
+  createRoute('/dashboard/admin/create-organization', 'create-organization-page', CreateNewOrganizationView, 'Create Organization', {
+    requiresAuth: true,
+    requiredRoles: ['admin'],
+    fallbackRoute: '/dashboard?tab=dashboard'
+  }),
+  createRoute('/dashboard/admin/organization/:id/update', 'edit-organization-page', EditOrganizationView, 'Edit Organization', {
+    requiresAuth: true,
+    requiredRoles: ['admin'],
+    fallbackRoute: '/dashboard?tab=dashboard'
+  }),
+  createRoute('/dashboard/admin/organization/:id/details', 'organization-detail-page', OrganizationDetailView, 'Organization Details', {
+    requiresAuth: true,
+    requiredRoles: ['admin'],
+    fallbackRoute: '/dashboard?tab=dashboard'
+  }),
 ]
 
 const router = createRouter({
@@ -100,7 +122,10 @@ router.beforeEach(async (to, from, next) => {
 
   const requiresAuth = to.meta.requiresAuth
   const requiresGuest = to.meta.requiresGuest
+  const requiredRoles = to.meta.requiredRoles
+  const fallbackRoute = to.meta.fallbackRoute
   const isAuthenticated = userStore.isAuthenticated && isTokenValid
+
 
   // Validate redirect URL to prevent open redirects
   const validateRedirectUrl = (url: string): boolean => {
@@ -114,7 +139,13 @@ router.beforeEach(async (to, from, next) => {
 
   // Check if route requires authentication
   if (requiresAuth && !isAuthenticated) {
-    const redirectPath = validateRedirectUrl(to.fullPath) ? to.fullPath : '/dashboard'
+    let redirectPath = '/dashboard'
+    
+    // Only save redirect path if it's valid and accessible
+    if (validateRedirectUrl(to.fullPath)) {
+      redirectPath = to.fullPath
+    }
+    
     next({
       name: 'login',
       query: { redirect: redirectPath }
@@ -124,9 +155,50 @@ router.beforeEach(async (to, from, next) => {
 
   // Check if route requires guest (unauthenticated) status
   if (requiresGuest && isAuthenticated) {
-    // Redirect to dashboard if already authenticated
-    next({ name: 'dashboard' })
+    // Redirect to role-appropriate dashboard
+    const userRole = getUserRole(userStore.user)
+    const defaultPath = getRoleRedirectPath(userRole)
+    next(defaultPath)
     return
+  }
+
+  // Check role-based access for authenticated users
+  if (isAuthenticated && requiredRoles && requiredRoles.length > 0) {
+    const userRole = getUserRole(userStore.user)
+    
+    if (!requiredRoles.includes(userRole)) {
+      // User doesn't have required role
+      const redirectTo = fallbackRoute || getRoleRedirectPath(userRole)
+      next({
+        path: redirectTo,
+        query: { 
+          accessDenied: 'true',
+          originalPath: to.fullPath,
+          message: `This area requires ${requiredRoles.join(' or ')} privileges`
+        }
+      })
+      return
+    }
+  }
+
+  // Handle dashboard tab accessibility for authenticated users
+  if (isAuthenticated && to.path === '/dashboard' && to.query.tab) {
+    const userRole = getUserRole(userStore.user)
+    const requestedTab = to.query.tab as string
+    
+    if (!isTabAccessible(requestedTab as DashboardTab, userRole)) {
+      // Tab not accessible, redirect to default tab for role
+      const defaultPath = getRoleRedirectPath(userRole)
+      next({
+        path: defaultPath,
+        query: {
+          tabRedirect: 'true',
+          originalTab: requestedTab,
+          message: `${requestedTab.charAt(0).toUpperCase() + requestedTab.slice(1)} tab is not available for your account type`
+        }
+      })
+      return
+    }
   }
 
   // Proceed with navigation

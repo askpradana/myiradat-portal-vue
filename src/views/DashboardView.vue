@@ -7,6 +7,9 @@
     @tab-change="changeTab"
     @retry="handleRetry"
   >
+    <!-- Redirect notifications -->
+    <RedirectNotification />
+    
     <!-- Main Dashboard Tab Content -->
     <div v-if="activeTab === 'dashboard'">
       <Suspense>
@@ -95,6 +98,7 @@ import { useUserStore } from '@/stores/userStores'
 import { useDashboardTabs } from '@/composables/useDashboardTabs'
 import { getUserRole } from '@/lib/dashboard-utils'
 import OrganizationManagementView from './admin/OrganizationManagementView.vue'
+import RedirectNotification from '@/components/custom/notifications/RedirectNotification.vue'
 
 // Initialize store
 const userStore = useUserStore()

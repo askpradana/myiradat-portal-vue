@@ -4,7 +4,7 @@ import type { ServiceInterface } from './serviceType'
 export type DashboardTab = 'dashboard' | 'users' | 'data' | 'profile' | 'organizations'
 
 // User role types
-export type UserRole = 'admin' | 'user'
+export type UserRole = 'admin' | 'user' | 'cs'
 
 // Use the real API ServiceInterface directly for dashboard
 export type DashboardServiceInterface = ServiceInterface

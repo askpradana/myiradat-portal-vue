@@ -56,7 +56,7 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
     },
     organizations: {
       id: 'organizations',
-      label: 'organizations Management',
+      label: 'Organization Management',
       icon: 'Building',
       requiresAdmin: true,
     },
