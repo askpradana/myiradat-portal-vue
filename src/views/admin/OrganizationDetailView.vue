@@ -1,6 +1,9 @@
 <template>
   <DashboardLayout>
-    <BackToDashboardButton />
+    <div class="flex justify-between items-center">
+      <BackToDashboardButton />
+      <AddMemberAlert :organization-id="organizationID" :name-of-organization="data?.name" />
+    </div>
 
     <!-- Loading State -->
     <template v-if="isPending">
@@ -264,6 +267,7 @@ import {
   AlertCircle,
   Contact as ContactIcon,
 } from 'lucide-vue-next'
+import AddMemberAlert from '@/components/custom/alerts/AddMemberAlert.vue'
 import DetailOrganizationSkeleton from '@/components/custom/skeletons/DetailOrganizationSkeleton.vue'
 
 const tmpImage =
