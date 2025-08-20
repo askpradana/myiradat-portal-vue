@@ -185,11 +185,9 @@ const visiblePages = computed(() => {
 
 const initialName = (name: string): string => {
   const w = name.trim().split(/\s+/)
-  if (w.length >= 2) {
-    return (w[0][0] + w[1][0]).toUpperCase()
-  }
-  // satu kata: ambil huruf terakhir
-  return w[0]?.slice(-1).toUpperCase() ?? ''
+
+  const initials = w.map((word) => word[0]?.toUpperCase() ?? '')
+  return initials.slice(0, 2).join('')
 }
 
 const getRoleBadgeClass = (role: string) => {
