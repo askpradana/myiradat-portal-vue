@@ -79,12 +79,12 @@
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead class="text-foreground">Name</TableHead>
-            <TableHead class="text-foreground">Email</TableHead>
-            <TableHead class="text-foreground">Phone</TableHead>
-            <TableHead class="text-foreground">Organization</TableHead>
-            <TableHead class="text-foreground">Role</TableHead>
-            <TableHead class="text-right text-foreground">Actions</TableHead>
+            <TableHead class="text-foreground font-semibold">Name</TableHead>
+            <TableHead class="text-foreground font-semibold">Email</TableHead>
+            <TableHead class="text-foreground font-semibold">Phone</TableHead>
+            <TableHead class="text-foreground font-semibold">Organization</TableHead>
+            <TableHead class="text-foreground font-semibold">Role</TableHead>
+            <TableHead class="text-right text-foreground font-semibold">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
@@ -245,8 +245,6 @@ const currentFilters = ref<Record<string, any>>({})
 
 const router = useRouter()
 const { isAdmin } = useUserRole()
-
-
 
 // Computed for query parameters
 const queryParams = computed(() => ({

@@ -47,7 +47,7 @@
           </div>
 
           <div
-            v-if="!isLoading && !error && usersResponse?.users?.length === 0"
+            v-if="!usersResponse?.users?.length && !isLoading"
             class="text-center text-sm text-muted-foreground"
           >
             No users found.

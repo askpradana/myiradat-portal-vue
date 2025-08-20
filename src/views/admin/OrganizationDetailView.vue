@@ -94,133 +94,141 @@
         </Card>
       </div>
 
-      <!-- Contact Information -->
-      <Card>
-        <CardContent class="p-6">
-          <div class="flex items-center mb-6">
-            <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-              <ContactIcon class="w-5 h-5 text-blue-600" />
-            </div>
-            <h2 class="text-2xl font-bold">Contact Information</h2>
-          </div>
-
-          <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <div class="group p-4 border rounded-xl">
-              <div class="flex items-start space-x-3">
-                <div
-                  class="w-10 h-10 rounded-lg shadow-sm flex items-center justify-center bg-blue-100 transition-colors"
-                >
-                  <Mail class="w-5 h-5 text-blue-600" />
-                </div>
-                <div class="flex-1">
-                  <p class="text-sm font-medium">Email Address</p>
-                  <a :href="`mailto:${data?.email}`" class="text-blue-600 font-medium break-all">
-                    {{ data?.email }}
-                  </a>
-                </div>
+      <Card class="flex p-6 gap-4 flex-col lg:flex-row">
+        <!-- Contact Information -->
+        <Card class="basis-1/2">
+          <CardContent class="p-6">
+            <div class="flex items-center mb-6">
+              <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                <ContactIcon class="w-5 h-5 text-blue-600" />
               </div>
+              <h2 class="text-2xl font-bold">Contact Information</h2>
             </div>
 
-            <div class="group p-4 border rounded-xl">
-              <div class="flex items-start space-x-3">
-                <div
-                  class="w-10 h-10 rounded-lg shadow-sm flex items-center justify-center bg-green-100 transition-colors"
-                >
-                  <Phone class="w-5 h-5 text-green-600" />
-                </div>
-                <div class="flex-1">
-                  <p class="text-sm font-medium">Phone Number</p>
-                  <a :href="`tel:${data?.phone}`" class="text-green-600 font-medium">
-                    {{ data?.phone }}
-                  </a>
-                </div>
-              </div>
-            </div>
-
-            <div class="group p-4 border rounded-xl">
-              <div class="flex items-start space-x-3">
-                <div
-                  class="w-10 h-10 rounded-lg shadow-sm flex items-center justify-center bg-purple-100 transition-colors"
-                >
-                  <Globe class="w-5 h-5 text-purple-600" />
-                </div>
-                <div class="flex-1">
-                  <p class="text-sm font-medium">Website</p>
-                  <a
-                    :href="data?.website_url"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="text-purple-600 font-medium break-all"
+            <div class="grid grid-cols-1 gap-6">
+              <div class="group p-4 border rounded-xl">
+                <div class="flex items-start space-x-3">
+                  <div
+                    class="w-10 h-10 rounded-lg shadow-sm flex items-center justify-center bg-blue-100 transition-colors"
                   >
-                    {{ data?.website_url }}
-                  </a>
+                    <Mail class="w-5 h-5 text-blue-600" />
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium">Email Address</p>
+                    <a :href="`mailto:${data?.email}`" class="text-blue-600 font-medium break-all">
+                      {{ data?.email }}
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="group p-4 border rounded-xl">
+                <div class="flex items-start space-x-3">
+                  <div
+                    class="w-10 h-10 rounded-lg shadow-sm flex items-center justify-center bg-green-100 transition-colors"
+                  >
+                    <Phone class="w-5 h-5 text-green-600" />
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium">Phone Number</p>
+                    <a :href="`tel:${data?.phone}`" class="text-green-600 font-medium">
+                      {{ data?.phone }}
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div class="group p-4 border rounded-xl">
+                <div class="flex items-start space-x-3">
+                  <div
+                    class="w-10 h-10 rounded-lg shadow-sm flex items-center justify-center bg-purple-100 transition-colors"
+                  >
+                    <Globe class="w-5 h-5 text-purple-600" />
+                  </div>
+                  <div class="flex-1">
+                    <p class="text-sm font-medium">Website</p>
+                    <a
+                      :href="data?.website_url"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      class="text-purple-600 font-medium break-all"
+                    >
+                      {{ data?.website_url }}
+                    </a>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
-        </CardContent>
+          </CardContent>
+        </Card>
+
+        <!-- Address Information -->
+        <Card v-if="parsedAddress" class="basis-1/2">
+          <CardContent class="p-6">
+            <div class="flex items-center mb-6">
+              <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3">
+                <MapPin class="w-5 h-5 text-green-600" />
+              </div>
+              <h2 class="text-2xl font-bold">Address</h2>
+            </div>
+
+            <div class="border rounded-xl p-6">
+              <div class="grid grid-cols-2 gap-4">
+                <div class="flex items-start space-x-2">
+                  <div>
+                    <span class="text-sm font-semibold flex items-center gap-2">
+                      <Home :size="18" /> Street:</span
+                    >
+                    <p class="font-medium ml-6.5 mt-2">{{ parsedAddress.street }}</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start space-x-2">
+                  <div>
+                    <span class="text-sm font-semibold flex items-center gap-2">
+                      <Building :size="18" />City:</span
+                    >
+                    <p class="font-medium ml-6.5 mt-2">{{ parsedAddress.city }}</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start space-x-2">
+                  <div>
+                    <span class="text-sm font-semibold flex items-center gap-2"
+                      ><Map :size="18" />State:</span
+                    >
+                    <p class="font-medium ml-6.5 mt-2">{{ parsedAddress.state }}</p>
+                  </div>
+                </div>
+
+                <div class="flex items-start space-x-2">
+                  <div>
+                    <span class="text-sm font-semibold flex items-center gap-2">
+                      <Hash :size="18" />Postal Code:</span
+                    >
+                    <p class="font-medium ml-6.5 mt-2">{{ parsedAddress.postal_code }}</p>
+                  </div>
+                </div>
+              </div>
+              <div class="mt-4 pt-4 border-t border-gray-200">
+                <div class="flex items-start space-x-2">
+                  <div>
+                    <span class="text-sm font-semibold flex items-center gap-2">
+                      <Flag :size="18" /> Country:</span
+                    >
+                    <p class="font-medium ml-6.5 mt-2">{{ parsedAddress.country }}</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </Card>
 
-      <!-- Address Information -->
-      <Card v-if="parsedAddress">
-        <CardContent class="p-6">
-          <div class="flex items-center mb-6">
-            <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center mr-3">
-              <MapPin class="w-5 h-5 text-green-600" />
-            </div>
-            <h2 class="text-2xl font-bold">Address</h2>
-          </div>
-
-          <div class="border rounded-xl p-6">
-            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
-              <div class="flex items-start space-x-2">
-                <div>
-                  <span class="text-sm font-semibold flex items-center gap-2">
-                    <Home :size="18" /> Street:</span
-                  >
-                  <p class="font-medium ml-6.5 mt-2">{{ parsedAddress.street }}</p>
-                </div>
-              </div>
-
-              <div class="flex items-start space-x-2">
-                <div>
-                  <span class="text-sm font-semibold flex items-center gap-2">
-                    <Building :size="18" />City:</span
-                  >
-                  <p class="font-medium ml-6.5 mt-2">{{ parsedAddress.city }}</p>
-                </div>
-              </div>
-
-              <div class="flex items-start space-x-2">
-                <div>
-                  <span class="text-sm font-semibold flex items-center gap-2"
-                    ><Map :size="18" />State:</span
-                  >
-                  <p class="font-medium ml-6.5 mt-2">{{ parsedAddress.state }}</p>
-                </div>
-              </div>
-
-              <div class="flex items-start space-x-2">
-                <div>
-                  <span class="text-sm font-semibold flex items-center gap-2">
-                    <Hash :size="18" />Postal Code:</span
-                  >
-                  <p class="font-medium ml-6.5 mt-2">{{ parsedAddress.postal_code }}</p>
-                </div>
-              </div>
-            </div>
-            <div class="mt-4 pt-4 border-t border-gray-200">
-              <div class="flex items-start space-x-2">
-                <div>
-                  <span class="text-sm font-semibold flex items-center gap-2">
-                    <Flag :size="18" /> Country:</span
-                  >
-                  <p class="font-medium ml-6.5 mt-2">{{ parsedAddress.country }}</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </CardContent>
+      <!-- Member Table -->
+      <Card class="p-6">
+        <h2 class="text-2xl font-bold">Members</h2>
+        <OrganizationMemberTable :organization-i-d="organizationID" />
       </Card>
     </div>
 
@@ -269,6 +277,7 @@ import {
 } from 'lucide-vue-next'
 import AddMemberAlert from '@/components/custom/alerts/AddMemberAlert.vue'
 import DetailOrganizationSkeleton from '@/components/custom/skeletons/DetailOrganizationSkeleton.vue'
+import OrganizationMemberTable from '@/components/custom/tables/OrganizationMemberTable.vue'
 
 const tmpImage =
   'https://static.vecteezy.com/system/resources/previews/029/226/937/non_2x/city-building-silhouette-design-modern-architecture-sign-and-symbol-vector.jpg'

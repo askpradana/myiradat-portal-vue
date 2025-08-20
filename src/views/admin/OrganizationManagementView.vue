@@ -50,11 +50,11 @@
       <Table>
         <TableHeader>
           <TableRow>
-            <TableHead class="text-foreground">Name</TableHead>
-            <TableHead class="text-foreground">Email</TableHead>
-            <TableHead class="text-foreground">Phone</TableHead>
-            <TableHead class="text-foreground">Website</TableHead>
-            <TableHead class="text-right text-foreground">Actions</TableHead>
+            <TableHead class="text-foreground font-semibold">Name</TableHead>
+            <TableHead class="text-foreground font-semibold">Email</TableHead>
+            <TableHead class="text-foreground font-semibold">Phone</TableHead>
+            <TableHead class="text-foreground font-semibold">Website</TableHead>
+            <TableHead class="text-right text-foreground font-semibold">Actions</TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
