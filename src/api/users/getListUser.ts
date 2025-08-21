@@ -9,7 +9,7 @@ interface GetListUserParams {
   search_by?: string
   search_query?: string
   filter_role?: string
-  filter_organization?: string
+  filter_organization_id?: string
   filter_email_verified?: string | boolean
   order_by?: string
   order_direction?: 'asc' | 'desc'
@@ -26,7 +26,7 @@ export const getListUser = async (
       search_by,
       search_query,
       filter_role,
-      filter_organization,
+      filter_organization_id,
       filter_email_verified,
       // order_by,
       order_direction,
@@ -66,8 +66,8 @@ export const getListUser = async (
     }
 
     // Handle organization filter
-    if (filter_organization && filter_organization.trim()) {
-      queryParams.append('filter_organization', filter_organization.trim())
+    if (filter_organization_id && filter_organization_id.trim()) {
+      queryParams.append('filter_organization_id', filter_organization_id.trim())
     }
 
     // Handle email verification filter
@@ -161,8 +161,8 @@ export const getFilterSummary = (params: GetListUserParams): string => {
     filters.push(`Role: ${params.filter_role}`)
   }
 
-  if (params.filter_organization) {
-    filters.push(`Organization: ${params.filter_organization}`)
+  if (params.filter_organization_id) {
+    filters.push(`Organization: ${params.filter_organization_id}`)
   }
 
   if (params.filter_email_verified !== undefined) {

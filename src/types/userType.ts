@@ -10,6 +10,7 @@ export interface UserProfileInterface {
   date_of_birth: string | null
   organization_id: string | null
   organization_name: string | null
+  organization_industry?: string | null
   verified_at: string
 }
 

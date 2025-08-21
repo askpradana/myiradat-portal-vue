@@ -9,6 +9,7 @@ import CreateUserBatchView from '@/views/admin/CreateUserBatchView.vue'
 import CreateNewOrganizationView from '@/views/admin/CreateNewOrganizationView.vue'
 import OrganizationDetailView from '@/views/admin/OrganizationDetailView.vue'
 import EditOrganizationView from '@/views/admin/EditOrganizationView.vue'
+import ProfileUserDetailView from '@/views/admin/ProfileUserDetailView.vue'
 import { useUserStore } from '@/stores/userStores'
 import { getUserRole, getRoleRedirectPath, isTabAccessible } from '@/lib/dashboard-utils'
 import type { DashboardTab } from '@/types/dashboard'
@@ -20,24 +21,25 @@ const createRoute = (
   name: string,
   component: RouteRecordRaw['component'],
   title: string,
-  overrideMeta?: Partial<RouteRecordRaw['meta']>
-): RouteRecordRaw => ({
-  path,
-  name,
-  component,
-  meta: {
-    requiresAuth: false,
-    requiresGuest: false,
-    title,
-    ...overrideMeta,
-  },
-} as RouteRecordRaw)
+  overrideMeta?: Partial<RouteRecordRaw['meta']>,
+): RouteRecordRaw =>
+  ({
+    path,
+    name,
+    component,
+    meta: {
+      requiresAuth: false,
+      requiresGuest: false,
+      title,
+      ...overrideMeta,
+    },
+  }) as RouteRecordRaw
 
 const createGuestRoute = (
   path: string,
   name: string,
   component: RouteRecordRaw['component'],
-  title: string
+  title: string,
 ): RouteRecordRaw =>
   createRoute(path, name, component, title, {
     requiresGuest: true,
@@ -47,7 +49,7 @@ const createProtectedRoute = (
   path: string,
   name: string,
   component: RouteRecordRaw['component'],
-  title: string
+  title: string,
 ): RouteRecordRaw =>
   createRoute(path, name, component, title, {
     requiresAuth: true,
@@ -66,32 +68,78 @@ const guestOnlyRoutes: RouteRecordRaw[] = [
 
 const protectedRoutes: RouteRecordRaw[] = [
   createProtectedRoute('/dashboard', 'dashboard', DashboardView, 'Dashboard'),
-  createRoute('/dashboard/admin/create-user', 'create-user-page', CreateNewUserView, 'Create User', {
-    requiresAuth: true,
-    requiredRoles: ['admin'],
-    fallbackRoute: '/dashboard?tab=dashboard'
-  }),
-  createRoute('/dashboard/admin/create-user-batch', 'create-user-batch-page', CreateUserBatchView, 'Create User Batch', {
-    requiresAuth: true,
-    requiredRoles: ['admin'],
-    fallbackRoute: '/dashboard?tab=dashboard'
-  }),
-  createProtectedRoute('/dashboard/:id/services', 'user-service-list', UserServicesListView, 'User Services'),
-  createRoute('/dashboard/admin/create-organization', 'create-organization-page', CreateNewOrganizationView, 'Create Organization', {
-    requiresAuth: true,
-    requiredRoles: ['admin'],
-    fallbackRoute: '/dashboard?tab=dashboard'
-  }),
-  createRoute('/dashboard/admin/organization/:id/update', 'edit-organization-page', EditOrganizationView, 'Edit Organization', {
-    requiresAuth: true,
-    requiredRoles: ['admin'],
-    fallbackRoute: '/dashboard?tab=dashboard'
-  }),
-  createRoute('/dashboard/admin/organization/:id/details', 'organization-detail-page', OrganizationDetailView, 'Organization Details', {
-    requiresAuth: true,
-    requiredRoles: ['admin'],
-    fallbackRoute: '/dashboard?tab=dashboard'
-  }),
+  createRoute(
+    '/dashboard/admin/create-user',
+    'create-user-page',
+    CreateNewUserView,
+    'Create User',
+    {
+      requiresAuth: true,
+      requiredRoles: ['admin'],
+      fallbackRoute: '/dashboard?tab=dashboard',
+    },
+  ),
+  createRoute(
+    '/dashboard/admin/create-user-batch',
+    'create-user-batch-page',
+    CreateUserBatchView,
+    'Create User Batch',
+    {
+      requiresAuth: true,
+      requiredRoles: ['admin'],
+      fallbackRoute: '/dashboard?tab=dashboard',
+    },
+  ),
+  createProtectedRoute(
+    '/dashboard/:id/services',
+    'user-service-list',
+    UserServicesListView,
+    'User Services',
+  ),
+  createRoute(
+    '/dashboard/admin/create-organization',
+    'create-organization-page',
+    CreateNewOrganizationView,
+    'Create Organization',
+    {
+      requiresAuth: true,
+      requiredRoles: ['admin'],
+      fallbackRoute: '/dashboard?tab=dashboard',
+    },
+  ),
+  createRoute(
+    '/dashboard/admin/organization/:id/update',
+    'edit-organization-page',
+    EditOrganizationView,
+    'Edit Organization',
+    {
+      requiresAuth: true,
+      requiredRoles: ['admin'],
+      fallbackRoute: '/dashboard?tab=dashboard',
+    },
+  ),
+  createRoute(
+    '/dashboard/admin/organization/:id/details',
+    'organization-detail-page',
+    OrganizationDetailView,
+    'Organization Details',
+    {
+      requiresAuth: true,
+      requiredRoles: ['admin'],
+      fallbackRoute: '/dashboard?tab=dashboard',
+    },
+  ),
+  createRoute(
+    '/dashboard/admin/users/:id/profile',
+    'profile-detail-user',
+    ProfileUserDetailView,
+    'Profile User Details',
+    {
+      requiresAuth: true,
+      requiredRoles: ['admin'],
+      fallbackRoute: '/dashboard?tab=dashboard',
+    },
+  ),
 ]
 
 const router = createRouter({
@@ -108,13 +156,13 @@ const router = createRouter({
 // Navigation Guards
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
-  
+
   // Always initialize authentication state to ensure fresh validation
   userStore.initializeAuth()
-  
+
   // Double-check token validity after initialization
   const isTokenValid = userStore.isAuthenticated && userStore.isTokenValid()
-  
+
   // If token is invalid but user appears authenticated, clear state
   if (userStore.isAuthenticated && !isTokenValid) {
     userStore.clearAuthData()
@@ -125,7 +173,6 @@ router.beforeEach(async (to, from, next) => {
   const requiredRoles = to.meta.requiredRoles
   const fallbackRoute = to.meta.fallbackRoute
   const isAuthenticated = userStore.isAuthenticated && isTokenValid
-
 
   // Validate redirect URL to prevent open redirects
   const validateRedirectUrl = (url: string): boolean => {
@@ -140,15 +187,15 @@ router.beforeEach(async (to, from, next) => {
   // Check if route requires authentication
   if (requiresAuth && !isAuthenticated) {
     let redirectPath = '/dashboard'
-    
+
     // Only save redirect path if it's valid and accessible
     if (validateRedirectUrl(to.fullPath)) {
       redirectPath = to.fullPath
     }
-    
+
     next({
       name: 'login',
-      query: { redirect: redirectPath }
+      query: { redirect: redirectPath },
     })
     return
   }
@@ -165,17 +212,17 @@ router.beforeEach(async (to, from, next) => {
   // Check role-based access for authenticated users
   if (isAuthenticated && requiredRoles && requiredRoles.length > 0) {
     const userRole = getUserRole(userStore.user)
-    
+
     if (!requiredRoles.includes(userRole)) {
       // User doesn't have required role
       const redirectTo = fallbackRoute || getRoleRedirectPath(userRole)
       next({
         path: redirectTo,
-        query: { 
+        query: {
           accessDenied: 'true',
           originalPath: to.fullPath,
-          message: `This area requires ${requiredRoles.join(' or ')} privileges`
-        }
+          message: `This area requires ${requiredRoles.join(' or ')} privileges`,
+        },
       })
       return
     }
@@ -185,7 +232,7 @@ router.beforeEach(async (to, from, next) => {
   if (isAuthenticated && to.path === '/dashboard' && to.query.tab) {
     const userRole = getUserRole(userStore.user)
     const requestedTab = to.query.tab as string
-    
+
     if (!isTabAccessible(requestedTab as DashboardTab, userRole)) {
       // Tab not accessible, redirect to default tab for role
       const defaultPath = getRoleRedirectPath(userRole)
@@ -194,8 +241,8 @@ router.beforeEach(async (to, from, next) => {
         query: {
           tabRedirect: 'true',
           originalTab: requestedTab,
-          message: `${requestedTab.charAt(0).toUpperCase() + requestedTab.slice(1)} tab is not available for your account type`
-        }
+          message: `${requestedTab.charAt(0).toUpperCase() + requestedTab.slice(1)} tab is not available for your account type`,
+        },
       })
       return
     }
