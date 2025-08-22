@@ -313,7 +313,7 @@ const {
 
 // Actions
 const backToLogin = () => {
-  router.push('/login')
+  router.replace('/login')
 }
 
 // Initialize component
@@ -324,7 +324,7 @@ onMounted(() => {
 
   if (!email || !userId) {
     // If no email or user_id provided, redirect to login
-    router.push('/login')
+    router.replace('/login')
     return
   }
 

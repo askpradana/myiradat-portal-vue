@@ -38,7 +38,7 @@ const onSubmit = handleSubmit(async (values) => {
     toast('Success', {
       description: `${response?.message}`,
     })
-    router.push('/login')
+    router.replace('/login')
   } else {
     toast('Error', {
       description: `${response?.message}`,
@@ -139,13 +139,14 @@ const onSubmit = handleSubmit(async (values) => {
 
     <div class="px-6 pb-6 text-center">
       <p class="text-sm text-muted-foreground">
-        Don't have an account?
-        <a
-          href="/login"
+        Already have an account?
+        <button
+          @click="() => router.replace('/login')"
+          type="button"
           class="font-medium text-primary hover:text-primary/80 transition-colors duration-200 underline-offset-4 hover:underline ml-1"
         >
           Sign in
-        </a>
+        </button>
       </p>
     </div>
   </Card>
