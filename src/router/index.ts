@@ -9,6 +9,7 @@ import CreateUserBatchView from '@/views/admin/CreateUserBatchView.vue'
 import CreateNewOrganizationView from '@/views/admin/CreateNewOrganizationView.vue'
 import OrganizationDetailView from '@/views/admin/OrganizationDetailView.vue'
 import EditOrganizationView from '@/views/admin/EditOrganizationView.vue'
+import NotFoundView from '@/views/errors/NotFoundView.vue'
 import { useUserStore } from '@/stores/userStores'
 import { getUserRole, getRoleRedirectPath, isTabAccessible } from '@/lib/dashboard-utils'
 import type { DashboardTab } from '@/types/dashboard'
@@ -102,6 +103,9 @@ const router = createRouter({
     ...protectedRoutes,
     // Commented routes can be easily added back when needed
     // createRoute('/about', 'about', () => import('../views/AboutView.vue'), 'About'),
+    
+    // 404 catch-all route - must be last
+    createRoute('/:pathMatch(.*)*', 'not-found', NotFoundView, 'Page Not Found'),
   ],
 })
 
