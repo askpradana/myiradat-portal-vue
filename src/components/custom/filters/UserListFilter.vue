@@ -1,5 +1,6 @@
 <template>
-  <Card class="mb-6">
+  <AnimatedFilterCard>
+    <Card class="mb-6">
     <CardHeader>
       <CardTitle class="text-lg font-semibold text-foreground">Filter Users</CardTitle>
       <CardDescription class="text-muted-foreground">
@@ -32,6 +33,7 @@
               v-model="localFilters.search_query"
               placeholder="Enter search term..."
               class="pr-10"
+              @keydown.enter="applyFilters"
             />
             <button
               v-if="localFilters.search_query"
@@ -79,8 +81,10 @@
 
         <!-- Organization Filter -->
         <div class="space-y-2">
-          <Label for="filter-organization" class="text-sm font-medium text-foreground">Organization</Label>
-          <OrganizationCombobox v-model="localFilters.filter_organization" />
+          <Label for="filter-organization" class="text-sm font-medium text-foreground"
+            >Organization</Label
+          >
+          <OrganizationCombobox v-model="localFilters.filter_organization_id" />
         </div>
 
         <!-- Sort Field -->
@@ -146,25 +150,21 @@
 
       <!-- Active Filters Display -->
       <div v-if="hasActiveFilters" class="mt-4 pt-4 border-t border-border">
-        <div class="flex flex-wrap gap-2">
+        <div class="flex flex-wrap items-center gap-2">
           <span class="text-sm font-medium text-foreground">Active Filters:</span>
-          <div
+          <FilterChip
             v-for="(filter, key) in activeFiltersDisplay"
             :key="key"
-            variant="secondary"
-            class="flex items-center gap-1 text-sm"
-          >
-            <p class="bg-violet-500 px-2 rounded-xs text-white">
-              {{ filter.label }}: {{ filter.value }}
-            </p>
-            <button @click="removeFilter(key)" type="button" class="ml-1 hover:text-destructive">
-              <X :size="12" />
-            </button>
-          </div>
+            :label="filter.label"
+            :value="filter.value"
+            :filter-key="key"
+            @remove="removeFilter"
+          />
         </div>
       </div>
     </CardContent>
   </Card>
+  </AnimatedFilterCard>
 </template>
 
 <script setup lang="ts">
@@ -178,9 +178,11 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
+  SelectValue,
 } from '@/components/ui/select'
 import { Filter, RotateCcw, X } from 'lucide-vue-next'
+import AnimatedFilterCard from '@/components/custom/transitions/AnimatedFilterCard.vue'
+import FilterChip from '@/components/custom/filters/FilterChip.vue'
 import OrganizationCombobox from '@/components/custom/combobox/OrganizationCombobox.vue'
 
 // Types
@@ -188,7 +190,7 @@ interface FilterParams {
   search_by?: string
   search_query?: string
   filter_role?: string
-  filter_organization?: string
+  filter_organization_id?: string
   filter_email_verified?: string
   order_by?: string
   order_direction?: string
@@ -201,7 +203,7 @@ interface Props {
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  initialFilters: () => ({})
+  initialFilters: () => ({}),
 })
 
 // Emits
@@ -215,7 +217,7 @@ const localFilters = ref<FilterParams>({
   search_by: '',
   search_query: '',
   filter_role: '',
-  filter_organization: '',
+  filter_organization_id: '',
   filter_email_verified: '',
   order_by: 'created_at',
   order_direction: 'desc',
@@ -258,10 +260,10 @@ const activeFiltersDisplay = computed(() => {
     }
   }
 
-  if (localFilters.value.filter_organization) {
-    filters.filter_organization = {
+  if (localFilters.value.filter_organization_id) {
+    filters.filter_organization_id = {
       label: 'Organization',
-      value: localFilters.value.filter_organization,
+      value: localFilters.value.filter_organization_id,
     }
   }
 
@@ -303,7 +305,7 @@ const resetFilters = () => {
     search_by: '',
     search_query: '',
     filter_role: '',
-    filter_organization: '',
+    filter_organization_id: '',
     filter_email_verified: '',
     order_by: 'created_at',
     order_direction: 'desc',
@@ -324,8 +326,8 @@ const removeFilter = (filterKey: string) => {
     case 'filter_email_verified':
       localFilters.value.filter_email_verified = ''
       break
-    case 'filter_organization':
-      localFilters.value.filter_organization = ''
+    case 'filter_organization_id':
+      localFilters.value.filter_organization_id = ''
       break
     case 'sort':
       localFilters.value.order_by = 'created_at'

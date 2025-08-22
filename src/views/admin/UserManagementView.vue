@@ -117,11 +117,19 @@
                   >
                     <Link2 :size="18" />
                   </Button>
-                  <EditUserAlert
+                  <!-- <EditUserAlert
                     :user-i-d="user.id"
                     :data-user="user as any"
                     :current-page="currentPage"
-                  />
+                  /> -->
+                  <Button
+                    variant="outline"
+                    size="icon"
+                    class="rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-muted"
+                    @click="goToProfileUser(user.id)"
+                  >
+                    <Pencil :size="18" />
+                  </Button>
                   <DeleteUserAlert :user-i-d="user.id" :name-of-user="user.name" />
                 </div>
               </TableCell>
@@ -228,12 +236,12 @@ import { Button } from '@/components/ui/button'
 import { getListUser } from '@/api/users/getListUser'
 import { useQuery } from '@tanstack/vue-query'
 import ListUserTableSkeleton from '@/components/custom/skeletons/ListUserTableSkeleton.vue'
-import { SearchIcon, X, Link2, User, Users, Filter } from 'lucide-vue-next'
+import { SearchIcon, X, Link2, User, Users, Filter, Pencil } from 'lucide-vue-next'
 import type { UserListInterface as ResponseAPIUsersInterface } from '@/types/userListType'
 // import UserListHeaderCards from '@/components/custom/cards/UserListHeaderCards.vue'
 import UserListFilter from '@/components/custom/filters/UserListFilter.vue'
 import DeleteUserAlert from '@/components/custom/alerts/DeleteUserAlert.vue'
-import EditUserAlert from '@/components/custom/alerts/EditUserAlert.vue'
+// import EditUserAlert from '@/components/custom/alerts/EditUserAlert.vue'
 import { useRouter } from 'vue-router'
 import { useUserRole } from '@/composables/useUserRole'
 
@@ -344,6 +352,10 @@ const addNewUser = () => {
 
 const addNewUserBatch = () => {
   router.push('/dashboard/admin/create-user-batch')
+}
+
+const goToProfileUser = (user_id: string) => {
+  router.push(`/dashboard/admin/users/${user_id}/profile`)
 }
 
 // Computed properties for stats (keep using allUsers for now, or modify as needed)

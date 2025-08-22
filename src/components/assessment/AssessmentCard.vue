@@ -6,10 +6,7 @@
           {{ title }}
         </CardTitle>
         <div v-if="!isLoading" class="flex items-center space-x-2">
-          <div 
-            class="px-2 py-1 rounded-full text-xs font-medium"
-            :class="completionBadgeClasses"
-          >
+          <div class="px-2 py-1 rounded-full text-xs font-medium" :class="completionBadgeClasses">
             {{ completionText }}
           </div>
           <button
@@ -18,14 +15,19 @@
             :aria-label="isExpanded ? 'Tutup detail' : 'Lihat detail'"
             type="button"
           >
-            <svg 
+            <svg
               class="w-4 h-4 transition-transform duration-200"
               :class="{ 'rotate-180': isExpanded }"
-              fill="none" 
-              viewBox="0 0 24 24" 
+              fill="none"
+              viewBox="0 0 24 24"
               stroke="currentColor"
             >
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              />
             </svg>
           </button>
         </div>
@@ -46,9 +48,16 @@
 
       <!-- No Data State -->
       <div v-else-if="!hasData" class="text-center py-8">
-        <div class="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center">
+        <div
+          class="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center"
+        >
           <svg class="w-8 h-8 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+            />
           </svg>
         </div>
         <p class="text-muted-foreground">Belum ada data assessment</p>
@@ -59,16 +68,8 @@
       <div v-else class="space-y-3">
         <!-- Summary View (always visible) -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-          <div 
-            v-for="entry in summaryEntries" 
-            :key="entry.key"
-            class="assessment-summary-item"
-          >
-            <ScoreIndicator
-              :label="entry.label"
-              :value="entry.value"
-              :has-tooltip="false"
-            />
+          <div v-for="entry in summaryEntries" :key="entry.key" class="assessment-summary-item">
+            <ScoreIndicator :label="entry.label" :value="entry.value" :has-tooltip="false" />
           </div>
         </div>
 
@@ -81,16 +82,12 @@
           <div class="pt-4 border-t border-border">
             <h4 class="text-sm font-medium text-foreground mb-3">Detail Assessment</h4>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
-              <div 
-                v-for="entry in remainingEntries" 
+              <div
+                v-for="entry in remainingEntries"
                 :key="entry.key"
                 class="assessment-detail-item"
               >
-                <ScoreIndicator
-                  :label="entry.label"
-                  :value="entry.value"
-                  :has-tooltip="true"
-                />
+                <ScoreIndicator :label="entry.label" :value="entry.value" :has-tooltip="true" />
               </div>
             </div>
           </div>
@@ -104,7 +101,12 @@
           >
             Lihat {{ remainingEntries.length }} item lainnya
             <svg class="w-4 h-4 inline ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M19 9l-7 7-7-7"
+              />
             </svg>
           </button>
         </div>
@@ -136,7 +138,7 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   isLoading: false,
-  maxSummaryItems: 4
+  maxSummaryItems: 4,
 })
 
 const isExpanded = ref(false)
@@ -144,24 +146,20 @@ const isExpanded = ref(false)
 // Data processing
 const entries = computed((): AssessmentEntry[] => {
   if (!props.data) return []
-  
+
   return Object.entries(props.data).map(([key, value]) => ({
     key,
     value: String(value),
-    label: formatFieldLabel(key)
+    label: formatFieldLabel(key),
   }))
 })
 
 const hasData = computed(() => entries.value.length > 0)
 const hasMoreData = computed(() => entries.value.length > props.maxSummaryItems)
 
-const summaryEntries = computed(() => 
-  entries.value.slice(0, props.maxSummaryItems)
-)
+const summaryEntries = computed(() => entries.value.slice(0, props.maxSummaryItems))
 
-const remainingEntries = computed(() => 
-  entries.value.slice(props.maxSummaryItems)
-)
+const remainingEntries = computed(() => entries.value.slice(props.maxSummaryItems))
 
 // Completion status
 const completionText = computed(() => {
@@ -216,7 +214,7 @@ const formatFieldLabel = (key: string): string => {
     kecepatanPerseptual: 'Kecepatan Perseptual',
   }
 
-  return labelMap[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, str => str.toUpperCase())
+  return labelMap[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())
 }
 </script>
 
@@ -226,7 +224,9 @@ const formatFieldLabel = (key: string): string => {
 }
 
 .assessment-card:hover {
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 
 .assessment-summary-item,

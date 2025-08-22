@@ -6,7 +6,7 @@ export interface UserFilterParams {
   search_by?: 'name' | 'email' | 'phone'
   search_query?: string
   filter_role?: string
-  filter_organization?: string
+  filter_organization_id?: string
   filter_email_verified?: string | boolean
   order_by?: 'created_at' | 'updated_at' | 'name' | 'email'
   order_direction?: 'asc' | 'desc'
@@ -171,8 +171,8 @@ export const buildFilterSummary = (filters: UserFilterParams): string => {
     summaries.push(`Role: ${filters.filter_role}`)
   }
 
-  if (filters.filter_organization) {
-    summaries.push(`Organization: ${filters.filter_organization}`)
+  if (filters.filter_organization_id) {
+    summaries.push(`Organization: ${filters.filter_organization_id}`)
   }
 
   if (filters.filter_email_verified) {

@@ -4,6 +4,7 @@
     "": {
       "name": "iradat-vue",
       "dependencies": {
+        "@internationalized/date": "^3.8.2",
         "@tailwindcss/vite": "^4.1.11",
         "@tanstack/vue-query": "^5.83.1",
         "@tanstack/vue-table": "^8.21.3",

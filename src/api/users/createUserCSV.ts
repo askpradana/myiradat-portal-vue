@@ -2,8 +2,28 @@ import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
 import { refreshToken } from '../refreshToken'
 
+export interface BatchRegisterCSVData {
+  created_users?: Array<{
+    id: string
+    name: string
+    email: string
+    phone: string
+    role: string
+  }>
+  errors?: Array<{
+    row: number
+    message: string
+    data?: Record<string, unknown>
+  }>
+  summary?: {
+    total_rows: number
+    successful: number
+    failed: number
+  }
+}
+
 export interface BatchRegisterCSVAPIResponse {
-  data: any
+  data: BatchRegisterCSVData
   message: string
   success: boolean
   timestamp: string

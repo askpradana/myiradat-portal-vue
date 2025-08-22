@@ -21,7 +21,7 @@
             <div
               class="flex items-center justify-center h-10 w-10 bg-gradient-to-br from-blue-500 via-blue-800 to-violet-800 rounded-full text-white text-xs font-semibold"
             >
-              {{ initialName(member.name) }}
+              {{ getInitialName(member.name) }}
             </div>
           </TableCell>
 
@@ -134,6 +134,7 @@ import {
 import ListUserTableSkeleton from '../skeletons/ListUserTableSkeleton.vue'
 import { useQuery } from '@tanstack/vue-query'
 import { formatDate } from '@/lib/dateFromate'
+import { getInitialName } from '@/lib/getInitialName'
 
 // import { useRouter } from 'vue-router'
 // import Button from '@/components/ui/button/Button.vue'
@@ -182,13 +183,6 @@ const visiblePages = computed(() => {
 // const goToLinks = (user_id: string) => {
 //   router.push(`/dashboard/${user_id}/services`)
 // }
-
-const initialName = (name: string): string => {
-  const w = name.trim().split(/\s+/)
-
-  const initials = w.map((word) => word[0]?.toUpperCase() ?? '')
-  return initials.slice(0, 2).join('')
-}
 
 const getRoleBadgeClass = (role: string) => {
   const classes = {

@@ -1,5 +1,6 @@
 <template>
-  <Card class="mb-6">
+  <AnimatedFilterCard>
+    <Card class="mb-6">
     <CardHeader>
       <CardTitle class="text-lg font-semibold text-foreground">Filter Organizations</CardTitle>
       <CardDescription class="text-muted-foreground">
@@ -33,6 +34,7 @@
               v-model="localFilters.search_query"
               placeholder="Enter search term..."
               class="pr-10"
+              @keydown.enter="applyFilters"
             />
             <button
               v-if="localFilters.search_query"
@@ -52,6 +54,7 @@
             id="filter-industry"
             v-model="localFilters.filter_industry"
             placeholder="Enter industry..."
+            @keydown.enter="applyFilters"
           />
         </div>
 
@@ -146,25 +149,21 @@
 
       <!-- Active Filters Display -->
       <div v-if="hasActiveFilters" class="mt-4 pt-4 border-t border-border">
-        <div class="flex flex-wrap gap-2">
+        <div class="flex flex-wrap items-center gap-2">
           <span class="text-sm font-medium text-foreground">Active Filters:</span>
-          <div
+          <FilterChip
             v-for="(filter, key) in activeFiltersDisplay"
             :key="key"
-            variant="secondary"
-            class="flex items-center gap-1 text-sm"
-          >
-            <p class="bg-violet-500 px-2 rounded-xs text-white">
-              {{ filter.label }}: {{ filter.value }}
-            </p>
-            <button @click="removeFilter(key)" type="button" class="ml-1 hover:text-destructive">
-              <X :size="12" />
-            </button>
-          </div>
+            :label="filter.label"
+            :value="filter.value"
+            :filter-key="key"
+            @remove="removeFilter"
+          />
         </div>
       </div>
     </CardContent>
   </Card>
+  </AnimatedFilterCard>
 </template>
 
 <script setup lang="ts">
@@ -181,6 +180,8 @@ import {
   SelectValue,
 } from '@/components/ui/select'
 import { Filter, RotateCcw, X } from 'lucide-vue-next'
+import AnimatedFilterCard from '@/components/custom/transitions/AnimatedFilterCard.vue'
+import FilterChip from '@/components/custom/filters/FilterChip.vue'
 import type { OrganizationFilterParams } from '@/types/organizationType'
 
 // Props
@@ -278,9 +279,9 @@ const applyFilters = () => {
   // Remove empty values
   const cleanFilters = Object.entries(localFilters.value).reduce((acc, [key, value]) => {
     if (typeof value === 'string' && value.trim() !== '') {
-      acc[key as keyof OrganizationFilterParams] = value.trim() as any
+      (acc as Record<string, string>)[key] = value.trim()
     } else if (typeof value === 'number') {
-      acc[key as keyof OrganizationFilterParams] = value.toString() as any
+      (acc as Record<string, string>)[key] = value.toString()
     }
     return acc
   }, {} as OrganizationFilterParams)
