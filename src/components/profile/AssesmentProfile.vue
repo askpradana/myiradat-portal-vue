@@ -154,7 +154,7 @@ const props = defineProps<{
   ipro: IPROInterface | undefined
   lastAnalyzed: LastAnalyzedInterface | undefined
   isLoading: boolean
-  error: any
+  error: Error | null
   refetch: () => Promise<void>
 }>()
 
