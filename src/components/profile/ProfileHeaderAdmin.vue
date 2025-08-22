@@ -84,7 +84,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Card, CardContent } from '@/components/ui/card'
-// import { useUserProfile } from '@/composables/auth/useUserProfile'
 import { getInitialName } from '@/lib/getInitialName'
 import { Phone, CheckCircle, Mail } from 'lucide-vue-next'
 

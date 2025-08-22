@@ -72,10 +72,7 @@
       </div>
 
       <!-- Assessment Cards -->
-      <div
-        v-else-if="!isLoading && (ipro || iprob || ipros)"
-        class="grid grid-cols-1 xl:grid-cols-2 gap-6"
-      >
+      <div v-else-if="!isLoading && (ipro || iprob || ipros)" class="space-y-6">
         <!-- IPRO Assessment -->
         <AssessmentCard
           v-if="ipro"

@@ -161,17 +161,26 @@
                 </p>
               </div>
 
-              <!-- Date of Birth Field (Read Only) -->
+              <!-- Date of Birth Field -->
               <div class="space-y-2">
-                <label class="text-sm font-medium text-foreground"> Date of Birth </label>
-                <div
-                  class="px-3 py-2 bg-muted text-muted-foreground rounded-md border text-sm min-h-[40px] flex items-center"
-                >
-                  {{ formatDate(user?.date_of_birth || '') || 'Not provided' }}
+                <label for="date_of_birth" class="text-sm font-medium text-foreground">
+                  Date of Birth
+                </label>
+                <div v-if="isEditing">
+                  <DatePickerForm
+                    :model-value="dateOfBirthField"
+                    @update:model-value="handleDateChange($event)"
+                  />
+                  <p v-if="errors.date_of_birth" class="text-sm text-red-600 mt-1">
+                    {{ errors.date_of_birth }}
+                  </p>
                 </div>
-                <p class="text-xs text-muted-foreground">
-                  Contact support to change your date of birth
-                </p>
+                <div
+                  v-else
+                  class="px-3 py-2 bg-muted/50 hover:bg-muted/70 text-foreground rounded-md border border-transparent text-sm min-h-[40px] flex items-center transition-colors duration-200"
+                >
+                  {{ user?.date_of_birth ? formatDate(user.date_of_birth) : 'Not provided' }}
+                </div>
               </div>
             </div>
           </div>
@@ -284,6 +293,7 @@ import { toast } from 'vue-sonner'
 import { EditUserShcema } from '@/lib/zod-schemas/EditUserFormSchema'
 import { useUserStore } from '@/stores/userStores'
 import { type DataUserProps } from '@/api/users/editUser'
+import DatePickerForm from './DatePickerForm.vue'
 
 const props = defineProps<{
   name: string | undefined
@@ -297,20 +307,47 @@ const props = defineProps<{
 const user = computed(() => props)
 const userStore = useUserStore()
 
+// Helper to convert string to Date object
+const parseDate = (dateString: string | null | undefined): Date | undefined => {
+  if (!dateString) return undefined
+  try {
+    // Handle ISO string format dari API (2025-08-21T00:00:00Z)
+    const date = new Date(dateString)
+    // Validasi apakah date valid
+    if (isNaN(date.getTime())) return undefined
+    return date
+  } catch {
+    return undefined
+  }
+}
+
 const validationSchema = EditUserShcema
-const { handleSubmit, resetForm, errors } = useForm({
+const { handleSubmit, resetForm, errors } = useForm<{
+  name?: string
+  email?: string
+  phone?: string
+  date_of_birth?: Date | null
+  role?: string
+}>({
   validationSchema,
   initialValues: {
     name: props.name,
     email: props.email,
     phone: props.phone,
-    role: '1', // Provide a default role to pass validation
+    date_of_birth: parseDate(props.date_of_birth),
+    role: '1',
   },
 })
 
 const { value: nameField } = useField<string>('name')
 const { value: phoneField } = useField<string>('phone')
 const { value: emailField } = useField<string>('email')
+const { value: dateOfBirthField, setValue: setDateOfBirth } = useField<Date | null>('date_of_birth')
+
+const handleDateChange = (newDate: Date | null) => {
+  setDateOfBirth(newDate)
+  dateOfBirthField.value = newDate
+}
 
 const queryClient = useQueryClient()
 const { isPending: isSubmitting, mutate } = useMutation({
@@ -338,9 +375,36 @@ const handleFormSubmit = handleSubmit((values) => {
     toast('Error', { description: 'User ID is missing.' })
     return
   }
+
+  // Get the date from the field directly if not in values
+  const dateToUse = values.date_of_birth || dateOfBirthField.value
+
+  // Format date to ISO string with UTC timezone - PERBAIKAN
+  let formattedDateOfBirth = null
+  if (dateToUse && dateToUse instanceof Date) {
+    try {
+      // Create new date at midnight UTC to avoid timezone issues
+      const utcDate = new Date(
+        Date.UTC(dateToUse.getFullYear(), dateToUse.getMonth(), dateToUse.getDate()),
+      )
+      formattedDateOfBirth = utcDate.toISOString()
+    } catch (error) {
+      console.error(error)
+      formattedDateOfBirth = null
+    }
+  }
+
+  const payload = {
+    name: values.name ?? '',
+    email: values.email ?? '',
+    phone: values.phone ?? '',
+    date_of_birth: formattedDateOfBirth,
+    role_type: values.role ?? '1',
+  }
+
   mutate({
     userID: props.userID,
-    data: { ...values, role_type: values.role },
+    data: payload,
     role: Number(userStore.user?.role_id),
   })
 })
@@ -349,24 +413,56 @@ const originalValues = ref({
   name: props.name,
   email: props.email,
   phone: props.phone,
+  date_of_birth: parseDate(props.date_of_birth),
 })
 
 watch(
-  () => [props.name, props.email, props.phone],
-  ([newName, newEmail, newPhone]) => {
-    originalValues.value = {
-      name: newName,
-      email: newEmail,
-      phone: newPhone,
+  () => props,
+  (newProps) => {
+    const parsedDate = parseDate(newProps.date_of_birth)
+
+    const newValues = {
+      name: newProps.name,
+      email: newProps.email,
+      phone: newProps.phone,
+      date_of_birth: parsedDate,
+    }
+
+    originalValues.value = newValues
+
+    // Reset form dengan nilai baru
+    resetForm({
+      values: {
+        ...newValues,
+        role: '1',
+      },
+    })
+
+    // Explicitly set dateOfBirthField untuk memastikan DatePicker ter-update
+    if (parsedDate) {
+      setDateOfBirth(parsedDate)
     }
   },
+  { deep: true, immediate: true },
 )
 
 const hasChanges = computed(() => {
+  const currentDate = dateOfBirthField.value
+  const originalDate = originalValues.value.date_of_birth
+
+  // Handle date comparison properly
+  let dateChanged = false
+  if (currentDate && originalDate) {
+    dateChanged = currentDate.getTime() !== originalDate.getTime()
+  } else if (currentDate !== originalDate) {
+    dateChanged = true
+  }
+
   return (
     nameField.value !== originalValues.value.name ||
     emailField.value !== originalValues.value.email ||
-    phoneField.value !== originalValues.value.phone
+    phoneField.value !== originalValues.value.phone ||
+    dateChanged
   )
 })
 
@@ -380,26 +476,9 @@ const cancelEdit = () => {
   isEditing.value = false
   resetForm({
     values: {
-      name: props.name,
-      email: props.email,
-      phone: props.phone,
+      ...originalValues.value,
       role: '1',
     },
   })
 }
-
-watch(
-  () => props,
-  (newProps) => {
-    resetForm({
-      values: {
-        name: newProps.name,
-        email: newProps.email,
-        phone: newProps.phone,
-        role: '1',
-      },
-    })
-  },
-  { deep: true, immediate: true },
-)
 </script>
