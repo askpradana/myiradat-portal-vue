@@ -73,7 +73,7 @@ interface Props {
   card: BentoCard
 }
 
-const props = defineProps<Props>()
+defineProps<Props>()
 
 const metricValueClasses = computed(() => {
   // Use consistent neutral color for all metrics

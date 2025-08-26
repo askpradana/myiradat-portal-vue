@@ -238,6 +238,7 @@ import { useQuery } from '@tanstack/vue-query'
 import ListUserTableSkeleton from '@/components/custom/skeletons/ListUserTableSkeleton.vue'
 import { SearchIcon, X, Link2, User, Users, Filter, Pencil } from 'lucide-vue-next'
 import type { UserListInterface as ResponseAPIUsersInterface } from '@/types/userListType'
+import type { UserFilterParams } from '@/types/userFilterType'
 // import UserListHeaderCards from '@/components/custom/cards/UserListHeaderCards.vue'
 import UserListFilter from '@/components/custom/filters/UserListFilter.vue'
 import DeleteUserAlert from '@/components/custom/alerts/DeleteUserAlert.vue'
@@ -249,7 +250,7 @@ import { useUserRole } from '@/composables/useUserRole'
 const currentPage = ref(1)
 const quickSearch = ref('') // For backward compatibility
 const showFilter = ref(false)
-const currentFilters = ref<Record<string, any>>({})
+const currentFilters = ref<UserFilterParams>({})
 
 const router = useRouter()
 const { isAdmin } = useUserRole()
@@ -281,7 +282,7 @@ const { isPending, data } = useQuery({
 }
 
 // Filter Methods
-const handleFiltersChanged = (filters: Record<string, any>) => {
+const handleFiltersChanged = (filters: UserFilterParams) => {
   currentFilters.value = { ...filters }
   currentPage.value = 1 // Reset to first page when filters change
   quickSearch.value = '' // Clear quick search when using advanced filters

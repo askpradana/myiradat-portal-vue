@@ -173,16 +173,16 @@ export const useUserFilters = (initialFilters: UserFilterParams = {}) => {
 
       if (params.get('page')) urlFilters.page = parseInt(params.get('page')!)
       if (params.get('search')) quickSearch.value = params.get('search')!
-      if (params.get('search_by')) urlFilters.search_by = params.get('search_by') as any
+      if (params.get('search_by')) urlFilters.search_by = params.get('search_by') as UserFilterParams['search_by']
       if (params.get('search_query')) urlFilters.search_query = params.get('search_query')!
       if (params.get('filter_role')) urlFilters.filter_role = params.get('filter_role')!
       if (params.get('filter_organization_id'))
         urlFilters.filter_organization_id = params.get('filter_organization_id')!
       if (params.get('filter_email_verified'))
         urlFilters.filter_email_verified = params.get('filter_email_verified')!
-      if (params.get('order_by')) urlFilters.order_by = params.get('order_by') as any
+      if (params.get('order_by')) urlFilters.order_by = params.get('order_by') as UserFilterParams['order_by']
       if (params.get('order_direction'))
-        urlFilters.order_direction = params.get('order_direction') as any
+        urlFilters.order_direction = params.get('order_direction') as UserFilterParams['order_direction']
       if (params.get('page_size')) urlFilters.page_size = parseInt(params.get('page_size')!)
 
       if (Object.keys(urlFilters).length > 0) {

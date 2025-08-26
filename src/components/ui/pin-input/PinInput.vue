@@ -82,10 +82,10 @@ watch(
 
 const handleInput = (index: number, event: Event) => {
   const target = event.target as HTMLInputElement
-  const value = target.value
+  const value = target.value.toUpperCase()
 
-  // Only allow numbers
-  if (!/^\d*$/.test(value)) {
+  // Only allow letters and numbers
+  if (!/^[A-Z0-9]*$/.test(value)) {
     digits.value[index] = ''
     return
   }
@@ -121,14 +121,14 @@ const handleBlur = (index: number) => {
 const handlePaste = (event: ClipboardEvent) => {
   event.preventDefault()
   const pastedData = event.clipboardData?.getData('text/plain') || ''
-  const numbers = pastedData.replace(/\D/g, '').slice(0, props.length)
+  const alphanumeric = pastedData.replace(/[^A-Z0-9]/gi, '').toUpperCase().slice(0, props.length)
 
-  if (numbers.length > 0) {
-    const numbersArray = numbers.split('')
-    digits.value = [...numbersArray, ...new Array(props.length - numbersArray.length).fill('')]
+  if (alphanumeric.length > 0) {
+    const alphanumericArray = alphanumeric.split('')
+    digits.value = [...alphanumericArray, ...new Array(props.length - alphanumericArray.length).fill('')]
 
     // Focus the next empty input or the last one
-    const nextIndex = Math.min(numbers.length, props.length - 1)
+    const nextIndex = Math.min(alphanumeric.length, props.length - 1)
     nextTick(() => {
       inputRefs.value[nextIndex]?.focus()
     })

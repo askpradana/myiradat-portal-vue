@@ -1,12 +1,19 @@
 import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useMutation } from '@tanstack/vue-query'
 import { useForm } from 'vee-validate'
+import { useRouter } from 'vue-router'
 import { resendVerificationEmail } from '@/api/auth/verifyRequest'
 import { verifyEmailOtp } from '@/api/auth/verifyOtp'
 import { ResendVerificationSchema, VerifyOtpSchema } from '@/lib/zod-schemas/EmailVerificationSchema'
 import type { VerificationState, ResendVerificationPayload, VerifyOtpPayload } from '@/types/emailVerification'
+import { useUserStore } from '@/stores/userStores'
+import { toast } from 'vue-sonner'
 
-export function useEmailVerification(initialEmail?: string, initialUserId?: string) {
+export function useEmailVerification(initialEmail?: string, initialUserId?: string, enableAutoRequest: boolean = false) {
+  // Dependencies
+  const router = useRouter()
+  const userStore = useUserStore()
+  
   // Verification state
   const state = ref<VerificationState>({
     email: initialEmail || '',
@@ -18,6 +25,10 @@ export function useEmailVerification(initialEmail?: string, initialUserId?: stri
     showOtpInput: false,
     isVerifying: false,
   })
+
+  // Auto-request state
+  const isAutoRequesting = ref(false)
+  const autoRequestEnabled = ref(enableAutoRequest)
 
   // Countdown timer management
   let countdownInterval: ReturnType<typeof setInterval> | null = null
@@ -37,6 +48,20 @@ export function useEmailVerification(initialEmail?: string, initialUserId?: stri
         }
       }
     }, 1000)
+  }
+
+  // Calculate countdown from API's next_retry_allowed timestamp
+  const startCountdownFromTimestamp = (nextRetryAllowed: string) => {
+    const now = new Date().getTime()
+    const retryTime = new Date(nextRetryAllowed).getTime()
+    const secondsUntilRetry = Math.max(0, Math.floor((retryTime - now) / 1000))
+    
+    if (secondsUntilRetry > 0) {
+      startCountdown(secondsUntilRetry)
+    } else {
+      state.value.canResend = true
+      state.value.countdownTimer = 0
+    }
   }
 
   const stopCountdown = () => {
@@ -70,7 +95,7 @@ export function useEmailVerification(initialEmail?: string, initialUserId?: stri
   } = useForm({
     validationSchema: VerifyOtpSchema,
     initialValues: {
-      otp: '',
+      code: '',
       email: state.value.email,
     },
   })
@@ -78,29 +103,54 @@ export function useEmailVerification(initialEmail?: string, initialUserId?: stri
   // Resend verification mutation
   const resendMutation = useMutation({
     mutationFn: (payload: ResendVerificationPayload) => resendVerificationEmail(payload),
-    onSuccess: () => {
-      // Start countdown timer after successful resend
-      startCountdown(60)
+    onSuccess: (data) => {
+      // Start countdown timer using API's next_retry_allowed timestamp
+      if (data?.data?.next_retry_allowed) {
+        startCountdownFromTimestamp(data.data.next_retry_allowed)
+      } else {
+        // Fallback to 60 seconds if no timestamp provided
+        startCountdown(60)
+      }
+      
+      // Show OTP in dev environment
+      if (data?.data?.otp) {
+        console.log('Dev environment - Manual request OTP code:', data.data.otp)
+        toast.success('Verification Code', {
+          description: `Dev OTP: ${data.data.otp}`,
+        })
+      }
     },
     onError: (error) => {
       console.error('Failed to resend verification email:', error)
     },
   })
 
+
   // OTP verification mutation
   const otpMutation = useMutation({
     mutationFn: (payload: VerifyOtpPayload) => verifyEmailOtp(payload),
-    onSuccess: () => {
+    onSuccess: (data) => {
       // Handle successful verification
       state.value.showOtpInput = false
       state.value.otpValue = ''
-      setOtpValue('otp', '')
+      setOtpValue('code', '')
+      
+      // Use actual API response message
+      toast.success('Email Verified Successfully!', {
+        description: data.message || 'Your email has been verified. Please log in to continue.',
+      })
+      
+      // Clear the temporary verification token
+      userStore.clearTempVerificationToken()
+      
+      // Navigate to login page
+      router.replace('/login')
     },
     onError: (error) => {
       console.error('Failed to verify OTP:', error)
       // Clear OTP on error
       state.value.otpValue = ''
-      setOtpValue('otp', '')
+      setOtpValue('code', '')
     },
   })
 
@@ -132,14 +182,12 @@ export function useEmailVerification(initialEmail?: string, initialUserId?: stri
   const hideOtpInput = () => {
     state.value.showOtpInput = false
     state.value.otpValue = ''
-    setOtpValue('otp', '')
+    setOtpValue('code', '')
   }
 
   const verifyOtp = handleOtpSubmit(async (values) => {
     const payload: VerifyOtpPayload = {
-      email: values.email || state.value.email,
-      otp: values.otp,
-      user_id: state.value.user_id,
+      code: values.code,
     }
     
     await otpMutation.mutateAsync(payload)
@@ -147,10 +195,80 @@ export function useEmailVerification(initialEmail?: string, initialUserId?: stri
 
   const updateEmail = (email: string) => {
     state.value.email = email
+    // Update the form's email field so validation passes
+    setOtpValue('email', email)
+    // Trigger auto-request if conditions are now met
+    if (autoRequestEnabled.value && state.value.user_id) {
+      triggerAutoRequestWhenReady()
+    }
   }
 
   const updateUserId = (userId: string) => {
     state.value.user_id = userId
+    // Trigger auto-request if conditions are now met
+    if (autoRequestEnabled.value && state.value.email) {
+      triggerAutoRequestWhenReady()
+    }
+  }
+
+  // Auto-request verification email when conditions are met
+  const autoRequestVerification = async () => {
+    if (!state.value.email || !autoRequestEnabled.value || isAutoRequesting.value) {
+      console.log('Auto-request skipped:', {
+        hasEmail: !!state.value.email,
+        autoRequestEnabled: autoRequestEnabled.value,
+        isAutoRequesting: isAutoRequesting.value
+      })
+      return
+    }
+    
+    console.log('Starting auto-request verification for:', state.value.email)
+    isAutoRequesting.value = true
+    
+    try {
+      const payload: ResendVerificationPayload = {
+        email: state.value.email,
+      }
+      
+      const response = await resendVerificationEmail(payload)
+      
+      // Start countdown timer using API's next_retry_allowed timestamp
+      if (response?.data?.next_retry_allowed) {
+        startCountdownFromTimestamp(response.data.next_retry_allowed)
+      } else {
+        startCountdown(60)
+      }
+      
+      // Show OTP in dev environment
+      let toastMessage = 'A verification code has been sent to your email address'
+      if (response?.data?.otp) {
+        toastMessage += ` (Dev OTP: ${response.data.otp})`
+        console.log('Dev environment - OTP code:', response.data.otp)
+      }
+      
+      toast.success('Verification Email Sent', {
+        description: toastMessage,
+      })
+    } catch (error) {
+      console.error('Auto-request verification failed:', error)
+      
+      toast.error('Auto-verification Failed', {
+        description: `Failed to send verification email: ${error instanceof Error ? error.message : 'Network error'}`,
+      })
+      
+      // Allow manual resend on auto-request failure
+      state.value.canResend = true
+    } finally {
+      isAutoRequesting.value = false
+    }
+  }
+
+  // Trigger auto-request when email and user_id are ready
+  const triggerAutoRequestWhenReady = async () => {
+    if (autoRequestEnabled.value && state.value.email && state.value.user_id) {
+      console.log('Triggering auto-request after parameters are ready')
+      await autoRequestVerification()
+    }
   }
 
   // Contact admin action
@@ -163,6 +281,12 @@ export function useEmailVerification(initialEmail?: string, initialUserId?: stri
 
   // Lifecycle
   onMounted(() => {
+    console.log('useEmailVerification mounted:', {
+      enableAutoRequest: autoRequestEnabled.value,
+      hasInitialEmail: !!state.value.email,
+      hasInitialUserId: !!state.value.user_id
+    })
+    
     // Check if there was a recent verification request in localStorage
     const lastRequest = localStorage.getItem('last_verification_request')
     if (lastRequest) {
@@ -174,6 +298,11 @@ export function useEmailVerification(initialEmail?: string, initialUserId?: stri
         startCountdown(remainingTime)
       }
     }
+    
+    // Trigger auto-request if initial conditions are met
+    if (autoRequestEnabled.value && state.value.email && state.value.user_id) {
+      triggerAutoRequestWhenReady()
+    }
   })
 
   onUnmounted(() => {
@@ -183,6 +312,7 @@ export function useEmailVerification(initialEmail?: string, initialUserId?: stri
   return {
     // State
     state: computed(() => state.value),
+    isAutoRequesting: computed(() => isAutoRequesting.value),
     
     // Computed properties
     isResending,
@@ -206,9 +336,11 @@ export function useEmailVerification(initialEmail?: string, initialUserId?: stri
     updateUserId,
     contactAdmin,
     setOtpValue,
+    triggerAutoRequestWhenReady,
     
     // Timer controls
     startCountdown,
+    startCountdownFromTimestamp,
     stopCountdown,
   }
 }

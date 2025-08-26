@@ -14,9 +14,19 @@ export interface ResendVerificationResponse {
   success: boolean
   message: string
   data?: {
+    expires_at: string
+    is_verified: boolean
     message: string
-    email: string
-    sent_at: string
+    next_retry_allowed: string
+    otp?: string // Optional OTP field present in dev environment
+    status: {
+      has_pending_verification: boolean
+      is_flagged: boolean
+      is_verified: boolean
+      request_attempts_remaining: number
+      verify_attempts_remaining: number
+    }
+    success: boolean
   }
   timestamp: string
 }
@@ -37,17 +47,27 @@ export interface ResendVerificationPayload {
 }
 
 export interface VerifyOtpPayload {
-  email: string
-  otp: string
-  user_id: string
+  code: string
 }
 
 export interface VerifyOtpResponse {
   success: boolean
   message: string
-  data?: {
-    message: string
-    verified: boolean
+  timestamp: string
+}
+
+// Enhanced login response interface to handle email verification scenarios
+export interface LoginResponse {
+  success: boolean
+  message: string
+  data: {
+    token?: string
+    expires_at?: string
+    user?: Record<string, unknown>
+    services?: Record<string, unknown>[]
+    requires_verification?: boolean
+    email?: string
+    user_id?: string
   }
   timestamp: string
 }

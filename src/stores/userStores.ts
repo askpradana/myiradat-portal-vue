@@ -9,19 +9,19 @@ import type {
   LastAnalyzedInterface,
 } from '@/types/userType'
 
-interface UserLoginInterface extends UserProfileInterface {
+export interface UserLoginInterface extends UserProfileInterface {
   ipro: IPROInterface
   iprob: IPROBInterface
   ipros: IPROSInterface
   last_analyzed: LastAnalyzedInterface
 }
 
-interface TokenInterface {
+export interface TokenInterface {
   token: string
   expires_at: string
 }
 
-interface Service {
+export interface Service {
   code: string
   name: string
   icon_url: string
@@ -41,6 +41,7 @@ export const useUserStore = defineStore('user', () => {
   const user = ref<UserLoginInterface | null>(null)
   const services = ref<Service[] | null>(null)
   const isAuthenticated = ref<boolean>(false)
+  const tempVerificationToken = ref<string | null>(null)
 
   // Actions
   const setUserData = (authData: {
@@ -75,15 +76,27 @@ export const useUserStore = defineStore('user', () => {
     }
   }
 
+  const setTempVerificationToken = (token: string) => {
+    tempVerificationToken.value = token
+    sessionStorage.setItem('temp_verification_token', token)
+  }
+
+  const clearTempVerificationToken = () => {
+    tempVerificationToken.value = null
+    sessionStorage.removeItem('temp_verification_token')
+  }
+
   const clearUserData = () => {
     auth.value = null
     user.value = null
     services.value = null
     isAuthenticated.value = false
+    tempVerificationToken.value = null
 
     sessionStorage.removeItem('auth_token')
     sessionStorage.removeItem('data_user')
     sessionStorage.removeItem('data_services')
+    sessionStorage.removeItem('temp_verification_token')
   }
 
   const isTokenValid = (): boolean => {
@@ -97,6 +110,12 @@ export const useUserStore = defineStore('user', () => {
     const storedToken = sessionStorage.getItem('auth_token')
     const storedUser = sessionStorage.getItem('data_user')
     const storedServices = sessionStorage.getItem('data_services')
+    const storedTempToken = sessionStorage.getItem('temp_verification_token')
+
+    // Restore temporary verification token if it exists
+    if (storedTempToken) {
+      tempVerificationToken.value = storedTempToken
+    }
 
     if (storedToken && storedUser) {
       try {
@@ -114,7 +133,7 @@ export const useUserStore = defineStore('user', () => {
           // Token expired, clear all data
           clearUserData()
         }
-      } catch (error) {
+      } catch {
         // Invalid token data, clear everything
         console.warn('Invalid token data found, clearing authentication state')
         clearUserData()
@@ -127,8 +146,11 @@ export const useUserStore = defineStore('user', () => {
     user,
     services,
     isAuthenticated,
+    tempVerificationToken,
     setUserData,
     setUserProfileData,
+    setTempVerificationToken,
+    clearTempVerificationToken,
     clearAuthData: clearUserData,
     initializeAuth,
     isTokenValid,

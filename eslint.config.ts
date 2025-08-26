@@ -19,4 +19,19 @@ export default defineConfigWithVueTs(
   pluginVue.configs['flat/essential'],
   vueTsConfigs.recommended,
   skipFormatting,
+  
+  // Custom overrides
+  {
+    name: 'app/custom-rules',
+    rules: {
+      // Allow single-word component names for UI library components
+      'vue/multi-word-component-names': ['error', {
+        ignores: [
+          'Accordion', 'Alert', 'Badge', 'Button', 'Card', 'Checkbox', 
+          'Input', 'Label', 'Pagination', 'Progress', 'Select', 'Separator',
+          'Skeleton', 'Sonner', 'Stepper', 'Switch', 'Table', 'Textarea', 'Tooltip'
+        ]
+      }],
+    },
+  },
 )

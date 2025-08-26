@@ -212,12 +212,12 @@ import DeleteOrganizationAlert from '@/components/custom/alerts/DeleteOrganizati
 import OrganizationListFilter from '@/components/custom/filters/OrganizationListFilter.vue'
 import { useRouter } from 'vue-router'
 import { useUserRole } from '@/composables/useUserRole'
-import type { ResponseAPIGetOrganizationsData } from '@/types/organizationType'
+import type { ResponseAPIGetOrganizationsData, OrganizationFilterParams } from '@/types/organizationType'
 
 // State
 const currentPage = ref(1)
 const showFilter = ref(false)
-const currentFilters = ref<Record<string, any>>({})
+const currentFilters = ref<OrganizationFilterParams>({})
 
 const router = useRouter()
 const { isAdmin } = useUserRole()
@@ -251,7 +251,7 @@ onMounted(() => {
 })
 
 // Filter Methods
-const handleFiltersChanged = (filters: Record<string, any>) => {
+const handleFiltersChanged = (filters: OrganizationFilterParams) => {
   currentFilters.value = { ...filters }
   currentPage.value = 1 // Reset to first page when filters change
   refetch() // Manually refetch data
