@@ -1,4 +1,4 @@
-import { computed, ref, type ComputedRef } from 'vue'
+import { computed, type ComputedRef } from 'vue'
 import { useQuery } from '@tanstack/vue-query'
 import { getProfile } from '@/api/users/getProfile'
 import { useUserStore } from '@/stores/userStores'
@@ -42,7 +42,7 @@ export type UseAssessmentDataReturn = {
   error: ComputedRef<Error | null>
   
   // Assessment specific data
-  getAssessmentData: (type: AssessmentType) => ComputedRef<any>
+  getAssessmentData: (type: AssessmentType) => ComputedRef<Record<string, string> | null>
   getAssessmentEntries: (type: AssessmentType) => ComputedRef<Array<{ key: string, value: string, label: string }>>
   
   // Utility functions
@@ -109,7 +109,7 @@ export function useAssessmentData(): UseAssessmentDataReturn {
   }
 
   // Safe JSON parsing utility
-  const parseJsonSafely = <T>(data: any): T | null => {
+  const parseJsonSafely = <T>(data: unknown): T | null => {
     if (!data) return null
     
     if (typeof data === 'string') {
@@ -128,7 +128,15 @@ export function useAssessmentData(): UseAssessmentDataReturn {
     return computed(() => {
       const data = assessmentData.value
       if (!data) return null
-      return data[type]
+      const assessmentItem = data[type]
+      if (!assessmentItem) return null
+      
+      // Convert assessment data to Record<string, string> format
+      const result: Record<string, string> = {}
+      Object.entries(assessmentItem).forEach(([key, value]) => {
+        result[key] = String(value ?? '')
+      })
+      return result
     })
   }
 

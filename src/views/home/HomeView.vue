@@ -42,7 +42,7 @@ import {
   TestimonialsSection,
   PricingSection,
   FAQSection,
-  FooterSection
+  FooterSection,
 } from './components/sections'
 
 const homepageStore = useHomepageStore()

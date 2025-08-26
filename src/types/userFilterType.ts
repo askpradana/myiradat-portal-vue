@@ -118,7 +118,7 @@ export const isFilterActive = (filters: UserFilterParams): boolean => {
 
   // Check if any non-default values are set
   return (
-    Object.entries(activeFilters).some(([key, value]) => {
+    Object.entries(activeFilters).some(([, value]) => {
       if (!value) return false
       if (typeof value === 'string' && value.trim() === '') return false
       return true
@@ -135,7 +135,7 @@ export const getActiveFilterCount = (filters: UserFilterParams): number => {
   let count = 0
 
   // Count active filters
-  Object.entries(activeFilters).forEach(([key, value]) => {
+  Object.entries(activeFilters).forEach(([, value]) => {
     if (value && (typeof value !== 'string' || value.trim() !== '')) {
       count++
     }

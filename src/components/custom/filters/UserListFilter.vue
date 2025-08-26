@@ -184,8 +184,9 @@ import { Filter, RotateCcw, X } from 'lucide-vue-next'
 import AnimatedFilterCard from '@/components/custom/transitions/AnimatedFilterCard.vue'
 import FilterChip from '@/components/custom/filters/FilterChip.vue'
 import OrganizationCombobox from '@/components/custom/combobox/OrganizationCombobox.vue'
+import type { UserFilterParams } from '@/types/userFilterType'
 
-// Types
+// Component-specific filter params that match form inputs
 interface FilterParams {
   search_by?: string
   search_query?: string
@@ -199,7 +200,7 @@ interface FilterParams {
 
 // Props
 interface Props {
-  initialFilters?: FilterParams
+  initialFilters?: UserFilterParams
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -208,9 +209,27 @@ const props = withDefaults(defineProps<Props>(), {
 
 // Emits
 const emit = defineEmits<{
-  'filters-changed': [filters: FilterParams]
+  'filters-changed': [filters: UserFilterParams]
   'filters-reset': []
 }>()
+
+// Convert UserFilterParams to FilterParams for local state
+const convertFromUserFilterParams = (userParams: UserFilterParams): FilterParams => {
+  const result: FilterParams = {}
+  
+  if (userParams.search_by) result.search_by = userParams.search_by
+  if (userParams.search_query) result.search_query = userParams.search_query
+  if (userParams.filter_role) result.filter_role = userParams.filter_role
+  if (userParams.filter_organization_id) result.filter_organization_id = userParams.filter_organization_id
+  if (userParams.filter_email_verified !== undefined) {
+    result.filter_email_verified = String(userParams.filter_email_verified)
+  }
+  if (userParams.order_by) result.order_by = userParams.order_by
+  if (userParams.order_direction) result.order_direction = userParams.order_direction
+  if (userParams.page_size) result.page_size = String(userParams.page_size)
+  
+  return result
+}
 
 // Local state
 const localFilters = ref<FilterParams>({
@@ -222,7 +241,7 @@ const localFilters = ref<FilterParams>({
   order_by: 'created_at',
   order_direction: 'desc',
   page_size: '10',
-  ...props.initialFilters,
+  ...convertFromUserFilterParams(props.initialFilters || {}),
 })
 
 // Computed
@@ -287,17 +306,48 @@ const activeFiltersDisplay = computed(() => {
   return filters
 })
 
+// Convert FilterParams to UserFilterParams
+const convertToUserFilterParams = (filters: FilterParams): UserFilterParams => {
+  const result: UserFilterParams = {}
+  
+  if (filters.search_by && filters.search_by !== '') {
+    result.search_by = filters.search_by as 'name' | 'email' | 'phone'
+  }
+  if (filters.search_query) result.search_query = filters.search_query
+  if (filters.filter_role) result.filter_role = filters.filter_role
+  if (filters.filter_organization_id) result.filter_organization_id = filters.filter_organization_id
+  if (filters.filter_email_verified) {
+    result.filter_email_verified = filters.filter_email_verified === 'true' ? true : 
+                                   filters.filter_email_verified === 'false' ? false : 
+                                   filters.filter_email_verified
+  }
+  if (filters.order_by && filters.order_by !== '') {
+    result.order_by = filters.order_by as 'created_at' | 'updated_at' | 'name' | 'email'
+  }
+  if (filters.order_direction && filters.order_direction !== '') {
+    result.order_direction = filters.order_direction as 'asc' | 'desc'
+  }
+  if (filters.page_size) {
+    const pageSize = parseInt(filters.page_size)
+    if (!isNaN(pageSize)) result.page_size = pageSize
+  }
+  
+  return result
+}
+
 // Methods
 const applyFilters = () => {
   // Remove empty values
   const cleanFilters = Object.entries(localFilters.value).reduce((acc, [key, value]) => {
-    if (value && value.trim() !== '') {
+    if (value && typeof value === 'string' && value.trim() !== '') {
       acc[key as keyof FilterParams] = value.trim()
     }
     return acc
   }, {} as FilterParams)
 
-  emit('filters-changed', cleanFilters)
+  // Convert to UserFilterParams and emit
+  const userFilterParams = convertToUserFilterParams(cleanFilters)
+  emit('filters-changed', userFilterParams)
 }
 
 const resetFilters = () => {
@@ -343,7 +393,9 @@ const removeFilter = (filterKey: string) => {
 watch(
   () => props.initialFilters,
   (newFilters) => {
-    localFilters.value = { ...localFilters.value, ...newFilters }
+    if (newFilters) {
+      localFilters.value = { ...localFilters.value, ...convertFromUserFilterParams(newFilters) }
+    }
   },
   { deep: true, immediate: true },
 )

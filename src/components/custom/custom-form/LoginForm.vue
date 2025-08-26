@@ -11,6 +11,7 @@ import { login } from '@/api/login'
 import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
 import { Eye, EyeClosed } from 'lucide-vue-next'
+import type { UserLoginInterface, Service } from '@/stores/userStores'
 
 const loading = ref(false)
 const isShowPassword = ref(false)
@@ -37,6 +38,11 @@ const onSubmit = handleSubmit(async (values) => {
   if (response?.success) {
     // Check if email verification is required
     if (response.data?.requires_verification) {
+      // Store the temporary verification token
+      if (response.data.token) {
+        userStore.setTempVerificationToken(response.data.token)
+      }
+      
       // Redirect to email verification page with user data
       router.push({
         path: '/verify-email',
@@ -46,20 +52,22 @@ const onSubmit = handleSubmit(async (values) => {
         },
       })
       toast('Email Verification Required', {
-        description: response.data.message || 'Please verify your email address to continue',
+        description: response.message || 'Please verify your email address to continue',
       })
       return
     }
 
     // Normal login success flow
-    userStore.setUserData({
-      auth: {
-        token: response.data.token,
-        expires_at: response.data.expires_at,
-      },
-      user: response.data.user,
-      services: response.data.services,
-    })
+    if (response.data.token && response.data.expires_at && response.data.user) {
+      userStore.setUserData({
+        auth: {
+          token: response.data.token,
+          expires_at: response.data.expires_at,
+        },
+        user: response.data.user as unknown as UserLoginInterface,
+        services: (response.data.services || []) as unknown as Service[],
+      })
+    }
     toast('Success', {
       description: `${response?.message}`,
     })

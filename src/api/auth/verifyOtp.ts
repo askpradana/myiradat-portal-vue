@@ -1,19 +1,29 @@
 import { toast } from 'vue-sonner'
 import type { VerifyOtpResponse, VerifyOtpPayload } from '@/types/emailVerification'
+import { useUserStore } from '@/stores/userStores'
 
 export const verifyEmailOtp = async (payload: VerifyOtpPayload): Promise<VerifyOtpResponse> => {
   try {
-    // Validate payload
-    if (!payload.email || !payload.otp || !payload.user_id) {
-      throw new Error('Email, OTP, and User ID are required')
+    // Validate payload - only code is required based on your API specification
+    if (!payload.code) {
+      throw new Error('Verification code is required')
     }
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/verify-otp`, {
+    const userStore = useUserStore()
+    const headers: Record<string, string> = {
+      'Content-Type': 'application/json',
+    }
+
+    // Add Authorization header if temporary verification token exists
+    if (userStore.tempVerificationToken) {
+      headers.Authorization = `Bearer ${userStore.tempVerificationToken}`
+    }
+
+    // Send only the code as specified in your requirements
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/verify-confirm`, {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload),
+      headers,
+      body: JSON.stringify({ code: payload.code }),
     })
 
     if (!response.ok) {
@@ -34,10 +44,6 @@ export const verifyEmailOtp = async (payload: VerifyOtpPayload): Promise<VerifyO
 
     const data = await response.json()
     console.log('OTP verification successful:', data)
-
-    toast.success('Email Verified', {
-      description: 'Your email has been verified successfully',
-    })
 
     return data
   } catch (error) {

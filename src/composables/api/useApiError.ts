@@ -5,7 +5,7 @@ export type ApiError = {
   message: string
   status?: number
   code?: string
-  details?: Record<string, any>
+  details?: Record<string, unknown>
 }
 
 export type ApiErrorHandler = {
@@ -30,11 +30,11 @@ export function useApiError(): ApiErrorHandler {
     }
 
     if (typeof err === 'object' && err !== null) {
-      const errorObj = err as any
+      const errorObj = err as Record<string, unknown>
       return {
-        message: errorObj.message || 'An unknown error occurred',
-        status: errorObj.status,
-        code: errorObj.code,
+        message: (typeof errorObj.message === 'string' ? errorObj.message : null) || 'An unknown error occurred',
+        status: typeof errorObj.status === 'number' ? errorObj.status : undefined,
+        code: typeof errorObj.code === 'string' ? errorObj.code : undefined,
         details: errorObj
       }
     }

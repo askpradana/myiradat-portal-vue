@@ -12,7 +12,7 @@
 
       <!-- Grid overlay -->
       <div
-        class="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.1)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.1)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"
+        class="absolute inset-0 bg-[linear-gradient(var(--grid-color)_1px,transparent_1px),linear-gradient(90deg,var(--grid-color)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)]"
       ></div>
     </div>
 
@@ -52,8 +52,17 @@
 
         <CardContent class="space-y-6">
           <!-- Status Alert -->
-          <Alert class="border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950/50">
+          <Alert 
+            :class="isAutoRequesting 
+              ? 'border-yellow-200 bg-yellow-50 dark:border-yellow-800 dark:bg-yellow-950/50' 
+              : 'border-blue-200 bg-blue-50 dark:border-blue-800 dark:bg-blue-950/50'"
+          >
+            <div
+              v-if="isAutoRequesting"
+              class="w-4 h-4 border-2 border-yellow-600 border-t-transparent rounded-full animate-spin dark:border-yellow-400"
+            ></div>
             <svg
+              v-else
               class="h-4 w-4 text-blue-600 dark:text-blue-400"
               fill="none"
               viewBox="0 0 24 24"
@@ -66,10 +75,17 @@
                 d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
               />
             </svg>
-            <AlertTitle class="text-blue-800 dark:text-blue-200">Verification Required</AlertTitle>
-            <AlertDescription class="text-blue-700 dark:text-blue-300">
-              A verification email was sent to your address. Please check your inbox and spam
-              folder.
+            <AlertTitle :class="isAutoRequesting 
+              ? 'text-yellow-800 dark:text-yellow-200' 
+              : 'text-blue-800 dark:text-blue-200'">
+              {{ isAutoRequesting ? 'Sending Verification...' : 'Verification Required' }}
+            </AlertTitle>
+            <AlertDescription :class="isAutoRequesting 
+              ? 'text-yellow-700 dark:text-yellow-300' 
+              : 'text-blue-700 dark:text-blue-300'">
+              {{ isAutoRequesting 
+                ? 'Automatically sending a verification email to your address...' 
+                : 'A verification email was sent to your address. Please check your inbox and spam folder.' }}
             </AlertDescription>
           </Alert>
 
@@ -90,7 +106,7 @@
                   d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
                 />
               </svg>
-              <span class="text-sm font-medium text-foreground">{{ verificationEmail }}</span>
+              <span class="text-sm font-medium text-foreground">{{ maskedEmail }}</span>
             </div>
           </div>
 
@@ -98,7 +114,9 @@
           <div class="space-y-4">
             <!-- Resend Verification -->
             <div class="space-y-3">
+              <!-- Show button only when can resend or currently sending -->
               <Button
+                v-if="state.canResend || isResending"
                 @click="resendVerification"
                 :disabled="!state.canResend || isResending"
                 class="w-full"
@@ -122,16 +140,11 @@
                     d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
                   />
                 </svg>
-                {{
-                  isResending
-                    ? 'Sending...'
-                    : state.canResend
-                      ? 'Request New Code'
-                      : `Wait ${countdownDisplay}`
-                }}
+                {{ isResending ? 'Sending...' : 'Request New Code' }}
               </Button>
 
-              <p v-if="!state.canResend" class="text-xs text-muted-foreground text-center">
+              <!-- Show countdown text when button is hidden -->
+              <p v-if="!state.canResend" class="text-sm text-muted-foreground text-center">
                 You can request a new verification code in {{ countdownDisplay }}
               </p>
             </div>
@@ -153,9 +166,13 @@
                 @click="showOtpInput"
                 variant="outline"
                 class="w-full"
-                disabled
+                :disabled="isAutoRequesting"
               >
-                <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <div
+                  v-if="isAutoRequesting"
+                  class="w-4 h-4 border-2 border-current border-t-transparent rounded-full animate-spin mr-2"
+                ></div>
+                <svg v-else class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -163,10 +180,7 @@
                     d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"
                   />
                 </svg>
-                Enter Verification Code
-                <span class="ml-2 text-xs bg-amber-100 text-amber-800 px-2 py-1 rounded"
-                  >Coming Soon</span
-                >
+                {{ isAutoRequesting ? 'Sending verification...' : 'Enter Verification Code' }}
               </Button>
 
               <!-- OTP Input Form (when backend is ready) -->
@@ -174,13 +188,13 @@
                 <div class="space-y-2">
                   <label class="text-sm font-medium text-foreground">Verification Code</label>
                   <PinInput
-                    :model-value="otpValues?.otp || ''"
-                    @update:model-value="setOtpValue('otp', $event)"
-                    placeholder="0"
+                    :model-value="otpValues?.code || ''"
+                    @update:model-value="setOtpValue('code', $event)"
+                    placeholder="A"
                     class="justify-center"
                     :disabled="isVerifying"
                   />
-                  <p v-if="otpErrors.otp" class="text-sm text-red-600">{{ otpErrors.otp }}</p>
+                  <p v-if="otpErrors.code" class="text-sm text-red-600">{{ otpErrors.code }}</p>
                 </div>
 
                 <div class="flex gap-2">
@@ -195,7 +209,7 @@
                   <Button
                     @click="verifyOtp"
                     class="flex-1"
-                    :disabled="isVerifying || !otpValues?.otp"
+                    :disabled="isVerifying || !otpValues?.code"
                   >
                     <div
                       v-if="isVerifying"
@@ -269,7 +283,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import {
   Card,
@@ -283,6 +297,7 @@ import { Button } from '@/components/ui/button'
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert'
 import { PinInput } from '@/components/ui/pin-input'
 import { useEmailVerification } from '@/composables/auth/useEmailVerification'
+import { maskEmail } from '@/lib/utils'
 
 // Router
 const route = useRoute()
@@ -292,11 +307,12 @@ const router = useRouter()
 const verificationEmail = ref<string>('')
 const verificationUserId = ref<string>('')
 
-// Email verification composable
+// Email verification composable (with auto-request enabled)
 const {
   state,
   isResending,
   isVerifying,
+  isAutoRequesting,
   canShowOtpInput,
   countdownDisplay,
   otpErrors,
@@ -309,7 +325,12 @@ const {
   setOtpValue,
   updateEmail,
   updateUserId,
-} = useEmailVerification()
+} = useEmailVerification('', '', true) // Enable auto-request
+
+// Computed property for masked email
+const maskedEmail = computed(() => {
+  return verificationEmail.value ? maskEmail(verificationEmail.value) : ''
+})
 
 // Actions
 const backToLogin = () => {
@@ -318,20 +339,24 @@ const backToLogin = () => {
 
 // Initialize component
 onMounted(() => {
+  console.log('EmailVerificationView mounted with query:', route.query)
+  
   // Get verification data from route query
   const email = route.query.email as string
   const userId = route.query.user_id as string
 
   if (!email || !userId) {
-    // If no email or user_id provided, redirect to login
+    console.error('Missing required parameters for email verification:', { email: !!email, userId: !!userId })
     router.replace('/login')
     return
   }
 
+  console.log('Initializing verification for:', { email, userId })
+
   verificationEmail.value = email
   verificationUserId.value = userId
 
-  // Update composable with email and user_id
+  // Update composable with email and user_id - this will trigger auto-request
   updateEmail(email)
   updateUserId(userId)
 })

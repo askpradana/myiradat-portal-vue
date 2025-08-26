@@ -1,9 +1,9 @@
 <template>
   <section
     ref="heroRef"
-    class="relative overflow-hidden bg-gradient-to-br from-background via-card/30 to-background min-h-[85vh] flex items-center"
+    class="relative overflow-hidden bg-gradient-to-br from-background via-card/30 to-background min-h-[85vh] flex items-center mt-8"
   >
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    <div class="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
       <div class="grid lg:grid-cols-2 gap-12 items-center">
         <!-- Hero Content -->
         <div class="text-center lg:text-left max-w-2xl mx-auto lg:mx-0">
@@ -114,6 +114,11 @@
         </div>
       </div>
     </div>
+
+    <!-- Grid pattern overlay -->
+    <div
+      class="absolute inset-0 z-0 bg-[linear-gradient(var(--grid-color)_1px,transparent_1px),linear-gradient(90deg,var(--grid-color)_1px,transparent_1px)] bg-[size:50px_50px] pointer-events-none [mask-image:linear-gradient(to_bottom,black_0%,black_70%,transparent_100%)]"
+    ></div>
 
     <!-- Decorative Elements -->
     <div
