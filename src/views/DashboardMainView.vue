@@ -65,23 +65,10 @@
       </div>
 
       <!-- Empty State -->
-      <div 
+      <EmptyServicesState 
         v-if="!isLoading && !error && displayServices.length === 0"
-        class="flex flex-col items-center justify-center py-12 px-4 border-2 border-dashed border-muted rounded-lg"
-      >
-        <Server class="h-12 w-12 text-muted-foreground mb-4" />
-        <h3 class="text-xl font-semibold text-foreground mb-3 leading-snug tracking-tight">No services available</h3>
-        <p class="text-base text-muted-foreground text-center leading-relaxed mb-6">
-          {{ userRole === 'admin' 
-            ? 'Add services to get started with your dashboard.' 
-            : 'Contact your administrator to get access to services.' 
-          }}
-        </p>
-        <Button v-if="userRole === 'admin'" variant="outline">
-          <Plus :size="16" class="mr-2" />
-          Add Service
-        </Button>
-      </div>
+        :user-role="userRole"
+      />
     </section>
 
   </div>
@@ -92,14 +79,13 @@ import { computed, ref, onMounted } from 'vue'
 import { Button } from '@/components/ui/button'
 import { 
   RefreshCw, 
-  AlertCircle, 
-  Server, 
-  Plus
+  AlertCircle
 } from 'lucide-vue-next'
 
 // Components
 import ServiceCard from '@/components/custom/dashboard/ServiceCard.vue'
 import CardServiceSkeleton from '@/components/custom/skeletons/CardServiceSkeleton.vue'
+import EmptyServicesState from '@/components/custom/dashboard/EmptyServicesState.vue'
 
 // Store and utilities
 import { useUserStore } from '@/stores/userStores'
@@ -116,34 +102,13 @@ const error = ref<string | null>(null)
 // Computed properties
 const userRole = computed(() => getUserRole(userStore.user))
 
-// Fallback services when no user services are available (matches real API structure)
-const fallbackServices: DashboardServiceInterface[] = [
-  {
-    code: 'PSYCH_EVAL',
-    name: 'Ipro Business',
-    icon_url: 'https://placehold.co/600x400',
-    redirect_to: 'https://iprob.iradatkonsultan.com/'
-  },
-  {
-    code: 'PERS_ASSESS',
-    name: 'Ipro Student',
-    icon_url: 'https://placehold.co/600x400',
-    redirect_to: 'http://ipros.iradatkonsultan.com/'
-  },
-  {
-    code: 'TEAM_BUILD',
-    name: 'Improve Care',
-    icon_url: 'https://placehold.co/600x400',
-    redirect_to: 'https://improvecare.iradatkonsultan.com/'
-  }
-]
 
 // Transform and display services
 const displayServices = computed<DashboardServiceInterface[]>(() => {
   if (userStore.services && userStore.services.length > 0) {
     return userStore.services.map(transformServiceForDisplay)
   }
-  return fallbackServices
+  return []
 })
 
 // Services count

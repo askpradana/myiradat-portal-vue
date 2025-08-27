@@ -1,6 +1,5 @@
-import { computed, watch, type ComputedRef } from 'vue'
+import { computed, ref, type ComputedRef, type Ref } from 'vue'
 import { useUserStore } from '@/stores/userStores'
-import { useQuery, useMutation, useQueryClient } from '@tanstack/vue-query'
 import { getProfile } from '@/api/users/getProfile'
 import { updateProfile as updateProfileAPI, type UpdateProfilePayload } from '@/api/users/updateProfile'
 import { useApiError } from '@/composables/api/useApiError'
@@ -18,12 +17,12 @@ export type UseUserProfileReturn = {
   isAuthenticated: ComputedRef<boolean>
   profileStats: ComputedRef<ProfileStats>
   
-  // Profile data
-  profileQuery: ReturnType<typeof useQuery>
+  // Simple loading states
+  isLoading: Ref<boolean>
+  isUpdating: Ref<boolean>
   
   // Profile update
   updateProfile: (data: UpdateProfilePayload) => Promise<void>
-  isUpdatingProfile: ComputedRef<boolean>
   
   // Error handling
   error: ComputedRef<Error | null>
@@ -37,8 +36,11 @@ export type UseUserProfileReturn = {
 
 export function useUserProfile(): UseUserProfileReturn {
   const userStore = useUserStore()
-  const queryClient = useQueryClient()
   const { error: apiError, handleError, clearError } = useApiError()
+
+  // Simple loading states
+  const isLoading = ref(false)
+  const isUpdating = ref(false)
 
   // Computed properties
   const user = computed(() => userStore.user)
@@ -87,81 +89,40 @@ export function useUserProfile(): UseUserProfileReturn {
     }
   })
 
-  // Profile data query
-  const profileQuery = useQuery({
-    queryKey: ['profile', user.value?.id],
-    queryFn: async () => {
-      try {
-        const response = await getProfile()
-        if (response?.user) {
-          // Update the store with fresh data
-          userStore.setUserProfileData(response.user)
-          return response.user
-        }
-        throw new Error('No user data received')
-      } catch (error) {
-        handleError(error, 'Failed to fetch profile')
-        throw error
-      }
-    },
-    enabled: computed(() => isAuthenticated.value && !!user.value?.id),
-    staleTime: 5 * 60 * 1000, // 5 minutes
-    gcTime: 10 * 60 * 1000, // 10 minutes
-  })
-
-  // Profile update mutation
-  const updateProfileMutation = useMutation({
-    mutationFn: async (data: UpdateProfilePayload) => {
-      return updateProfileAPI(data)
-    },
-    onMutate: async (newData) => {
-      // Optimistic update
-      await queryClient.cancelQueries({ queryKey: ['profile', user.value?.id] })
-      
-      const previousData = queryClient.getQueryData(['profile', user.value?.id])
-      
-      // Update store optimistically
-      if (user.value) {
-        userStore.setUserProfileData({
-          ...user.value,
-          ...newData
-        })
-      }
-      
-      return { previousData }
-    },
-    onSuccess: (response) => {
+  // Profile update function
+  const updateProfile = async (data: UpdateProfilePayload) => {
+    if (!isAuthenticated.value) return
+    
+    isUpdating.value = true
+    try {
+      const response = await updateProfileAPI(data)
       if (response?.user) {
         userStore.setUserProfileData(response.user)
       }
-      
-      // Invalidate and refetch
-      queryClient.invalidateQueries({ 
-        queryKey: ['profile', user.value?.id],
-        exact: false 
-      })
-    },
-    onError: (error, newData, context) => {
-      // Rollback optimistic update
-      if (context?.previousData) {
-        queryClient.setQueryData(['profile', user.value?.id], context.previousData)
-      }
-      
+    } catch (error) {
       handleError(error, 'Failed to update profile')
-    },
-    onSettled: () => {
-      // Always refetch after error or success
-      queryClient.invalidateQueries({ queryKey: ['profile', user.value?.id] })
+      throw error
+    } finally {
+      isUpdating.value = false
     }
-  })
-
-  // Public methods
-  const updateProfile = async (data: UpdateProfilePayload) => {
-    await updateProfileMutation.mutateAsync(data)
   }
 
+  // Refresh profile from API
   const refreshProfile = async () => {
-    await profileQuery.refetch()
+    if (!isAuthenticated.value) return
+    
+    isLoading.value = true
+    try {
+      const response = await getProfile()
+      if (response?.user) {
+        userStore.setUserProfileData(response.user)
+      }
+    } catch (error) {
+      handleError(error, 'Failed to fetch profile')
+      throw error
+    } finally {
+      isLoading.value = false
+    }
   }
 
   const getInitials = (): string => {
@@ -186,27 +147,17 @@ export function useUserProfile(): UseUserProfileReturn {
     return 'Unknown'
   }
 
-  // Watch for authentication changes
-  watch(isAuthenticated, (newAuth) => {
-    if (!newAuth) {
-      queryClient.removeQueries({ queryKey: ['profile'] })
-    }
-  })
-
   return {
     user,
     isAuthenticated,
     profileStats,
     
-    profileQuery,
+    isLoading,
+    isUpdating,
     
     updateProfile,
-    isUpdatingProfile: computed(() => updateProfileMutation.isPending.value),
     
-    error: computed(() => {
-      const err = apiError.value || profileQuery.error.value
-      return err ? new Error(err.message || 'Unknown error') : null
-    }),
+    error: computed(() => apiError.value ? new Error(apiError.value.message || 'Unknown error') : null),
     clearError,
     
     refreshProfile,

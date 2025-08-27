@@ -61,7 +61,7 @@ export type UseProfileFormReturn = {
 }
 
 export function useProfileForm(): UseProfileFormReturn {
-  const { user, isUpdatingProfile } = useUserProfile()
+  const { user, isUpdating } = useUserProfile()
   
   // Edit mode state
   const isEditing = ref(false)
@@ -124,7 +124,7 @@ export function useProfileForm(): UseProfileFormReturn {
   // Form state computeds
   const isFormValid = computed(() => formMeta.value.valid)
   const isFormDirty = computed(() => formMeta.value.dirty)
-  const isSubmitting = computed(() => isUpdatingProfile.value)
+  const isSubmitting = computed(() => isUpdating.value)
 
   // Check if form has changes compared to original values (set when entering edit mode)
   const hasChanges = computed(() => {

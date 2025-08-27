@@ -51,9 +51,15 @@ export const getProfile = async (): Promise<{user: UserDataInterface}> => {
     }
 
     const data = await response.json()
-    console.log(data)
+    console.log('Profile API response:', data)
 
-    return data.data
+    // API returns: { success: true, data: { user: {...} } }
+    // We need to return: { user: {...} }
+    if (data.data && data.data.user) {
+      return { user: data.data.user }
+    }
+    
+    throw new Error('Invalid response structure')
   } catch (error) {
     console.error('Error:', error)
     toast('Error', {
