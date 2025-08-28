@@ -108,6 +108,7 @@ const onSubmit = handleSubmit((values) => {
       <Button
         variant="outline"
         size="icon"
+        title="Edit data user"
         class="rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-muted"
       >
         <Pencil :size="18" />
