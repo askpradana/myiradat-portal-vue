@@ -52,14 +52,8 @@
           </div>
 
           <!-- Additional Info -->
-          <div class="mt-4 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-            <div class="flex items-center">
-              <span class="text-muted-foreground flex items-center gap-1"
-                ><Phone :size="14" />Phone:</span
-              >
-              <span class="ml-2 text-foreground">{{ user?.phone || 'Not provided' }}</span>
-            </div>
-            <div class="flex items-center">
+          <div class="mt-4 grid grid-cols-1 gap-3 text-sm">
+            <div class="flex items-center justify-center">
               <span class="text-muted-foreground flex items-center gap-1"
                 ><CheckCircle :size="14" /> Verified:</span
               >
@@ -85,7 +79,7 @@
 import { computed } from 'vue'
 import { Card, CardContent } from '@/components/ui/card'
 import { getInitialName } from '@/lib/getInitialName'
-import { Phone, CheckCircle, Mail } from 'lucide-vue-next'
+import { CheckCircle, Mail } from 'lucide-vue-next'
 
 const user = defineProps<{
   name: string | undefined
