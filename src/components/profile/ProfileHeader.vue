@@ -27,14 +27,27 @@
       <h2 class="text-2xl font-bold text-foreground">{{ user?.name || 'Loading...' }}</h2>
       <p class="text-muted-foreground mt-1">{{ user?.email }}</p>
 
-      <!-- Role Badge -->
-      <div class="mt-3 flex justify-center sm:justify-start">
+      <!-- Badges Container -->
+      <div class="mt-3 flex flex-col sm:flex-row items-center sm:items-start justify-center sm:justify-start gap-2">
+        <!-- Role Badge -->
         <div
           class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
           :class="roleBadgeClasses"
         >
           <UserIcon class="w-4 h-4 mr-2" />
           {{ roleDisplayName }}
+        </div>
+        
+        <!-- Organization Badge -->
+        <div 
+          v-if="organizationDisplay && user"
+          class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium"
+          :class="organizationDisplay.classes"
+          :title="organizationDisplay.title"
+          :aria-label="organizationDisplay.ariaLabel"
+        >
+          <component :is="organizationDisplay.icon" class="w-4 h-4 mr-2" />
+          {{ organizationDisplay.text }}
         </div>
       </div>
 
@@ -58,7 +71,7 @@
 
 <script setup lang="ts">
 import { computed, type ComputedRef } from 'vue'
-import { CheckIcon, UserIcon } from '@/components/ui/icons'
+import { CheckIcon, UserIcon, HomeIcon, BuildingIcon } from '@/components/ui/icons'
 
 import type { UserDataInterface } from '@/types/userType'
 
@@ -119,4 +132,35 @@ const formatVerifiedDate = (dateString: string): string => {
     return 'Invalid date'
   }
 }
+
+// Organization badge display
+const organizationDisplay: ComputedRef<{
+  text: string
+  icon: typeof BuildingIcon | typeof HomeIcon
+  classes: string
+  title: string
+  ariaLabel: string
+} | null> = computed(() => {
+  if (!props.user) return null
+
+  // User has organization name
+  if (props.user.organization_name) {
+    return {
+      text: props.user.organization_name,
+      icon: BuildingIcon,
+      classes: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400',
+      title: `Member of ${props.user.organization_name}`,
+      ariaLabel: `Organization: ${props.user.organization_name}`
+    }
+  } 
+  
+  // User is personal (no organization)
+  return {
+    text: 'Personal',
+    icon: HomeIcon,
+    classes: 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400',
+    title: 'Personal account',
+    ariaLabel: 'Personal account - not affiliated with an organization'
+  }
+})
 </script>
