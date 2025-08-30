@@ -159,6 +159,7 @@ const addMemberMutation = useMutation({
     // Invalidate queries yang terkait untuk refresh data
     queryClient.invalidateQueries({ queryKey: ['organization-members'] })
     queryClient.invalidateQueries({ queryKey: ['organizations'] })
+    queryClient.invalidateQueries({ queryKey: ['members'] })
 
     resetForm()
     open.value = false

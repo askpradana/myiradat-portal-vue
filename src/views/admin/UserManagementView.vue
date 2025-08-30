@@ -113,6 +113,7 @@
                     variant="outline"
                     size="icon"
                     class="rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-muted"
+                    title="User links"
                     @click="goToLinks(user.id)"
                   >
                     <Link2 :size="18" />
@@ -126,10 +127,15 @@
                     variant="outline"
                     size="icon"
                     class="rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-muted"
+                    title="Profile user"
                     @click="goToProfileUser(user.id)"
                   >
                     <Pencil :size="18" />
                   </Button>
+                  <DeleteSessionSpecificByAdminAlert
+                    :name-of-user="user.name"
+                    :user-i-d="user.id"
+                  />
                   <DeleteUserAlert :user-i-d="user.id" :name-of-user="user.name" />
                 </div>
               </TableCell>
@@ -245,6 +251,7 @@ import DeleteUserAlert from '@/components/custom/alerts/DeleteUserAlert.vue'
 // import EditUserAlert from '@/components/custom/alerts/EditUserAlert.vue'
 import { useRouter } from 'vue-router'
 import { useUserRole } from '@/composables/useUserRole'
+import DeleteSessionSpecificByAdminAlert from '@/components/custom/alerts/DeleteSessionSpecificByAdminAlert.vue'
 
 // State
 const currentPage = ref(1)

@@ -30,19 +30,20 @@ const { value: name } = useField<string>('name')
 const { value: phone } = useField<string>('phone')
 
 const onSubmit = handleSubmit(async (values) => {
-  loading.value = true
-  const response = await registerNewUser(values)
-  loading.value = false
+  try {
+    loading.value = true
+    const response = await registerNewUser(values)
 
-  if (response.success) {
-    toast('Success', {
-      description: `${response?.message}`,
-    })
-    router.replace('/login')
-  } else {
-    toast('Error', {
-      description: `${response?.message}`,
-    })
+    if (response.success) {
+      toast('Success', {
+        description: `${response?.message}`,
+      })
+      router.replace('/login')
+    }
+  } catch (error) {
+    console.error('Error message', error)
+  } finally {
+    loading.value = false
   }
 })
 </script>

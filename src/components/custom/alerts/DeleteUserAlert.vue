@@ -57,6 +57,7 @@ const deleteFunc = () => {
       <Button
         variant="outline"
         size="icon"
+        title="Delete this user"
         class="rounded-md p-2 text-muted-foreground hover:text-red-600 hover:bg-red-50"
       >
         <Trash2 :size="18" />

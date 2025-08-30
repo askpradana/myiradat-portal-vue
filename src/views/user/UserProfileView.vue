@@ -5,14 +5,10 @@
       <CardHeader class="p-6">
         <!-- Loading State -->
         <ProfileSkeleton v-if="isLoading" />
-        
+
         <!-- Error State -->
-        <ProfileError 
-          v-else-if="error" 
-          :error-message="error.message"
-          @retry="refreshProfile"
-        />
-        
+        <ProfileError v-else-if="error" :error-message="error.message" @retry="refreshProfile" />
+
         <!-- Profile Header -->
         <ProfileHeader
           v-else
@@ -47,17 +43,30 @@
           :fields="fields"
           :has-changes="hasChanges"
           @submit="handleFormSubmit"
-          @update:name="(value: string) => fields.name.value.value = value"
-          @update:email="(value: string) => fields.email.value.value = value"
-          @update:phone="(value: string) => fields.phone.value.value = value"
+          @update:name="(value: string) => (fields.name.value.value = value)"
+          @update:email="(value: string) => (fields.email.value.value = value)"
+          @update:phone="(value: string) => (fields.phone.value.value = value)"
         />
-        
+
         <!-- View Mode Details -->
-        <ProfileDetails
-          v-else
-          :user="user"
-        />
+        <ProfileDetails v-else :user="user" />
       </CardContent>
+    </Card>
+
+    <Card class="space-x-6">
+      <div class="flex justify-between items-center">
+        <h2 class="px-6 font-bold">Where you're logged in</h2>
+        <DeleteSessionAllAlert />
+      </div>
+      <template v-if="isPending">
+        <SessionCardSkeleton />
+        <SessionCardSkeleton />
+        <SessionCardSkeleton />
+      </template>
+
+      <template v-else v-for="session in data.sessions" :key="session.session_id">
+        <SessionCard :is-pending="isPending" :data="session" />
+      </template>
     </Card>
 
     <!-- Confirmation Dialog -->
@@ -82,7 +91,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, type Ref } from 'vue'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
   AlertDialog,
@@ -102,12 +111,18 @@ import {
   ProfileForm,
   ProfileDetails,
   ProfileSkeleton,
-  ProfileError
+  ProfileError,
 } from '@/components/profile'
 
 // Import composables
 import { useUserProfile } from '@/composables/auth/useUserProfile'
 import { useProfileForm } from '@/composables/forms/useProfileForm'
+import { useQuery } from '@tanstack/vue-query'
+import { getListSession } from '@/api/sessions/getListSessions'
+import { type SessionsDataFromAPIInterface } from '@/types/sessionsType'
+import SessionCard from '@/components/sessions/SessionCard.vue'
+import SessionCardSkeleton from '@/components/sessions/SessionCardSkeleton.vue'
+import DeleteSessionAllAlert from '@/components/custom/alerts/DeleteSessionAllAlert.vue'
 
 // Composables
 const {
@@ -135,6 +150,16 @@ const {
   confirmCancel,
   dismissCancel,
 } = useProfileForm()
+
+const { isPending, data } = useQuery({
+  queryKey: ['sessions'],
+  queryFn: getListSession,
+}) as {
+  data: Ref<SessionsDataFromAPIInterface>
+  isPending: Ref<boolean>
+}
+
+console.log(data.value?.sessions)
 
 // Computed properties for header
 const initials = computed(() => getInitials())
