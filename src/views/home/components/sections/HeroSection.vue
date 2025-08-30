@@ -12,11 +12,11 @@
               class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4"
             >
               <div class="w-2 h-2 bg-primary rounded-full mr-2 animate-pulse"></div>
-              Trusted by 500+ Enterprise Clients
+              Dipercaya 300+ Psikolog Indonesia
             </div>
             <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground leading-tight">
-              {{ config.hero.title.split('with')[0] }}
-              <span class="text-primary block">{{ config.hero.title.split('with')[1] }}</span>
+              {{ config.hero.title.includes('Praktik') ? config.hero.title.split('Praktik')[0] + 'Praktik' : config.hero.title }}
+              <span v-if="config.hero.title.includes('Praktik')" class="text-primary block">{{ config.hero.title.split('Praktik')[1] }}</span>
             </h1>
           </div>
 
@@ -50,7 +50,7 @@
               size="lg"
               variant="outline"
               class="text-lg px-8 py-4 backdrop-blur-sm border-2 hover:bg-card/50"
-              @click="navigateTo(config.hero.cta.secondary?.href || '/demo')"
+              @click="navigateTo(config.hero.cta.secondary?.href || '/book-demo')"
             >
               {{ config.hero.cta.secondary?.label || 'Book Demo' }}
               <svg class="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -81,7 +81,7 @@
                   :metadata="{ name: `User ${i}` }"
                 />
               </div>
-              <span>Join thousands of satisfied users</span>
+              <span>Bergabung dengan psikolog profesional</span>
             </div>
             <div class="flex items-center space-x-1">
               <div class="flex text-yellow-400">
@@ -91,7 +91,7 @@
                   ></path>
                 </svg>
               </div>
-              <span>4.9/5 on G2</span>
+              <span>4.9/5 dari Praktisi Psikologi</span>
             </div>
           </div>
         </div>

@@ -303,11 +303,11 @@ const companyLinks = [
 ]
 
 const supportLinks = [
-  { label: 'Help Center', href: '/help' },
-  { label: 'Documentation', href: '/docs' },
-  { label: 'API Reference', href: '/api-docs' },
-  { label: 'Community Forum', href: '/community' },
-  { label: 'Contact Support', href: '/support' }
+  { label: 'Help Center', href: '/contact-us' },
+  { label: 'Documentation', href: '/contact-us' },
+  { label: 'API Reference', href: '/contact-us' },
+  { label: 'Community Forum', href: '/contact-us' },
+  { label: 'Contact Support', href: '/contact-us' }
 ]
 
 const legalLinks = [

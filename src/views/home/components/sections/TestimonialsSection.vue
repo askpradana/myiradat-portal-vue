@@ -6,14 +6,13 @@
         <div
           class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4"
         >
-          CLIENT SUCCESS STORIES
+          KISAH SUKSES PSIKOLOG PROFESIONAL
         </div>
         <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">
-          Trusted by industry leaders
+          Dipercaya psikolog terdepan Indonesia
         </h2>
         <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-          See how IRADAT has transformed operations and delivered measurable results for companies
-          across industries.
+          Lihat bagaimana IRADAT telah mentransformasi praktik psikologi dan memberikan hasil terukur untuk psikolog profesional di seluruh Indonesia.
         </p>
       </div>
 
@@ -78,7 +77,7 @@
                 :metadata="{
                   name: testimonial.name,
                   role: testimonial.role,
-                  company: testimonial.company
+                  company: testimonial.company,
                 }"
               />
               <div>
@@ -96,11 +95,11 @@
       <div class="text-center mt-16">
         <div class="bg-gradient-to-r from-primary/5 to-primary/10 rounded-2xl p-8 lg:p-12">
           <h3 class="text-2xl font-bold text-foreground mb-4">
-            Ready to join our success stories?
+            Siap bergabung dengan kisah sukses kami?
           </h3>
           <p class="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
-            Discover how IRADAT can transform your business operations with a personalized demo
-            tailored to your industry.
+            Temukan bagaimana IRADAT dapat mentransformasi praktik psikologi Anda dengan demo personal 
+            yang disesuaikan dengan kebutuhan praktik Anda.
           </p>
           <div class="flex flex-col sm:flex-row gap-4 justify-center">
             <Button size="lg" @click="requestDemo" class="shadow-lg">
@@ -201,7 +200,7 @@ const getIndustryVariant = (
 }
 
 const requestDemo = () => {
-  router.push('/demo')
+  router.push('/book-demo')
 }
 
 const viewCaseStudies = () => {

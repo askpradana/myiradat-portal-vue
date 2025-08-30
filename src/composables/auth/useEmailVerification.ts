@@ -273,10 +273,7 @@ export function useEmailVerification(initialEmail?: string, initialUserId?: stri
 
   // Contact admin action
   const contactAdmin = () => {
-    // This can be extended to open a modal, navigate to contact page, or open email client
-    const subject = encodeURIComponent('Email Verification Help')
-    const body = encodeURIComponent(`I need help verifying my email address: ${state.value.email}`)
-    window.open(`mailto:admin@example.com?subject=${subject}&body=${body}`)
+    router.push('/contact-us')
   }
 
   // Lifecycle

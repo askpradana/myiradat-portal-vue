@@ -403,3 +403,11 @@ When working with assessment or profile components:
 3. **Assessment data:** Use `useAssessmentData()` composable for score calculations
 4. **Avatar management:** Use `useAvatar()` composable for profile image handling
 5. **Progress indicators:** Implement visual feedback for completion states
+
+## Testing Guidelines
+
+**Manual Testing Preference:** The user prefers to handle testing manually. When making changes to forms, UI components, or adding new features:
+- Skip running `bun dev` for testing purposes unless explicitly requested
+- Focus on implementation and code quality
+- User will test functionality manually after implementation
+- Still run type-checking and linting commands (`bun type-check`, `bun lint`) to ensure code quality
