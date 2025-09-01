@@ -14,9 +14,10 @@ import { Button } from '@/components/ui/button'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { deleteUser } from '@/api/users/deleteUser'
 
-const { userID, nameOfUser } = defineProps<{
+const { userID, nameOfUser, organizationID } = defineProps<{
   userID: string
   nameOfUser: string
+  organizationID: string
 }>()
 
 const username = ref('')
@@ -32,6 +33,8 @@ const { mutate, isPending } = useMutation({
         description: `${response?.message}`,
       })
       queryClient.invalidateQueries({ queryKey: ['users'] })
+      queryClient.invalidateQueries({ queryKey: ['organizations', organizationID] })
+      queryClient.invalidateQueries({ queryKey: ['members', organizationID] })
       open.value = false
     }
   },

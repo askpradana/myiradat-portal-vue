@@ -136,7 +136,11 @@
                     :name-of-user="user.name"
                     :user-i-d="user.id"
                   />
-                  <DeleteUserAlert :user-i-d="user.id" :name-of-user="user.name" />
+                  <DeleteUserAlert
+                    :user-i-d="user.id"
+                    :name-of-user="user.name"
+                    :organization-i-d="user.id"
+                  />
                 </div>
               </TableCell>
             </TableRow>

@@ -288,7 +288,7 @@ const organizationID = route.params.id as string
 const { isPending, data } = useQuery({
   queryKey: ['organizations', organizationID],
   queryFn: () => getOrganizationDetail(organizationID),
-  staleTime: 1000 * 60 * 5, // 5 minutes
+  staleTime: 1000 * 60 * 2, // 2 minutes
 }) as {
   isPending: Ref<boolean>
   data: Ref<OrganizationInterface | undefined>

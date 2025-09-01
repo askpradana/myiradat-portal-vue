@@ -148,6 +148,7 @@ const onSubmit = handleSubmit(async (values) => {
             <SelectContent>
               <SelectItem value="1">Admin</SelectItem>
               <SelectItem value="2">User</SelectItem>
+              <SelectItem value="3">Customer Service</SelectItem>
             </SelectContent>
           </Select>
           <span class="text-xs text-red-400">{{ errors.role }}</span>
