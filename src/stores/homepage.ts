@@ -1,96 +1,95 @@
 import { defineStore } from 'pinia'
 import { ref, computed, reactive } from 'vue'
-import type {
-  HomepageConfig,
-  TrustPillar
-} from '@/types/homepage'
+import type { HomepageConfig, TrustPillar } from '@/types/homepage'
 
 export const useHomepageStore = defineStore('homepage', () => {
   // State
   const isLoading = ref(false)
   const error = ref<string | null>(null)
-  
+
   // Animation preferences
   const animations = reactive({
     enabled: true,
-    reducedMotion: false
+    reducedMotion: false,
   })
-  
+
   // Viewport tracking
   const viewport = reactive({
     width: 0,
     height: 0,
-    breakpoint: 'lg'
+    breakpoint: 'lg',
   })
-  
+
   // Homepage content configuration
-  // Trust Pillars for modern card-based design
+  // Trust Pillars for psychology practice focus
   const trustPillars = ref<TrustPillar[]>([
     {
-      id: 'security-pillar',
-      title: 'Enterprise Security',
-      description: 'SOC 2 Type II, ISO 27001 certified with bank-level security standards',
+      id: 'himpsi-compliance',
+      title: 'Sesuai Standar HIMPSI',
+      description: 'Memenuhi kode etik dan standar praktik psikologi Indonesia dengan dukungan organisasi profesi',
       icon: 'shield-check',
       iconColor: 'text-primary',
       iconBgColor: 'bg-primary/10',
       badges: [
-        { label: 'SOC 2', color: 'primary' },
-        { label: 'ISO 27001', color: 'primary' }
-      ]
+        { label: 'HIMPSI', color: 'primary' },
+        { label: 'Kode Etik', color: 'secondary' },
+      ],
     },
     {
-      id: 'uptime-pillar',
-      title: '99.9% Uptime SLA',
-      description: 'Guaranteed availability with 24/7 monitoring and global infrastructure',
-      icon: 'bar-chart-3',
+      id: 'data-security',
+      title: 'Keamanan Data Pasien',
+      description: 'Enkripsi end-to-end dan penyimpanan data sesuai regulasi kesehatan Indonesia dengan audit trail lengkap',
+      icon: 'lock',
       iconColor: 'text-green-600 dark:text-green-400',
       iconBgColor: 'bg-green-100 dark:bg-green-900/30',
       metrics: [
-        { label: 'Live Status', value: '', icon: 'circle' },
-        { label: 'Response', value: '< 50ms', icon: 'zap' }
+        { label: 'ISO 27001', value: 'Certified', icon: 'shield' },
+        { label: 'Enkripsi', value: 'End-to-End', icon: 'key' },
       ],
       status: {
-        label: 'Live Status',
+        label: 'Security Status',
         indicator: 'online',
-        pulse: true
-      }
+        pulse: true,
+      },
     },
     {
-      id: 'support-pillar',
-      title: '24/7 Expert Support',
-      description: 'Dedicated success managers and priority technical support for all plans',
+      id: 'professional-support',
+      title: 'Dukungan Psikolog Ahli',
+      description: 'Tim dukungan yang terdiri dari psikolog berpengalaman dan technical support khusus praktik psikologi',
       icon: 'users',
       iconColor: 'text-blue-600 dark:text-blue-400',
       iconBgColor: 'bg-blue-100 dark:bg-blue-900/30',
       metrics: [
-        { label: 'Experts', value: '500+', icon: 'users' },
-        { label: 'Live Chat', value: '', icon: 'message-circle' }
-      ]
-    }
+        { label: 'Psikolog Expert', value: '50+', icon: 'user-check' },
+        { label: 'Response Time', value: '< 30 menit', icon: 'clock' },
+      ],
+    },
   ])
 
   const config = ref<HomepageConfig>({
     hero: {
-      title: 'Transform Your Business with IRADAT',
-      subtitle: 'The all-in-one portal solution trusted by enterprises worldwide. Streamline operations, enhance security, and accelerate growth.',
+      title: 'Standar Baru Praktik Psikologi Indonesia',
+      subtitle:
+        'Platform edukasi psikologi terdepan yang mengintegrasikan assessment evidence-based dengan manajemen pasien terpusat. Tingkatkan standar praktik Anda bersama ribuan psikolog profesional Indonesia.',
       cta: {
-        primary: { label: 'Start Free Trial', href: '/register' },
-        secondary: { label: 'Book Demo', href: '/demo' }
+        primary: { label: 'Mulai Uji Coba Gratis', href: '/register' },
+        secondary: { label: 'Demo untuk Praktik', href: '/book-demo' },
       },
       metrics: [
-        { value: '99.9', suffix: '%', label: 'Uptime Guarantee', animated: true, countUp: true },
-        { value: '500', suffix: '+', label: 'Enterprise Clients', animated: true, countUp: true },
-        { value: '2M', suffix: '+', label: 'Transactions Daily', animated: true, countUp: true },
-        { value: '24/7', label: 'Expert Support', animated: false }
-      ]
+        { value: '98.5', suffix: '%', label: 'Tingkat Akurasi Assessment', animated: true, countUp: true },
+        { value: '300', suffix: '+', label: 'Psikolog Terdaftar', animated: true, countUp: true },
+        { value: '50', suffix: 'K+', label: 'Profil Pasien Terkelola', animated: true, countUp: true },
+        { value: '24/7', label: 'Support Profesional', animated: false },
+      ],
     },
     sections: {
       features: [
         {
-          id: 'unified-platform',
-          title: 'Unified Data Platform',
-          description: 'Connect all your data sources in one secure, compliant platform. Real-time synchronization with advanced transformation capabilities.',
-          icon: 'database',
+          id: 'patient-management',
+          title: 'Manajemen Profil Pasien Terpusat',
+          description:
+            'Kelola semua data pasien dalam satu platform aman dengan akses terkontrol dan history lengkap untuk akurasi diagnosis yang lebih baik.',
+          icon: 'user-circle',
           iconColor: 'text-primary',
           iconBgColor: 'bg-primary/20',
           gridArea: 'hero',
@@ -98,7 +97,7 @@ export const useHomepageStore = defineStore('homepage', () => {
           interactive: true,
           gradient: {
             from: 'from-primary/5',
-            to: 'to-primary/10'
+            to: 'to-primary/10',
           },
           content: {
             type: 'animation',
@@ -106,29 +105,30 @@ export const useHomepageStore = defineStore('homepage', () => {
               type: 'pulse',
               duration: 1500,
               repeat: true,
-              elements: ['dataSources']
-            }
-          }
+              elements: ['patientProfiles'],
+            },
+          },
         },
         {
-          id: 'security',
-          title: 'Enterprise Security',
-          description: 'SOC 2 Type II compliant with end-to-end encryption and advanced threat protection.',
-          icon: 'shield-check',
+          id: 'assessment-tools',
+          title: 'Alat Assessment Psikologi Canggih',
+          description:
+            'Akses ke berbagai instrumen assessment tervalidasi dengan scoring otomatis dan interpretasi berbasis evidence untuk mendukung keputusan klinis.',
+          icon: 'clipboard-list',
           iconColor: 'text-green-600 dark:text-green-400',
           iconBgColor: 'bg-green-100 dark:bg-green-900/30',
           gridArea: 'security',
           size: 'medium',
           interactive: true,
           stats: [
-            { label: 'Security Score', value: 'A+', trend: 'stable' },
-            { label: 'Status', value: 'All systems operational' }
-          ]
+            { label: 'Assessment Tools', value: '25+', trend: 'stable' },
+            { label: 'Validitas', value: 'Teruji Indonesia' },
+          ],
         },
         {
-          id: 'analytics',
-          title: 'Advanced Analytics',
-          description: 'Real-time insights with customizable dashboards and automated reporting.',
+          id: 'practice-analytics',
+          title: 'Analytics Praktik Psikologi',
+          description: 'Insight mendalam tentang performa praktik dengan dashboard khusus dan laporan otomatis untuk evaluasi berkelanjutan.',
           icon: 'bar-chart-3',
           iconColor: 'text-blue-600 dark:text-blue-400',
           iconBgColor: 'bg-blue-100 dark:bg-blue-900/30',
@@ -137,162 +137,273 @@ export const useHomepageStore = defineStore('homepage', () => {
           interactive: true,
           gradient: {
             from: 'from-blue-50/50',
-            to: 'to-blue-100/30 dark:from-blue-900/20 dark:to-blue-800/10'
+            to: 'to-blue-100/30 dark:from-blue-900/20 dark:to-blue-800/10',
           },
           content: {
             type: 'metrics',
             metrics: [
-              { value: '2.4M', label: 'Events/day', suffix: '' },
-              { value: '15', label: 'Avg Response', suffix: 'ms' }
-            ]
-          }
+              { value: '15+', label: 'Metrics Praktik', suffix: '' },
+              { value: '24/7', label: 'Real-time Data', suffix: '' },
+            ],
+          },
         },
         {
-          id: 'integration',
-          title: '500+ Integrations',
-          description: 'Seamlessly connect with your existing tools and workflows.',
-          icon: 'puzzle',
+          id: 'continuing-education',
+          title: 'Edukasi Berkelanjutan',
+          description: 'Akses pustaka jurnal, webinar, dan training materials terbaru untuk meningkatkan kompetensi profesional.',
+          icon: 'graduation-cap',
           iconColor: 'text-purple-600 dark:text-purple-400',
           iconBgColor: 'bg-purple-100 dark:bg-purple-900/30',
           gridArea: 'integration',
           size: 'medium',
           interactive: true,
-          stats: [
-            { label: 'Popular', value: 'Salesforce, Slack, Google Workspace' }
-          ]
+          stats: [{ label: 'Resources', value: 'Jurnal, Webinar, Course' }],
         },
         {
-          id: 'performance',
-          title: 'Lightning Fast',
-          description: 'Sub-50ms response times with 99.9% uptime guarantee.',
-          icon: 'zap',
+          id: 'data-security',
+          title: 'Keamanan Data Medis',
+          description: 'Enkripsi end-to-end dengan backup otomatis dan audit trail lengkap sesuai standar keamanan data medis.',
+          icon: 'shield-check',
           iconColor: 'text-orange-600 dark:text-orange-400',
           iconBgColor: 'bg-orange-100 dark:bg-orange-900/30',
           gridArea: 'performance',
           size: 'medium',
           interactive: true,
           stats: [
-            { label: 'Response Time', value: '< 50ms' },
-            { label: 'Uptime SLA', value: '99.9%' }
-          ]
+            { label: 'Enkripsi', value: 'End-to-End' },
+            { label: 'Compliance', value: 'ISO 27001' },
+          ],
         },
         {
-          id: 'support',
-          title: '24/7 Support',
-          description: 'Expert technical support and dedicated success managers for enterprise clients.',
+          id: 'professional-support',
+          title: 'Dukungan Psikolog Ahli',
+          description:
+            'Tim support yang terdiri dari psikolog berpengalaman dan technical support khusus untuk kebutuhan praktik psikologi.',
           icon: 'users',
           iconColor: 'text-indigo-600 dark:text-indigo-400',
           iconBgColor: 'bg-indigo-100 dark:bg-indigo-900/30',
           gridArea: 'support',
           size: 'medium',
           interactive: true,
-          stats: [
-            { label: 'Status', value: 'Support team online' }
-          ]
+          stats: [{ label: 'Status', value: 'Tim psikolog online' }],
         },
         {
-          id: 'features-overview',
-          title: 'Why Choose IRADAT?',
-          description: 'Comprehensive platform features designed for modern enterprises.',
-          icon: 'check-circle',
+          id: 'psychology-platform',
+          title: 'Mengapa Pilih IRADAT untuk Psikologi?',
+          description: 'Platform komprehensif yang dirancang khusus untuk kebutuhan praktik psikologi modern di Indonesia.',
+          icon: 'heart',
           iconColor: 'text-emerald-600 dark:text-emerald-400',
           iconBgColor: 'bg-emerald-100 dark:bg-emerald-900/30',
           gridArea: 'features',
           size: 'large',
           interactive: true,
-          stats: [
-            { label: 'Trusted by', value: '500+ enterprises worldwide' }
-          ]
-        }
+          stats: [{ label: 'Dipercaya', value: '300+ psikolog Indonesia' }],
+        },
       ],
       testimonials: [
         {
           id: '1',
-          name: 'Sarah Chen',
-          role: 'CTO',
-          company: 'TechCorp Solutions',
-          content: 'IRADAT transformed our operations, reducing processing time by 75% and eliminating manual errors.',
+          name: 'Dr. Sari Wijayanti, M.Psi., Psikolog',
+          role: 'Direktur Klinik',
+          company: 'Klinik Psikologi Mentari Jakarta',
+          content:
+            'IRADAT mengubah cara kami mengelola pasien. Akurasi assessment meningkat 40% dan waktu administrasi berkurang drastis. Tim kami kini bisa fokus pada terapi, bukan paperwork.',
           metrics: {
-            improvement: '75%',
-            timeframe: '6 months',
-            category: 'efficiency'
+            improvement: '40%',
+            timeframe: '8 bulan',
+            category: 'accuracy',
           },
           rating: 5,
-          industry: 'Technology'
-        }
+          industry: 'Private Practice',
+        },
+        {
+          id: '2',
+          name: 'Prof. Dr. Ahmad Rizal, Sp.KJ., M.Kes',
+          role: 'Kepala Departemen Psikiatri',
+          company: 'RS Cipto Mangunkusumo Jakarta',
+          content:
+            'Implementasi IRADAT di departemen kami meningkatkan koordinasi antara psikiater dan psikolog klinis. Data terintegrasi membantu decision making yang lebih baik.',
+          metrics: {
+            improvement: '60%',
+            timeframe: '1 tahun',
+            category: 'coordination',
+          },
+          rating: 5,
+          industry: 'Hospital',
+        },
+        {
+          id: '3',
+          name: 'Dra. Maya Kusuma, M.Si., Psikolog',
+          role: 'Psikolog Konsultan',
+          company: 'Praktik Mandiri Psychology Center',
+          content:
+            'Sebagai praktisi mandiri, IRADAT memberikan professional tools yang biasanya hanya tersedia di institusi besar. Sangat membantu meningkatkan kualitas layanan.',
+          metrics: {
+            improvement: '50%',
+            timeframe: '6 bulan',
+            category: 'service_quality',
+          },
+          rating: 5,
+          industry: 'Individual Practice',
+        },
       ],
       useCases: [
         {
-          id: 'financial',
-          title: 'Financial Services Portal',
-          description: 'Compliance management and risk assessment tools',
-          industry: 'Financial Services',
-          image: '/use-cases/financial.jpg',
-          features: ['Regulatory Compliance', 'Risk Management', 'Audit Trails'],
-          cta: { label: 'View Case Study', action: '/case-studies/financial' }
-        }
+          id: 'private-practice',
+          title: 'Solusi Praktik Psikologi Mandiri',
+          description: 'Digitalisasi lengkap praktik mandiri dengan manajemen pasien, assessment tools, dan administrative support dalam satu platform terintegrasi.',
+          industry: 'Praktik Mandiri',
+          image: '/use-cases/private-practice.jpg',
+          features: ['Manajemen Appointment', 'E-Assessment Tools', 'Patient Records', 'Billing Integration', 'Telehealth Ready', 'Progress Tracking'],
+          cta: { label: 'Lihat Case Study', action: '/case-studies/private-practice' },
+        },
+        {
+          id: 'hospital-psychology',
+          title: 'Sistem Psikologi Rumah Sakit',
+          description: 'Integrasi penuh dengan sistem hospital untuk departemen psikologi dengan workflow yang disesuaikan untuk setting institusional.',
+          industry: 'Rumah Sakit',
+          image: '/use-cases/hospital.jpg',
+          features: ['EMR Integration', 'Multi-User Access', 'Department Analytics', 'Quality Assurance', 'Compliance Tracking', 'Staff Management'],
+          cta: { label: 'Lihat Case Study', action: '/case-studies/hospital' },
+        },
+        {
+          id: 'patient-journey',
+          title: 'Pengalaman Pasien Digital',
+          description: 'Platform pasien untuk self-assessment awal, appointment booking, dan tracking progress dengan interface yang user-friendly.',
+          industry: 'Patient-Centric',
+          image: '/use-cases/patient.jpg',
+          features: ['Self-Assessment Portal', 'Appointment Booking', 'Progress Tracking', 'Educational Resources', 'Secure Messaging', 'Mobile Access'],
+          cta: { label: 'Lihat Demo', action: '/demo/patient-portal' },
+        },
+        {
+          id: 'clinical-supervision',
+          title: 'Platform Supervisi Akademik',
+          description: 'Tools khusus untuk supervisor klinis dan program training dengan tracking kompetensi mahasiswa dan dokumentasi supervisi.',
+          industry: 'Akademik/Training',
+          image: '/use-cases/supervision.jpg',
+          features: ['Student Progress Tracking', 'Supervision Notes', 'Competency Assessment', 'Case Review System', 'Training Materials', 'Evaluation Tools'],
+          cta: { label: 'Lihat Case Study', action: '/case-studies/supervision' },
+        },
       ],
       pricing: [
         {
-          id: 'starter',
-          name: 'Starter',
-          price: { amount: 49, currency: 'USD', period: 'month' },
-          description: 'Perfect for small teams getting started',
-          features: ['Up to 10 users', 'Basic integrations', 'Email support'],
-          cta: { label: 'Start Free Trial', action: '/register?plan=starter' }
+          id: 'individual',
+          name: 'Individual Practitioner',
+          price: { amount: 79, currency: 'IDR', period: 'ribu/bulan' },
+          description: 'Ideal untuk psikolog praktik mandiri atau konsultan',
+          features: ['Hingga 50 profil pasien', 'Tools assessment dasar', 'Support email', 'Cloud storage 5GB', 'Telehealth ready'],
+          cta: { label: 'Mulai Uji Coba Gratis', action: '/register?plan=individual' },
         },
         {
           id: 'professional',
-          name: 'Professional',
-          price: { amount: 149, currency: 'USD', period: 'month' },
-          description: 'Advanced features for growing businesses',
-          features: ['Up to 100 users', 'Advanced integrations', 'Priority support', 'Custom dashboards'],
+          name: 'Professional Practice',
+          price: { amount: 149, currency: 'IDR', period: 'ribu/bulan' },
+          description: 'Untuk klinik atau praktik grup dengan 2-5 psikolog',
+          features: [
+            'Hingga 200 profil pasien',
+            'Tools assessment lengkap',
+            'Multi-user access',
+            'Priority support',
+            'Cloud storage 20GB',
+            'Advanced analytics',
+          ],
           popular: true,
-          cta: { label: 'Start Free Trial', action: '/register?plan=pro' }
+          cta: { label: 'Mulai Uji Coba Gratis', action: '/register?plan=pro' },
         },
         {
           id: 'enterprise',
-          name: 'Enterprise',
-          price: { amount: 0, currency: 'USD', period: 'custom' },
-          description: 'Tailored solutions for large organizations',
-          features: ['Unlimited users', 'Custom integrations', '24/7 support', 'Dedicated success manager'],
+          name: 'Institution/Hospital',
+          price: { amount: 0, currency: 'IDR', period: 'custom' },
+          description: 'Solusi enterprise untuk rumah sakit atau institusi besar',
+          features: [
+            'Unlimited profil pasien',
+            'Custom integrations',
+            'Dedicated support',
+            'Training program',
+            'Advanced analytics',
+            'Compliance reporting',
+          ],
           enterprise: true,
-          cta: { label: 'Contact Sales', action: '/contact-sales' }
-        }
+          cta: { label: 'Hubungi Sales', action: '/contact-us' },
+        },
       ],
       faq: [
         {
           id: '1',
-          question: 'How secure is IRADAT?',
-          answer: 'IRADAT is SOC 2 Type II compliant with enterprise-grade security features including end-to-end encryption, multi-factor authentication, and regular security audits.',
-          category: 'security'
+          question: 'Bagaimana IRADAT memastikan keamanan data pasien sesuai regulasi?',
+          answer:
+            'IRADAT menggunakan enkripsi end-to-end dengan standar ISO 27001 dan mematuhi regulasi perlindungan data kesehatan Indonesia. Semua data disimpan di server lokal dengan backup terenkripsi dan audit trail lengkap untuk memastikan confidentiality pasien.',
+          category: 'security',
         },
         {
           id: '2',
-          question: 'Can IRADAT integrate with our existing systems?',
-          answer: 'Yes, IRADAT supports 500+ integrations including popular CRM, ERP, and business intelligence tools. We also provide custom API development for unique requirements.',
-          category: 'integration'
-        }
+          question: 'Apakah assessment tools di IRADAT sudah tervalidasi untuk populasi Indonesia?',
+          answer:
+            'Ya, semua tools assessment telah melalui proses adaptasi dan validasi untuk populasi Indonesia bekerjasama dengan universitas terkemuka dan mengikuti standar internasional. Kami memiliki 25+ instrumen assessment yang telah teruji validitas dan reliabilitasnya.',
+          category: 'assessment',
+        },
+        {
+          id: '3',
+          question: 'Bagaimana sistem integrasinya dengan workflow psikologi yang sudah ada?',
+          answer:
+            'IRADAT dirancang fleksibel untuk beradaptasi dengan berbagai workflow praktik psikologi. Kami menyediakan onboarding khusus dan training untuk memastikan transisi yang smooth tanpa mengganggu praktik yang sedang berjalan.',
+          category: 'integration',
+        },
+        {
+          id: '4',
+          question: 'Apakah tersedia training dan sertifikasi untuk menggunakan platform?',
+          answer:
+            'Kami menyediakan comprehensive training program, webinar reguler, dan sertifikasi digital. Tim support kami juga terdiri dari psikolog berpengalaman yang dapat membantu konsultasi profesional dan technical support.',
+          category: 'training',
+        },
+        {
+          id: '5',
+          question: 'Bisakah platform ini digunakan untuk telehealth dan konsultasi online?',
+          answer:
+            'Ya, IRADAT terintegrasi dengan fitur telehealth yang aman dengan video conferencing terenkripsi, sharing screen untuk assessment, dan dokumentasi sesi yang otomatis tersimpan sesuai standar praktik psikologi.',
+          category: 'telehealth',
+        },
+        {
+          id: '6',
+          question: 'Bagaimana dukungan untuk psikolog yang belum terbiasa dengan teknologi digital?',
+          answer:
+            'Kami memahami tantangan adopsi teknologi dalam praktik psikologi. Tim kami menyediakan training personal, video tutorial step-by-step, dan support 24/7 dengan tim yang memahami workflow psikologi untuk memastikan transisi yang nyaman.',
+          category: 'support',
+        },
       ],
       trustIndicators: [
         {
-          id: 'soc2',
-          name: 'SOC 2 Type II',
-          logo: '/certifications/soc2.svg',
-          category: 'certification',
-          description: 'Audited for security, availability, and confidentiality'
+          id: 'himpsi',
+          name: 'HIMPSI Endorsed',
+          logo: '/certifications/himpsi.svg',
+          category: 'professional',
+          description: 'Didukung oleh Himpunan Psikologi Indonesia untuk standar praktik profesional',
         },
         {
           id: 'iso27001',
           name: 'ISO 27001',
           logo: '/certifications/iso27001.svg',
           category: 'certification',
-          description: 'International standard for information security management'
-        }
-      ]
-    }
+          description: 'Standar internasional untuk manajemen keamanan informasi medis',
+        },
+        {
+          id: 'data-protection',
+          name: 'Medical Data Protection',
+          logo: '/certifications/medical-data.svg',
+          category: 'compliance',
+          description: 'Kepatuhan penuh terhadap regulasi perlindungan data kesehatan Indonesia',
+        },
+        {
+          id: 'university-partner',
+          name: '15+ University Partners',
+          logo: '/certifications/university.svg',
+          category: 'academic',
+          description: 'Kerjasama dengan universitas terkemuka untuk validasi tools dan research',
+        },
+      ],
+    },
   })
-  
+
   // Computed properties
   const heroMetrics = computed(() => config.value.hero.metrics)
   const features = computed(() => config.value.sections.features)
@@ -302,12 +413,12 @@ export const useHomepageStore = defineStore('homepage', () => {
   const faq = computed(() => config.value.sections.faq)
   const trustIndicators = computed(() => config.value.sections.trustIndicators)
   const getTrustPillars = computed(() => trustPillars.value)
-  
+
   // Actions
   const updateViewport = (width: number, height: number) => {
     viewport.width = width
     viewport.height = height
-    
+
     // Update breakpoint based on Tailwind breakpoints
     if (width >= 1280) viewport.breakpoint = 'xl'
     else if (width >= 1024) viewport.breakpoint = 'lg'
@@ -315,33 +426,33 @@ export const useHomepageStore = defineStore('homepage', () => {
     else if (width >= 640) viewport.breakpoint = 'sm'
     else viewport.breakpoint = 'xs'
   }
-  
+
   const setAnimationPreferences = (enabled: boolean, reducedMotion: boolean) => {
     animations.enabled = enabled
     animations.reducedMotion = reducedMotion
   }
-  
+
   const setLoading = (loading: boolean) => {
     isLoading.value = loading
   }
-  
+
   const setError = (errorMessage: string | null) => {
     error.value = errorMessage
   }
-  
+
   // Initialize animation preferences based on user system preferences
   const initializeAnimations = () => {
     if (typeof window !== 'undefined') {
       const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
       setAnimationPreferences(true, prefersReducedMotion)
-      
+
       // Listen for changes
       window.matchMedia('(prefers-reduced-motion: reduce)').addEventListener('change', (e) => {
         setAnimationPreferences(animations.enabled, e.matches)
       })
     }
   }
-  
+
   return {
     // State
     isLoading,
@@ -350,7 +461,7 @@ export const useHomepageStore = defineStore('homepage', () => {
     viewport,
     config,
     trustPillars,
-    
+
     // Computed
     heroMetrics,
     features,
@@ -360,12 +471,12 @@ export const useHomepageStore = defineStore('homepage', () => {
     faq,
     trustIndicators,
     getTrustPillars,
-    
+
     // Actions
     updateViewport,
     setAnimationPreferences,
     setLoading,
     setError,
-    initializeAnimations
+    initializeAnimations,
   }
 })

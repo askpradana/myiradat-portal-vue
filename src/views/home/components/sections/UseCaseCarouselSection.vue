@@ -327,7 +327,7 @@ const handleCTA = (cta: { label: string; action: string }) => {
 }
 
 const requestDemo = (industry: string) => {
-  router.push(`/demo?industry=${encodeURIComponent(industry)}`)
+  router.push(`/book-demo?industry=${encodeURIComponent(industry)}`)
 }
 
 // Keyboard navigation

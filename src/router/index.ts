@@ -59,6 +59,9 @@ const createProtectedRoute = (
 // Route groups
 const publicRoutes: RouteRecordRaw[] = [
   createRoute('/verify-email', 'verify-email', EmailVerificationView, 'Verify Email'),
+  createRoute('/book-demo', 'book-demo', () => import('../views/BookDemoView.vue'), 'Book Demo'),
+  createRoute('/case-studies', 'case-studies', () => import('../views/CaseStudiesView.vue'), 'Case Studies'),
+  createRoute('/contact-us', 'contact-us', () => import('../views/ContactUsView.vue'), 'Contact Us'),
 ]
 
 const guestOnlyRoutes: RouteRecordRaw[] = [

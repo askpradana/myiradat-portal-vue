@@ -91,6 +91,7 @@
                     size="icon"
                     class="rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-muted"
                     @click="goToDetails(organization.id)"
+                    title="Organization detail"
                   >
                     <FileSearch :size="18" />
                   </Button>
@@ -99,6 +100,7 @@
                     size="icon"
                     class="rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-muted"
                     @click="goToUpdateOrganization(organization.id)"
+                    title="Update data organization"
                   >
                     <Pencil :size="18" />
                   </Button>
@@ -212,7 +214,10 @@ import DeleteOrganizationAlert from '@/components/custom/alerts/DeleteOrganizati
 import OrganizationListFilter from '@/components/custom/filters/OrganizationListFilter.vue'
 import { useRouter } from 'vue-router'
 import { useUserRole } from '@/composables/useUserRole'
-import type { ResponseAPIGetOrganizationsData, OrganizationFilterParams } from '@/types/organizationType'
+import type {
+  ResponseAPIGetOrganizationsData,
+  OrganizationFilterParams,
+} from '@/types/organizationType'
 
 // State
 const currentPage = ref(1)

@@ -8,30 +8,31 @@ import {
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
 import Input from '@/components/ui/input/Input.vue'
-import { Trash2 } from 'lucide-vue-next'
+import { MonitorX } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
 import { Button } from '@/components/ui/button'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
-import { deleteOrganization } from '@/api/organizations/deleteOrganization'
+import { deleteSessionSpesificByUser } from '@/api/sessions/deleteSessionSpecificByUser'
 
-const { organizationID, nameOfOrganization } = defineProps<{
-  organizationID: string
-  nameOfOrganization: string
+const { nameOfBrowser, sessionID } = defineProps<{
+  nameOfBrowser: string
+  sessionID: string
 }>()
 
-const Organizationname = ref('')
+const BrowserName = ref('')
 const isMatch = ref('')
 const open = ref(false)
 
 const queryClient = useQueryClient()
 const { mutate, isPending } = useMutation({
-  mutationFn: deleteOrganization,
+  mutationFn: deleteSessionSpesificByUser,
   onSuccess: (response) => {
     if (response) {
       toast('Success', {
         description: `${response?.message}`,
       })
-      queryClient.invalidateQueries({ queryKey: ['organizations'] })
+      queryClient.invalidateQueries({ queryKey: ['sessions'] })
+      BrowserName.value = ''
       open.value = false
     }
   },
@@ -43,24 +44,19 @@ const { mutate, isPending } = useMutation({
 })
 
 const deleteFunc = () => {
-  if (Organizationname.value === nameOfOrganization) {
-    mutate(organizationID)
+  if (BrowserName.value === nameOfBrowser) {
+    mutate(sessionID)
   } else {
-    isMatch.value = 'Organization name is not match!'
+    isMatch.value = 'Term is not match! Pay attention to uppercase and lowercase letters.'
   }
 }
 </script>
 
 <template>
   <AlertDialogRoot v-model:open="open">
-    <AlertDialogTrigger class="">
-      <Button
-        variant="outline"
-        size="icon"
-        class="rounded-md p-2 text-muted-foreground hover:text-red-600 hover:bg-red-50"
-        title="Delete Organization"
-      >
-        <Trash2 :size="18" />
+    <AlertDialogTrigger>
+      <Button variant="destructive" title="Delete this session" size="sm" class="hover:bg-red-500">
+        <MonitorX :size="12" /> Delete Session
       </Button>
     </AlertDialogTrigger>
     <AlertDialogPortal>
@@ -71,15 +67,15 @@ const deleteFunc = () => {
         class="z-[100] text-sm data-[state=open]:animate-contentShow fixed top-[50%] left-[50%] max-h-[85vh] w-[90vw] max-w-[500px] translate-x-[-50%] translate-y-[-50%] rounded-lg p-[25px] shadow-[hsl(206_22%_7%_/_35%)_0px_10px_38px_-10px,_hsl(206_22%_7%_/_20%)_0px_10px_20px_-15px] focus:outline-none"
       >
         <AlertDialogTitle class="text-black dark:text-white m-0 text-[17px] font-semibold">
-          Delete Organization
+          Delete Session
         </AlertDialogTitle>
         <AlertDialogDescription class="mb-5 text-sm leading-normal">
-          Are you sure you want to delete {{ nameOfOrganization }}? <br />
-          Please enter the word according to this organization name: <br />
+          Are you sure you want to delete this session? <br />
+          Please enter the word according to this browser name: <br />
           <div class="w-full text-center my-4">
-            <span class="text-red-600 font-semibold text-xl">{{ nameOfOrganization }}</span>
+            <span class="text-red-600 font-semibold text-xl">{{ nameOfBrowser }}</span>
           </div>
-          <Input v-model="Organizationname" placeholder="Enter the word above" class="mt-2" />
+          <Input v-model="BrowserName" placeholder="Enter the word above" class="mt-2" />
           <span :class="isMatch ? 'block text-red-500 text-sm mt-4 ml-1' : 'hidden'">{{
             isMatch
           }}</span>

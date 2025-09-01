@@ -185,10 +185,10 @@ const filteredFAQs = computed(() => {
 })
 
 const contactSupport = () => {
-  router.push('/support')
+  router.push('/contact-us')
 }
 
 const scheduleCall = () => {
-  router.push('/contact-sales')
+  router.push('/contact-us')
 }
 </script>

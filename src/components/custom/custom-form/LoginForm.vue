@@ -103,36 +103,35 @@ const onSubmit = handleSubmit(async (values) => {
         </div>
 
         <div class="space-y-2">
-          <div class="flex items-center justify-between">
+          <div class="relative">
             <Label for="password" class="text-sm font-medium text-foreground">Password</Label>
+            <div class="relative mt-2">
+              <Input
+                id="password"
+                :type="isShowPassword ? 'text' : 'password'"
+                placeholder="Enter your password"
+                class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
+                required
+                v-model="password"
+              />
+              <div
+                class="absolute right-3 top-3 text-slate-400 dark:text-purple-500 cursor-pointer select-none"
+                @click="showPassword"
+                :aria-label="isShowPassword ? 'Hide password' : 'Show password'"
+                role="button"
+              >
+                <Eye :size="18" v-if="isShowPassword" />
+                <EyeClosed :size="18" v-else />
+              </div>
+            </div>
+          </div>
+          <div class="flex justify-end mt-1">
             <a
               href="#"
               class="text-sm text-primary hover:text-primary/80 transition-colors duration-200 underline-offset-4 hover:underline"
             >
               Forgot password?
             </a>
-          </div>
-          <div class="relative">
-            <Input
-              id="password"
-              :type="isShowPassword ? 'text' : 'password'"
-              placeholder="Enter your password"
-              class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
-              required
-              v-model="password"
-            />
-            <Eye
-              :size="18"
-              class="absolute right-3 top-3 text-slate-400 dark:text-purple-500"
-              @click="showPassword"
-              v-if="isShowPassword"
-            />
-            <EyeClosed
-              :size="18"
-              class="absolute right-3 top-3 text-slate-400 dark:text-purple-500"
-              @click="showPassword"
-              v-else
-            />
           </div>
           <span class="text-xs text-red-400">{{ errors.password }}</span>
         </div>

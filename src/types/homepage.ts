@@ -83,7 +83,7 @@ export interface TrustIndicator {
   id: string
   name: string
   logo: string
-  category: 'client' | 'certification' | 'partner' | 'award'
+  category: 'client' | 'certification' | 'partner' | 'award' | 'professional' | 'compliance' | 'academic'
   description?: string
   icon?: string
   color?: string
