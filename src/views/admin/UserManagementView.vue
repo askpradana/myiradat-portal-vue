@@ -136,6 +136,7 @@
                     :name-of-user="user.name"
                     :user-i-d="user.id"
                   />
+                  <ResetPasswordAlert :user-i-d="user.id" :user-name="user.name" />
                   <DeleteUserAlert
                     :user-i-d="user.id"
                     :name-of-user="user.name"
@@ -256,6 +257,7 @@ import DeleteUserAlert from '@/components/custom/alerts/DeleteUserAlert.vue'
 import { useRouter } from 'vue-router'
 import { useUserRole } from '@/composables/useUserRole'
 import DeleteSessionSpecificByAdminAlert from '@/components/custom/alerts/DeleteSessionSpecificByAdminAlert.vue'
+import ResetPasswordAlert from '@/components/custom/alerts/ResetPasswordAlert.vue'
 
 // State
 const currentPage = ref(1)

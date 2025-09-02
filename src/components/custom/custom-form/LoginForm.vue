@@ -42,7 +42,7 @@ const onSubmit = handleSubmit(async (values) => {
       if (response.data.token) {
         userStore.setTempVerificationToken(response.data.token)
       }
-      
+
       // Redirect to email verification page with user data
       router.push({
         path: '/verify-email',
@@ -126,12 +126,13 @@ const onSubmit = handleSubmit(async (values) => {
             </div>
           </div>
           <div class="flex justify-end mt-1">
-            <a
-              href="#"
+            <buton
+              @click="() => router.replace('/reset-password')"
+              type="button"
               class="text-sm text-primary hover:text-primary/80 transition-colors duration-200 underline-offset-4 hover:underline"
             >
               Forgot password?
-            </a>
+            </buton>
           </div>
           <span class="text-xs text-red-400">{{ errors.password }}</span>
         </div>

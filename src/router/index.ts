@@ -9,6 +9,7 @@ import CreateUserBatchView from '@/views/admin/CreateUserBatchView.vue'
 import CreateNewOrganizationView from '@/views/admin/CreateNewOrganizationView.vue'
 import OrganizationDetailView from '@/views/admin/OrganizationDetailView.vue'
 import EditOrganizationView from '@/views/admin/EditOrganizationView.vue'
+import ResetPasswordUserView from '@/views/auth/ResetPasswordUserView.vue'
 import NotFoundView from '@/views/errors/NotFoundView.vue'
 import ProfileUserDetailView from '@/views/admin/ProfileUserDetailView.vue'
 import { useUserStore } from '@/stores/userStores'
@@ -60,14 +61,25 @@ const createProtectedRoute = (
 const publicRoutes: RouteRecordRaw[] = [
   createRoute('/verify-email', 'verify-email', EmailVerificationView, 'Verify Email'),
   createRoute('/book-demo', 'book-demo', () => import('../views/BookDemoView.vue'), 'Book Demo'),
-  createRoute('/case-studies', 'case-studies', () => import('../views/CaseStudiesView.vue'), 'Case Studies'),
-  createRoute('/contact-us', 'contact-us', () => import('../views/ContactUsView.vue'), 'Contact Us'),
+  createRoute(
+    '/case-studies',
+    'case-studies',
+    () => import('../views/CaseStudiesView.vue'),
+    'Case Studies',
+  ),
+  createRoute(
+    '/contact-us',
+    'contact-us',
+    () => import('../views/ContactUsView.vue'),
+    'Contact Us',
+  ),
 ]
 
 const guestOnlyRoutes: RouteRecordRaw[] = [
   createGuestRoute('/', 'home', () => import('../views/home/HomeView.vue'), 'Home'),
   createGuestRoute('/register', 'register', RegisterView, 'Register'),
   createGuestRoute('/login', 'login', LoginView, 'Login'),
+  createGuestRoute('/reset-password', 'reset-password', ResetPasswordUserView, 'Reset-password'),
 ]
 
 const protectedRoutes: RouteRecordRaw[] = [
