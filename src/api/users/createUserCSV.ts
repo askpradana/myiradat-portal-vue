@@ -1,24 +1,24 @@
-import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
 import { refreshToken } from '../refreshToken'
+import { type BatchRegisterAPIResponse, batchRegisterUsers } from './createUserBatch'
+
+interface ValidationResultsInterface {
+  errors: string[]
+  row_number: number
+  valid: boolean
+}
 
 export interface BatchRegisterCSVData {
-  created_users?: Array<{
-    id: string
-    name: string
-    email: string
-    phone: string
-    role: string
-  }>
-  errors?: Array<{
-    row: number
-    message: string
-    data?: Record<string, unknown>
-  }>
-  summary?: {
+  validation_results: ValidationResultsInterface[]
+  summary: {
+    file_format: string
+    file_name: string
+    file_size_bytes: number
+    invalid_rows: number
+    processing_time: string
     total_rows: number
-    successful: number
-    failed: number
+    valid_rows: number
+    warning_rows: number
   }
 }
 
@@ -29,7 +29,9 @@ export interface BatchRegisterCSVAPIResponse {
   timestamp: string
 }
 
-export const RegisterUserByCSV = async (CSVFile: File): Promise<BatchRegisterCSVAPIResponse> => {
+export const RegisterUserByCSV = async (
+  CSVFile: File,
+): Promise<BatchRegisterAPIResponse | BatchRegisterCSVAPIResponse> => {
   try {
     const userStore = useUserStore()
     const token = userStore.auth?.token
@@ -37,7 +39,7 @@ export const RegisterUserByCSV = async (CSVFile: File): Promise<BatchRegisterCSV
     const formData = new FormData()
     formData.append('file', CSVFile)
 
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/batch-register`, {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/register/file`, {
       method: 'POST',
       body: formData,
       headers: {
@@ -80,12 +82,21 @@ export const RegisterUserByCSV = async (CSVFile: File): Promise<BatchRegisterCSV
     }
 
     const data = await response.json()
-    return data
+
+    console.log('Response CSV API:', data)
+    if (data.data.summary.invalid_rows > 0) {
+      // toast('Error', {
+      //   description: `Please check every data format!`,
+      // })
+      // return data.data
+      throw new Error(`Please check every data format!`)
+    }
+    const result = await batchRegisterUsers(data.data.parsed_users, 'csv')
+    console.log('Result CSV API:', data)
+
+    return result
   } catch (error) {
     console.error('Batch register error:', error)
-    toast('Error', {
-      description: `${error}`,
-    })
     throw error
   }
 }
