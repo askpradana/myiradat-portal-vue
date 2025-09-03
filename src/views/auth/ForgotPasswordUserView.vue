@@ -3,7 +3,7 @@ export const description = 'A modern and beautiful login form with enhanced styl
 </script>
 
 <script setup lang="ts">
-import ResetPasswordUserForm from '@/components/custom/custom-form/ResetPasswordUserForm.vue'
+import ForgotPasswordUserForm from '@/components/custom/custom-form/ForgotPasswordUserForm.vue'
 </script>
 
 <template>
@@ -27,7 +27,7 @@ import ResetPasswordUserForm from '@/components/custom/custom-form/ResetPassword
     <!-- Main Content -->
     <div class="w-full max-w-md relative z-10">
       <!-- Register form -->
-      <ResetPasswordUserForm />
+      <ForgotPasswordUserForm />
     </div>
   </div>
 </template>

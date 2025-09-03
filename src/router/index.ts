@@ -9,7 +9,7 @@ import CreateUserBatchView from '@/views/admin/CreateUserBatchView.vue'
 import CreateNewOrganizationView from '@/views/admin/CreateNewOrganizationView.vue'
 import OrganizationDetailView from '@/views/admin/OrganizationDetailView.vue'
 import EditOrganizationView from '@/views/admin/EditOrganizationView.vue'
-import ResetPasswordUserView from '@/views/auth/ResetPasswordUserView.vue'
+import ForgotPasswordUserView from '@/views/auth/ForgotPasswordUserView.vue'
 import NotFoundView from '@/views/errors/NotFoundView.vue'
 import ProfileUserDetailView from '@/views/admin/ProfileUserDetailView.vue'
 import { useUserStore } from '@/stores/userStores'
@@ -79,7 +79,12 @@ const guestOnlyRoutes: RouteRecordRaw[] = [
   createGuestRoute('/', 'home', () => import('../views/home/HomeView.vue'), 'Home'),
   createGuestRoute('/register', 'register', RegisterView, 'Register'),
   createGuestRoute('/login', 'login', LoginView, 'Login'),
-  createGuestRoute('/reset-password', 'reset-password', ResetPasswordUserView, 'Reset-password'),
+  createGuestRoute(
+    '/forgot-password',
+    'forgot-password',
+    ForgotPasswordUserView,
+    'Forgot-password',
+  ),
 ]
 
 const protectedRoutes: RouteRecordRaw[] = [

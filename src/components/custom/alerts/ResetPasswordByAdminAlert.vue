@@ -9,7 +9,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import Input from '@/components/ui/input/Input.vue'
 import Label from '@/components/ui/label/Label.vue'
-import { RotateCcwKeyIcon, Eye, EyeClosed } from 'lucide-vue-next'
+import { RotateCcwKeyIcon, Eye, EyeClosed, X } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
 import { Button } from '@/components/ui/button'
 import { useMutation } from '@tanstack/vue-query'
@@ -71,7 +71,7 @@ const onCancelAction = () => {
         variant="outline"
         size="icon"
         title="Reset password user"
-        class="rounded-md p-2 text-muted-foreground hover:text-foreground hover:bg-muted"
+        class="rounded-md p-2 text-muted-foreground hover:text-red-600 hover:bg-red-50"
       >
         <RotateCcwKeyIcon :size="18" />
       </Button>
@@ -157,17 +157,19 @@ const onCancelAction = () => {
             :disabled="isPending"
             :class="isPending && 'bg-gray-500 pointer-events-none'"
           >
+            <RotateCcwKeyIcon :size="18" />
             {{ isPending ? 'Please wait...' : 'Reset Password' }}
           </Button>
         </form>
 
         <!-- Button Area -->
-        <div class="flex justify-end gap-4">
+        <div class="flex justify-end gap-4 w-full">
           <AlertDialogCancel
             v-if="!isPending"
             @click="onCancelAction"
-            class="text-mauve11 bg-mauve4 hover:bg-mauve5 focus:shadow-mauve7 inline-flex h-[35px] items-center justify-center rounded-md px-[15px] font-semibold leading-none outline-none focus:shadow-[0_0_0_2px]"
+            class="h-11 w-full inline-flex items-center justify-center rounded-md px-[15px] font-semibold leading-none outline-none focus:shadow-[0_0_0_2px]"
           >
+            <X :size="18" />
             Cancel
           </AlertDialogCancel>
         </div>
