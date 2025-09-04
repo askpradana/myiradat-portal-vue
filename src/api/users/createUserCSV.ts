@@ -82,17 +82,12 @@ export const RegisterUserByCSV = async (
     }
 
     const data = await response.json()
+    console.log('ini response csv:', data.data)
 
-    console.log('Response CSV API:', data)
-    if (data.data.summary.invalid_rows > 0) {
-      // toast('Error', {
-      //   description: `Please check every data format!`,
-      // })
-      // return data.data
-      throw new Error(`Please check every data format!`)
-    }
+    // if (data.data.summary.invalid_rows > 0) {
+    // throw new Error(`Please check all data formats. OR some data may be registered.`)
+    // }
     const result = await batchRegisterUsers(data.data.parsed_users, 'csv')
-    console.log('Result CSV API:', data)
 
     return result
   } catch (error) {

@@ -107,7 +107,7 @@
                       @blur="() => validateField(index, 'phone')"
                       @input="() => clearFieldError(index, 'phone')"
                       type="text"
-                      placeholder="+62XXXXXXXXXX"
+                      placeholder="08XXXXXXXXXX"
                       :class="{
                         'border-red-500 focus:border-red-500 focus:ring-red-500': getUserError(
                           index,
@@ -382,6 +382,13 @@ const validatePhone = (phone: string): string | null => {
   if (phone.trim().length < 6) {
     return 'Phone must be at least 6 characters long'
   }
+  if (phone.startsWith('+')) {
+    return 'Phone must be start with 0'
+  }
+  if (phone.length >= 13) {
+    return 'Maximum phone length is 13 characters'
+  }
+
   return null
 }
 

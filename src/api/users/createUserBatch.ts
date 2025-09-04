@@ -1,5 +1,6 @@
 import { useUserStore } from '@/stores/userStores'
 import { refreshToken } from '../refreshToken'
+import { formatPhoneNumber } from '@/lib/phoneNumberFormat'
 
 export interface BatchUserInterface {
   name: string
@@ -39,7 +40,7 @@ export const batchRegisterUsers = async (
     const requestData: BatchRegisterRequest = {
       users: users.map((user) => ({
         name: user.name,
-        phone: user.phone,
+        phone: formatPhoneNumber(user.phone),
         email: user.email,
         password: user.password,
         role_type: user.role_type,
@@ -48,9 +49,9 @@ export const batchRegisterUsers = async (
 
     const csvFile = {
       users: users.map((user) => ({
-        row_number: user.row_number,
+        // row_number: user.row_number,
         name: user.name,
-        phone: user.phone,
+        phone: formatPhoneNumber(user.phone),
         email: user.email,
         role_type: user.role,
       })),
