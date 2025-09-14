@@ -93,6 +93,8 @@ const onSubmit = handleSubmit(async (values) => {
           <Label for="email" class="text-sm font-medium text-foreground">Email address</Label>
           <Input
             id="email"
+            name="email"
+            autocomplete="email"
             type="email"
             placeholder="Enter your email"
             class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
@@ -108,6 +110,8 @@ const onSubmit = handleSubmit(async (values) => {
             <div class="relative mt-2">
               <Input
                 id="password"
+                name="current-password"
+                autocomplete="current-password"
                 :type="isShowPassword ? 'text' : 'password'"
                 placeholder="Enter your password"
                 class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
