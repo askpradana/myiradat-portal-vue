@@ -152,7 +152,7 @@ const currentPage = ref(1)
 const { isPending, data } = useQuery({
   queryKey: ['members', props.organizationID],
   queryFn: () => getMembersOrganization(props.organizationID),
-  staleTime: 1000 * 60 * 5, // 5 minutes
+  staleTime: 1000 * 60 * 2, // 2 minutes
 }) as {
   isPending: Ref<boolean>
   data: Ref<ResponseAPIGETMember | undefined>

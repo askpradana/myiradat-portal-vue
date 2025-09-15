@@ -16,7 +16,7 @@ import { toast } from 'vue-sonner'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { CreateNewUserSchema } from '@/lib/zod-schemas/registerFormSchema'
 import { ref } from 'vue'
-import { Eye, EyeClosed } from 'lucide-vue-next'
+import { Eye, EyeClosed, UserRoundPlus } from 'lucide-vue-next'
 
 const isShowPassword = ref(false)
 
@@ -148,6 +148,7 @@ const onSubmit = handleSubmit(async (values) => {
             <SelectContent>
               <SelectItem value="1">Admin</SelectItem>
               <SelectItem value="2">User</SelectItem>
+              <SelectItem value="3">Customer Service</SelectItem>
             </SelectContent>
           </Select>
           <span class="text-xs text-red-400">{{ errors.role }}</span>
@@ -159,6 +160,7 @@ const onSubmit = handleSubmit(async (values) => {
           :disabled="isPending"
           :class="isPending && 'bg-gray-500 pointer-events-none'"
         >
+          <UserRoundPlus :size="18" />
           {{ isPending ? 'Please wait...' : 'Add User' }}
         </Button>
       </form>

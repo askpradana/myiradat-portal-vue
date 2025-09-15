@@ -132,11 +132,16 @@
                   >
                     <Pencil :size="18" />
                   </Button>
+                  <ResetPasswordByAdminAlert :user-i-d="user.id" :user-name="user.name" />
                   <DeleteSessionSpecificByAdminAlert
                     :name-of-user="user.name"
                     :user-i-d="user.id"
                   />
-                  <DeleteUserAlert :user-i-d="user.id" :name-of-user="user.name" />
+                  <DeleteUserAlert
+                    :user-i-d="user.id"
+                    :name-of-user="user.name"
+                    :organization-i-d="user.id"
+                  />
                 </div>
               </TableCell>
             </TableRow>
@@ -252,6 +257,7 @@ import DeleteUserAlert from '@/components/custom/alerts/DeleteUserAlert.vue'
 import { useRouter } from 'vue-router'
 import { useUserRole } from '@/composables/useUserRole'
 import DeleteSessionSpecificByAdminAlert from '@/components/custom/alerts/DeleteSessionSpecificByAdminAlert.vue'
+import ResetPasswordByAdminAlert from '@/components/custom/alerts/ResetPasswordByAdminAlert.vue'
 
 // State
 const currentPage = ref(1)

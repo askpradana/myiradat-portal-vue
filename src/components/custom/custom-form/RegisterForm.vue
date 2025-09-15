@@ -65,6 +65,8 @@ const onSubmit = handleSubmit(async (values) => {
           <Label for="name" class="text-sm font-medium text-foreground">Username</Label>
           <Input
             id="name"
+            name="username"
+            autocomplete="username"
             type="text"
             placeholder="Enter your username"
             class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
@@ -78,7 +80,9 @@ const onSubmit = handleSubmit(async (values) => {
           <Label for="phone" class="text-sm font-medium text-foreground">Phone number</Label>
           <Input
             id="phone"
-            type="text"
+            name="tel"
+            autocomplete="tel"
+            type="tel"
             placeholder="Enter your phone number"
             class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
             required
@@ -91,6 +95,8 @@ const onSubmit = handleSubmit(async (values) => {
           <Label for="email" class="text-sm font-medium text-foreground">Email address</Label>
           <Input
             id="email"
+            name="email"
+            autocomplete="email"
             type="email"
             placeholder="Enter your email"
             class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
@@ -105,6 +111,8 @@ const onSubmit = handleSubmit(async (values) => {
           <div class="relative">
             <Input
               id="password"
+              name="new-password"
+              autocomplete="new-password"
               :type="isShowPassword ? 'text' : 'password'"
               placeholder="Enter your password"
               class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"

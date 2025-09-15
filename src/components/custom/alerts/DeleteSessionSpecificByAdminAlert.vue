@@ -39,7 +39,7 @@ const { mutate, isPending } = useMutation({
   },
   onError: (error) => {
     toast('Error', {
-      description: `Failed to delete user: ${error.message}`,
+      description: `Failed to delete session: ${error.message}`,
     })
   },
 })

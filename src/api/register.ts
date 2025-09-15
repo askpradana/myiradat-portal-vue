@@ -32,7 +32,7 @@ export const registerNewUser = async (
       phone: newUserData.phone,
       email: newUserData.email,
       password: newUserData.password,
-      role_type: newUserData.role === '1' ? 'admin' : '',
+      role_type: newUserData.role === '1' ? 'admin' : newUserData.role === '3' ? 'cs' : '',
     }
 
     const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/register`, {

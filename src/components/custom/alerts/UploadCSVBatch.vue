@@ -11,7 +11,6 @@ import { Upload, FileText, X } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
 import { Button } from '@/components/ui/button'
 import { useMutation, useQueryClient } from '@tanstack/vue-query'
-// import { BatchRegisterCSVAPIResponse } from '@/api/users/createUserCSV'
 import { RegisterUserByCSV } from '@/api/users/createUserCSV'
 
 const open = ref(false)

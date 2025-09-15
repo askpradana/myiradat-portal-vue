@@ -242,8 +242,7 @@ const hasActiveFilters = computed(() => {
 const { isPending, data, refetch } = useQuery({
   queryKey: ['organizations', queryParams],
   queryFn: () => getListOrganization(queryParams.value),
-  staleTime: 1000 * 60 * 5, // 5 minutes
-  enabled: false, // Disable automatic refetching
+  staleTime: 1000 * 60 * 2, // 2 minutes
 }) as {
   isPending: Ref<boolean>
   data: Ref<ResponseAPIGetOrganizationsData | undefined>

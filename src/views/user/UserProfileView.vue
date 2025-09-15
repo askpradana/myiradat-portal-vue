@@ -53,6 +53,8 @@
       </CardContent>
     </Card>
 
+    <ResetPasswordByUserForm />
+
     <Card class="space-x-6">
       <div class="flex justify-between items-center">
         <h2 class="px-6 font-bold">Where you're logged in</h2>
@@ -123,6 +125,7 @@ import { type SessionsDataFromAPIInterface } from '@/types/sessionsType'
 import SessionCard from '@/components/sessions/SessionCard.vue'
 import SessionCardSkeleton from '@/components/sessions/SessionCardSkeleton.vue'
 import DeleteSessionAllAlert from '@/components/custom/alerts/DeleteSessionAllAlert.vue'
+import ResetPasswordByUserForm from '@/components/custom/custom-form/ResetPasswordByUserForm.vue'
 
 // Composables
 const {

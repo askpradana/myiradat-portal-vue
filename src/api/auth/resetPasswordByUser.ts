@@ -1,49 +1,36 @@
+import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
 import { refreshToken } from '../refreshToken'
-import { type BatchRegisterAPIResponse, batchRegisterUsers } from './createUserBatch'
 
-interface ValidationResultsInterface {
-  errors: string[]
-  row_number: number
-  valid: boolean
-}
-
-export interface BatchRegisterCSVData {
-  validation_results: ValidationResultsInterface[]
-  summary: {
-    file_format: string
-    file_name: string
-    file_size_bytes: number
-    invalid_rows: number
-    processing_time: string
-    total_rows: number
-    valid_rows: number
-    warning_rows: number
-  }
-}
-
-export interface BatchRegisterCSVAPIResponse {
-  data: BatchRegisterCSVData
+interface ResponseAPIResetPasswordByUser {
+  susscess: boolean
   message: string
-  success: boolean
+  data: {
+    sessions_invalidated: number
+    user_id: string
+  }
   timestamp: string
 }
 
-export const RegisterUserByCSV = async (
-  CSVFile: File,
-): Promise<BatchRegisterAPIResponse | BatchRegisterCSVAPIResponse> => {
+export const resetPasswordByUser = async (
+  currentPassword: string,
+  newPassword: string,
+): Promise<ResponseAPIResetPasswordByUser> => {
   try {
+    const dataPassword = {
+      current_password: currentPassword,
+      new_password: newPassword,
+    }
+
     const userStore = useUserStore()
     const token = userStore.auth?.token
 
-    const formData = new FormData()
-    formData.append('file', CSVFile)
-
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/register/file`, {
-      method: 'POST',
-      body: formData,
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/profile/password`, {
+      method: 'PUT',
+      body: JSON.stringify(dataPassword),
       headers: {
         Authorization: `bearer ${token}`,
+        'Content-Type': 'application/json',
       },
     })
 
@@ -66,7 +53,8 @@ export const RegisterUserByCSV = async (
             }
             sessionStorage.setItem('auth_token', JSON.stringify(auth))
 
-            return await RegisterUserByCSV(CSVFile)
+            // Coba lagi setelah refresh token
+            return await resetPasswordByUser(currentPassword, newPassword)
           } else {
             throw new Error(errorMessage || 'The session has ended, please login again')
           }
@@ -82,16 +70,13 @@ export const RegisterUserByCSV = async (
     }
 
     const data = await response.json()
-    console.log('ini response csv:', data.data)
 
-    // if (data.data.summary.invalid_rows > 0) {
-    // throw new Error(`Please check all data formats. OR some data may be registered.`)
-    // }
-    const result = await batchRegisterUsers(data.data.parsed_users, 'csv')
-
-    return result
+    return data
   } catch (error) {
-    console.error('Batch register error:', error)
+    console.error('Error:', error)
+    toast('Error', {
+      description: `${error}`,
+    })
     throw error
   }
 }

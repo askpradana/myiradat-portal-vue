@@ -56,7 +56,7 @@
               </CardHeader>
 
               <CardContent>
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                   <!-- Name Field -->
                   <div class="space-y-2">
                     <Label>Name <span class="text-red-500">*</span></Label>
@@ -107,7 +107,7 @@
                       @blur="() => validateField(index, 'phone')"
                       @input="() => clearFieldError(index, 'phone')"
                       type="text"
-                      placeholder="+62XXXXXXXXXX"
+                      placeholder="08XXXXXXXXXX"
                       :class="{
                         'border-red-500 focus:border-red-500 focus:ring-red-500': getUserError(
                           index,
@@ -121,7 +121,7 @@
                   </div>
 
                   <!-- Password Field -->
-                  <div class="space-y-2">
+                  <!-- <div class="space-y-2">
                     <Label>Password <span class="text-red-500">*</span></Label>
                     <Input
                       v-model="users[index].password"
@@ -139,7 +139,7 @@
                     <p v-if="getUserError(index, 'password')" class="text-red-500 text-xs">
                       {{ getUserError(index, 'password') }}
                     </p>
-                  </div>
+                  </div> -->
 
                   <!-- Role Field -->
                   <div class="space-y-2">
@@ -249,6 +249,12 @@
               Failed
             </span>
           </div>
+          <p
+            class="px-3 py-1 rounded-full flex items-center gap-1 text-yellow-700 bg-yellow-100 text-sm"
+          >
+            <KeyRound :size="14" />
+            Password: <span class="font-semibold">{{ registrationResults?.password }}</span>
+          </p>
 
           <!-- Results List -->
           <ScrollAreaRoot
@@ -290,9 +296,19 @@
 
 <script setup lang="ts">
 import { ref, reactive } from 'vue'
-import { useMutation } from '@tanstack/vue-query'
+import { useMutation, useQueryClient } from '@tanstack/vue-query'
 import { toast } from 'vue-sonner'
-import { Plus, Users, Trash2, X, UserPlus, Loader2, CheckCircle, XCircle } from 'lucide-vue-next'
+import {
+  Plus,
+  Users,
+  Trash2,
+  X,
+  UserPlus,
+  Loader2,
+  CheckCircle,
+  XCircle,
+  KeyRound,
+} from 'lucide-vue-next'
 
 // Reka UI Components
 import { Button } from '@/components/ui/button'
@@ -334,6 +350,7 @@ const showResults = ref(false)
 const registrationResults = ref<{
   successful: Array<string>
   total: number
+  password: string
 } | null>(null)
 
 // Validation functions
@@ -365,18 +382,25 @@ const validatePhone = (phone: string): string | null => {
   if (phone.trim().length < 6) {
     return 'Phone must be at least 6 characters long'
   }
+  if (phone.startsWith('+')) {
+    return 'Phone must be start with 0'
+  }
+  if (phone.length >= 13) {
+    return 'Maximum phone length is 13 characters'
+  }
+
   return null
 }
 
-const validatePassword = (password: string): string | null => {
-  if (!password || password.trim() === '') {
-    return 'Password is required'
-  }
-  if (password.length < 8) {
-    return 'Password must be at least 8 characters long'
-  }
-  return null
-}
+// const validatePassword = (password: string): string | null => {
+//   if (!password || password.trim() === '') {
+//     return 'Password is required'
+//   }
+//   if (password.length < 8) {
+//     return 'Password must be at least 8 characters long'
+//   }
+//   return null
+// }
 
 const validateRole = (role: string): string | null => {
   if (!role || role.trim() === '') {
@@ -406,9 +430,9 @@ const validateField = (userIndex: number, field: keyof BatchUserInterface) => {
     case 'phone':
       error = validatePhone(user.phone)
       break
-    case 'password':
-      error = validatePassword(user.password)
-      break
+    // case 'password':
+    //   error = validatePassword(user.password)
+    //   break
     case 'role_type':
       error = validateRole(user.role_type)
       break
@@ -464,12 +488,14 @@ const getUserError = (userIndex: number, field: keyof BatchUserInterface): strin
 }
 
 // Mutation for batch registration
+const queryClient = useQueryClient()
 const { mutate: submitBatchRegister, isPending: isSubmitting } = useMutation({
-  mutationFn: (users: BatchUserInterface[]) => batchRegisterUsers(users),
+  mutationFn: (users: BatchUserInterface[]) => batchRegisterUsers(users, 'manual'),
   onSuccess: (data) => {
     registrationResults.value = data.data
     showResults.value = true
 
+    queryClient.invalidateQueries({ queryKey: ['users'] })
     if (data.data.total > 0) {
       toast('Batch Registration Completed', {
         description: `${data.message}`,

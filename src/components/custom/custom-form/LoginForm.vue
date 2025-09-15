@@ -42,7 +42,7 @@ const onSubmit = handleSubmit(async (values) => {
       if (response.data.token) {
         userStore.setTempVerificationToken(response.data.token)
       }
-      
+
       // Redirect to email verification page with user data
       router.push({
         path: '/verify-email',
@@ -93,6 +93,8 @@ const onSubmit = handleSubmit(async (values) => {
           <Label for="email" class="text-sm font-medium text-foreground">Email address</Label>
           <Input
             id="email"
+            name="email"
+            autocomplete="email"
             type="email"
             placeholder="Enter your email"
             class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
@@ -108,6 +110,8 @@ const onSubmit = handleSubmit(async (values) => {
             <div class="relative mt-2">
               <Input
                 id="password"
+                name="current-password"
+                autocomplete="current-password"
                 :type="isShowPassword ? 'text' : 'password'"
                 placeholder="Enter your password"
                 class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
@@ -126,12 +130,13 @@ const onSubmit = handleSubmit(async (values) => {
             </div>
           </div>
           <div class="flex justify-end mt-1">
-            <a
-              href="#"
+            <buton
+              @click="() => router.replace('/forgot-password')"
+              type="button"
               class="text-sm text-primary hover:text-primary/80 transition-colors duration-200 underline-offset-4 hover:underline"
             >
               Forgot password?
-            </a>
+            </buton>
           </div>
           <span class="text-xs text-red-400">{{ errors.password }}</span>
         </div>

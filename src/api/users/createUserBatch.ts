@@ -1,13 +1,15 @@
-import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
 import { refreshToken } from '../refreshToken'
+import { formatPhoneNumber } from '@/lib/phoneNumberFormat'
 
 export interface BatchUserInterface {
   name: string
   phone: string
   email: string
-  password: string
+  password?: string
   role_type: string
+  role?: string
+  row_number?: number
 }
 
 export interface BatchRegisterRequest {
@@ -18,6 +20,9 @@ export interface BatchRegisterAPIResponse {
   data: {
     successful: string[]
     total: number
+    password: string
+    failed: null
+    errors: null
   }
   message: string
   success: boolean
@@ -26,6 +31,7 @@ export interface BatchRegisterAPIResponse {
 
 export const batchRegisterUsers = async (
   users: BatchUserInterface[],
+  source: 'csv' | 'manual',
 ): Promise<BatchRegisterAPIResponse> => {
   try {
     const userStore = useUserStore()
@@ -34,16 +40,29 @@ export const batchRegisterUsers = async (
     const requestData: BatchRegisterRequest = {
       users: users.map((user) => ({
         name: user.name,
-        phone: user.phone,
+        phone: formatPhoneNumber(user.phone),
         email: user.email,
         password: user.password,
         role_type: user.role_type,
       })),
     }
 
+    const csvFile = {
+      users: users.map((user) => ({
+        // row_number: user.row_number,
+        name: user.name,
+        phone: formatPhoneNumber(user.phone),
+        email: user.email,
+        role_type: user.role,
+      })),
+    }
+
+    console.log('request Data:', requestData)
+    console.log('data csv:', csvFile)
+
     const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/batch-register`, {
       method: 'POST',
-      body: JSON.stringify(requestData),
+      body: JSON.stringify(source == 'manual' ? requestData : csvFile),
       headers: {
         Authorization: `bearer ${token}`,
         'Content-Type': 'application/json',
@@ -70,7 +89,7 @@ export const batchRegisterUsers = async (
             sessionStorage.setItem('auth_token', JSON.stringify(auth))
 
             // Coba lagi setelah refresh token
-            return await batchRegisterUsers(users)
+            return await batchRegisterUsers(users, source)
           } else {
             throw new Error(errorMessage || 'The session has ended, please login again')
           }
@@ -89,9 +108,6 @@ export const batchRegisterUsers = async (
     return data
   } catch (error) {
     console.error('Batch register error:', error)
-    toast('Error', {
-      description: `${error}`,
-    })
     throw error
   }
 }

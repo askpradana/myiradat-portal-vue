@@ -32,12 +32,13 @@ const { mutate, isPending } = useMutation({
         description: `${response?.message}`,
       })
       queryClient.invalidateQueries({ queryKey: ['organizations'] })
+      queryClient.invalidateQueries({ queryKey: ['organization'] })
       open.value = false
     }
   },
   onError: (error) => {
     toast('Error', {
-      description: `Failed to delete user: ${error.message}`,
+      description: `Failed to delete organization: ${error.message}`,
     })
   },
 })

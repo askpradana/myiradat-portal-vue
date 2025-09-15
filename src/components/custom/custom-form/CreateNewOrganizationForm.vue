@@ -21,6 +21,7 @@ import {
   CreateOrganizationSchema,
   type CreateOrganizationFormType,
 } from '@/lib/zod-schemas/CreateOrganizationFormSchema'
+import { HousePlus } from 'lucide-vue-next'
 
 const validationSchema = CreateOrganizationSchema
 const { handleSubmit, errors, resetForm } = useForm<CreateOrganizationFormType>({
@@ -328,6 +329,7 @@ const sizeCategories = [
           :disabled="isPending"
           :class="isPending && 'bg-gray-500 pointer-events-none'"
         >
+          <HousePlus :size="18" />
           {{ isPending ? 'Creating Organization...' : 'Create Organization' }}
         </Button>
       </form>
