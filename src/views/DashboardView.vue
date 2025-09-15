@@ -9,6 +9,9 @@
   >
     <!-- Redirect notifications -->
     <RedirectNotification />
+
+    <!-- Profile completion banner -->
+    <ProfileCompletionBanner />
     
     <!-- Main Dashboard Tab Content -->
     <div v-if="activeTab === 'dashboard'">
@@ -99,6 +102,7 @@ import { useDashboardTabs } from '@/composables/useDashboardTabs'
 import { getUserRole } from '@/lib/dashboard-utils'
 import OrganizationManagementView from './admin/OrganizationManagementView.vue'
 import RedirectNotification from '@/components/custom/notifications/RedirectNotification.vue'
+import ProfileCompletionBanner from '@/components/custom/notifications/ProfileCompletionBanner.vue'
 
 // Initialize store
 const userStore = useUserStore()
@@ -110,8 +114,8 @@ const userRole = computed(() => getUserRole(userStore.user))
 const { activeTab, isTabLoading, tabError, changeTab, initializeTabs } = useDashboardTabs({
   userRole,
   defaultTab: 'dashboard',
-  persistToUrl: true,
-  persistToStorage: true,
+  persistToUrl: false,
+  persistToStorage: false,
 })
 
 // Error handling

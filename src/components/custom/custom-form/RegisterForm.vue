@@ -53,27 +53,28 @@ const onSubmit = handleSubmit(async (values) => {
     class="w-full max-w-md mx-auto shadow-2xl shadow-primary/25 ring-1 ring-white/10 border-0 bg-card/50 backdrop-blur-sm"
   >
     <CardHeader class="space-y-1 pb-2">
-      <CardTitle class="text-2xl font-semibold text-center text-foreground">Welcome back</CardTitle>
+      <CardTitle class="text-2xl font-semibold text-center text-foreground">Create Account</CardTitle>
       <CardDescription class="text-center text-muted-foreground">
-        Enter your credentials to access your account
+        Enter your information to create your account
       </CardDescription>
     </CardHeader>
 
     <CardContent class="space-y-6">
       <form @submit="onSubmit" class="space-y-4">
         <div class="space-y-2">
-          <Label for="name" class="text-sm font-medium text-foreground">Username</Label>
+          <Label for="name" class="text-sm font-medium text-foreground">Full name</Label>
           <Input
             id="name"
-            name="username"
-            autocomplete="username"
+            name="name"
+            autocomplete="name"
             type="text"
-            placeholder="Enter your username"
+            placeholder="Enter your full name"
             class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
             required
             v-model="name"
+            aria-describedby="name-error"
           />
-          <span class="text-xs text-red-400">{{ errors.name }}</span>
+          <span id="name-error" class="text-xs text-red-400" role="alert">{{ errors.name }}</span>
         </div>
 
         <div class="space-y-2">
@@ -87,8 +88,9 @@ const onSubmit = handleSubmit(async (values) => {
             class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
             required
             v-model="phone"
+            aria-describedby="phone-error"
           />
-          <span class="text-xs text-red-400">{{ errors.phone }}</span>
+          <span id="phone-error" class="text-xs text-red-400" role="alert">{{ errors.phone }}</span>
         </div>
 
         <div class="space-y-2">
@@ -102,8 +104,9 @@ const onSubmit = handleSubmit(async (values) => {
             class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
             required
             v-model="email"
+            aria-describedby="email-error"
           />
-          <span class="text-xs text-red-400">{{ errors.email }}</span>
+          <span id="email-error" class="text-xs text-red-400" role="alert">{{ errors.email }}</span>
         </div>
 
         <div class="space-y-2">
@@ -118,21 +121,25 @@ const onSubmit = handleSubmit(async (values) => {
               class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
               required
               v-model="password"
+              aria-describedby="password-error"
             />
-            <Eye
-              :size="18"
-              class="absolute right-3 top-3 text-slate-400 dark:text-purple-500"
+            <button
+              type="button"
               @click="showPassword"
-              v-if="isShowPassword"
-            />
-            <EyeClosed
-              :size="18"
-              class="absolute right-3 top-3 text-slate-400 dark:text-purple-500"
-              @click="showPassword"
-              v-else
-            />
+              :aria-label="isShowPassword ? 'Hide password' : 'Show password'"
+              class="absolute right-3 top-3 text-slate-400 dark:text-purple-500 hover:text-foreground transition-colors"
+            >
+              <Eye
+                :size="18"
+                v-if="isShowPassword"
+              />
+              <EyeClosed
+                :size="18"
+                v-else
+              />
+            </button>
           </div>
-          <span class="text-xs text-red-400">{{ errors.password }}</span>
+          <span id="password-error" class="text-xs text-red-400" role="alert">{{ errors.password }}</span>
         </div>
         <Button
           size="sm"
