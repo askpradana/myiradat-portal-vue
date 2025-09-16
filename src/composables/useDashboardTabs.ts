@@ -120,8 +120,18 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
   }
 
   const getTabFromUrl = (): DashboardTab | null => {
-    if (persistToUrl && route.query.tab) {
-      const urlTab = route.query.tab as DashboardTab
+    if (persistToUrl) {
+      // Get tab from route path instead of query
+      const path = route.path
+      let urlTab: DashboardTab = 'dashboard'
+
+      if (path === '/dashboard') {
+        urlTab = 'dashboard'
+      } else if (path.startsWith('/dashboard/')) {
+        const tabSegment = path.split('/dashboard/')[1]?.split('/')[0]
+        urlTab = (tabSegment as DashboardTab) || 'dashboard'
+      }
+
       return canAccessTab(urlTab) ? urlTab : null
     }
     return null
@@ -129,10 +139,12 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
 
   const updateUrlWithTab = (tab: DashboardTab) => {
     if (persistToUrl) {
-      const query = { ...route.query, tab }
-      router.replace({ query }).catch((error) => {
-        console.warn('Failed to update URL with tab:', error)
-      })
+      const targetPath = tab === 'dashboard' ? '/dashboard' : `/dashboard/${tab}`
+      if (route.path !== targetPath) {
+        router.replace(targetPath).catch((error) => {
+          console.warn('Failed to update URL with tab:', error)
+        })
+      }
     }
   }
 

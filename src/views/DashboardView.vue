@@ -2,17 +2,15 @@
   <DashboardLayout
     :active-tab="activeTab"
     :user-role="userRole"
-    :is-loading="isTabLoading"
-    :error="tabError"
     @tab-change="changeTab"
-    @retry="handleRetry"
   >
     <!-- Redirect notifications -->
     <RedirectNotification />
 
     <!-- Profile completion banner -->
     <ProfileCompletionBanner />
-    
+
+    <!-- Route-based Content -->
     <!-- Main Dashboard Tab Content -->
     <div v-if="activeTab === 'dashboard'">
       <Suspense>
@@ -39,7 +37,7 @@
       </Suspense>
     </div>
 
-    <!-- Users Tab Content -->
+    <!-- Organizations Tab Content -->
     <div v-if="activeTab === 'organizations'" class="space-y-6">
       <Suspense>
         <template #default>
@@ -99,7 +97,8 @@
 </template>
 
 <script setup lang="ts">
-import { computed, onMounted, defineAsyncComponent } from 'vue'
+import { computed, defineAsyncComponent } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { Skeleton } from '@/components/ui/skeleton'
 
 // Lazy-loaded components for better performance
@@ -108,50 +107,33 @@ const UserManagementView = defineAsyncComponent(() => import('./admin/UserManage
 const UserProfileView = defineAsyncComponent(() => import('./user/UserProfileView.vue'))
 const DataView = defineAsyncComponent(() => import('./user/DataView.vue'))
 const QuizListView = defineAsyncComponent(() => import('./quiz/QuizListView.vue'))
+const OrganizationManagementView = defineAsyncComponent(() => import('./admin/OrganizationManagementView.vue'))
 
 // Layout and skeleton components
 import DashboardLayout from '@/components/custom/dashboard/DashboardLayout.vue'
 import CardServiceSkeleton from '@/components/custom/skeletons/CardServiceSkeleton.vue'
 import ListUserTableSkeleton from '@/components/custom/skeletons/ListUserTableSkeleton.vue'
 import DataViewTableSkeleton from '@/components/custom/skeletons/DataViewTableSkeleton.vue'
-
-// Stores and composables
-import { useUserStore } from '@/stores/userStores'
-import { useDashboardTabs } from '@/composables/useDashboardTabs'
-import { getUserRole } from '@/lib/dashboard-utils'
-import OrganizationManagementView from './admin/OrganizationManagementView.vue'
 import RedirectNotification from '@/components/custom/notifications/RedirectNotification.vue'
 import ProfileCompletionBanner from '@/components/custom/notifications/ProfileCompletionBanner.vue'
 
-// Initialize store
+// Stores and utilities
+import { useUserStore } from '@/stores/userStores'
+import { getUserRole, getTabFromPath, getPathForTab } from '@/lib/dashboard-utils'
+import type { DashboardTab } from '@/types/dashboard'
+
+// Initialize store and router
 const userStore = useUserStore()
+const route = useRoute()
+const router = useRouter()
 
-// Computed user role
+// Computed values
 const userRole = computed(() => getUserRole(userStore.user))
+const activeTab = computed<DashboardTab>(() => getTabFromPath(route.path))
 
-// Dashboard tabs composable
-const { activeTab, isTabLoading, tabError, changeTab, initializeTabs } = useDashboardTabs({
-  userRole,
-  defaultTab: 'dashboard',
-  persistToUrl: false,
-  persistToStorage: false,
-})
-
-// Error handling
-const handleRetry = async () => {
-  try {
-    await initializeTabs()
-  } catch (error) {
-    console.error('Retry failed:', error)
-  }
+// Navigation handler
+const changeTab = async (tab: DashboardTab) => {
+  const path = getPathForTab(tab)
+  await router.push(path)
 }
-
-// Initialize tabs on mount (auth is handled by router guard)
-onMounted(async () => {
-  try {
-    await initializeTabs()
-  } catch (error) {
-    console.error('Tab initialization failed:', error)
-  }
-})
 </script>

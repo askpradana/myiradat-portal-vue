@@ -86,7 +86,10 @@ const handleTakeQuiz = () => {
           <Clock class="h-4 w-4 flex-shrink-0" />
           <span>{{ quiz.time_limit }} min</span>
         </div>
-        <div class="flex items-center gap-1">
+        <div
+          v-if="quiz.questions && quiz.questions > 0"
+          class="flex items-center gap-1"
+        >
           <FileText class="h-4 w-4 flex-shrink-0" />
           <span>{{ quiz.questions }} questions</span>
         </div>

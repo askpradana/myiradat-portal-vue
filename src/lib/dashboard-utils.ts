@@ -50,7 +50,22 @@ export const getDefaultTabForRole = (userRole: UserRole): DashboardTab => {
 // Get role-appropriate redirect path
 export const getRoleRedirectPath = (userRole: UserRole): string => {
   const defaultTab = getDefaultTabForRole(userRole)
-  return `/dashboard?tab=${defaultTab}`
+  return defaultTab === 'dashboard' ? '/dashboard' : `/dashboard/${defaultTab}`
+}
+
+// Get tab from route path
+export const getTabFromPath = (path: string): DashboardTab => {
+  if (path === '/dashboard') return 'dashboard'
+  if (path.startsWith('/dashboard/')) {
+    const tabSegment = path.split('/dashboard/')[1]?.split('/')[0]
+    return (tabSegment as DashboardTab) || 'dashboard'
+  }
+  return 'dashboard'
+}
+
+// Get route path for tab
+export const getPathForTab = (tab: DashboardTab): string => {
+  return tab === 'dashboard' ? '/dashboard' : `/dashboard/${tab}`
 }
 
 

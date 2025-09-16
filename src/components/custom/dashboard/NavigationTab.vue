@@ -58,7 +58,7 @@
               : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border',
           ]"
         >
-          Assessments
+          Fun Quiz
         </button>
         <button
           v-if="userStore.user?.role_id === 2"

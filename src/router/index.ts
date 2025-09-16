@@ -90,7 +90,20 @@ const guestOnlyRoutes: RouteRecordRaw[] = [
 ]
 
 const protectedRoutes: RouteRecordRaw[] = [
+  // Main dashboard route
   createProtectedRoute('/dashboard', 'dashboard', DashboardView, 'Dashboard'),
+
+  // Clean dashboard tab routes
+  createProtectedRoute('/dashboard/users', 'dashboard-users', DashboardView, 'User Management'),
+  createRoute('/dashboard/organizations', 'dashboard-organizations', DashboardView, 'Organization Management', {
+    requiresAuth: true,
+    requiredRoles: ['admin', 'cs'],
+  }),
+  createProtectedRoute('/dashboard/data', 'dashboard-data', DashboardView, 'Data'),
+  createProtectedRoute('/dashboard/assessments', 'dashboard-assessments', DashboardView, 'Assessments'),
+  createProtectedRoute('/dashboard/profile', 'dashboard-profile', DashboardView, 'Profile'),
+
+  // Admin routes with clean fallback
   createRoute(
     '/dashboard/admin/create-user',
     'create-user-page',
@@ -99,7 +112,7 @@ const protectedRoutes: RouteRecordRaw[] = [
     {
       requiresAuth: true,
       requiredRoles: ['admin'],
-      fallbackRoute: '/dashboard?tab=dashboard',
+      fallbackRoute: '/dashboard',
     },
   ),
   createRoute(
@@ -110,7 +123,7 @@ const protectedRoutes: RouteRecordRaw[] = [
     {
       requiresAuth: true,
       requiredRoles: ['admin'],
-      fallbackRoute: '/dashboard?tab=dashboard',
+      fallbackRoute: '/dashboard',
     },
   ),
   createProtectedRoute(
@@ -127,7 +140,7 @@ const protectedRoutes: RouteRecordRaw[] = [
     {
       requiresAuth: true,
       requiredRoles: ['admin'],
-      fallbackRoute: '/dashboard?tab=dashboard',
+      fallbackRoute: '/dashboard',
     },
   ),
   createRoute(
@@ -138,7 +151,7 @@ const protectedRoutes: RouteRecordRaw[] = [
     {
       requiresAuth: true,
       requiredRoles: ['admin'],
-      fallbackRoute: '/dashboard?tab=dashboard',
+      fallbackRoute: '/dashboard',
     },
   ),
   createRoute(
@@ -149,7 +162,7 @@ const protectedRoutes: RouteRecordRaw[] = [
     {
       requiresAuth: true,
       requiredRoles: ['admin'],
-      fallbackRoute: '/dashboard?tab=dashboard',
+      fallbackRoute: '/dashboard',
     },
   ),
   createRoute(
@@ -160,13 +173,14 @@ const protectedRoutes: RouteRecordRaw[] = [
     {
       requiresAuth: true,
       requiredRoles: ['admin'],
-      fallbackRoute: '/dashboard?tab=dashboard',
+      fallbackRoute: '/dashboard',
     },
   ),
-  // Quiz Routes - redirect to dashboard assessments tab for the list
+
+  // Quiz Routes - redirect to clean assessments route
   {
     path: '/quiz',
-    redirect: '/dashboard',
+    redirect: '/dashboard/assessments',
   },
   createProtectedRoute('/quiz/:id', 'quiz-taking', QuizTakingView, 'Take Quiz'),
   createProtectedRoute('/quiz/:id/results', 'quiz-result', QuizResultView, 'Quiz Results'),
@@ -262,19 +276,19 @@ router.beforeEach(async (to, from, next) => {
   }
 
   // Handle dashboard tab accessibility for authenticated users
-  if (isAuthenticated && to.path === '/dashboard' && to.query.tab) {
+  if (isAuthenticated && to.path.startsWith('/dashboard/') && to.path !== '/dashboard') {
     const userRole = getUserRole(userStore.user)
-    const requestedTab = to.query.tab as string
+    const requestedTab = to.path.split('/dashboard/')[1].split('/')[0] as DashboardTab
 
-    if (!isTabAccessible(requestedTab as DashboardTab, userRole)) {
-      // Tab not accessible, redirect to default tab for role
+    if (!isTabAccessible(requestedTab, userRole)) {
+      // Tab not accessible, redirect to default path for role
       const defaultPath = getRoleRedirectPath(userRole)
       next({
         path: defaultPath,
         query: {
           tabRedirect: 'true',
           originalTab: requestedTab,
-          message: `${requestedTab.charAt(0).toUpperCase() + requestedTab.slice(1)} tab is not available for your account type`,
+          message: `${requestedTab.charAt(0).toUpperCase() + requestedTab.slice(1)} section is not available for your account type`,
         },
       })
       return

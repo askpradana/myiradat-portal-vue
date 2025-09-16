@@ -8,7 +8,7 @@ export interface Quiz {
   description: string
   time_limit: number // in minutes
   quiz_type: QuizType
-  questions: number
+  questions?: number | null
   is_completed?: boolean
   completed_at?: string | null
 }
