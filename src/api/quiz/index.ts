@@ -207,7 +207,7 @@ export class QuizService {
     }
 
     try {
-      const response = await fetch(`${this.API_URL}/quiz/${quizId}`, {
+      const response = await fetch(`${this.API_URL}/quiz/submission/${quizId}`, {
         method: 'GET',
         headers: this.getAuthHeaders(),
       })
