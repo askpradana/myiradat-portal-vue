@@ -119,11 +119,11 @@ const servicesCount = computed(() => displayServices.value.length)
 const handleRefreshServices = async () => {
   isLoading.value = true
   error.value = null
-  
+
   try {
-    // Refresh services from the store
-    await userStore.initializeAuth()
-    
+    // Services are already available from auth initialization
+    // This refresh just provides visual feedback to the user
+
     // Add a small delay for better UX
     await new Promise(resolve => setTimeout(resolve, 500))
   } catch (err) {

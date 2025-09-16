@@ -140,19 +140,18 @@ const { activeTab, isTabLoading, tabError, changeTab, initializeTabs } = useDash
 // Error handling
 const handleRetry = async () => {
   try {
-    await userStore.initializeAuth()
     await initializeTabs()
   } catch (error) {
     console.error('Retry failed:', error)
   }
 }
 
-// Initialize authentication and tabs on mount
+// Initialize tabs on mount (auth is handled by router guard)
 onMounted(async () => {
   try {
-    await userStore.initializeAuth()
+    await initializeTabs()
   } catch (error) {
-    console.error('Authentication initialization failed:', error)
+    console.error('Tab initialization failed:', error)
   }
 })
 </script>

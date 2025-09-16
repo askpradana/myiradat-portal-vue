@@ -22,7 +22,7 @@ const { value: email } = useField<string>('email')
 const { value: company } = useField<string>('company')
 const { value: message } = useField<string>('message')
 
-const onSubmit = handleSubmit(async (values) => {
+const onSubmit = handleSubmit(async () => {
   loading.value = true
   
   // Simulate API call

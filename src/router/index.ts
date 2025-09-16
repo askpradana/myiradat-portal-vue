@@ -190,8 +190,8 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
 
-  // Always initialize authentication state to ensure fresh validation
-  userStore.initializeAuth()
+  // Initialize authentication state and wait for completion
+  const authStateValid = await userStore.initializeAuth()
 
   // Double-check token validity after initialization
   const isTokenValid = userStore.isAuthenticated && userStore.isTokenValid()
@@ -205,7 +205,7 @@ router.beforeEach(async (to, from, next) => {
   const requiresGuest = to.meta.requiresGuest
   const requiredRoles = to.meta.requiredRoles
   const fallbackRoute = to.meta.fallbackRoute
-  const isAuthenticated = userStore.isAuthenticated && isTokenValid
+  const isAuthenticated = authStateValid && isTokenValid
 
   // Validate redirect URL to prevent open redirects
   const validateRedirectUrl = (url: string): boolean => {

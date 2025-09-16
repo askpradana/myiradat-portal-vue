@@ -2,7 +2,6 @@
 import { Card, CardTitle, CardDescription, CardHeader, CardContent } from '../components/ui/card'
 import { Badge } from '../components/ui/badge'
 import { caseStudiesData } from '@/data/caseStudiesData'
-import type { CaseStudy } from '@/types/caseStudies'
 import { Clock, ArrowUpRight, Quote } from 'lucide-vue-next'
 
 const featuredCaseStudy = caseStudiesData[0]
