@@ -16,6 +16,7 @@ import { useMutation } from '@tanstack/vue-query'
 import { ResetPasswordByAdminFormSchema } from '@/lib/zod-schemas/resetPasswordFormSchema'
 import { useForm, useField } from 'vee-validate'
 import { resetPasswordByAdmin } from '@/api/auth/resetPasswordByAdmin'
+import { useMultiplePasswordVisibility } from '@/composables/utils/usePasswordVisibility'
 
 const { userID, userName } = defineProps<{
   userID: string
@@ -31,16 +32,10 @@ const { value: newPassword } = useField<string>('newPassword')
 const { value: confirmPassword } = useField<string>('confirmPassword')
 
 const open = ref(false)
-const isShowNewPassword = ref(false)
-const isShowConfirmPassword = ref(false)
+const { isVisible, toggle } = useMultiplePasswordVisibility()
 
-const showNewPassword = () => {
-  isShowNewPassword.value = !isShowNewPassword.value
-}
-
-const showConfirmPassword = () => {
-  isShowConfirmPassword.value = !isShowConfirmPassword.value
-}
+const showNewPassword = () => toggle('newPassword')
+const showConfirmPassword = () => toggle('confirmPassword')
 
 const { mutate, isPending } = useMutation({
   mutationFn: ({ userID, newPassword }: { userID: string; newPassword: string }) =>
@@ -99,7 +94,7 @@ const onCancelAction = () => {
             <div class="relative">
               <Input
                 id="newPassword"
-                :type="isShowNewPassword ? 'text' : 'password'"
+                :type="isVisible('newPassword') ? 'text' : 'password'"
                 placeholder="Enter your new password"
                 class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
                 required
@@ -109,7 +104,7 @@ const onCancelAction = () => {
                 :size="18"
                 class="absolute right-3 top-3 text-slate-400 dark:text-purple-500"
                 @click="showNewPassword"
-                v-if="isShowNewPassword"
+                v-if="isVisible('newPassword')"
               />
               <EyeClosed
                 :size="18"
@@ -128,7 +123,7 @@ const onCancelAction = () => {
             <div class="relative">
               <Input
                 id="confirmPassword"
-                :type="isShowConfirmPassword ? 'text' : 'password'"
+                :type="isVisible('confirmPassword') ? 'text' : 'password'"
                 placeholder="Enter new password"
                 class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
                 required
@@ -138,7 +133,7 @@ const onCancelAction = () => {
                 :size="18"
                 class="absolute right-3 top-3 text-slate-400 dark:text-purple-500"
                 @click="showConfirmPassword"
-                v-if="isShowConfirmPassword"
+                v-if="isVisible('confirmPassword')"
               />
               <EyeClosed
                 :size="18"

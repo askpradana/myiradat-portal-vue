@@ -35,7 +35,6 @@ export const getListUser = async (
     const userStore = useUserStore()
     const token = userStore.auth?.token
 
-    console.log('search_query', search_query)
 
     // Periksa apakah token ada
     if (!token) {
@@ -88,7 +87,6 @@ export const getListUser = async (
       queryParams.append('order_direction', order_direction)
     }
 
-    console.log('API Query Params:', queryParams.toString())
 
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}/admin/users?${queryParams.toString()}`,
@@ -136,7 +134,6 @@ export const getListUser = async (
     }
 
     const data = await response.json()
-    console.log('API Response:', data)
 
     return data.data
   } catch (error) {

@@ -77,7 +77,6 @@ export class QuizService {
               throw new Error('Session expired, please login again')
             }
           } catch (error) {
-            console.error('Token refresh error:', error)
             throw error
           }
         } else {
@@ -93,7 +92,6 @@ export class QuizService {
 
       return data
     } catch (error) {
-      console.error('Error fetching available quizzes:', error)
       throw error
     }
   }
@@ -132,7 +130,6 @@ export class QuizService {
               throw new Error('Session expired, please login again')
             }
           } catch (error) {
-            console.error('Token refresh error:', error)
             throw error
           }
         } else {
@@ -142,7 +139,6 @@ export class QuizService {
 
       return await response.json()
     } catch (error) {
-      console.error('Error fetching quiz detail:', error)
       throw error
     }
   }
@@ -177,7 +173,6 @@ export class QuizService {
               throw new Error('Session expired, please login again')
             }
           } catch (error) {
-            console.error('Token refresh error:', error)
             throw error
           }
         } else {
@@ -193,7 +188,6 @@ export class QuizService {
 
       return data
     } catch (error) {
-      console.error('Error fetching quiz submissions:', error)
       throw error
     }
   }
@@ -232,7 +226,6 @@ export class QuizService {
               throw new Error('Session expired, please login again')
             }
           } catch (error) {
-            console.error('Token refresh error:', error)
             throw error
           }
         } else {
@@ -248,7 +241,6 @@ export class QuizService {
 
       return data
     } catch (error) {
-      console.error('Error fetching quiz result:', error)
       throw error
     }
   }
@@ -288,7 +280,6 @@ export class QuizService {
               throw new Error('Session expired, please login again')
             }
           } catch (error) {
-            console.error('Token refresh error:', error)
             throw error
           }
         } else {
@@ -304,7 +295,6 @@ export class QuizService {
 
       return data
     } catch (error) {
-      console.error('Error submitting quiz:', error)
       throw error
     }
   }
@@ -343,7 +333,6 @@ export class QuizService {
               throw new Error('Session expired, please login again')
             }
           } catch (error) {
-            console.error('Token refresh error:', error)
             throw error
           }
         } else {
@@ -359,7 +348,6 @@ export class QuizService {
 
       return data
     } catch (error) {
-      console.error('Error checking quiz submission:', error)
       throw error
     }
   }
