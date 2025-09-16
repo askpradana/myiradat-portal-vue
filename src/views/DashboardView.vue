@@ -9,6 +9,9 @@
   >
     <!-- Redirect notifications -->
     <RedirectNotification />
+
+    <!-- Profile completion banner -->
+    <ProfileCompletionBanner />
     
     <!-- Main Dashboard Tab Content -->
     <div v-if="activeTab === 'dashboard'">
@@ -60,6 +63,24 @@
       </Suspense>
     </div>
 
+    <!-- Assessments Tab Content -->
+    <div v-if="activeTab === 'assessments'" class="max-w-7xl mx-auto">
+      <Suspense>
+        <template #default>
+          <QuizListView />
+        </template>
+        <template #fallback>
+          <div class="space-y-6">
+            <Skeleton class="h-32 w-full" />
+            <Skeleton class="h-48 w-full" />
+            <div class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+              <Skeleton class="h-64 w-full" v-for="n in 6" :key="n" />
+            </div>
+          </div>
+        </template>
+      </Suspense>
+    </div>
+
     <!-- Profile Tab Content -->
     <div v-if="activeTab === 'profile'" class="max-w-4xl mx-auto">
       <Suspense>
@@ -86,6 +107,7 @@ const DashboardMainView = defineAsyncComponent(() => import('./DashboardMainView
 const UserManagementView = defineAsyncComponent(() => import('./admin/UserManagementView.vue'))
 const UserProfileView = defineAsyncComponent(() => import('./user/UserProfileView.vue'))
 const DataView = defineAsyncComponent(() => import('./user/DataView.vue'))
+const QuizListView = defineAsyncComponent(() => import('./quiz/QuizListView.vue'))
 
 // Layout and skeleton components
 import DashboardLayout from '@/components/custom/dashboard/DashboardLayout.vue'
@@ -99,6 +121,7 @@ import { useDashboardTabs } from '@/composables/useDashboardTabs'
 import { getUserRole } from '@/lib/dashboard-utils'
 import OrganizationManagementView from './admin/OrganizationManagementView.vue'
 import RedirectNotification from '@/components/custom/notifications/RedirectNotification.vue'
+import ProfileCompletionBanner from '@/components/custom/notifications/ProfileCompletionBanner.vue'
 
 // Initialize store
 const userStore = useUserStore()
@@ -110,8 +133,8 @@ const userRole = computed(() => getUserRole(userStore.user))
 const { activeTab, isTabLoading, tabError, changeTab, initializeTabs } = useDashboardTabs({
   userRole,
   defaultTab: 'dashboard',
-  persistToUrl: true,
-  persistToStorage: true,
+  persistToUrl: false,
+  persistToStorage: false,
 })
 
 // Error handling

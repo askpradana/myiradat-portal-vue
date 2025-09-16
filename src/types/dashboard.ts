@@ -1,7 +1,7 @@
 import type { ServiceInterface } from './serviceType'
 
 // Dashboard tab types
-export type DashboardTab = 'dashboard' | 'users' | 'data' | 'profile' | 'organizations'
+export type DashboardTab = 'dashboard' | 'users' | 'data' | 'profile' | 'organizations' | 'assessments'
 
 // User role types
 export type UserRole = 'admin' | 'user' | 'cs'
@@ -43,6 +43,7 @@ export const DEFAULT_TAB_CONFIG: TabConfig[] = [
   { id: 'dashboard', label: 'Dashboard', requiresAdmin: false },
   { id: 'users', label: 'User Management', requiresAdmin: true },
   { id: 'data', label: 'Data', requiresAdmin: false },
+  { id: 'assessments', label: 'Assessments', requiresAdmin: false },
   { id: 'profile', label: 'Profile', requiresAdmin: false },
 ]
 

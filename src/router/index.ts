@@ -12,6 +12,8 @@ import EditOrganizationView from '@/views/admin/EditOrganizationView.vue'
 import ForgotPasswordUserView from '@/views/auth/ForgotPasswordUserView.vue'
 import NotFoundView from '@/views/errors/NotFoundView.vue'
 import ProfileUserDetailView from '@/views/admin/ProfileUserDetailView.vue'
+import QuizTakingView from '@/views/quiz/QuizTakingView.vue'
+import QuizResultView from '@/views/quiz/QuizResultView.vue'
 import { useUserStore } from '@/stores/userStores'
 import { getUserRole, getRoleRedirectPath, isTabAccessible } from '@/lib/dashboard-utils'
 import type { DashboardTab } from '@/types/dashboard'
@@ -161,6 +163,13 @@ const protectedRoutes: RouteRecordRaw[] = [
       fallbackRoute: '/dashboard?tab=dashboard',
     },
   ),
+  // Quiz Routes - redirect to dashboard assessments tab for the list
+  {
+    path: '/quiz',
+    redirect: '/dashboard',
+  },
+  createProtectedRoute('/quiz/:id', 'quiz-taking', QuizTakingView, 'Take Quiz'),
+  createProtectedRoute('/quiz/:id/results', 'quiz-result', QuizResultView, 'Quiz Results'),
 ]
 
 const router = createRouter({

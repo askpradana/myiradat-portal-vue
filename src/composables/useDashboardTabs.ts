@@ -66,6 +66,12 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
       icon: 'Database',
       requiresAdmin: false,
     },
+    assessments: {
+      id: 'assessments',
+      label: 'Assessments',
+      icon: 'FileText',
+      requiresAdmin: false,
+    },
     profile: {
       id: 'profile',
       label: 'Profile',
