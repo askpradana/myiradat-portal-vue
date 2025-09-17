@@ -131,7 +131,7 @@ import {
   PaginationNext,
   PaginationPrevious,
 } from '@/components/ui/pagination'
-import ListUserTableSkeleton from '../skeletons/ListUserTableSkeleton.vue'
+import ListUserTableSkeleton from '@/components/custom/skeletons/ListUserTableSkeleton.vue'
 import { useQuery } from '@tanstack/vue-query'
 import { formatDate } from '@/lib/dateFromate'
 import { getInitialName } from '@/lib/getInitialName'

@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-import DashboardLayout from '../layouts/DashboardLayout.vue'
+import DashboardLayout from '@/views/layouts/DashboardLayout.vue'
 import EditOrganizationForm from '@/components/custom/custom-form/EditOrganizationForm.vue'
 import BackToDashboardButton from '@/components/custom/buttons/BackToDashboardButton.vue'
 </script>

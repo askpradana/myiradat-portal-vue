@@ -3,7 +3,7 @@ export const description = 'A modern and beautiful login form with enhanced styl
 </script>
 
 <script setup lang="ts">
-import RegisterForm from '../../components/custom/custom-form/RegisterForm.vue'
+import RegisterForm from '@/components/custom/custom-form/RegisterForm.vue'
 </script>
 
 <template>

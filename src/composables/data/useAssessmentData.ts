@@ -70,7 +70,7 @@ export function useAssessmentData(): UseAssessmentDataReturn {
         }
 
         return processAssessmentData(response.user)
-      } catch (error) {
+      } catch (error) {  
         handleError(error, 'Failed to fetch assessment data')
         throw error
       }
@@ -115,7 +115,7 @@ export function useAssessmentData(): UseAssessmentDataReturn {
     if (typeof data === 'string') {
       try {
         return JSON.parse(data) as T
-      } catch {
+      } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
         return null
       }
     }
@@ -254,7 +254,7 @@ export function useAssessmentData(): UseAssessmentDataReturn {
         hour: '2-digit',
         minute: '2-digit'
       })
-    } catch {
+    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
       return date
     }
   }

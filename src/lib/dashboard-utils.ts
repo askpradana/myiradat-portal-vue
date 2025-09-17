@@ -50,7 +50,22 @@ export const getDefaultTabForRole = (userRole: UserRole): DashboardTab => {
 // Get role-appropriate redirect path
 export const getRoleRedirectPath = (userRole: UserRole): string => {
   const defaultTab = getDefaultTabForRole(userRole)
-  return `/dashboard?tab=${defaultTab}`
+  return defaultTab === 'dashboard' ? '/dashboard' : `/dashboard/${defaultTab}`
+}
+
+// Get tab from route path
+export const getTabFromPath = (path: string): DashboardTab => {
+  if (path === '/dashboard') return 'dashboard'
+  if (path.startsWith('/dashboard/')) {
+    const tabSegment = path.split('/dashboard/')[1]?.split('/')[0]
+    return (tabSegment as DashboardTab) || 'dashboard'
+  }
+  return 'dashboard'
+}
+
+// Get route path for tab
+export const getPathForTab = (tab: DashboardTab): string => {
+  return tab === 'dashboard' ? '/dashboard' : `/dashboard/${tab}`
 }
 
 
@@ -59,7 +74,7 @@ export const isValidUrl = (url: string): boolean => {
   try {
     new URL(url)
     return true
-  } catch {
+  } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
     return false
   }
 }
@@ -70,7 +85,7 @@ export const isExternalUrl = (url: string): boolean => {
   try {
     const urlObj = new URL(url)
     return urlObj.origin !== window.location.origin
-  } catch {
+  } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
     return false
   }
 }

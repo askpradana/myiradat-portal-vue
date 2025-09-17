@@ -25,9 +25,9 @@ const props = defineProps<Props>()
 const parsedRecommendations = computed(() => {
   if (!props.recommendations) return []
 
-  // Split by common delimiters and clean up
+  // Split only by line breaks and clean up
   const items = props.recommendations
-    .split(/[.;•\n]/)
+    .split(/\n/)
     .map((item) => item.trim())
     .filter((item) => item.length > 0)
     .slice(0, 6) // Limit to 6 recommendations

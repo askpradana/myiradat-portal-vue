@@ -164,7 +164,7 @@ export const useAdminServices = (userId: string) => {
       toast('Copied', {
         description: 'Service code copied to clipboard',
       })
-    } catch {
+    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
       toast('Failed to copy', {
         description: 'Could not copy service code',
       })

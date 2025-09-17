@@ -87,7 +87,7 @@ import { Button } from '@/components/ui/button'
 import { useQuery } from '@tanstack/vue-query'
 
 // import ProfileHeader from '@/components/profile/ProfileHeader.vue'
-import DashboardLayout from '../layouts/DashboardLayout.vue'
+import DashboardLayout from '@/views/layouts/DashboardLayout.vue'
 import ProfileUserForm from '@/components/custom/custom-form/ProfileUserForm.vue'
 import { getProfileByID } from '@/api/users/getUserProfileById'
 import ProfileHeaderAdmin from '@/components/profile/ProfileHeaderAdmin.vue'

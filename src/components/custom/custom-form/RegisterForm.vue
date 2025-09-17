@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Button from '../../ui/button/Button.vue'
-import Input from '../../ui/input/Input.vue'
-import Label from '../../ui/label/Label.vue'
-import { Card, CardTitle, CardDescription, CardHeader, CardContent } from '../../ui/card'
+import Button from '@/components/ui/button/Button.vue'
+import Input from '@/components/ui/input/Input.vue'
+import Label from '@/components/ui/label/Label.vue'
+import { Card, CardTitle, CardDescription, CardHeader, CardContent } from '@/components/ui/card'
 import { useField, useForm } from 'vee-validate'
 import { registerNewUser } from '@/api/register'
 import { toast } from 'vue-sonner'

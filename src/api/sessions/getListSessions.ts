@@ -1,5 +1,5 @@
 import { useUserStore } from '@/stores/userStores'
-import { refreshToken } from '../refreshToken'
+import { refreshToken } from '@/api/refreshToken'
 import type { SessionsDataFromAPIInterface } from '@/types/sessionsType'
 
 interface ResponseDataGETSessionFromAPI {
@@ -50,8 +50,7 @@ export const getListSession = async (): Promise<ResponseDataGETSessionFromAPI> =
           } else {
             throw new Error(errorMessage || 'The session has ended, please login again')
           }
-        } catch (error) {
-          console.error('Token refresh error:', error)
+        } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
           throw new Error(errorMessage || 'Failed to update the token')
         }
       } else if (response.status === 400) {
@@ -62,11 +61,9 @@ export const getListSession = async (): Promise<ResponseDataGETSessionFromAPI> =
     }
 
     const data = await response.json()
-    console.log('API Response get Session:', data)
 
     return data.data
-  } catch (error) {
-    console.error('Error fetching sessions:', error)
+  } catch (error) {  
     throw error
   }
 }

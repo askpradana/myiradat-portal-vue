@@ -28,8 +28,7 @@ export function useQuizSubmissionCheck() {
       }
 
       return null
-    } catch (error) {
-      console.error('Failed to check quiz submission status:', error)
+    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
       return null
     } finally {
       isCheckingSubmission.value[quizId] = false

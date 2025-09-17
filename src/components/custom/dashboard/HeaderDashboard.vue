@@ -11,6 +11,7 @@
 
         <!-- Right: Actions -->
         <div class="flex items-center gap-2">
+          <RefreshProfileButton />
           <ThemeToggle />
           <LogoutAlert />
 
@@ -22,7 +23,8 @@
 
 <script setup lang="ts">
 import ThemeToggle from '@/components/ThemeToggle.vue'
-import LogoutAlert from '../alerts/LogoutAlert.vue'
+import LogoutAlert from '@/components/custom/alerts/LogoutAlert.vue'
+import RefreshProfileButton from '@/components/custom/buttons/RefreshProfileButton.vue'
 
 import type { UserRole } from '@/types/dashboard'
 

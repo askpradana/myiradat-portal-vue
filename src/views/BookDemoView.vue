@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Button from '../components/ui/button/Button.vue'
-import Input from '../components/ui/input/Input.vue'
-import Label from '../components/ui/label/Label.vue'
-import Textarea from '../components/ui/textarea/Textarea.vue'
-import { Card, CardTitle, CardDescription, CardHeader, CardContent } from '../components/ui/card'
+import Button from '@/components/ui/button/Button.vue'
+import Input from '@/components/ui/input/Input.vue'
+import Label from '@/components/ui/label/Label.vue'
+import Textarea from '@/components/ui/textarea/Textarea.vue'
+import { Card, CardTitle, CardDescription, CardHeader, CardContent } from '@/components/ui/card'
 import { useField, useForm } from 'vee-validate'
 import { bookDemoValidationSchema } from '@/lib/zod-schemas/bookDemoFormSchema'
 import { ref } from 'vue'
@@ -22,7 +22,7 @@ const { value: email } = useField<string>('email')
 const { value: company } = useField<string>('company')
 const { value: message } = useField<string>('message')
 
-const onSubmit = handleSubmit(async (values) => {
+const onSubmit = handleSubmit(async () => {
   loading.value = true
   
   // Simulate API call

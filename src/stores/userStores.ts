@@ -42,6 +42,8 @@ export const useUserStore = defineStore('user', () => {
   const services = ref<Service[] | null>(null)
   const isAuthenticated = ref<boolean>(false)
   const tempVerificationToken = ref<string | null>(null)
+  const isInitializing = ref<boolean>(false)
+  const isInitialized = ref<boolean>(false)
 
   // Actions
   const setUserData = (authData: {
@@ -53,8 +55,9 @@ export const useUserStore = defineStore('user', () => {
     user.value = authData.user
     services.value = authData.services
     isAuthenticated.value = true
+    isInitialized.value = true
 
-    // Optionally store token in localStorage for persistence
+    // Store in sessionStorage for session-based persistence (security best practice)
     sessionStorage.setItem('auth_token', JSON.stringify(authData.auth))
     sessionStorage.setItem('data_user', JSON.stringify(authData.user))
     sessionStorage.setItem('data_services', JSON.stringify(authData.services))
@@ -92,6 +95,7 @@ export const useUserStore = defineStore('user', () => {
     services.value = null
     isAuthenticated.value = false
     tempVerificationToken.value = null
+    isInitialized.value = false
 
     sessionStorage.removeItem('auth_token')
     sessionStorage.removeItem('data_user')
@@ -106,39 +110,67 @@ export const useUserStore = defineStore('user', () => {
     return now < expiresAt
   }
 
-  const initializeAuth = () => {
-    const storedToken = sessionStorage.getItem('auth_token')
-    const storedUser = sessionStorage.getItem('data_user')
-    const storedServices = sessionStorage.getItem('data_services')
-    const storedTempToken = sessionStorage.getItem('temp_verification_token')
-
-    // Restore temporary verification token if it exists
-    if (storedTempToken) {
-      tempVerificationToken.value = storedTempToken
+  const initializeAuth = async (): Promise<boolean> => {
+    // Prevent multiple simultaneous initializations
+    if (isInitializing.value) {
+      // Wait for current initialization to complete
+      return new Promise((resolve) => {
+        const checkInitialized = () => {
+          if (!isInitializing.value) {
+            resolve(isAuthenticated.value)
+          } else {
+            setTimeout(checkInitialized, 50)
+          }
+        }
+        checkInitialized()
+      })
     }
 
-    if (storedToken && storedUser) {
-      try {
-        const tokenData = JSON.parse(storedToken)
-        const now = new Date().getTime()
-        const expiresAt = new Date(tokenData.expires_at).getTime()
+    // Already initialized, return current auth state
+    if (isInitialized.value) {
+      return isAuthenticated.value
+    }
 
-        // Check if token is still valid
-        if (now < expiresAt) {
-          auth.value = tokenData
-          user.value = JSON.parse(storedUser)
-          services.value = storedServices ? JSON.parse(storedServices) : null
-          isAuthenticated.value = true
-        } else {
-          // Token expired, clear all data
+    isInitializing.value = true
+
+    try {
+      const storedToken = sessionStorage.getItem('auth_token')
+      const storedUser = sessionStorage.getItem('data_user')
+      const storedServices = sessionStorage.getItem('data_services')
+      const storedTempToken = sessionStorage.getItem('temp_verification_token')
+
+      // Restore temporary verification token if it exists
+      if (storedTempToken) {
+        tempVerificationToken.value = storedTempToken
+      }
+
+      if (storedToken && storedUser) {
+        try {
+          const tokenData = JSON.parse(storedToken)
+          const now = new Date().getTime()
+          const expiresAt = new Date(tokenData.expires_at).getTime()
+
+          // Check if token is still valid
+          if (now < expiresAt) {
+            auth.value = tokenData
+            user.value = JSON.parse(storedUser)
+            services.value = storedServices ? JSON.parse(storedServices) : null
+            isAuthenticated.value = true
+          } else {
+            // Token expired, clear all data
+            clearUserData()
+          }
+        } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
+          // Invalid token data, clear everything
           clearUserData()
         }
-      } catch {
-        // Invalid token data, clear everything
-        console.warn('Invalid token data found, clearing authentication state')
-        clearUserData()
       }
+    } finally {
+      isInitialized.value = true
+      isInitializing.value = false
     }
+
+    return isAuthenticated.value
   }
 
   return {
@@ -147,6 +179,8 @@ export const useUserStore = defineStore('user', () => {
     services,
     isAuthenticated,
     tempVerificationToken,
+    isInitializing,
+    isInitialized,
     setUserData,
     setUserProfileData,
     setTempVerificationToken,

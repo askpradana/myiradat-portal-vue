@@ -1,40 +1,10 @@
 import { toast } from 'vue-sonner'
 import type { LoginResponse } from '@/types/emailVerification'
+import { extractUserIdFromToken, extractEmailFromToken } from '@/lib/utils/tokenUtils'
 
 interface UserDataInterface {
   email: string
   password: string
-}
-
-// Utility functions to extract data from JWT token
-const extractUserIdFromToken = (token: string): string => {
-  try {
-    const base64Url = token.split('.')[1]
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map((c) => {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-    }).join(''))
-    const payload = JSON.parse(jsonPayload)
-    return payload.user_id || payload.sub || ''
-  } catch (error) {
-    console.warn('Could not extract user_id from token:', error)
-    return ''
-  }
-}
-
-const extractEmailFromToken = (token: string): string => {
-  try {
-    const base64Url = token.split('.')[1]
-    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/')
-    const jsonPayload = decodeURIComponent(atob(base64).split('').map((c) => {
-      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2)
-    }).join(''))
-    const payload = JSON.parse(jsonPayload)
-    return payload.email || ''
-  } catch (error) {
-    console.warn('Could not extract email from token:', error)
-    return ''
-  }
 }
 
 export const login = async (userData: UserDataInterface): Promise<LoginResponse | undefined> => {
@@ -58,7 +28,6 @@ export const login = async (userData: UserDataInterface): Promise<LoginResponse 
     }
 
     const data = await response.json()
-    console.log(data)
 
     // Check if email verification is required (when user is null but success is true)
     if (data.success && data.data?.user === null && data.data?.token) {
@@ -77,8 +46,7 @@ export const login = async (userData: UserDataInterface): Promise<LoginResponse 
     }
 
     return data
-  } catch (error) {
-    console.error('Error:', error)
+  } catch (error) {  
     toast('Error', {
       description: `${error}`,
     })

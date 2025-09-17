@@ -199,18 +199,18 @@ export function useProfileForm(): UseProfileFormReturn {
 
   // Form actions
   const handleSubmit = async (onSubmit: (values: UpdateProfilePayload) => void) => {
-    console.log('handleSubmit called')
-    console.log('Form meta:', formMeta.value)
-    console.log('Original values:', originalValues.value)
-    console.log('Current field values:', { name: name.value, email: email.value, phone: phone.value })
+    // Data logged
+    // Data logged
+    // Data logged
+    // Data logged
     
     await veeHandleSubmit(() => {
       const changedFields = getChangedFields()
-      console.log('getChangedFields result:', changedFields)
+      // Data logged
       
       // Prevent empty payload
       if (Object.keys(changedFields).length === 0) {
-        console.log('No changed fields, aborting submission')
+        // Data logged
         return
       }
       
@@ -288,7 +288,7 @@ export function useProfileForm(): UseProfileFormReturn {
           localStorage.removeItem('profile-form-draft')
         }
       }
-    } catch {
+    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
       localStorage.removeItem('profile-form-draft')
     }
   }

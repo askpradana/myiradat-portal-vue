@@ -25,7 +25,7 @@ export interface FeatureCard {
   content?: {
     type: 'chart' | 'image' | 'video' | 'demo' | 'metrics' | 'animation'
     url?: string
-    data?: unknown
+    data?: string[] | Record<string, unknown> | number[]
     animation?: AnimationData
     metrics?: MetricData[]
   }

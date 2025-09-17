@@ -37,7 +37,7 @@ export function useAvatar(
       }
 
       avatarUrl.value = url
-    } catch (err) {
+    } catch (err) {  
       error.value = err instanceof Error ? err.message : 'Failed to load avatar'
       avatarUrl.value = fallbackUrl
     } finally {

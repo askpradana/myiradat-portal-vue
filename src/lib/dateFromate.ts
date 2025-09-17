@@ -22,7 +22,7 @@ export const formatLastUpdated = (date: string): string => {
       month: 'short',
       day: 'numeric',
     })
-  } catch {
+  } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
     return 'Unknown'
   }
 }

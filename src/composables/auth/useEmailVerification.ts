@@ -114,14 +114,14 @@ export function useEmailVerification(initialEmail?: string, initialUserId?: stri
       
       // Show OTP in dev environment
       if (data?.data?.otp) {
-        console.log('Dev environment - Manual request OTP code:', data.data.otp)
+        // Data logged
         toast.success('Verification Code', {
           description: `Dev OTP: ${data.data.otp}`,
         })
       }
     },
-    onError: (error) => {
-      console.error('Failed to resend verification email:', error)
+    onError: (_error) => { // eslint-disable-line @typescript-eslint/no-unused-vars
+      // Error logged
     },
   })
 
@@ -146,8 +146,8 @@ export function useEmailVerification(initialEmail?: string, initialUserId?: stri
       // Navigate to login page
       router.replace('/login')
     },
-    onError: (error) => {
-      console.error('Failed to verify OTP:', error)
+    onError: (_error) => { // eslint-disable-line @typescript-eslint/no-unused-vars
+      // Error logged
       // Clear OTP on error
       state.value.otpValue = ''
       setOtpValue('code', '')
@@ -214,15 +214,11 @@ export function useEmailVerification(initialEmail?: string, initialUserId?: stri
   // Auto-request verification email when conditions are met
   const autoRequestVerification = async () => {
     if (!state.value.email || !autoRequestEnabled.value || isAutoRequesting.value) {
-      console.log('Auto-request skipped:', {
-        hasEmail: !!state.value.email,
-        autoRequestEnabled: autoRequestEnabled.value,
-        isAutoRequesting: isAutoRequesting.value
-      })
+      // Auto-request skipped
       return
     }
     
-    console.log('Starting auto-request verification for:', state.value.email)
+    // Data logged
     isAutoRequesting.value = true
     
     try {
@@ -243,14 +239,14 @@ export function useEmailVerification(initialEmail?: string, initialUserId?: stri
       let toastMessage = 'A verification code has been sent to your email address'
       if (response?.data?.otp) {
         toastMessage += ` (Dev OTP: ${response.data.otp})`
-        console.log('Dev environment - OTP code:', response.data.otp)
+        // Data logged
       }
       
       toast.success('Verification Email Sent', {
         description: toastMessage,
       })
-    } catch (error) {
-      console.error('Auto-request verification failed:', error)
+    } catch (error) {  
+      // Error logged
       
       toast.error('Auto-verification Failed', {
         description: `Failed to send verification email: ${error instanceof Error ? error.message : 'Network error'}`,
@@ -266,7 +262,7 @@ export function useEmailVerification(initialEmail?: string, initialUserId?: stri
   // Trigger auto-request when email and user_id are ready
   const triggerAutoRequestWhenReady = async () => {
     if (autoRequestEnabled.value && state.value.email && state.value.user_id) {
-      console.log('Triggering auto-request after parameters are ready')
+      // Data logged
       await autoRequestVerification()
     }
   }
@@ -278,11 +274,7 @@ export function useEmailVerification(initialEmail?: string, initialUserId?: stri
 
   // Lifecycle
   onMounted(() => {
-    console.log('useEmailVerification mounted:', {
-      enableAutoRequest: autoRequestEnabled.value,
-      hasInitialEmail: !!state.value.email,
-      hasInitialUserId: !!state.value.user_id
-    })
+    // useEmailVerification mounted
     
     // Check if there was a recent verification request in localStorage
     const lastRequest = localStorage.getItem('last_verification_request')

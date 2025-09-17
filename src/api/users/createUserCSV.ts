@@ -1,5 +1,5 @@
 import { useUserStore } from '@/stores/userStores'
-import { refreshToken } from '../refreshToken'
+import { refreshToken } from '@/api/refreshToken'
 import { type BatchRegisterAPIResponse, batchRegisterUsers } from './createUserBatch'
 
 interface ValidationResultsInterface {
@@ -70,8 +70,7 @@ export const RegisterUserByCSV = async (
           } else {
             throw new Error(errorMessage || 'The session has ended, please login again')
           }
-        } catch (error) {
-          console.error('Token refresh error:', error)
+        } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
           throw new Error(errorMessage || 'Failed to update the token')
         }
       } else if (response.status === 400) {
@@ -82,7 +81,6 @@ export const RegisterUserByCSV = async (
     }
 
     const data = await response.json()
-    console.log('ini response csv:', data.data)
 
     // if (data.data.summary.invalid_rows > 0) {
     // throw new Error(`Please check all data formats. OR some data may be registered.`)
@@ -90,8 +88,7 @@ export const RegisterUserByCSV = async (
     const result = await batchRegisterUsers(data.data.parsed_users, 'csv')
 
     return result
-  } catch (error) {
-    console.error('Batch register error:', error)
+  } catch (error) {  
     throw error
   }
 }

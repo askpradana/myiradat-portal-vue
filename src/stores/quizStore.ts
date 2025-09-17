@@ -147,10 +147,8 @@ export const useQuizStore = defineStore('quiz', () => {
   }
 
   const startQuizSession = (quiz: Quiz, questions: Question[]) => {
-    console.log('startQuizSession called with:', { quiz, questions, questionsLength: questions?.length })
 
     if (!quiz || !questions) {
-      console.error('Invalid quiz or questions data:', { quiz, questions })
       return
     }
 
@@ -164,7 +162,6 @@ export const useQuizStore = defineStore('quiz', () => {
         const sessionData = JSON.parse(savedSession)
         // If session is submitted, just create a new one
         if (sessionData.is_submitted) {
-          console.log('Found submitted session, creating new session for retake')
           createNewSession(quiz)
         } else {
           // Restore active session
@@ -173,23 +170,14 @@ export const useQuizStore = defineStore('quiz', () => {
             start_time: new Date(sessionData.start_time),
             answers: new Map(Object.entries(sessionData.answers).map(([k, v]) => [Number(k), v as number])),
           }
-          console.log('Restored quiz session:', currentSession.value)
         }
-      } catch {
-        console.warn('Failed to restore quiz session, starting new session')
+      } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
         createNewSession(quiz)
       }
     } else {
-      console.log('No saved session found, creating new session')
       createNewSession(quiz)
     }
 
-    console.log('Final session state:', {
-      hasActiveSession: hasActiveSession.value,
-      currentSession: currentSession.value,
-      currentQuiz: currentQuiz.value,
-      currentQuestions: currentQuestions.value?.length
-    })
 
     startTimer()
   }
@@ -330,7 +318,6 @@ export const useQuizStore = defineStore('quiz', () => {
   const autoSubmitQuiz = () => {
     // This would trigger automatic submission in the component
     // The actual submission is handled by the composable
-    console.log('Time expired - quiz should be auto-submitted')
   }
 
   const saveSessionToStorage = () => {
@@ -453,8 +440,8 @@ export const useQuizStore = defineStore('quiz', () => {
         storedResults.value[quizId] = result // Cache in memory
         return result
       }
-    } catch (error) {
-      console.warn('Failed to parse stored quiz result:', error)
+    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      // Failed to parse stored quiz result
     }
 
     return null

@@ -1,5 +1,5 @@
 import { useUserStore } from '@/stores/userStores'
-import { refreshToken } from '../refreshToken'
+import { refreshToken } from '@/api/refreshToken'
 import type { UserListInterface as ResponseAPIUsersInterface } from '@/types/userListType'
 
 interface GetListUserParams {
@@ -35,7 +35,6 @@ export const getListUser = async (
     const userStore = useUserStore()
     const token = userStore.auth?.token
 
-    console.log('search_query', search_query)
 
     // Periksa apakah token ada
     if (!token) {
@@ -88,7 +87,6 @@ export const getListUser = async (
       queryParams.append('order_direction', order_direction)
     }
 
-    console.log('API Query Params:', queryParams.toString())
 
     const response = await fetch(
       `${import.meta.env.VITE_API_URL}/admin/users?${queryParams.toString()}`,
@@ -124,8 +122,7 @@ export const getListUser = async (
           } else {
             throw new Error(errorMessage || 'The session has ended, please login again')
           }
-        } catch (error) {
-          console.error('Token refresh error:', error)
+        } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
           throw new Error(errorMessage || 'Failed to update the token')
         }
       } else if (response.status === 400) {
@@ -136,11 +133,9 @@ export const getListUser = async (
     }
 
     const data = await response.json()
-    console.log('API Response:', data)
 
     return data.data
-  } catch (error) {
-    console.error('Error fetching users:', error)
+  } catch (error) {  
     throw error
   }
 }

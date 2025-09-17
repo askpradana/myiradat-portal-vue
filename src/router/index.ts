@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
-import LoginView from '../views/auth/LoginView.vue'
+import LoginView from '@/views/auth/LoginView.vue'
 import DashboardView from '@/views/DashboardView.vue'
 import RegisterView from '@/views/auth/RegisterView.vue'
 import EmailVerificationView from '@/views/auth/EmailVerificationView.vue'
@@ -62,23 +62,23 @@ const createProtectedRoute = (
 // Route groups
 const publicRoutes: RouteRecordRaw[] = [
   createRoute('/verify-email', 'verify-email', EmailVerificationView, 'Verify Email'),
-  createRoute('/book-demo', 'book-demo', () => import('../views/BookDemoView.vue'), 'Book Demo'),
+  createRoute('/book-demo', 'book-demo', () => import('@/views/BookDemoView.vue'), 'Book Demo'),
   createRoute(
     '/case-studies',
     'case-studies',
-    () => import('../views/CaseStudiesView.vue'),
+    () => import('@/views/CaseStudiesView.vue'),
     'Case Studies',
   ),
   createRoute(
     '/contact-us',
     'contact-us',
-    () => import('../views/ContactUsView.vue'),
+    () => import('@/views/ContactUsView.vue'),
     'Contact Us',
   ),
 ]
 
 const guestOnlyRoutes: RouteRecordRaw[] = [
-  createGuestRoute('/', 'home', () => import('../views/home/HomeView.vue'), 'Home'),
+  createGuestRoute('/', 'home', () => import('@/views/home/HomeView.vue'), 'Home'),
   createGuestRoute('/register', 'register', RegisterView, 'Register'),
   createGuestRoute('/login', 'login', LoginView, 'Login'),
   createGuestRoute(
@@ -90,7 +90,20 @@ const guestOnlyRoutes: RouteRecordRaw[] = [
 ]
 
 const protectedRoutes: RouteRecordRaw[] = [
+  // Main dashboard route
   createProtectedRoute('/dashboard', 'dashboard', DashboardView, 'Dashboard'),
+
+  // Clean dashboard tab routes
+  createProtectedRoute('/dashboard/users', 'dashboard-users', DashboardView, 'User Management'),
+  createRoute('/dashboard/organizations', 'dashboard-organizations', DashboardView, 'Organization Management', {
+    requiresAuth: true,
+    requiredRoles: ['admin', 'cs'],
+  }),
+  createProtectedRoute('/dashboard/data', 'dashboard-data', DashboardView, 'Data'),
+  createProtectedRoute('/dashboard/assessments', 'dashboard-assessments', DashboardView, 'Assessments'),
+  createProtectedRoute('/dashboard/profile', 'dashboard-profile', DashboardView, 'Profile'),
+
+  // Admin routes with clean fallback
   createRoute(
     '/dashboard/admin/create-user',
     'create-user-page',
@@ -99,7 +112,7 @@ const protectedRoutes: RouteRecordRaw[] = [
     {
       requiresAuth: true,
       requiredRoles: ['admin'],
-      fallbackRoute: '/dashboard?tab=dashboard',
+      fallbackRoute: '/dashboard',
     },
   ),
   createRoute(
@@ -110,7 +123,7 @@ const protectedRoutes: RouteRecordRaw[] = [
     {
       requiresAuth: true,
       requiredRoles: ['admin'],
-      fallbackRoute: '/dashboard?tab=dashboard',
+      fallbackRoute: '/dashboard',
     },
   ),
   createProtectedRoute(
@@ -127,7 +140,7 @@ const protectedRoutes: RouteRecordRaw[] = [
     {
       requiresAuth: true,
       requiredRoles: ['admin'],
-      fallbackRoute: '/dashboard?tab=dashboard',
+      fallbackRoute: '/dashboard',
     },
   ),
   createRoute(
@@ -138,7 +151,7 @@ const protectedRoutes: RouteRecordRaw[] = [
     {
       requiresAuth: true,
       requiredRoles: ['admin'],
-      fallbackRoute: '/dashboard?tab=dashboard',
+      fallbackRoute: '/dashboard',
     },
   ),
   createRoute(
@@ -149,7 +162,7 @@ const protectedRoutes: RouteRecordRaw[] = [
     {
       requiresAuth: true,
       requiredRoles: ['admin'],
-      fallbackRoute: '/dashboard?tab=dashboard',
+      fallbackRoute: '/dashboard',
     },
   ),
   createRoute(
@@ -160,13 +173,14 @@ const protectedRoutes: RouteRecordRaw[] = [
     {
       requiresAuth: true,
       requiredRoles: ['admin'],
-      fallbackRoute: '/dashboard?tab=dashboard',
+      fallbackRoute: '/dashboard',
     },
   ),
-  // Quiz Routes - redirect to dashboard assessments tab for the list
+
+  // Quiz Routes - redirect to clean assessments route
   {
     path: '/quiz',
-    redirect: '/dashboard',
+    redirect: '/dashboard/assessments',
   },
   createProtectedRoute('/quiz/:id', 'quiz-taking', QuizTakingView, 'Take Quiz'),
   createProtectedRoute('/quiz/:id/results', 'quiz-result', QuizResultView, 'Quiz Results'),
@@ -190,8 +204,8 @@ const router = createRouter({
 router.beforeEach(async (to, from, next) => {
   const userStore = useUserStore()
 
-  // Always initialize authentication state to ensure fresh validation
-  userStore.initializeAuth()
+  // Initialize authentication state and wait for completion
+  const authStateValid = await userStore.initializeAuth()
 
   // Double-check token validity after initialization
   const isTokenValid = userStore.isAuthenticated && userStore.isTokenValid()
@@ -205,14 +219,14 @@ router.beforeEach(async (to, from, next) => {
   const requiresGuest = to.meta.requiresGuest
   const requiredRoles = to.meta.requiredRoles
   const fallbackRoute = to.meta.fallbackRoute
-  const isAuthenticated = userStore.isAuthenticated && isTokenValid
+  const isAuthenticated = authStateValid && isTokenValid
 
   // Validate redirect URL to prevent open redirects
   const validateRedirectUrl = (url: string): boolean => {
     try {
       const redirectUrl = new URL(url, window.location.origin)
       return redirectUrl.origin === window.location.origin
-    } catch {
+    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
       return false
     }
   }
@@ -262,19 +276,19 @@ router.beforeEach(async (to, from, next) => {
   }
 
   // Handle dashboard tab accessibility for authenticated users
-  if (isAuthenticated && to.path === '/dashboard' && to.query.tab) {
+  if (isAuthenticated && to.path.startsWith('/dashboard/') && to.path !== '/dashboard') {
     const userRole = getUserRole(userStore.user)
-    const requestedTab = to.query.tab as string
+    const requestedTab = to.path.split('/dashboard/')[1].split('/')[0] as DashboardTab
 
-    if (!isTabAccessible(requestedTab as DashboardTab, userRole)) {
-      // Tab not accessible, redirect to default tab for role
+    if (!isTabAccessible(requestedTab, userRole)) {
+      // Tab not accessible, redirect to default path for role
       const defaultPath = getRoleRedirectPath(userRole)
       next({
         path: defaultPath,
         query: {
           tabRedirect: 'true',
           originalTab: requestedTab,
-          message: `${requestedTab.charAt(0).toUpperCase() + requestedTab.slice(1)} tab is not available for your account type`,
+          message: `${requestedTab.charAt(0).toUpperCase() + requestedTab.slice(1)} section is not available for your account type`,
         },
       })
       return

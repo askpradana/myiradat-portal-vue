@@ -9,7 +9,7 @@ export const urlSchema = z
       try {
         const urlObj = new URL(url)
         return ['http:', 'https:'].includes(urlObj.protocol)
-      } catch {
+      } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
         return false
       }
     },
@@ -23,7 +23,7 @@ export const externalUrlSchema = urlSchema
       try {
         const urlObj = new URL(url)
         return urlObj.origin !== window.location.origin
-      } catch {
+      } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
         return false
       }
     },

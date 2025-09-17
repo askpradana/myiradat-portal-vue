@@ -1,6 +1,6 @@
 import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
-import { refreshToken } from '../refreshToken'
+import { refreshToken } from '@/api/refreshToken'
 
 interface ResponseAPIAddMember {
   susscess: boolean
@@ -57,8 +57,7 @@ export const addMemberOrganization = async (
           } else {
             throw new Error(errorMessage || 'The session has ended, please login again')
           }
-        } catch (error) {
-          console.error('Token refresh error:', error)
+        } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
           throw new Error(errorMessage || 'Failed to update the token')
         }
       } else if (response.status === 400) {
@@ -71,8 +70,8 @@ export const addMemberOrganization = async (
     const data = await response.json()
 
     return data
-  } catch (error) {
-    console.error('Error:', error)
+  } catch (error) {  
+    // Error occurred
     toast('Error', {
       description: `${error}`,
     })

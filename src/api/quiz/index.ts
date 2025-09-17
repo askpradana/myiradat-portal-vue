@@ -8,7 +8,7 @@ import type {
   SubmissionCheckResponse,
 } from '@/types/quiz'
 import { useUserStore } from '@/stores/userStores'
-import { refreshToken } from '../refreshToken'
+import { refreshToken } from '@/api/refreshToken'
 
 /**
  * Centralized Quiz API Service
@@ -76,8 +76,7 @@ export class QuizService {
             } else {
               throw new Error('Session expired, please login again')
             }
-          } catch (error) {
-            console.error('Token refresh error:', error)
+          } catch (error) {  
             throw error
           }
         } else {
@@ -92,8 +91,7 @@ export class QuizService {
       }
 
       return data
-    } catch (error) {
-      console.error('Error fetching available quizzes:', error)
+    } catch (error) {  
       throw error
     }
   }
@@ -131,8 +129,7 @@ export class QuizService {
             } else {
               throw new Error('Session expired, please login again')
             }
-          } catch (error) {
-            console.error('Token refresh error:', error)
+          } catch (error) {  
             throw error
           }
         } else {
@@ -141,8 +138,7 @@ export class QuizService {
       }
 
       return await response.json()
-    } catch (error) {
-      console.error('Error fetching quiz detail:', error)
+    } catch (error) {  
       throw error
     }
   }
@@ -176,8 +172,7 @@ export class QuizService {
             } else {
               throw new Error('Session expired, please login again')
             }
-          } catch (error) {
-            console.error('Token refresh error:', error)
+          } catch (error) {  
             throw error
           }
         } else {
@@ -192,8 +187,7 @@ export class QuizService {
       }
 
       return data
-    } catch (error) {
-      console.error('Error fetching quiz submissions:', error)
+    } catch (error) {  
       throw error
     }
   }
@@ -231,8 +225,7 @@ export class QuizService {
             } else {
               throw new Error('Session expired, please login again')
             }
-          } catch (error) {
-            console.error('Token refresh error:', error)
+          } catch (error) {  
             throw error
           }
         } else {
@@ -247,8 +240,7 @@ export class QuizService {
       }
 
       return data
-    } catch (error) {
-      console.error('Error fetching quiz result:', error)
+    } catch (error) {  
       throw error
     }
   }
@@ -287,8 +279,7 @@ export class QuizService {
             } else {
               throw new Error('Session expired, please login again')
             }
-          } catch (error) {
-            console.error('Token refresh error:', error)
+          } catch (error) {  
             throw error
           }
         } else {
@@ -303,8 +294,7 @@ export class QuizService {
       }
 
       return data
-    } catch (error) {
-      console.error('Error submitting quiz:', error)
+    } catch (error) {  
       throw error
     }
   }
@@ -342,8 +332,7 @@ export class QuizService {
             } else {
               throw new Error('Session expired, please login again')
             }
-          } catch (error) {
-            console.error('Token refresh error:', error)
+          } catch (error) {  
             throw error
           }
         } else {
@@ -358,8 +347,7 @@ export class QuizService {
       }
 
       return data
-    } catch (error) {
-      console.error('Error checking quiz submission:', error)
+    } catch (error) {  
       throw error
     }
   }

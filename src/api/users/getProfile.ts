@@ -1,6 +1,6 @@
 import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
-import { refreshToken } from '../refreshToken'
+import { refreshToken } from '@/api/refreshToken'
 import type { UserDataInterface } from '@/types/userType'
 
 export const getProfile = async (): Promise<{user: UserDataInterface}> => {
@@ -41,8 +41,7 @@ export const getProfile = async (): Promise<{user: UserDataInterface}> => {
           } else {
             throw new Error('Session expired, please login again')
           }
-        } catch (error) {
-          console.error('Token refresh error:', error)
+        } catch (error) {  
           throw error
         }
       } else {
@@ -51,7 +50,6 @@ export const getProfile = async (): Promise<{user: UserDataInterface}> => {
     }
 
     const data = await response.json()
-    console.log('Profile API response:', data)
 
     // API returns: { success: true, data: { user: {...} } }
     // We need to return: { user: {...} }
@@ -60,8 +58,7 @@ export const getProfile = async (): Promise<{user: UserDataInterface}> => {
     }
     
     throw new Error('Invalid response structure')
-  } catch (error) {
-    console.error('Error:', error)
+  } catch (error) {  
     toast('Error', {
       description: `${error}`,
     })

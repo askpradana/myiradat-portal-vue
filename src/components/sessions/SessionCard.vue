@@ -1,6 +1,6 @@
 <template>
   <Card class="mx-6 p-4 flex gap-4 relative">
-    <p class="font-semibold text-sm">Login Time: {{ formatDate(data?.login_time) }}</p>
+    <p class="font-semibold text-sm">Login at: {{ formatDate(data?.login_time) }}</p>
     <div
       class="flex flex-col md:flex-row justify-center md:items-start md:justify-between md:w-full"
     >
@@ -49,7 +49,7 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Laptop, Smartphone, Tablet } from 'lucide-vue-next'
 import { formatDate } from '@/lib/dateFromate'
-import DeleteSessionSpecificAlert from '../custom/alerts/DeleteSessionSpecificAlert.vue'
+import DeleteSessionSpecificAlert from '@/components/custom/alerts/DeleteSessionSpecificAlert.vue'
 
 const props = defineProps<{
   data: sessionInterface

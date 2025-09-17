@@ -71,50 +71,12 @@
         </div>
       </div>
 
-      <!-- No Data State -->
-      <div v-if="!isLoading && !error && !hasAnyAssessment" class="text-center py-12">
-        <div
-          class="w-20 h-20 mx-auto mb-6 bg-blue-100 rounded-full flex items-center justify-center"
-        >
-          <svg
-            class="w-10 h-10 text-blue-600"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
-            />
-          </svg>
-        </div>
-        <h3 class="text-xl font-semibold text-foreground mb-2">No Assessment Data Available</h3>
-        <p class="text-muted-foreground mb-6 max-w-md mx-auto">
-          You haven't completed any psychological assessments yet. Complete an assessment to view
-          your results here.
-        </p>
-        <Button @click="navigateToAssessments" class="inline-flex items-center">
-          <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              stroke-width="2"
-              d="M12 6v6m0 0v6m0-6h6m-6 0H6"
-            />
-          </svg>
-          Start Assessment
-        </Button>
-      </div>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue'
 import { Button } from '@/components/ui/button'
-import { toast } from 'vue-sonner'
 
 // Import new components
 import AssessmentOverview from '@/components/assessment/AssessmentOverview.vue'
@@ -127,20 +89,6 @@ import { useAssessmentData } from '@/composables/data/useAssessmentData'
 // const router = useRouter()
 
 // Composable
-const { isLoading, error, getAssessmentData, getAssessmentCompletion, refetchAssessmentData } =
-  useAssessmentData()
+const { isLoading, error, getAssessmentData, refetchAssessmentData } = useAssessmentData()
 
-// Computed properties
-const hasAnyAssessment = computed(() => {
-  const overview = getAssessmentCompletion().value
-  return overview.hasAnyAssessment
-})
-
-// Methods
-const navigateToAssessments = () => {
-  // Navigate to assessment page (implement based on your routing structure)
-  toast.info('Assessment Navigation', {
-    description: 'Assessment page navigation would be implemented here',
-  })
-}
 </script>

@@ -99,7 +99,7 @@ export function useUserProfile(): UseUserProfileReturn {
       if (response?.user) {
         userStore.setUserProfileData(response.user)
       }
-    } catch (error) {
+    } catch (error) {  
       handleError(error, 'Failed to update profile')
       throw error
     } finally {
@@ -117,7 +117,7 @@ export function useUserProfile(): UseUserProfileReturn {
       if (response?.user) {
         userStore.setUserProfileData(response.user)
       }
-    } catch (error) {
+    } catch (error) {  
       handleError(error, 'Failed to fetch profile')
       throw error
     } finally {

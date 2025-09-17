@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import type { BentoCard } from '@/types/homepage'
-import { useBentoAnimation } from '../composables/useBentoAnimation'
+import { useBentoAnimation } from '@/views/home/components/sections/bento/composables/useBentoAnimation'
 
 interface Props {
   card: BentoCard

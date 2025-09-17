@@ -1,3 +1,6 @@
+import type { UserProfileInterface } from './userType'
+import type { ServiceInterface } from './serviceType'
+
 export interface EmailVerificationRequiredResponse {
   success: boolean
   message: string
@@ -63,8 +66,8 @@ export interface LoginResponse {
   data: {
     token?: string
     expires_at?: string
-    user?: Record<string, unknown>
-    services?: Record<string, unknown>[]
+    user?: UserProfileInterface
+    services?: ServiceInterface[]
     requires_verification?: boolean
     email?: string
     user_id?: string

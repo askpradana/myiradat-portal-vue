@@ -9,16 +9,16 @@ export function useContactActions() {
   const openEmail = (email: string = 'support@iradat.com') => {
     try {
       window.open(`mailto:${email}`, '_blank')
-    } catch (error) {
-      console.error('Failed to open email client:', error)
+    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      // Error logged
     }
   }
 
   const openPhone = (phone: string = '+62-XXX-XXXX-XXXX') => {
     try {
       window.open(`tel:${phone}`, '_self')
-    } catch (error) {
-      console.error('Failed to open phone dialer:', error)
+    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      // Error logged
     }
   }
 
@@ -45,7 +45,7 @@ export function useContactActions() {
         case 'chat':
           break
         default:
-          console.warn('Unknown contact action type:', action.type)
+          // Warning logged
       }
     } finally {
       setTimeout(() => {

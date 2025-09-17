@@ -43,11 +43,9 @@ export const verifyEmailOtp = async (payload: VerifyOtpPayload): Promise<VerifyO
     }
 
     const data = await response.json()
-    console.log('OTP verification successful:', data)
 
     return data
-  } catch (error) {
-    console.error('OTP verification error:', error)
+  } catch (error) {  
     toast.error('Verification Failed', {
       description: `${error}`,
     })

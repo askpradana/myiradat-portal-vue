@@ -17,12 +17,21 @@ export interface CompanyMetadata {
   industry?: string
 }
 
+export interface AvatarTransformOptions {
+  size?: number
+  format?: 'jpg' | 'png' | 'webp' | 'svg'
+  background?: string
+  color?: string
+  style?: string
+  seed?: string
+}
+
 export interface AvatarProvider {
   name: string
   baseUrl: string
   rateLimit?: number
   priority: number
-  transform?: (identifier: string, options?: Record<string, unknown>) => string
+  transform?: (identifier: string, options?: AvatarTransformOptions) => string
 }
 
 export interface AvatarCache {

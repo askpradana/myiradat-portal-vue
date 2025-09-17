@@ -1,16 +1,16 @@
-import { computed, reactive, ref } from 'vue'
+import { computed, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { toast } from 'vue-sonner'
 import { useQuizStore } from '@/stores/quizStore'
 import { useQuizSubmissionCheck } from './useQuizSubmissionCheck'
+import { useQuizDetail } from './useQuizDetail'
+import { useQuizResult } from './useQuizResult'
 import {
   getAvailableQuizzes,
   getQuizDetail,
   getQuizSubmissions,
-  getQuizResult,
   submitQuiz
 } from '@/api/quiz'
-import type { QuizDetailResponse, QuizResultResponse } from '@/types/quiz'
 
 interface QuizAPIState {
   isLoading: boolean
@@ -46,7 +46,7 @@ export function useQuizManagement() {
       } else {
         throw new Error('Invalid API response structure')
       }
-    } catch (error) {
+    } catch (error) {  
       const errorMessage = error instanceof Error ? error.message : 'Failed to load quizzes'
       state.error = errorMessage
       quizStore.setError({
@@ -65,8 +65,7 @@ export function useQuizManagement() {
       if (response?.success && response.data?.submissions) {
         quizStore.setCompletedQuizzes(response.data.submissions)
       }
-    } catch (error) {
-      console.error('Error fetching quiz submissions:', error)
+    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
       // Don't throw here as submissions are less critical than available quizzes
     }
   }
@@ -83,8 +82,7 @@ export function useQuizManagement() {
         fetchAvailableQuizzes(),
         fetchQuizSubmissions()
       ])
-    } catch (error) {
-      console.error('Error fetching quiz data:', error)
+    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
       // Error handling is done in individual fetch functions
     } finally {
       state.isLoading = false
@@ -119,7 +117,7 @@ export function useQuizManagement() {
       } else {
         throw new Error(response?.message || 'Failed to load quiz details')
       }
-    } catch (error) {
+    } catch (error) {  
       const errorMessage = error instanceof Error ? error.message : 'Failed to start quiz'
       state.error = errorMessage
       quizStore.setError({
@@ -173,7 +171,7 @@ export function useQuizManagement() {
       } else {
         throw new Error(response?.message || 'Failed to submit quiz')
       }
-    } catch (error) {
+    } catch (error) {  
       const errorMessage = error instanceof Error ? error.message : 'Failed to submit quiz'
       state.error = errorMessage
 
@@ -227,89 +225,6 @@ export function useQuizManagement() {
     return completedQuizzes.value.some(submission => submission.quiz_id === quizId)
   }
 
-  // Enhanced quiz detail function (manual loading to prevent duplicate calls)
-  const useQuizDetail = (quizId: string) => {
-    const data = ref<QuizDetailResponse | null>(null)
-    const isLoading = ref(false)
-    const error = ref<Error | null>(null)
-
-    const loadQuizDetail = async () => {
-      if (!quizId) return
-
-      isLoading.value = true
-      error.value = null
-
-      try {
-        const result = await getQuizDetail(quizId)
-        if (result) {
-          data.value = result
-        }
-        return result
-      } catch (err) {
-        error.value = err instanceof Error ? err : new Error('Failed to load quiz detail')
-        console.error('Failed to load quiz detail:', err)
-      } finally {
-        isLoading.value = false
-      }
-    }
-
-    return {
-      data: computed(() => data.value),
-      isLoading: computed(() => isLoading.value),
-      error: computed(() => error.value),
-      refetch: loadQuizDetail,
-    }
-  }
-
-  // Enhanced quiz result function with stored results priority
-  const useQuizResult = (quizId: string) => {
-    const data = ref<QuizResultResponse | null>(null)
-    const isLoading = ref(false)
-    const error = ref<Error | null>(null)
-
-    const loadQuizResult = async () => {
-      if (!quizId) return
-
-      // First, check for stored results from recent submission
-      const storedResult = quizStore.getStoredResult(quizId)
-      if (storedResult) {
-        console.log('Using stored quiz result for:', quizId)
-        data.value = {
-          success: true,
-          message: 'Quiz result retrieved from stored data',
-          data: storedResult,
-          timestamp: new Date().toISOString()
-        }
-        return
-      }
-
-      // If no stored result, fetch from API
-      isLoading.value = true
-      error.value = null
-
-      try {
-        const result = await getQuizResult(quizId)
-        if (result) {
-          data.value = result
-        }
-      } catch (err) {
-        error.value = err instanceof Error ? err : new Error('Failed to load quiz result')
-        console.error('Failed to load quiz result:', err)
-      } finally {
-        isLoading.value = false
-      }
-    }
-
-    // Auto-load on creation
-    loadQuizResult()
-
-    return {
-      data: computed(() => data.value),
-      isLoading: computed(() => isLoading.value),
-      error: computed(() => error.value),
-      refetch: loadQuizResult,
-    }
-  }
 
   return {
     // Data access - direct from store

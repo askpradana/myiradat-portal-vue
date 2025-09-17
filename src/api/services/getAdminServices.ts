@@ -1,5 +1,5 @@
 import { useUserStore } from '@/stores/userStores'
-import { refreshToken } from '../refreshToken'
+import { refreshToken } from '@/api/refreshToken'
 import type { AdminServicesResponse } from '@/types/serviceType'
 
 export const getAdminServices = async (): Promise<AdminServicesResponse> => {
@@ -38,8 +38,7 @@ export const getAdminServices = async (): Promise<AdminServicesResponse> => {
           } else {
             throw new Error(errorMessage || 'The session has ended, please login again')
           }
-        } catch (error) {
-          console.error('Token refresh error:', error)
+        } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
           throw new Error(errorMessage || 'Failed to update the token')
         }
       } else if (response.status === 400) {
@@ -51,8 +50,8 @@ export const getAdminServices = async (): Promise<AdminServicesResponse> => {
 
     const data = await response.json()
     return data
-  } catch (error) {
-    console.error('Error fetching admin services:', error)
+  } catch (error) {  
+    // Error fetching data
     throw error
   }
 }

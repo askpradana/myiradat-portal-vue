@@ -21,8 +21,8 @@ export const refreshToken = async () => {
 
     const data = await response.json()
     return data
-  } catch (error) {
-    console.error('Error:', error)
+  } catch (error) {  
+    // Error occurred
     toast('Error', {
       description: `${error}`,
     })

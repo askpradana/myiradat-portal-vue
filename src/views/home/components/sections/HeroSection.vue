@@ -148,7 +148,7 @@ import { Button } from '@/components/ui/button'
 import DynamicAvatar from '@/components/ui/avatar/DynamicAvatar.vue'
 import { useRouter } from 'vue-router'
 import { useHomepageStore } from '@/stores/homepage'
-import { useIntersectionObserver, useAnimations } from '../../composables'
+import { useIntersectionObserver, useAnimations } from '@/views/home/composables'
 
 const router = useRouter()
 const homepageStore = useHomepageStore()

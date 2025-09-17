@@ -1,10 +1,10 @@
 <script setup lang="ts">
 import { computed, watch, type Ref } from 'vue'
 import { useRoute } from 'vue-router'
-import Button from '../../ui/button/Button.vue'
-import Input from '../../ui/input/Input.vue'
-import Label from '../../ui/label/Label.vue'
-import { Card, CardTitle, CardHeader, CardContent } from '../../ui/card'
+import Button from '@/components/ui/button/Button.vue'
+import Input from '@/components/ui/input/Input.vue'
+import Label from '@/components/ui/label/Label.vue'
+import { Card, CardTitle, CardHeader, CardContent } from '@/components/ui/card'
 import {
   Select,
   SelectContent,

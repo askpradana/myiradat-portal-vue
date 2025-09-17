@@ -43,8 +43,7 @@ export const logout = async (): Promise<LogoutResponseInterface> => {
           } else {
             throw new Error('Session expired, please login again')
           }
-        } catch (error) {
-          console.error('Token refresh error:', error)
+        } catch (error) {  
           throw error
         }
       } else {
@@ -55,8 +54,8 @@ export const logout = async (): Promise<LogoutResponseInterface> => {
     const data = await response.json()
 
     return data
-  } catch (error) {
-    console.error('Error:', error)
+  } catch (error) {  
+    // Error occurred
     toast('Error', {
       description: `${error}`,
     })
