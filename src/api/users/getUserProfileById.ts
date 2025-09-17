@@ -35,7 +35,7 @@ export const getProfileByID = async (user_id: string): Promise<{ user: UserDataI
               token: refreshResponse.data.token,
               expires_at: refreshResponse.data.expires_at,
             }
-            sessionStorage.setItem('auth_token', JSON.stringify(auth))
+            localStorage.setItem('auth_token', JSON.stringify(auth))
 
             return await getProfileByID(user_id)
           } else {

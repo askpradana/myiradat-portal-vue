@@ -88,7 +88,7 @@ export const getListOrganization = async (
               token: refreshResponse.data.token,
               expires_at: refreshResponse.data.expires_at,
             }
-            sessionStorage.setItem('auth_token', JSON.stringify(auth))
+            localStorage.setItem('auth_token', JSON.stringify(auth))
 
             return await getListOrganization(params)
           } else {

@@ -50,7 +50,7 @@ export const createNewOrganization = async (
               token: refreshResponse.data.token,
               expires_at: refreshResponse.data.expires_at,
             }
-            sessionStorage.setItem('auth_token', JSON.stringify(auth))
+            localStorage.setItem('auth_token', JSON.stringify(auth))
 
             // Coba lagi setelah refresh token
             return await createNewOrganization(newOrganizationData)

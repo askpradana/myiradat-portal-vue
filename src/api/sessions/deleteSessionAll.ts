@@ -45,7 +45,7 @@ export const deleteSessionAll = async (): Promise<ResponseAPIDeleteSessionAllInt
               token: refreshResponse.data.token,
               expires_at: refreshResponse.data.expires_at,
             }
-            sessionStorage.setItem('auth_token', JSON.stringify(auth))
+            localStorage.setItem('auth_token', JSON.stringify(auth))
 
             return await deleteSessionAll()
           } else {
