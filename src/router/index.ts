@@ -1,5 +1,5 @@
 import { createRouter, createWebHistory, type RouteRecordRaw } from 'vue-router'
-import LoginView from '../views/auth/LoginView.vue'
+import LoginView from '@/views/auth/LoginView.vue'
 import DashboardView from '@/views/DashboardView.vue'
 import RegisterView from '@/views/auth/RegisterView.vue'
 import EmailVerificationView from '@/views/auth/EmailVerificationView.vue'
@@ -62,23 +62,23 @@ const createProtectedRoute = (
 // Route groups
 const publicRoutes: RouteRecordRaw[] = [
   createRoute('/verify-email', 'verify-email', EmailVerificationView, 'Verify Email'),
-  createRoute('/book-demo', 'book-demo', () => import('../views/BookDemoView.vue'), 'Book Demo'),
+  createRoute('/book-demo', 'book-demo', () => import('@/views/BookDemoView.vue'), 'Book Demo'),
   createRoute(
     '/case-studies',
     'case-studies',
-    () => import('../views/CaseStudiesView.vue'),
+    () => import('@/views/CaseStudiesView.vue'),
     'Case Studies',
   ),
   createRoute(
     '/contact-us',
     'contact-us',
-    () => import('../views/ContactUsView.vue'),
+    () => import('@/views/ContactUsView.vue'),
     'Contact Us',
   ),
 ]
 
 const guestOnlyRoutes: RouteRecordRaw[] = [
-  createGuestRoute('/', 'home', () => import('../views/home/HomeView.vue'), 'Home'),
+  createGuestRoute('/', 'home', () => import('@/views/home/HomeView.vue'), 'Home'),
   createGuestRoute('/register', 'register', RegisterView, 'Register'),
   createGuestRoute('/login', 'login', LoginView, 'Login'),
   createGuestRoute(
@@ -226,7 +226,7 @@ router.beforeEach(async (to, from, next) => {
     try {
       const redirectUrl = new URL(url, window.location.origin)
       return redirectUrl.origin === window.location.origin
-    } catch {
+    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
       return false
     }
   }

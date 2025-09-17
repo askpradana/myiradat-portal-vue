@@ -49,7 +49,7 @@ import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Laptop, Smartphone, Tablet } from 'lucide-vue-next'
 import { formatDate } from '@/lib/dateFromate'
-import DeleteSessionSpecificAlert from '../custom/alerts/DeleteSessionSpecificAlert.vue'
+import DeleteSessionSpecificAlert from '@/components/custom/alerts/DeleteSessionSpecificAlert.vue'
 
 const props = defineProps<{
   data: sessionInterface

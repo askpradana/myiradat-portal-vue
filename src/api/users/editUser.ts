@@ -1,5 +1,5 @@
 import { useUserStore } from '@/stores/userStores'
-import { refreshToken } from '../refreshToken'
+import { refreshToken } from '@/api/refreshToken'
 import type { UserProfileInterface, UserDataInterface } from '@/types/userType'
 
 export interface DataUserProps {
@@ -63,8 +63,7 @@ export const editUserData = async (
           } else {
             throw new Error(errorMessage || 'The session has ended, please login again')
           }
-        } catch (error) {
-          console.error('Token refresh error:', error)
+        } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
           throw new Error(errorMessage || 'Failed to update the token')
         }
       } else if (response.status === 400) {
@@ -79,8 +78,7 @@ export const editUserData = async (
       userStore.setUserProfileData(data.data.user)
     }
     return data
-  } catch (error) {
-    console.error('Error:', error)
+  } catch (error) {  
     throw error
   }
 }

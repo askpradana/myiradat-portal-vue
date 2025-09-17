@@ -44,7 +44,7 @@ export function parseJWTPayload(token: string): JWTPayload {
     )
 
     return JSON.parse(jsonPayload) as JWTPayload
-  } catch (error) {
+  } catch (error) {  
     throw new TokenParsingError(
       'Failed to parse JWT token payload',
       error instanceof Error ? error : new Error(String(error))
@@ -59,8 +59,7 @@ export function extractUserIdFromToken(token: string): string {
   try {
     const payload = parseJWTPayload(token)
     return payload.user_id || payload.sub || ''
-  } catch (error) {
-    console.warn('Could not extract user_id from token:', error)
+  } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
     return ''
   }
 }
@@ -72,8 +71,7 @@ export function extractEmailFromToken(token: string): string {
   try {
     const payload = parseJWTPayload(token)
     return payload.email || ''
-  } catch (error) {
-    console.warn('Could not extract email from token:', error)
+  } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
     return ''
   }
 }
@@ -85,8 +83,7 @@ export function extractRoleFromToken(token: string): string {
   try {
     const payload = parseJWTPayload(token)
     return payload.role || ''
-  } catch (error) {
-    console.warn('Could not extract role from token:', error)
+  } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
     return ''
   }
 }
@@ -103,8 +100,7 @@ export function isTokenExpired(token: string): boolean {
 
     const currentTime = Math.floor(Date.now() / 1000)
     return payload.exp < currentTime
-  } catch (error) {
-    console.warn('Could not check token expiration:', error)
+  } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
     return true // If we can't parse it, assume it's expired
   }
 }
@@ -120,8 +116,7 @@ export function getTokenExpirationDate(token: string): Date | null {
     }
 
     return new Date(payload.exp * 1000)
-  } catch (error) {
-    console.warn('Could not get token expiration date:', error)
+  } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
     return null
   }
 }
@@ -143,8 +138,7 @@ export function extractUserInfoFromToken(token: string): {
       role: payload.role || '',
       exp: payload.exp ? new Date(payload.exp * 1000) : undefined
     }
-  } catch (error) {
-    console.warn('Could not extract user info from token:', error)
+  } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
     return {
       userId: '',
       email: '',

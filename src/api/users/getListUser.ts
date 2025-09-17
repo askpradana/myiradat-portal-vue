@@ -1,5 +1,5 @@
 import { useUserStore } from '@/stores/userStores'
-import { refreshToken } from '../refreshToken'
+import { refreshToken } from '@/api/refreshToken'
 import type { UserListInterface as ResponseAPIUsersInterface } from '@/types/userListType'
 
 interface GetListUserParams {
@@ -122,8 +122,7 @@ export const getListUser = async (
           } else {
             throw new Error(errorMessage || 'The session has ended, please login again')
           }
-        } catch (error) {
-          console.error('Token refresh error:', error)
+        } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
           throw new Error(errorMessage || 'Failed to update the token')
         }
       } else if (response.status === 400) {
@@ -136,8 +135,7 @@ export const getListUser = async (
     const data = await response.json()
 
     return data.data
-  } catch (error) {
-    console.error('Error fetching users:', error)
+  } catch (error) {  
     throw error
   }
 }

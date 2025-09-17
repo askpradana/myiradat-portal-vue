@@ -88,7 +88,7 @@ class HTTPClient {
             // Retry the original request with new token
             return await this.makeRequest<T>(url, options, false)
           }
-        } catch {
+        } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
           // If token refresh fails, throw original 401 error
           throw {
             message: 'Session expired, please login again',
@@ -99,7 +99,7 @@ class HTTPClient {
       }
 
       return await this.handleResponse<T>(response)
-    } catch (error) {
+    } catch (error) {  
       // If it's already an APIError, re-throw it
       if (error && typeof error === 'object' && 'status' in error) {
         throw error

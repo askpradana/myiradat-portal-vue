@@ -42,7 +42,7 @@ export function useQuizResult(quizId: string) {
         data.value = result
       }
       return result
-    } catch (err) {
+    } catch (err) {  
       error.value = err instanceof Error ? err : new Error('Failed to load quiz result')
     } finally {
       isLoading.value = false

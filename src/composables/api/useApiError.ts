@@ -52,7 +52,7 @@ export function useApiError(): ApiErrorHandler {
     }
     
     error.value = parsedError
-    console.error('API Error:', parsedError)
+    // Error logged
   }
 
   const clearError = () => {

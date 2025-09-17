@@ -1,5 +1,5 @@
 import { useUserStore } from '@/stores/userStores'
-import { refreshToken } from '../refreshToken'
+import { refreshToken } from '@/api/refreshToken'
 import { formatPhoneNumber } from '@/lib/phoneNumberFormat'
 
 export interface BatchUserInterface {
@@ -57,8 +57,6 @@ export const batchRegisterUsers = async (
       })),
     }
 
-    console.log('request Data:', requestData)
-    console.log('data csv:', csvFile)
 
     const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/batch-register`, {
       method: 'POST',
@@ -93,8 +91,7 @@ export const batchRegisterUsers = async (
           } else {
             throw new Error(errorMessage || 'The session has ended, please login again')
           }
-        } catch (error) {
-          console.error('Token refresh error:', error)
+        } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
           throw new Error(errorMessage || 'Failed to update the token')
         }
       } else if (response.status === 400) {
@@ -106,8 +103,7 @@ export const batchRegisterUsers = async (
 
     const data = await response.json()
     return data
-  } catch (error) {
-    console.error('Batch register error:', error)
+  } catch (error) {  
     throw error
   }
 }

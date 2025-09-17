@@ -74,7 +74,7 @@ export const isValidUrl = (url: string): boolean => {
   try {
     new URL(url)
     return true
-  } catch {
+  } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
     return false
   }
 }
@@ -85,7 +85,7 @@ export const isExternalUrl = (url: string): boolean => {
   try {
     const urlObj = new URL(url)
     return urlObj.origin !== window.location.origin
-  } catch {
+  } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
     return false
   }
 }

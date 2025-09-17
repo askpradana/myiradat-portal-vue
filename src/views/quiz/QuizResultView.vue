@@ -64,9 +64,9 @@ const scorePercentage = computed(() => {
 const formattedRecommendations = computed(() => {
   if (!quizResult.value?.score.recommendations) return []
 
-  // Split by periods, semicolons, or line breaks and filter out empty strings
+  // Split only by line breaks and filter out empty strings
   const recommendations = quizResult.value.score.recommendations
-    .split(/[.;\n]|,\s*(?=\w)/)
+    .split(/\n/)
     .map((rec) => rec.trim())
     .filter((rec) => rec.length > 0 && rec.length > 3) // Filter out very short fragments
     .map((rec) => rec.charAt(0).toUpperCase() + rec.slice(1)) // Capitalize first letter

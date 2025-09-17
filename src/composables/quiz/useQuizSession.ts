@@ -107,7 +107,6 @@ export function useQuizSession() {
   watch(() => quizStore.isTimeUp, (isTimeUp) => {
     if (isTimeUp && quizStore.hasActiveSession) {
       // Emit event that can be caught by the component to handle auto-submission
-      console.log('Quiz time expired - auto-submission should be triggered')
     }
   })
 

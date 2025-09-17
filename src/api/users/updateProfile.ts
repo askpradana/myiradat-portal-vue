@@ -1,6 +1,6 @@
 import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
-import { refreshToken } from '../refreshToken'
+import { refreshToken } from '@/api/refreshToken'
 import type { UserDataInterface } from '@/types/userType'
 
 export interface UpdateProfilePayload {
@@ -60,8 +60,7 @@ export const updateProfile = async (payload: UpdateProfilePayload): Promise<{use
           } else {
             throw new Error('Session expired, please login again')
           }
-        } catch (error) {
-          console.error('Token refresh error:', error)
+        } catch (error) {  
           throw error
         }
       } else {
@@ -70,15 +69,13 @@ export const updateProfile = async (payload: UpdateProfilePayload): Promise<{use
     }
 
     const data = await response.json()
-    console.log('Profile updated successfully:', data)
 
     toast.success('Profile Updated', {
       description: 'Your profile has been updated successfully',
     })
 
     return data.data
-  } catch (error) {
-    console.error('Update profile error:', error)
+  } catch (error) {  
     toast.error('Update Failed', {
       description: `${error}`,
     })

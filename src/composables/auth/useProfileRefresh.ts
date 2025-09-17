@@ -61,7 +61,7 @@ export function useProfileRefresh(): UseProfileRefreshReturn {
       const remainingTime = Math.max(0, COOLDOWN_DURATION - timePassed)
 
       return remainingTime
-    } catch {
+    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
       // Invalid data, clear it
       localStorage.removeItem(STORAGE_KEY)
       return 0
@@ -104,7 +104,7 @@ export function useProfileRefresh(): UseProfileRefreshReturn {
       localStorage.setItem(STORAGE_KEY, now.toString())
       startCooldownTimer(COOLDOWN_DURATION)
 
-    } catch (error) {
+    } catch (error) {  
       handleError(error, 'Failed to refresh profile')
       throw error
     } finally {

@@ -57,10 +57,10 @@ export const useUserStore = defineStore('user', () => {
     isAuthenticated.value = true
     isInitialized.value = true
 
-    // Store in localStorage for persistence across tabs and browser sessions
-    localStorage.setItem('auth_token', JSON.stringify(authData.auth))
-    localStorage.setItem('data_user', JSON.stringify(authData.user))
-    localStorage.setItem('data_services', JSON.stringify(authData.services))
+    // Store in sessionStorage for session-based persistence (security best practice)
+    sessionStorage.setItem('auth_token', JSON.stringify(authData.auth))
+    sessionStorage.setItem('data_user', JSON.stringify(authData.user))
+    sessionStorage.setItem('data_services', JSON.stringify(authData.services))
   }
 
   const setUserProfileData = (userData: Partial<UserLoginInterface>) => {
@@ -70,23 +70,23 @@ export const useUserStore = defineStore('user', () => {
         ...user.value,
         ...userData,
       }
-      // Perbarui data_user di localStorage
-      localStorage.setItem('data_user', JSON.stringify(user.value))
+      // Perbarui data_user di sessionStorage
+      sessionStorage.setItem('data_user', JSON.stringify(user.value))
     } else {
       // Jika user.value belum ada, inisialisasi dengan userData
       user.value = userData as UserLoginInterface
-      localStorage.setItem('data_user', JSON.stringify(userData))
+      sessionStorage.setItem('data_user', JSON.stringify(userData))
     }
   }
 
   const setTempVerificationToken = (token: string) => {
     tempVerificationToken.value = token
-    localStorage.setItem('temp_verification_token', token)
+    sessionStorage.setItem('temp_verification_token', token)
   }
 
   const clearTempVerificationToken = () => {
     tempVerificationToken.value = null
-    localStorage.removeItem('temp_verification_token')
+    sessionStorage.removeItem('temp_verification_token')
   }
 
   const clearUserData = () => {
@@ -97,10 +97,10 @@ export const useUserStore = defineStore('user', () => {
     tempVerificationToken.value = null
     isInitialized.value = false
 
-    localStorage.removeItem('auth_token')
-    localStorage.removeItem('data_user')
-    localStorage.removeItem('data_services')
-    localStorage.removeItem('temp_verification_token')
+    sessionStorage.removeItem('auth_token')
+    sessionStorage.removeItem('data_user')
+    sessionStorage.removeItem('data_services')
+    sessionStorage.removeItem('temp_verification_token')
   }
 
   const isTokenValid = (): boolean => {
@@ -134,10 +134,10 @@ export const useUserStore = defineStore('user', () => {
     isInitializing.value = true
 
     try {
-      const storedToken = localStorage.getItem('auth_token')
-      const storedUser = localStorage.getItem('data_user')
-      const storedServices = localStorage.getItem('data_services')
-      const storedTempToken = localStorage.getItem('temp_verification_token')
+      const storedToken = sessionStorage.getItem('auth_token')
+      const storedUser = sessionStorage.getItem('data_user')
+      const storedServices = sessionStorage.getItem('data_services')
+      const storedTempToken = sessionStorage.getItem('temp_verification_token')
 
       // Restore temporary verification token if it exists
       if (storedTempToken) {
@@ -160,9 +160,8 @@ export const useUserStore = defineStore('user', () => {
             // Token expired, clear all data
             clearUserData()
           }
-        } catch {
+        } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
           // Invalid token data, clear everything
-          console.warn('Invalid token data found, clearing authentication state')
           clearUserData()
         }
       }

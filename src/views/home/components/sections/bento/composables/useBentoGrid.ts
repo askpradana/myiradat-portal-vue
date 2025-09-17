@@ -110,7 +110,7 @@ export function useBentoGrid(
     })
     
     if (issues.length > 0) {
-      console.warn('Bento Grid Layout Issues:', issues)
+      // Layout issues detected
     }
     
     return issues.length === 0

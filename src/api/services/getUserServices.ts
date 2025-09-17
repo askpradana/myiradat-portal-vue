@@ -1,6 +1,6 @@
 import { useUserStore } from '@/stores/userStores'
-import { refreshToken } from '../refreshToken'
-import type { ServiceInterface } from './../../types/serviceType'
+import { refreshToken } from '@/api/refreshToken'
+import type { ServiceInterface } from '@/types/serviceType'
 
 export interface UserServiceResponse {
   success: boolean
@@ -47,8 +47,7 @@ export const getUserService = async (userID?: string): Promise<UserServiceRespon
           } else {
             throw new Error(errorMessage || 'The session has ended, please login again')
           }
-        } catch (error) {
-          console.error('Token refresh error:', error)
+        } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
           throw new Error(errorMessage || 'Failed to update the token')
         }
       } else if (response.status === 400) {
@@ -59,11 +58,11 @@ export const getUserService = async (userID?: string): Promise<UserServiceRespon
     }
 
     const data = await response.json()
-    console.log(data)
+    // Data logged
 
     return data
-  } catch (error) {
-    console.error('Error:', error)
+  } catch (error) {  
+    // Error occurred
     throw error
   }
 }

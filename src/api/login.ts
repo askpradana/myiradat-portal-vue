@@ -46,8 +46,7 @@ export const login = async (userData: UserDataInterface): Promise<LoginResponse 
     }
 
     return data
-  } catch (error) {
-    console.error('Error:', error)
+  } catch (error) {  
     toast('Error', {
       description: `${error}`,
     })

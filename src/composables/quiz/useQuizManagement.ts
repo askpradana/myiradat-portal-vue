@@ -46,7 +46,7 @@ export function useQuizManagement() {
       } else {
         throw new Error('Invalid API response structure')
       }
-    } catch (error) {
+    } catch (error) {  
       const errorMessage = error instanceof Error ? error.message : 'Failed to load quizzes'
       state.error = errorMessage
       quizStore.setError({
@@ -65,8 +65,7 @@ export function useQuizManagement() {
       if (response?.success && response.data?.submissions) {
         quizStore.setCompletedQuizzes(response.data.submissions)
       }
-    } catch (error) {
-      console.error('Error fetching quiz submissions:', error)
+    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
       // Don't throw here as submissions are less critical than available quizzes
     }
   }
@@ -83,8 +82,7 @@ export function useQuizManagement() {
         fetchAvailableQuizzes(),
         fetchQuizSubmissions()
       ])
-    } catch (error) {
-      console.error('Error fetching quiz data:', error)
+    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
       // Error handling is done in individual fetch functions
     } finally {
       state.isLoading = false
@@ -119,7 +117,7 @@ export function useQuizManagement() {
       } else {
         throw new Error(response?.message || 'Failed to load quiz details')
       }
-    } catch (error) {
+    } catch (error) {  
       const errorMessage = error instanceof Error ? error.message : 'Failed to start quiz'
       state.error = errorMessage
       quizStore.setError({
@@ -173,7 +171,7 @@ export function useQuizManagement() {
       } else {
         throw new Error(response?.message || 'Failed to submit quiz')
       }
-    } catch (error) {
+    } catch (error) {  
       const errorMessage = error instanceof Error ? error.message : 'Failed to submit quiz'
       state.error = errorMessage
 

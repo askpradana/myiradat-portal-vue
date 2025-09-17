@@ -331,7 +331,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { ScrollAreaRoot, ScrollAreaViewport } from 'reka-ui'
 import { batchRegisterUsers, type BatchUserInterface } from '@/api/users/createUserBatch'
-import DashboardLayout from '../layouts/DashboardLayout.vue'
+import DashboardLayout from '@/views/layouts/DashboardLayout.vue'
 import AlertDialogDescription from '@/components/ui/alert-dialog/AlertDialogDescription.vue'
 import BackToDashboardButton from '@/components/custom/buttons/BackToDashboardButton.vue'
 import UploadCSVBatch from '@/components/custom/alerts/UploadCSVBatch.vue'

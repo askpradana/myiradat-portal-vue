@@ -100,8 +100,8 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
     if (persistToStorage && typeof localStorage !== 'undefined') {
       try {
         localStorage.setItem(storageKey, tab)
-      } catch (error) {
-        console.warn('Failed to save tab to localStorage:', error)
+      } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
+        // Failed to save tab to localStorage
       }
     }
   }
@@ -111,8 +111,8 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
       try {
         const savedTab = localStorage.getItem(storageKey) as DashboardTab
         return savedTab && canAccessTab(savedTab) ? savedTab : null
-      } catch (error) {
-        console.warn('Failed to load tab from localStorage:', error)
+      } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
+        // Failed to load tab from localStorage
         return null
       }
     }
@@ -141,8 +141,8 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
     if (persistToUrl) {
       const targetPath = tab === 'dashboard' ? '/dashboard' : `/dashboard/${tab}`
       if (route.path !== targetPath) {
-        router.replace(targetPath).catch((error) => {
-          console.warn('Failed to update URL with tab:', error)
+        router.replace(targetPath).catch((_error) => { // eslint-disable-line @typescript-eslint/no-unused-vars
+          // Failed to update URL with tab
         })
       }
     }
@@ -171,10 +171,9 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
 
       // Simulate async tab loading (if needed for data fetching)
       await new Promise((resolve) => setTimeout(resolve, 100))
-    } catch (error) {
+    } catch (error) {  
       const message = error instanceof Error ? error.message : 'Failed to change tab'
       tabError.value = message
-      console.error('Tab change error:', error)
     } finally {
       isTabLoading.value = false
     }
@@ -203,8 +202,7 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
 
       // Set the initial tab
       await changeTab(initialTab)
-    } catch (error) {
-      console.error('Failed to initialize tabs:', error)
+    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
       tabError.value = 'Failed to initialize dashboard tabs'
     }
   }

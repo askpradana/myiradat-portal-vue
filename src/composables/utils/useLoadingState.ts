@@ -141,7 +141,7 @@ export function useApiLoadingState() {
       const result = await operation()
       setState('success')
       return result
-    } catch (err) {
+    } catch (err) {  
       setState('error')
       error.value = err instanceof Error ? err : new Error('Operation failed')
       throw err

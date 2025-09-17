@@ -14,7 +14,7 @@ export const deleteUser = async (userID: string): Promise<ResponseAPIDeleteUserI
   try {
     const response = await httpClient.delete<ResponseAPIDeleteUserInterface>(`/admin/users/${userID}`)
     return response as ResponseAPIDeleteUserInterface
-  } catch (error) {
+  } catch (error) {  
     throw error
   }
 }

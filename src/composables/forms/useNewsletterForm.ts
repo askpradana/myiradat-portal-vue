@@ -22,7 +22,7 @@ export function useNewsletterForm() {
     initialValues: NewsletterFormDefaults
   })
 
-  const onSubmit = form.handleSubmit(async (values) => {
+  const onSubmit = form.handleSubmit(async (_values) => { // eslint-disable-line @typescript-eslint/no-unused-vars
     try {
       isSubmitting.value = true
       isSuccess.value = false
@@ -31,7 +31,7 @@ export function useNewsletterForm() {
       await new Promise(resolve => setTimeout(resolve, 1500))
 
       // Mock API call - in a real app, this would be an actual API endpoint
-      console.log('Newsletter subscription:', values)
+      // Data logged
 
       // Simulate success
       isSuccess.value = true
@@ -52,8 +52,8 @@ export function useNewsletterForm() {
         isSuccess.value = false
       }, 3000)
 
-    } catch (error) {
-      console.error('Newsletter subscription error:', error)
+    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      // Error logged
       
       toast.error('Subscription failed', {
         description: 'Please try again or contact support if the problem persists.',

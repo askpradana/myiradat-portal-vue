@@ -17,12 +17,8 @@ export const resendVerificationEmail = async (payload: ResendVerificationPayload
     // Add Authorization header if temporary verification token exists
     if (userStore.tempVerificationToken) {
       headers.Authorization = `Bearer ${userStore.tempVerificationToken}`
-      console.log('Using temporary verification token for verification request')
-    } else {
-      console.warn('No temporary verification token available - request may fail')
     }
 
-    console.log('Making verification request to:', `${import.meta.env.VITE_API_URL}/auth/verify-request`)
 
     const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/verify-request`, {
       method: 'POST',
@@ -30,10 +26,6 @@ export const resendVerificationEmail = async (payload: ResendVerificationPayload
       body: JSON.stringify(payload),
     })
 
-    console.log('Verification request response:', {
-      status: response.status,
-      ok: response.ok
-    })
 
     if (!response.ok) {
       let errorMessage = 'Failed to send verification email'
@@ -41,8 +33,8 @@ export const resendVerificationEmail = async (payload: ResendVerificationPayload
       
       try {
         errorData = await response.json()
-      } catch {
-        console.log('Could not parse error response as JSON')
+      } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
+        // Could not parse error response as JSON
       }
       
       if (response.status === 400) {
@@ -55,30 +47,19 @@ export const resendVerificationEmail = async (payload: ResendVerificationPayload
         errorMessage = 'Too many requests. Please wait before requesting another verification email.'
       }
       
-      console.error('Verification request failed:', {
-        status: response.status,
-        message: errorMessage
-      })
       throw new Error(errorMessage)
     }
 
     const data = await response.json()
-    console.log('Verification email sent successfully:', {
-      hasNextRetryAllowed: !!data?.data?.next_retry_allowed,
-      hasOtp: !!data?.data?.otp
-    })
 
     toast.success('Verification Email Sent', {
       description: 'A new verification email has been sent to your email address',
     })
 
     return data
-  } catch (error) {
-    console.error('Verification request error:', error)
-    
+  } catch (error) {  
     // Check for network errors specifically
     if (error instanceof TypeError && error.message.includes('fetch')) {
-      console.error('Network error - backend may not be running')
       toast.error('Network Error', {
         description: 'Cannot connect to the server. Please check if the backend is running.',
       })
@@ -87,7 +68,7 @@ export const resendVerificationEmail = async (payload: ResendVerificationPayload
         description: `${error}`,
       })
     }
-    
+
     throw error
   }
 }

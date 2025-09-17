@@ -1,0 +1,1 @@
+export { default as AnimatedFilterCard } from './AnimatedFilterCard.vue'

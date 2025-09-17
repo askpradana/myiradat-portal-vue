@@ -249,7 +249,7 @@
 
 <script setup lang="ts">
 import { getOrganizationDetail } from '@/api/organizations/getOrganizationDetail'
-import DashboardLayout from '../layouts/DashboardLayout.vue'
+import DashboardLayout from '@/views/layouts/DashboardLayout.vue'
 import BackToDashboardButton from '@/components/custom/buttons/BackToDashboardButton.vue'
 import { useQuery } from '@tanstack/vue-query'
 import type { OrganizationInterface } from '@/types/organizationType'

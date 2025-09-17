@@ -1,6 +1,6 @@
 import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
-import { refreshToken } from '../refreshToken'
+import { refreshToken } from '@/api/refreshToken'
 import type { UserDataInterface } from '@/types/userType'
 
 export const getProfileByID = async (user_id: string): Promise<{ user: UserDataInterface }> => {
@@ -41,8 +41,7 @@ export const getProfileByID = async (user_id: string): Promise<{ user: UserDataI
           } else {
             throw new Error('Session expired, please login again')
           }
-        } catch (error) {
-          console.error('Token refresh error:', error)
+        } catch (error) {  
           throw error
         }
       } else {
@@ -51,11 +50,9 @@ export const getProfileByID = async (user_id: string): Promise<{ user: UserDataI
     }
 
     const data = await response.json()
-    console.log('user profile detail:', data)
 
     return data.data
-  } catch (error) {
-    console.error('Error:', error)
+  } catch (error) {  
     toast('Error', {
       description: `${error}`,
     })

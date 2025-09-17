@@ -1,27 +1,27 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue'
+import { computed, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { useUserStore } from '@/stores/userStores'
-import Button from '../../ui/button/Button.vue'
+import Button from '@/components/ui/button/Button.vue'
 import { User, X } from 'lucide-vue-next'
 
 const router = useRouter()
 const userStore = useUserStore()
 
 const isDismissed = ref(false)
+const wasLocallyDismissed = ref(false)
+
+onMounted(() => {
+  if (userStore.user) {
+    const dismissalKey = `profile-completion-banner-dismissed-${userStore.user.id}`
+    wasLocallyDismissed.value = localStorage.getItem(dismissalKey) === 'true'
+  }
+})
 
 const shouldShowBanner = computed(() => {
-  if (isDismissed.value) return false
+  if (isDismissed.value || wasLocallyDismissed.value) return false
   if (!userStore.user) return false
   if (userStore.user.date_of_birth !== null) return false
-
-  const dismissalKey = `profile-completion-banner-dismissed-${userStore.user.id}`
-  const wasDismissed = localStorage.getItem(dismissalKey) === 'true'
-
-  if (wasDismissed) {
-    isDismissed.value = true
-    return false
-  }
 
   return true
 })

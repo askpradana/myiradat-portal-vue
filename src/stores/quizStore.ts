@@ -171,7 +171,7 @@ export const useQuizStore = defineStore('quiz', () => {
             answers: new Map(Object.entries(sessionData.answers).map(([k, v]) => [Number(k), v as number])),
           }
         }
-      } catch {
+      } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
         createNewSession(quiz)
       }
     } else {
@@ -440,8 +440,8 @@ export const useQuizStore = defineStore('quiz', () => {
         storedResults.value[quizId] = result // Cache in memory
         return result
       }
-    } catch (error) {
-      console.warn('Failed to parse stored quiz result:', error)
+    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      // Failed to parse stored quiz result
     }
 
     return null

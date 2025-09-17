@@ -57,7 +57,7 @@ export const useAvatarStore = defineStore('avatar', () => {
         if (!response.ok) {
           throw new Error('Primary API failed')
         }
-      } catch {
+      } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
         // Fallback to UI Avatars with initials
         const initials = metadata?.name
           ?.split(' ')
@@ -81,7 +81,7 @@ export const useAvatarStore = defineStore('avatar', () => {
       localStorage.setItem('avatar_cache', JSON.stringify(cache.value))
 
       return avatarUrl
-    } catch (err) {
+    } catch (err) {  
       error.value = err instanceof Error ? err.message : 'Failed to generate avatar'
       
       // Return fallback avatar
@@ -122,7 +122,7 @@ export const useAvatarStore = defineStore('avatar', () => {
           if (!response.ok) {
             throw new Error('Clearbit API failed')
           }
-        } catch {
+        } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
           logoUrl = ''
         }
       }
@@ -151,7 +151,7 @@ export const useAvatarStore = defineStore('avatar', () => {
       localStorage.setItem('avatar_cache', JSON.stringify(cache.value))
 
       return logoUrl
-    } catch (err) {
+    } catch (err) {  
       error.value = err instanceof Error ? err.message : 'Failed to fetch company logo'
       
       // Return fallback
@@ -179,8 +179,8 @@ export const useAvatarStore = defineStore('avatar', () => {
 
     try {
       await Promise.allSettled(promises)
-    } catch (err) {
-      console.warn('Some avatars failed to preload:', err)
+    } catch (err) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      // Some avatars failed to preload
     }
   }
 
@@ -216,8 +216,8 @@ export const useAvatarStore = defineStore('avatar', () => {
         
         cache.value = validCache
       }
-    } catch (err) {
-      console.warn('Failed to load avatar cache from storage:', err)
+    } catch (err) { // eslint-disable-line @typescript-eslint/no-unused-vars
+      // Failed to load avatar cache from storage
       clearCache()
     }
   }

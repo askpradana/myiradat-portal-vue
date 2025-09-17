@@ -8,7 +8,7 @@ import type {
   SubmissionCheckResponse,
 } from '@/types/quiz'
 import { useUserStore } from '@/stores/userStores'
-import { refreshToken } from '../refreshToken'
+import { refreshToken } from '@/api/refreshToken'
 
 /**
  * Centralized Quiz API Service
@@ -76,7 +76,7 @@ export class QuizService {
             } else {
               throw new Error('Session expired, please login again')
             }
-          } catch (error) {
+          } catch (error) {  
             throw error
           }
         } else {
@@ -91,7 +91,7 @@ export class QuizService {
       }
 
       return data
-    } catch (error) {
+    } catch (error) {  
       throw error
     }
   }
@@ -129,7 +129,7 @@ export class QuizService {
             } else {
               throw new Error('Session expired, please login again')
             }
-          } catch (error) {
+          } catch (error) {  
             throw error
           }
         } else {
@@ -138,7 +138,7 @@ export class QuizService {
       }
 
       return await response.json()
-    } catch (error) {
+    } catch (error) {  
       throw error
     }
   }
@@ -172,7 +172,7 @@ export class QuizService {
             } else {
               throw new Error('Session expired, please login again')
             }
-          } catch (error) {
+          } catch (error) {  
             throw error
           }
         } else {
@@ -187,7 +187,7 @@ export class QuizService {
       }
 
       return data
-    } catch (error) {
+    } catch (error) {  
       throw error
     }
   }
@@ -225,7 +225,7 @@ export class QuizService {
             } else {
               throw new Error('Session expired, please login again')
             }
-          } catch (error) {
+          } catch (error) {  
             throw error
           }
         } else {
@@ -240,7 +240,7 @@ export class QuizService {
       }
 
       return data
-    } catch (error) {
+    } catch (error) {  
       throw error
     }
   }
@@ -279,7 +279,7 @@ export class QuizService {
             } else {
               throw new Error('Session expired, please login again')
             }
-          } catch (error) {
+          } catch (error) {  
             throw error
           }
         } else {
@@ -294,7 +294,7 @@ export class QuizService {
       }
 
       return data
-    } catch (error) {
+    } catch (error) {  
       throw error
     }
   }
@@ -332,7 +332,7 @@ export class QuizService {
             } else {
               throw new Error('Session expired, please login again')
             }
-          } catch (error) {
+          } catch (error) {  
             throw error
           }
         } else {
@@ -347,7 +347,7 @@ export class QuizService {
       }
 
       return data
-    } catch (error) {
+    } catch (error) {  
       throw error
     }
   }

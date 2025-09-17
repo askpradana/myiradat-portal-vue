@@ -26,7 +26,7 @@ export function useQuizDetail(quizId: string) {
         data.value = result
       }
       return result
-    } catch (err) {
+    } catch (err) {  
       error.value = err instanceof Error ? err : new Error('Failed to load quiz detail')
     } finally {
       isLoading.value = false

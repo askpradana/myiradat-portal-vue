@@ -238,7 +238,7 @@
 import { useRoute } from 'vue-router'
 import { useQueryClient } from '@tanstack/vue-query'
 
-import DashboardLayout from '../layouts/DashboardLayout.vue'
+import DashboardLayout from '@/views/layouts/DashboardLayout.vue'
 import Button from '@/components/ui/button/Button.vue'
 import Input from '@/components/ui/input/Input.vue'
 import { Card, CardHeader, CardTitle } from '@/components/ui/card'

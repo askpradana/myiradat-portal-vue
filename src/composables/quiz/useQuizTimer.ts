@@ -87,24 +87,20 @@ export function useQuizTimer() {
   // Methods for controlling timer
   const startTimer = () => {
     // Timer is managed by the store, this is just for external control if needed
-    console.log('Timer start requested')
   }
 
   const pauseTimer = () => {
     // For future implementation if pause functionality is needed
-    console.log('Timer pause requested')
   }
 
   const stopTimer = () => {
     // Timer is managed by the store, this is just for external control if needed
-    console.log('Timer stop requested')
   }
 
   // Auto-submission handler
   const onTimeExpired = (callback: () => void) => {
     watch(() => timeInfo.value.isExpired, (isExpired, wasExpired) => {
       if (isExpired && !wasExpired) {
-        console.log('Quiz time expired - triggering auto-submission')
         callback()
       }
     })
