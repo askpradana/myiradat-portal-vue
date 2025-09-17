@@ -70,7 +70,7 @@ export class QuizService {
                 token: refreshResponse.data.token,
                 expires_at: refreshResponse.data.expires_at,
               }
-              sessionStorage.setItem('auth_token', JSON.stringify(auth))
+              localStorage.setItem('auth_token', JSON.stringify(auth))
 
               return await this.getAvailableQuizzes()
             } else {
@@ -123,7 +123,7 @@ export class QuizService {
                 token: refreshResponse.data.token,
                 expires_at: refreshResponse.data.expires_at,
               }
-              sessionStorage.setItem('auth_token', JSON.stringify(auth))
+              localStorage.setItem('auth_token', JSON.stringify(auth))
 
               return await this.getQuizDetail(quizId)
             } else {
@@ -166,7 +166,7 @@ export class QuizService {
                 token: refreshResponse.data.token,
                 expires_at: refreshResponse.data.expires_at,
               }
-              sessionStorage.setItem('auth_token', JSON.stringify(auth))
+              localStorage.setItem('auth_token', JSON.stringify(auth))
 
               return await this.getQuizSubmissions()
             } else {
@@ -219,7 +219,7 @@ export class QuizService {
                 token: refreshResponse.data.token,
                 expires_at: refreshResponse.data.expires_at,
               }
-              sessionStorage.setItem('auth_token', JSON.stringify(auth))
+              localStorage.setItem('auth_token', JSON.stringify(auth))
 
               return await this.getQuizResult(quizId)
             } else {
@@ -273,7 +273,7 @@ export class QuizService {
                 token: refreshResponse.data.token,
                 expires_at: refreshResponse.data.expires_at,
               }
-              sessionStorage.setItem('auth_token', JSON.stringify(auth))
+              localStorage.setItem('auth_token', JSON.stringify(auth))
 
               return await this.submitQuiz(submission)
             } else {
@@ -326,7 +326,7 @@ export class QuizService {
                 token: refreshResponse.data.token,
                 expires_at: refreshResponse.data.expires_at,
               }
-              sessionStorage.setItem('auth_token', JSON.stringify(auth))
+              localStorage.setItem('auth_token', JSON.stringify(auth))
 
               return await this.checkQuizSubmission(quizId)
             } else {
