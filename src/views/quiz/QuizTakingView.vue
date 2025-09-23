@@ -101,8 +101,9 @@ const handlePrevious = () => {
   previousQuestion()
 }
 
-const handleNext = () => {
+const handleNext = async () => {
   nextQuestion()
+  // Note: Mobile scroll disabled - grid layout fits on screen without scrolling
 }
 
 const handleSubmit = async () => {
@@ -115,6 +116,7 @@ const handleSubmit = async () => {
 
   try {
     await submitCurrentQuiz()
+    // Note: Mobile scroll disabled - grid layout fits on screen without scrolling
   } catch (error) {
     console.error('Submission failed:', error)
   }
@@ -149,10 +151,95 @@ const errorMessage = computed(() => {
 const isLoading = computed(() => {
   return isLoadingQuiz.value || (!quizStore.currentQuiz && !hasError.value)
 })
+
+// Mobile detection for optimized layout
+// const isMobile = computed(() => {
+//   // This will be handled by Tailwind responsive classes
+//   return false // Placeholder - actual detection handled by CSS
+// })
 </script>
 
 <template>
-  <DashboardLayout maxWidth="max-w-4xl" padding="px-4 py-6">
+  <!-- Mobile Quiz Layout (full screen on mobile) -->
+  <div class="min-h-screen bg-background sm:hidden">
+    <!-- Mobile Quiz Content -->
+    <div v-if="isLoading" class="flex items-center justify-center min-h-screen">
+      <div class="text-center space-y-4">
+        <Loader2 class="h-8 w-8 animate-spin mx-auto text-primary" />
+        <p class="text-muted-foreground">Loading quiz...</p>
+      </div>
+    </div>
+
+    <div v-else-if="hasError" class="flex items-center justify-center min-h-screen px-4">
+      <div class="text-center space-y-4">
+        <Alert variant="destructive">
+          <AlertTriangle class="h-4 w-4" />
+          <AlertDescription>
+            {{ errorMessage }}
+          </AlertDescription>
+        </Alert>
+        <BackToQuizButton />
+      </div>
+    </div>
+
+    <div v-else-if="quizStore.hasActiveSession && currentQuestion" class="flex flex-col min-h-screen">
+      <!-- Minimal mobile header -->
+      <div class="flex items-center justify-between p-4 border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <BackToQuizButton />
+        <!-- Simple progress text only -->
+        <span class="text-sm font-medium text-muted-foreground">
+          {{ progress.current }} / {{ progress.total }}
+        </span>
+      </div>
+
+      <!-- Quiz content -->
+      <div class="flex-1 p-4 space-y-4 overflow-y-auto">
+        <!-- Question Section -->
+        <QuestionCard
+          :question="currentQuestion"
+          :question-number="progress.current"
+          :total-questions="progress.total"
+          :current-answer="currentAnswer"
+          :quiz-type="quizStore.currentQuiz!.quiz_type"
+          :disabled="isSubmitting"
+          :mobile-mode="true"
+          @answer="handleAnswer"
+        />
+      </div>
+
+      <!-- Fixed bottom navigation -->
+      <div class="border-t bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 p-4">
+        <QuizNavigation
+          :can-go-previous="navigation.canGoPrevious"
+          :can-go-next="navigation.canGoNext"
+          :is-last-question="navigation.isLastQuestion"
+          :is-first-question="navigation.isFirstQuestion"
+          :has-current-answer="hasAnsweredCurrentQuestion"
+          :is-submitting="isSubmitting"
+          :show-submit-warning="false"
+          :mobile-mode="true"
+          @previous="handlePrevious"
+          @next="handleNext"
+          @submit="handleSubmit"
+        />
+      </div>
+    </div>
+
+    <div v-else class="flex items-center justify-center min-h-screen px-4">
+      <div class="text-center space-y-4">
+        <Alert>
+          <AlertTriangle class="h-4 w-4" />
+          <AlertDescription>
+            No active quiz session found. Please start a new quiz.
+          </AlertDescription>
+        </Alert>
+        <BackToQuizButton />
+      </div>
+    </div>
+  </div>
+
+  <!-- Desktop/Tablet Layout (hidden on mobile) -->
+  <DashboardLayout maxWidth="max-w-4xl" padding="px-4 py-6" class="hidden sm:block">
     <!-- Header with Back Button and Quiz Info -->
     <div class="mb-6">
       <BackToQuizButton />

@@ -12,24 +12,24 @@ interface Props {
   currentAnswer?: number | null
   quizType: 'likert4' | 'likert5' | 'yesno' | 'multiple_choice'
   disabled?: boolean
+  mobileMode?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   currentAnswer: null,
   disabled: false,
+  mobileMode: false,
 })
 
 const emit = defineEmits<{
   answer: [value: number]
 }>()
 
-const questionTitle = computed(() =>
-  `Question ${props.questionNumber} of ${props.totalQuestions}`
-)
+const questionTitle = computed(() => `Question ${props.questionNumber} of ${props.totalQuestions}`)
 
-const isLikertScale = computed(() =>
-  props.quizType === 'likert4' || props.quizType === 'likert5'
-)
+const isLikertScale = computed(() => props.quizType === 'likert4' || props.quizType === 'likert5')
+
+const likertScale = computed(() => props.quizType as 'likert4' | 'likert5')
 
 const handleAnswer = (value: number) => {
   if (!props.disabled) {
@@ -65,17 +65,60 @@ const getQuizTypeBadgeVariant = (type: string) => {
 </script>
 
 <template>
-  <Card class="w-full max-w-4xl mx-auto shadow-sm hover:shadow-md transition-shadow duration-300">
+  <!-- Mobile Mode: Simplified layout without card styling -->
+  <div v-if="mobileMode" class="w-full space-y-3">
+    <!-- Question Content -->
+    <div class="space-y-2">
+      <h2 class="text-base font-medium leading-tight text-foreground line-clamp-3">
+        {{ question.question_content }}
+      </h2>
+
+      <!-- Optional question help text -->
+      <div v-if="question.question_type" class="text-xs text-muted-foreground">
+        Consider how much you agree with this statement.
+      </div>
+    </div>
+
+    <!-- Likert Scale -->
+    <LikertScale
+      v-if="isLikertScale"
+      :scale="likertScale"
+      :value="currentAnswer"
+      :disabled="disabled"
+      @update:value="handleAnswer"
+    />
+
+    <!-- Yes/No Questions (for future implementation) -->
+    <div v-else-if="quizType === 'yesno'" class="space-y-4">
+      <p class="text-sm text-muted-foreground text-center">Yes/No questions coming soon...</p>
+    </div>
+
+    <!-- Multiple Choice (for future implementation) -->
+    <div v-else class="space-y-4">
+      <p class="text-sm text-muted-foreground text-center">
+        Multiple choice questions coming soon...
+      </p>
+    </div>
+
+    <!-- Compact Answer Status -->
+    <div
+      v-if="currentAnswer !== null"
+      class="flex items-center justify-center gap-2 text-xs text-green-700 bg-green-50 py-2 px-3 rounded-md border border-green-100"
+    >
+      <div class="w-1.5 h-1.5 bg-green-500 rounded-full"></div>
+      <span>Tersimpan</span>
+    </div>
+  </div>
+
+  <!-- Desktop Mode: Full card layout -->
+  <Card v-else class="w-full max-w-4xl mx-auto shadow-sm hover:shadow-md transition-shadow duration-300">
     <CardHeader class="space-y-4">
       <!-- Question Header -->
       <div class="flex items-center justify-between gap-4">
         <CardTitle class="text-lg font-semibold text-muted-foreground">
           {{ questionTitle }}
         </CardTitle>
-        <Badge
-          :variant="getQuizTypeBadgeVariant(quizType)"
-          class="text-xs shrink-0"
-        >
+        <Badge :variant="getQuizTypeBadgeVariant(quizType)" class="text-xs shrink-0">
           {{ getQuizTypeLabel(quizType) }}
         </Badge>
       </div>
@@ -87,10 +130,7 @@ const getQuizTypeBadgeVariant = (type: string) => {
         </h2>
 
         <!-- Optional question help text -->
-        <div
-          v-if="question.question_type"
-          class="text-sm text-muted-foreground"
-        >
+        <div v-if="question.question_type" class="text-sm text-muted-foreground">
           Consider how much you agree with this statement.
         </div>
       </div>
@@ -100,27 +140,19 @@ const getQuizTypeBadgeVariant = (type: string) => {
       <!-- Likert Scale -->
       <LikertScale
         v-if="isLikertScale"
-        :scale="(quizType as 'likert4' | 'likert5')"
+        :scale="likertScale"
         :value="currentAnswer"
         :disabled="disabled"
         @update:value="handleAnswer"
       />
 
       <!-- Yes/No Questions (for future implementation) -->
-      <div
-        v-else-if="quizType === 'yesno'"
-        class="space-y-4"
-      >
-        <p class="text-sm text-muted-foreground text-center">
-          Yes/No questions coming soon...
-        </p>
+      <div v-else-if="quizType === 'yesno'" class="space-y-4">
+        <p class="text-sm text-muted-foreground text-center">Yes/No questions coming soon...</p>
       </div>
 
       <!-- Multiple Choice (for future implementation) -->
-      <div
-        v-else
-        class="space-y-4"
-      >
+      <div v-else class="space-y-4">
         <p class="text-sm text-muted-foreground text-center">
           Multiple choice questions coming soon...
         </p>
@@ -132,7 +164,7 @@ const getQuizTypeBadgeVariant = (type: string) => {
         class="flex items-center justify-center gap-2 text-sm text-green-700 bg-green-50 py-3 px-4 rounded-lg border border-green-100"
       >
         <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-        <span>Response recorded</span>
+        <span>Jawaban {{ currentAnswer }} Tersimpan</span>
       </div>
     </CardContent>
   </Card>
