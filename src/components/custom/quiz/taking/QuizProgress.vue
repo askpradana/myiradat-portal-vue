@@ -10,10 +10,12 @@ interface Props {
   percentage: number
   answered: number[]
   showSteps?: boolean
+  mobileMode?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
   showSteps: true,
+  mobileMode: false,
 })
 
 const progressText = computed(() => `Question ${props.current} of ${props.total}`)
@@ -52,8 +54,8 @@ const visibleSteps = computed(() => {
 
 <template>
   <div class="space-y-4">
-    <!-- Main Progress Bar -->
-    <div class="space-y-2">
+    <!-- Main Progress Bar (hidden in mobile mode) -->
+    <div v-if="!mobileMode" class="space-y-2">
       <div class="flex items-center justify-between text-sm">
         <span class="font-medium">{{ progressText }}</span>
         <Badge variant="secondary" class="text-xs">
@@ -67,9 +69,16 @@ const visibleSteps = computed(() => {
       />
     </div>
 
+    <!-- Mobile minimal progress (only in mobile mode) -->
+    <div v-if="mobileMode" class="text-center">
+      <span class="text-sm font-medium text-muted-foreground">
+        Question {{ current }} of {{ total }}
+      </span>
+    </div>
+
     <!-- Step-by-step Progress (Desktop) -->
     <div
-      v-if="showSteps && total <= 20"
+      v-if="!mobileMode && showSteps && total <= 20"
       class="hidden md:block"
     >
       <div class="flex items-center gap-1 flex-wrap">
@@ -113,7 +122,7 @@ const visibleSteps = computed(() => {
 
     <!-- Condensed Progress for Many Questions -->
     <div
-      v-else-if="showSteps && total > 20"
+      v-else-if="!mobileMode && showSteps && total > 20"
       class="hidden md:block"
     >
       <div class="flex items-center gap-2">
@@ -139,8 +148,8 @@ const visibleSteps = computed(() => {
       </div>
     </div>
 
-    <!-- Mobile Compact View -->
-    <div class="md:hidden">
+    <!-- Mobile Compact View (only when not in mobile mode and on small screens) -->
+    <div v-if="!mobileMode" class="md:hidden">
       <div class="flex items-center justify-between text-xs text-muted-foreground">
         <span>{{ answered.length }} answered</span>
         <span>{{ total - answered.length }} remaining</span>

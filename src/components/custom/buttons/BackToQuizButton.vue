@@ -1,7 +1,7 @@
 <template>
   <Button @click="backToQuizHub" variant="ghost" size="sm">
     <ArrowLeft class="h-4 w-4 mr-2" />
-    Back to Quizzes
+    Kembali ke Pilihan Quiz
   </Button>
 </template>
 
