@@ -15,3 +15,19 @@ export interface AdminServicesResponse {
   }
   timestamp: string
 }
+
+export interface ServiceRedirectRequest {
+  service_code: string
+}
+
+export interface ServiceRedirectResponse {
+  success: boolean
+  message: string
+  data: {
+    service_token: string
+    redirect_url: string
+    service: ServiceInterface
+    expires_at: string
+  }
+  timestamp: string
+}

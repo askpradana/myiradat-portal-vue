@@ -1,13 +1,18 @@
 <template>
-  <a
-    :href="service.redirect_to"
-    target="_blank"
-    rel="noopener noreferrer"
+  <div
     class="block group"
+    :class="[
+      isRedirecting ? 'cursor-wait' : 'cursor-pointer'
+    ]"
     @click="handleServiceClick"
   >
     <Card
-      class="h-full transition-all duration-300 ease-out hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1 group-hover:border-primary/50 cursor-pointer overflow-hidden"
+      class="h-full transition-all duration-300 ease-out overflow-hidden"
+      :class="[
+        isRedirecting
+          ? 'opacity-75 cursor-wait'
+          : 'hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1 group-hover:border-primary/50 cursor-pointer'
+      ]"
     >
       <!-- Service Image -->
       <div
@@ -38,14 +43,28 @@
           </div>
         </div>
 
-        <!-- External Link Indicator -->
+        <!-- External Link / Loading Indicator -->
         <div
-          class="absolute top-3 right-3 opacity-0 group-hover:opacity-100 transition-opacity duration-200"
+          class="absolute top-3 right-3 transition-opacity duration-200"
+          :class="[
+            isRedirecting
+              ? 'opacity-100'
+              : 'opacity-0 group-hover:opacity-100'
+          ]"
         >
           <div
             class="w-8 h-8 rounded-full bg-background/90 backdrop-blur-sm flex items-center justify-center"
           >
-            <SquareArrowOutUpRight :size="14" class="text-foreground" />
+            <Loader2
+              v-if="isRedirecting"
+              :size="14"
+              class="text-primary animate-spin"
+            />
+            <SquareArrowOutUpRight
+              v-else
+              :size="14"
+              class="text-foreground"
+            />
           </div>
         </div>
       </div>
@@ -81,16 +100,16 @@
         </div>
       </CardContent>
     </Card>
-  </a>
+  </div>
 </template>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { Card, CardContent } from '@/components/ui/card'
-import { SquareArrowOutUpRight, ExternalLink } from 'lucide-vue-next'
+import { SquareArrowOutUpRight, ExternalLink, Loader2 } from 'lucide-vue-next'
 
 import type { DashboardServiceInterface } from '@/types/dashboard'
-import { isValidUrl } from '@/lib/dashboard-utils'
+import { useServiceRedirect } from '@/composables/services/useServiceRedirect'
 
 interface Props {
   service: DashboardServiceInterface
@@ -102,6 +121,9 @@ interface Emits {
 
 const props = defineProps<Props>()
 const emit = defineEmits<Emits>()
+
+// Service redirect composable
+const { handleServiceRedirect, isPending: isRedirecting } = useServiceRedirect()
 
 // Image loading state
 const imageLoading = ref(true)
@@ -128,16 +150,23 @@ const handleImageError = () => {
   imageError.value = true
 }
 
-// Handle service click with validation
-const handleServiceClick = (event: Event) => {
-  if (!props.service.redirect_to || !isValidUrl(props.service.redirect_to)) {
-    event.preventDefault()
-    console.warn('Invalid or missing redirect URL for service:', props.service.name)
+// Handle service click with API redirect
+const handleServiceClick = () => {
+  if (!props.service.code) {
+    console.warn('Missing service code for service:', props.service.name)
+    return
+  }
+
+  // Don't allow clicks while redirecting
+  if (isRedirecting.value) {
     return
   }
 
   // Track service click
   emit('click', props.service)
+
+  // Initiate service redirect
+  handleServiceRedirect(props.service.code)
 }
 </script>
 

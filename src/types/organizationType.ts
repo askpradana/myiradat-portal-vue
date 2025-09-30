@@ -25,7 +25,7 @@ export interface AddressOfOrganizationInterface {
 }
 
 export interface ResponseAPIGetOrganizations {
-  susscess: boolean
+  success: boolean
   message: string
   data: {
     organizations: OrganizationInterface[]

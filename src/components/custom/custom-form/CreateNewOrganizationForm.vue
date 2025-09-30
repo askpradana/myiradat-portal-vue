@@ -22,6 +22,7 @@ import {
   type CreateOrganizationFormType,
 } from '@/lib/zod-schemas/CreateOrganizationFormSchema'
 import { HousePlus } from 'lucide-vue-next'
+import { useRouter } from 'vue-router'
 
 const validationSchema = CreateOrganizationSchema
 const { handleSubmit, errors, resetForm } = useForm<CreateOrganizationFormType>({
@@ -62,24 +63,23 @@ const { value: state } = useField<string>('address.state')
 const { value: country } = useField<string>('address.country')
 const { value: postal_code } = useField<string>('address.postal_code')
 
+const router = useRouter()
 const queryClient = useQueryClient()
 const { mutate, isPending } = useMutation({
   mutationFn: async (values: NewOrganizationInterface) => {
-    // Convert address object to JSON string for API
-    // const formattedValues = {
-    //   ...values,
-    //   address: JSON.stringify(values.address),
-    // }
     return await createNewOrganization(values)
   },
 
   onSuccess: (response) => {
-    if (response) {
+    if (response && response.success === true) {
       toast('Success', {
         description: `${response?.message || 'Organization has been created'}`,
       })
       queryClient.invalidateQueries({ queryKey: ['organizations'] })
       resetForm()
+
+      // Navigate back to previous page
+      router.back()
     }
   },
   onError: (error) => {
@@ -90,11 +90,7 @@ const { mutate, isPending } = useMutation({
 })
 
 const onSubmit = handleSubmit(async (values) => {
-  const formattedValues = {
-    ...values,
-    address: JSON.stringify(values.address),
-  }
-  mutate(formattedValues)
+  mutate(values)
 })
 
 const sizeCategories = [
