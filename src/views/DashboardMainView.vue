@@ -1,29 +1,34 @@
 <template>
   <div class="space-y-8">
     <!-- Welcome Section -->
-    <div class="mb-12">
-      <h1 class="text-3xl sm:text-4xl font-bold text-foreground mb-3 leading-tight tracking-tight">
+    <div class="mb-8 sm:mb-12">
+      <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-2 sm:mb-3 leading-tight tracking-tight">
         Welcome back, {{ userStore.user?.name || 'User' }}!
       </h1>
-      <p class="text-lg text-muted-foreground leading-relaxed">
+      <p class="text-base sm:text-lg text-muted-foreground leading-relaxed">
         Access your services and manage your account from your dashboard.
       </p>
     </div>
 
     <!-- Services Section -->
     <section aria-labelledby="services-heading">
-      <div class="flex items-center justify-between mb-8">
+      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4 sm:gap-0">
         <div>
-          <h2 id="services-heading" class="text-2xl font-semibold text-foreground mb-1 leading-snug tracking-tight">
+          <h2 id="services-heading" class="text-xl sm:text-2xl font-semibold text-foreground mb-1 leading-snug tracking-tight">
             Your Services
           </h2>
-          <p class="text-base text-muted-foreground">
+          <p class="text-sm sm:text-base text-muted-foreground">
             {{ servicesCount }} service{{ servicesCount === 1 ? '' : 's' }} available
           </p>
         </div>
-        
-        <div v-if="userRole === 'admin'" class="flex gap-2">
-          <Button variant="outline" size="sm" @click="handleRefreshServices">
+
+        <div v-if="userRole === 'admin'" class="flex gap-2 w-full sm:w-auto">
+          <Button
+            variant="outline"
+            size="sm"
+            @click="handleRefreshServices"
+            class="w-full sm:w-auto h-10 sm:h-auto"
+          >
             <RefreshCw :size="16" class="mr-2" />
             Refresh
           </Button>
@@ -31,7 +36,7 @@
       </div>
 
       <!-- Loading State -->
-      <div v-if="isLoading" class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
+      <div v-if="isLoading" class="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         <CardServiceSkeleton v-for="n in 6" :key="n" />
       </div>
 
@@ -50,9 +55,9 @@
       </div>
 
       <!-- Services Grid -->
-      <div 
-        v-else 
-        class="grid gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+      <div
+        v-else
+        class="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
         role="grid"
         aria-label="Available services"
       >

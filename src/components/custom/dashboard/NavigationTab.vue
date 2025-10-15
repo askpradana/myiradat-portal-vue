@@ -1,76 +1,107 @@
 <template>
   <!-- Navigation Tabs -->
-  <div class="mb-8">
+  <div class="mb-6 sm:mb-8">
     <div class="border-b border-border">
-      <nav class="-mb-px flex space-x-8">
+      <!-- Mobile: Horizontal scroll tabs -->
+      <nav class="-mb-px flex sm:space-x-8 overflow-x-auto scrollbar-hide snap-x snap-mandatory pb-1 sm:pb-0" role="tablist">
         <button
           @click="selectTab('dashboard')"
           :class="[
-            'py-2 px-1 border-b-2 font-medium text-sm',
+            'py-3 px-4 sm:py-2 sm:px-1 border-b-2 font-medium text-sm sm:text-sm whitespace-nowrap flex-shrink-0 snap-start touch-manipulation transition-colors',
+            'min-w-[44px] h-12 sm:h-auto flex items-center justify-center sm:block',
             activeTab === 'dashboard'
-              ? 'border-primary/50 text-primary'
+              ? 'border-primary text-primary'
               : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border',
           ]"
+          role="tab"
+          :aria-selected="activeTab === 'dashboard'"
         >
-          Dashboard
+          <span class="sm:hidden">📊</span>
+          <span class="hidden sm:inline">Dashboard</span>
+          <span class="sm:hidden ml-2">Dashboard</span>
         </button>
         <button
           v-if="userStore.user?.role_id === 1"
           @click="selectTab('users')"
           :class="[
-            'py-2 px-1 border-b-2 font-medium text-sm',
+            'py-3 px-4 sm:py-2 sm:px-1 border-b-2 font-medium text-sm sm:text-sm whitespace-nowrap flex-shrink-0 snap-start touch-manipulation transition-colors',
+            'min-w-[44px] h-12 sm:h-auto flex items-center justify-center sm:block',
             activeTab === 'users'
-              ? 'border-primary/50 text-primary'
+              ? 'border-primary text-primary'
               : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border',
           ]"
+          role="tab"
+          :aria-selected="activeTab === 'users'"
         >
-          Users Management
+          <span class="sm:hidden">👥</span>
+          <span class="hidden sm:inline">Users Management</span>
+          <span class="sm:hidden ml-2">Users</span>
         </button>
         <button
           v-if="userStore.user?.role_id === 1"
           @click="selectTab('organizations')"
           :class="[
-            'py-2 px-1 border-b-2 font-medium text-sm',
+            'py-3 px-4 sm:py-2 sm:px-1 border-b-2 font-medium text-sm sm:text-sm whitespace-nowrap flex-shrink-0 snap-start touch-manipulation transition-colors',
+            'min-w-[44px] h-12 sm:h-auto flex items-center justify-center sm:block',
             activeTab === 'organizations'
-              ? 'border-primary/50 text-primary'
+              ? 'border-primary text-primary'
               : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border',
           ]"
+          role="tab"
+          :aria-selected="activeTab === 'organizations'"
         >
-          Organizations
+          <span class="sm:hidden">🏢</span>
+          <span class="hidden sm:inline">Organizations</span>
+          <span class="sm:hidden ml-2">Organizations</span>
         </button>
         <button
           @click="selectTab('data')"
           :class="[
-            'py-2 px-1 border-b-2 font-medium text-sm',
+            'py-3 px-4 sm:py-2 sm:px-1 border-b-2 font-medium text-sm sm:text-sm whitespace-nowrap flex-shrink-0 snap-start touch-manipulation transition-colors',
+            'min-w-[44px] h-12 sm:h-auto flex items-center justify-center sm:block',
             activeTab === 'data'
-              ? 'border-primary/50 text-primary'
+              ? 'border-primary text-primary'
               : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border',
           ]"
+          role="tab"
+          :aria-selected="activeTab === 'data'"
         >
-          User Data
+          <span class="sm:hidden">📋</span>
+          <span class="hidden sm:inline">User Data</span>
+          <span class="sm:hidden ml-2">Data</span>
         </button>
         <button
           @click="selectTab('assessments')"
           :class="[
-            'py-2 px-1 border-b-2 font-medium text-sm',
+            'py-3 px-4 sm:py-2 sm:px-1 border-b-2 font-medium text-sm sm:text-sm whitespace-nowrap flex-shrink-0 snap-start touch-manipulation transition-colors',
+            'min-w-[44px] h-12 sm:h-auto flex items-center justify-center sm:block',
             activeTab === 'assessments'
-              ? 'border-primary/50 text-primary'
+              ? 'border-primary text-primary'
               : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border',
           ]"
+          role="tab"
+          :aria-selected="activeTab === 'assessments'"
         >
-          Fun Quiz
+          <span class="sm:hidden">🎯</span>
+          <span class="hidden sm:inline">Fun Quiz</span>
+          <span class="sm:hidden ml-2">Quiz</span>
         </button>
         <button
           v-if="userStore.user?.role_id === 2"
           @click="selectTab('profile')"
           :class="[
-            'py-2 px-1 border-b-2 font-medium text-sm',
+            'py-3 px-4 sm:py-2 sm:px-1 border-b-2 font-medium text-sm sm:text-sm whitespace-nowrap flex-shrink-0 snap-start touch-manipulation transition-colors',
+            'min-w-[44px] h-12 sm:h-auto flex items-center justify-center sm:block',
             activeTab === 'profile'
-              ? 'border-primary/50 text-primary'
+              ? 'border-primary text-primary'
               : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border',
           ]"
+          role="tab"
+          :aria-selected="activeTab === 'profile'"
         >
-          User Profile
+          <span class="sm:hidden">👤</span>
+          <span class="hidden sm:inline">User Profile</span>
+          <span class="sm:hidden ml-2">Profile</span>
         </button>
       </nav>
     </div>
@@ -97,3 +128,28 @@ const selectTab = (tab: DashboardTab) => {
   emit('changeTab', tab)
 }
 </script>
+
+<style scoped>
+/* Hide scrollbar for mobile tabs */
+.scrollbar-hide {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none; /* Chrome, Safari and Opera */
+}
+
+/* Smooth scroll behavior */
+nav {
+  scroll-behavior: smooth;
+}
+
+/* Enhanced touch targets for mobile */
+@media (max-width: 640px) {
+  button[role="tab"] {
+    min-height: 48px;
+    min-width: 120px;
+  }
+}
+</style>

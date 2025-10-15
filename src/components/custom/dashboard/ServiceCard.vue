@@ -1,17 +1,17 @@
 <template>
   <div
-    class="block group"
+    class="block group touch-manipulation"
     :class="[
       isRedirecting ? 'cursor-wait' : 'cursor-pointer'
     ]"
     @click="handleServiceClick"
   >
     <Card
-      class="h-full transition-all duration-300 ease-out overflow-hidden"
+      class="h-full transition-all duration-300 ease-out overflow-hidden min-h-[160px] sm:min-h-[200px]"
       :class="[
         isRedirecting
           ? 'opacity-75 cursor-wait'
-          : 'hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1 group-hover:border-primary/50 cursor-pointer'
+          : 'hover:shadow-lg hover:shadow-primary/10 hover:-translate-y-1 group-hover:border-primary/50 cursor-pointer active:scale-95 sm:active:scale-100'
       ]"
     >
       <!-- Service Image -->

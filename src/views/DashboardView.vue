@@ -2,7 +2,9 @@
   <DashboardLayout
     :active-tab="activeTab"
     :user-role="userRole"
+    :show-fab="userRole === 'admin' && activeTab === 'dashboard'"
     @tab-change="changeTab"
+    @fab-click="handleAdminQuickActions"
   >
     <!-- Redirect notifications -->
     <RedirectNotification />
@@ -135,5 +137,12 @@ const activeTab = computed<DashboardTab>(() => getTabFromPath(route.path))
 const changeTab = async (tab: DashboardTab) => {
   const path = getPathForTab(tab)
   await router.push(path)
+}
+
+// Admin quick actions handler
+const handleAdminQuickActions = () => {
+  // For now, redirect to user management which is the most common admin action
+  // In the future, this could open a quick actions menu
+  changeTab('users')
 }
 </script>

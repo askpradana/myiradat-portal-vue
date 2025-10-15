@@ -15,7 +15,7 @@
       :class="[
         'mx-auto',
         config.maxWidth || 'max-w-7xl',
-        config.padding || 'px-4 sm:px-6 lg:px-8 py-8',
+        config.padding || 'px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8',
       ]"
     >
       <!-- Navigation Section -->
@@ -145,7 +145,7 @@ const componentError = ref<string | null>(null)
 // Default configuration with user overrides
 const config = computed(() => ({
   maxWidth: 'max-w-7xl',
-  padding: 'px-4 sm:px-6 lg:px-8 py-8',
+  padding: 'px-4 sm:px-6 lg:px-8 py-4 sm:py-6 lg:py-8',
   showHeader: true,
   showNavigation: true,
   ...props.config,
