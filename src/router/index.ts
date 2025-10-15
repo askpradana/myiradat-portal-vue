@@ -276,22 +276,28 @@ router.beforeEach(async (to, from, next) => {
   }
 
   // Handle dashboard tab accessibility for authenticated users
-  if (isAuthenticated && to.path.startsWith('/dashboard/') && to.path !== '/dashboard') {
-    const userRole = getUserRole(userStore.user)
-    const requestedTab = to.path.split('/dashboard/')[1].split('/')[0] as DashboardTab
+  if (isAuthenticated && to.path.startsWith('/dashboard/') && to.path !== '/dashboard' && !to.path.startsWith('/dashboard/admin/')) {
+    // Skip tab validation for user service routes (e.g., /dashboard/{userId}/services)
+    const pathSegments = to.path.split('/dashboard/')[1].split('/')
+    const isUserServiceRoute = pathSegments.length >= 2 && pathSegments[1] === 'services'
 
-    if (!isTabAccessible(requestedTab, userRole)) {
-      // Tab not accessible, redirect to default path for role
-      const defaultPath = getRoleRedirectPath(userRole)
-      next({
-        path: defaultPath,
-        query: {
-          tabRedirect: 'true',
-          originalTab: requestedTab,
-          message: `${requestedTab.charAt(0).toUpperCase() + requestedTab.slice(1)} section is not available for your account type`,
-        },
-      })
-      return
+    if (!isUserServiceRoute) {
+      const userRole = getUserRole(userStore.user)
+      const requestedTab = pathSegments[0] as DashboardTab
+
+      if (!isTabAccessible(requestedTab, userRole)) {
+        // Tab not accessible, redirect to default path for role
+        const defaultPath = getRoleRedirectPath(userRole)
+        next({
+          path: defaultPath,
+          query: {
+            tabRedirect: 'true',
+            originalTab: requestedTab,
+            message: `${requestedTab.charAt(0).toUpperCase() + requestedTab.slice(1)} section is not available for your account type`,
+          },
+        })
+        return
+      }
     }
   }
 

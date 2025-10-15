@@ -10,29 +10,31 @@ import {
 import { Upload, FileText, X } from 'lucide-vue-next'
 import { toast } from 'vue-sonner'
 import { Button } from '@/components/ui/button'
-import { useMutation, useQueryClient } from '@tanstack/vue-query'
-import { RegisterUserByCSV } from '@/api/users/createUserCSV'
+import { useMutation } from '@tanstack/vue-query'
+import { uploadCSVForReview, type BatchRegisterCSVData } from '@/api/users/createUserCSV'
 
 const open = ref(false)
 const selectedFile = ref<File | null>(null)
 const isDragOver = ref(false)
 const fileInputRef = ref<HTMLInputElement | null>(null)
 
-const queryClient = useQueryClient()
+const emit = defineEmits<{
+  'csv-uploaded': [data: BatchRegisterCSVData]
+}>()
 
 const { mutate: uploadCSV, isPending } = useMutation({
-  mutationFn: RegisterUserByCSV,
+  mutationFn: uploadCSVForReview,
   onSuccess: (response) => {
     if (response) {
-      toast('Success', {
-        description: `${response?.message}`,
+      toast('CSV Uploaded Successfully', {
+        description: 'Review the data below and make any necessary corrections',
       })
-      queryClient.invalidateQueries({ queryKey: ['users'] })
+      emit('csv-uploaded', response.data)
       resetAndClose()
     }
   },
   onError: (error) => {
-    toast('Error', {
+    toast('Upload Failed', {
       description: `Failed to upload CSV: ${error.message}`,
     })
   },

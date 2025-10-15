@@ -12,7 +12,13 @@ export interface NewOrganizationInterface {
   phone: string
   website_url?: string | undefined
   logo_url?: string | undefined
-  address: string
+  address: {
+    street: string
+    city: string
+    state: string
+    country: string
+    postal_code: string
+  }
 }
 
 export const createNewOrganization = async (

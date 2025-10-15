@@ -1,14 +1,23 @@
 import { useUserStore } from '@/stores/userStores'
 import { refreshToken } from '@/api/refreshToken'
-import { type BatchRegisterAPIResponse, batchRegisterUsers } from './createUserBatch'
 
 interface ValidationResultsInterface {
   errors: string[]
+  warnings?: string[]
   row_number: number
   valid: boolean
 }
 
+export interface CSVParsedUser {
+  row_number: number
+  email: string
+  phone: string
+  name: string
+  role: string
+}
+
 export interface BatchRegisterCSVData {
+  parsed_users: CSVParsedUser[]
   validation_results: ValidationResultsInterface[]
   summary: {
     file_format: string
@@ -20,6 +29,8 @@ export interface BatchRegisterCSVData {
     valid_rows: number
     warning_rows: number
   }
+  preview_id: string
+  expires_at: string
 }
 
 export interface BatchRegisterCSVAPIResponse {
@@ -29,9 +40,9 @@ export interface BatchRegisterCSVAPIResponse {
   timestamp: string
 }
 
-export const RegisterUserByCSV = async (
+export const uploadCSVForReview = async (
   CSVFile: File,
-): Promise<BatchRegisterAPIResponse | BatchRegisterCSVAPIResponse> => {
+): Promise<BatchRegisterCSVAPIResponse> => {
   try {
     const userStore = useUserStore()
     const token = userStore.auth?.token
@@ -66,7 +77,7 @@ export const RegisterUserByCSV = async (
             }
             localStorage.setItem('auth_token', JSON.stringify(auth))
 
-            return await RegisterUserByCSV(CSVFile)
+            return await uploadCSVForReview(CSVFile)
           } else {
             throw new Error(errorMessage || 'The session has ended, please login again')
           }
@@ -81,14 +92,10 @@ export const RegisterUserByCSV = async (
     }
 
     const data = await response.json()
-
-    // if (data.data.summary.invalid_rows > 0) {
-    // throw new Error(`Please check all data formats. OR some data may be registered.`)
-    // }
-    const result = await batchRegisterUsers(data.data.parsed_users, 'csv')
-
-    return result
-  } catch (error) {  
+    return data
+  } catch (error) {
     throw error
   }
 }
+
+export const RegisterUserByCSV = uploadCSVForReview
