@@ -1,0 +1,59 @@
+{
+  "navigation": {
+    "dashboard": "Dashboard",
+    "userManagement": "User Management",
+    "organizationManagement": "Organization Management",
+    "services": "Services",
+    "profile": "Profile",
+    "quiz": "Quiz",
+    "results": "Results"
+  },
+  "header": {
+    "adminDashboard": "Admin Dashboard",
+    "csDashboard": "CS Dashboard",
+    "iradat": "Iradat",
+    "adminSubtitle": "Manage users and organizations",
+    "csSubtitle": "Customer support panel",
+    "welcomeSubtitle": "Welcome to your dashboard"
+  },
+  "admin": {
+    "users": {
+      "title": "User Management",
+      "createUser": "Create New User",
+      "editUser": "Edit User",
+      "deleteUser": "Delete User",
+      "batchCreate": "Batch Create Users",
+      "userDetails": "User Details"
+    },
+    "organizations": {
+      "title": "Organization Management",
+      "createOrganization": "Create New Organization",
+      "editOrganization": "Edit Organization",
+      "deleteOrganization": "Delete Organization",
+      "organizationDetails": "Organization Details",
+      "members": "Members"
+    }
+  },
+  "user": {
+    "profile": {
+      "title": "My Profile",
+      "editProfile": "Edit Profile",
+      "personalInfo": "Personal Information",
+      "accountSettings": "Account Settings"
+    },
+    "services": {
+      "title": "My Services",
+      "noServices": "No services available",
+      "linkService": "Link Service",
+      "unlinkService": "Unlink Service"
+    }
+  },
+  "quiz": {
+    "title": "Quiz",
+    "takeQuiz": "Take Quiz",
+    "viewResults": "View Results",
+    "completed": "Completed",
+    "inProgress": "In Progress",
+    "notStarted": "Not Started"
+  }
+}

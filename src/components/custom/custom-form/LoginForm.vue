@@ -12,11 +12,13 @@ import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
 import { Eye, EyeClosed } from 'lucide-vue-next'
 import type { UserLoginInterface, Service } from '@/stores/userStores'
+import { useI18n } from 'vue-i18n'
 
 const loading = ref(false)
 const isShowPassword = ref(false)
 const router = useRouter()
 const userStore = useUserStore()
+const { t } = useI18n()
 
 const showPassword = () => {
   isShowPassword.value = !isShowPassword.value
@@ -51,8 +53,8 @@ const onSubmit = handleSubmit(async (values) => {
           user_id: response.data.user_id,
         },
       })
-      toast('Email Verification Required', {
-        description: response.message || 'Please verify your email address to continue',
+      toast(t('auth.messages.emailVerificationRequired'), {
+        description: response.message || t('auth.messages.verifyEmailToContinue'),
       })
       return
     }
@@ -68,7 +70,7 @@ const onSubmit = handleSubmit(async (values) => {
         services: (response.data.services || []) as unknown as Service[],
       })
     }
-    toast('Success', {
+    toast(t('auth.messages.success'), {
       description: `${response?.message}`,
     })
     router.replace('/dashboard')
@@ -81,22 +83,22 @@ const onSubmit = handleSubmit(async (values) => {
     class="w-full max-w-md mx-auto shadow-2xl shadow-primary/25 ring-1 ring-white/10 border-0 bg-card/50 backdrop-blur-sm"
   >
     <CardHeader class="space-y-1 pb-2">
-      <CardTitle class="text-2xl font-semibold text-center text-foreground">Welcome back</CardTitle>
+      <CardTitle class="text-2xl font-semibold text-center text-foreground">{{ t('auth.welcome.title') }}</CardTitle>
       <CardDescription class="text-center text-muted-foreground">
-        Enter your credentials to access your account
+        {{ t('auth.welcome.description') }}
       </CardDescription>
     </CardHeader>
 
     <CardContent class="space-y-6">
       <form @submit="onSubmit" class="space-y-4">
         <div class="space-y-2">
-          <Label for="email" class="text-sm font-medium text-foreground">Email address</Label>
+          <Label for="email" class="text-sm font-medium text-foreground">{{ t('auth.form.email') }}</Label>
           <Input
             id="email"
             name="email"
             autocomplete="email"
             type="email"
-            placeholder="Enter your email"
+            :placeholder="t('auth.form.enterEmail')"
             class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
             required
             v-model="email"
@@ -106,14 +108,14 @@ const onSubmit = handleSubmit(async (values) => {
 
         <div class="space-y-2">
           <div class="relative">
-            <Label for="password" class="text-sm font-medium text-foreground">Password</Label>
+            <Label for="password" class="text-sm font-medium text-foreground">{{ t('auth.form.password') }}</Label>
             <div class="relative mt-2">
               <Input
                 id="password"
                 name="current-password"
                 autocomplete="current-password"
                 :type="isShowPassword ? 'text' : 'password'"
-                placeholder="Enter your password"
+                :placeholder="t('auth.form.enterPassword')"
                 class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
                 required
                 v-model="password"
@@ -135,7 +137,7 @@ const onSubmit = handleSubmit(async (values) => {
               type="button"
               class="text-sm text-primary hover:text-primary/80 transition-colors duration-200 underline-offset-4 hover:underline"
             >
-              Forgot password?
+              {{ t('auth.buttons.forgotPassword') }}
             </buton>
           </div>
           <span class="text-xs text-red-400">{{ errors.password }}</span>
@@ -148,20 +150,20 @@ const onSubmit = handleSubmit(async (values) => {
           :disabled="loading"
           :class="loading && 'bg-gray-500 pointer-events-none'"
         >
-          {{ loading ? 'Please wait...' : 'Sign in' }}
+          {{ loading ? t('auth.buttons.pleaseWait') : t('auth.buttons.signIn') }}
         </Button>
       </form>
     </CardContent>
 
     <div class="px-6 pb-6 text-center">
       <p class="text-sm text-muted-foreground">
-        Don't have an account?
+        {{ t('auth.login.noAccount') }}
         <button
           @click="() => router.replace('/register')"
           type="button"
           class="font-medium text-primary hover:text-primary/80 transition-colors duration-200 underline-offset-4 hover:underline ml-1"
         >
-          Sign up
+          {{ t('auth.buttons.signUp') }}
         </button>
       </p>
     </div>

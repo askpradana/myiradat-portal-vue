@@ -5,41 +5,34 @@
         class="bg-background/80 backdrop-blur-lg border border-border/30 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3"
       >
         <div class="flex justify-between items-center">
-          <!-- Logo -->
-          <div class="flex items-center space-x-3">
-            <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-              <span class="text-primary-foreground font-bold text-sm">IR</span>
+          <!-- Left side: Logo and Language Chooser -->
+          <div class="flex items-center space-x-6">
+            <!-- Logo -->
+            <div class="flex items-center space-x-3">
+              <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+                <span class="text-primary-foreground font-bold text-sm">IR</span>
+              </div>
+              <div class="flex flex-col">
+                <span class="text-xl font-bold text-foreground">{{ t('homepage.header.brand.name') }}</span>
+                <span class="text-xs text-muted-foreground -mt-1">{{ t('homepage.header.brand.tagline') }}</span>
+              </div>
             </div>
-            <div class="flex flex-col">
-              <span class="text-xl font-bold text-foreground">IRADAT</span>
-              <span class="text-xs text-muted-foreground -mt-1">All-in-One Portal</span>
+
+            <!-- Language Chooser -->
+            <div class="hidden sm:block">
+              <LanguageChooser />
             </div>
           </div>
-
-          <!-- Desktop Navigation -->
-          <nav class="hidden lg:flex items-center space-x-8">
-            <a
-              v-for="item in navigation"
-              :key="item.href"
-              :href="item.href"
-              class="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors duration-200 relative group"
-            >
-              {{ item.label }}
-              <span
-                class="absolute -bottom-1 left-0 w-0 h-0.5 bg-primary transition-all duration-200 group-hover:w-full"
-              ></span>
-            </a>
-          </nav>
 
           <!-- Trust Indicators (Desktop) -->
           <div class="hidden xl:flex items-center space-x-4 text-xs text-muted-foreground">
             <div class="flex items-center space-x-1">
               <div class="w-2 h-2 bg-green-500 rounded-full"></div>
-              <span>99.9% Uptime</span>
+              <span>{{ t('homepage.header.trust.uptime') }}</span>
             </div>
             <div class="flex items-center space-x-1">
               <ShieldCheck class="w-3 h-3" />
-              <span>SOC 2 Certified</span>
+              <span>{{ t('homepage.header.trust.certified') }}</span>
             </div>
           </div>
 
@@ -47,18 +40,18 @@
           <div class="flex items-center gap-3">
             <ThemeToggle />
             <Button @click="navigateToLogin" variant="ghost" size="sm" class="hidden sm:flex">
-              Sign In
+              {{ t('homepage.header.buttons.signIn') }}
             </Button>
             <Button
               @click="navigateToRegister"
               size="sm"
               class="shadow-sm hover:shadow-md transition-shadow hidden sm:block"
             >
-              Start Free Trial
+              {{ t('homepage.header.buttons.startFreeTrial') }}
             </Button>
 
             <!-- Mobile Menu Button -->
-            <Button variant="ghost" size="sm" class="lg:hidden" @click="toggleMobileMenu">
+            <Button variant="ghost" size="sm" class="sm:hidden" @click="toggleMobileMenu">
               <Menu class="w-5 h-5" />
             </Button>
           </div>
@@ -67,27 +60,27 @@
     </div>
 
     <!-- Mobile Navigation Overlay -->
-    <div v-if="showMobileMenu" class="lg:hidden">
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 mt-2">
+    <div v-if="showMobileMenu" class="sm:hidden">
+      <div class="max-w-7xl mx-auto px-4 mt-2">
         <div
           class="bg-background/90 backdrop-blur-lg border border-border/30 rounded-2xl shadow-lg py-4 animate-in slide-in-from-top-2 duration-200"
         >
-          <nav class="flex flex-col space-y-3">
-            <a
-              v-for="item in navigation"
-              :key="item.href"
-              :href="item.href"
-              @click="closeMobileMenu"
-              class="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors py-2 px-4 rounded-md hover:bg-accent"
-            >
-              {{ item.label }}
-            </a>
-            <div class="border-t border-border pt-3 mt-3">
-              <Button @click="navigateToLogin" variant="ghost" size="sm" class="w-full mb-2">
-                Sign In
+          <div class="flex flex-col space-y-3">
+            <!-- Language Chooser for Mobile -->
+            <div class="px-4 pb-3 border-b border-border">
+              <LanguageChooser />
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="px-4 space-y-2">
+              <Button @click="navigateToLogin" variant="ghost" size="sm" class="w-full">
+                {{ t('homepage.header.buttons.signIn') }}
+              </Button>
+              <Button @click="navigateToRegister" size="sm" class="w-full">
+                {{ t('homepage.header.buttons.startFreeTrial') }}
               </Button>
             </div>
-          </nav>
+          </div>
         </div>
       </div>
     </div>
@@ -100,18 +93,12 @@ import { Button } from '@/components/ui/button'
 import ThemeToggle from '@/components/ThemeToggle.vue'
 import { useRouter } from 'vue-router'
 import { Menu, ShieldCheck } from 'lucide-vue-next'
-import type { NavigationItem } from '@/types/homepage'
+import { useI18n } from 'vue-i18n'
+import { LanguageChooser } from '@/components/custom'
 
 const router = useRouter()
 const showMobileMenu = ref(false)
-
-const navigation: NavigationItem[] = [
-  { label: 'Solutions', href: '#features' },
-  { label: 'Use Cases', href: '#use-cases' },
-  { label: 'Pricing', href: '#pricing' },
-  { label: 'Testimonials', href: '#testimonials' },
-  { label: 'Resources', href: '#faq' },
-]
+const { t } = useI18n()
 
 const navigateToLogin = () => {
   router.push('/login')
