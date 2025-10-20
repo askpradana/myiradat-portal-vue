@@ -1,0 +1,9 @@
+name,email,phone,role_type
+John Doe,john.doe@company.com,+1234567890,user
+Jane Smith,jane.admin@company.com,(555) 123-4567,admin
+Mike Johnson,mike.support@company.com,555-987-6543,cs
+Sarah Williams,sarah.user@company.com,5559876543,1
+Carlos García-López,carlos.test@company.com,+1-800-555-0199,user
+Admin Demo User,admin.demo@company.com,800.555.0123,2
+Customer Support Demo,support.demo@company.com,18005550187,3
+Test User Example,test.user@company.com,555.123.4567,user
