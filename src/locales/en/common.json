@@ -1,0 +1,59 @@
+{
+  "actions": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "submit": "Submit",
+    "loading": "Loading...",
+    "search": "Search",
+    "filter": "Filter",
+    "reset": "Reset",
+    "back": "Back",
+    "next": "Next",
+    "previous": "Previous",
+    "close": "Close",
+    "confirm": "Confirm"
+  },
+  "states": {
+    "loading": "Loading...",
+    "noData": "No data available",
+    "error": "An error occurred",
+    "success": "Operation completed successfully",
+    "empty": "No results found",
+    "searching": "Searching...",
+    "saving": "Saving...",
+    "deleting": "Deleting...",
+    "creating": "Creating..."
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "settings": "Settings",
+    "logout": "Logout",
+    "home": "Home"
+  },
+  "table": {
+    "actions": "Actions",
+    "noResults": "No results found",
+    "showing": "Showing",
+    "of": "of",
+    "entries": "entries",
+    "previous": "Previous",
+    "next": "Next"
+  },
+  "validation": {
+    "required": "This field is required",
+    "email": "Please enter a valid email address",
+    "minLength": "Minimum {min} characters required",
+    "maxLength": "Maximum {max} characters allowed"
+  },
+  "brand": {
+    "name": "MyIradat",
+    "tagline": "Your secure platform for data management"
+  },
+  "language": {
+    "comingSoon": "Coming Soon"
+  }
+}

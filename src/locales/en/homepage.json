@@ -1,0 +1,16 @@
+{
+  "header": {
+    "brand": {
+      "name": "IRADAT",
+      "tagline": "Konsultan"
+    },
+    "trust": {
+      "uptime": "99.9% Uptime",
+      "certified": "SOC 2 Certified"
+    },
+    "buttons": {
+      "signIn": "Sign In",
+      "startFreeTrial": "Start Free Trial"
+    }
+  }
+}

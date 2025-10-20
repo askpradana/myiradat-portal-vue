@@ -1,0 +1,59 @@
+{
+  "navigation": {
+    "dashboard": "Dashboard",
+    "userManagement": "Manajemen Pengguna",
+    "organizationManagement": "Manajemen Organisasi",
+    "services": "Layanan",
+    "profile": "Profil",
+    "quiz": "Kuis",
+    "results": "Hasil"
+  },
+  "header": {
+    "adminDashboard": "Dashboard Admin",
+    "csDashboard": "Dashboard CS",
+    "iradat": "Iradat",
+    "adminSubtitle": "Kelola pengguna dan organisasi",
+    "csSubtitle": "Panel dukungan pelanggan",
+    "welcomeSubtitle": "Selamat datang di dashboard Anda"
+  },
+  "admin": {
+    "users": {
+      "title": "Manajemen Pengguna",
+      "createUser": "Buat Pengguna Baru",
+      "editUser": "Edit Pengguna",
+      "deleteUser": "Hapus Pengguna",
+      "batchCreate": "Buat Pengguna Massal",
+      "userDetails": "Detail Pengguna"
+    },
+    "organizations": {
+      "title": "Manajemen Organisasi",
+      "createOrganization": "Buat Organisasi Baru",
+      "editOrganization": "Edit Organisasi",
+      "deleteOrganization": "Hapus Organisasi",
+      "organizationDetails": "Detail Organisasi",
+      "members": "Anggota"
+    }
+  },
+  "user": {
+    "profile": {
+      "title": "Profil Saya",
+      "editProfile": "Edit Profil",
+      "personalInfo": "Informasi Pribadi",
+      "accountSettings": "Pengaturan Akun"
+    },
+    "services": {
+      "title": "Layanan Saya",
+      "noServices": "Tidak ada layanan tersedia",
+      "linkService": "Hubungkan Layanan",
+      "unlinkService": "Putuskan Layanan"
+    }
+  },
+  "quiz": {
+    "title": "Kuis",
+    "takeQuiz": "Ambil Kuis",
+    "viewResults": "Lihat Hasil",
+    "completed": "Selesai",
+    "inProgress": "Sedang Berlangsung",
+    "notStarted": "Belum Dimulai"
+  }
+}

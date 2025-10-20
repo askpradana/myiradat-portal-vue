@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import LoginForm from '@/components/custom/custom-form/LoginForm.vue'
+import { useI18n } from 'vue-i18n'
+
+const { t } = useI18n()
 </script>
 
 <template>
@@ -36,8 +39,8 @@ import LoginForm from '@/components/custom/custom-form/LoginForm.vue'
             />
           </svg>
         </div>
-        <h1 class="text-3xl font-bold text-foreground mb-2">MyIradat</h1>
-        <p class="text-muted-foreground">Your secure platform for data management</p>
+        <h1 class="text-3xl font-bold text-foreground mb-2">{{ t('common.brand.name') }}</h1>
+        <p class="text-muted-foreground">{{ t('common.brand.tagline') }}</p>
       </div>
 
       <!-- Login form -->

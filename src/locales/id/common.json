@@ -1,0 +1,59 @@
+{
+  "actions": {
+    "save": "Simpan",
+    "cancel": "Batal",
+    "delete": "Hapus",
+    "edit": "Edit",
+    "create": "Buat",
+    "submit": "Kirim",
+    "loading": "Memuat...",
+    "search": "Cari",
+    "filter": "Filter",
+    "reset": "Reset",
+    "back": "Kembali",
+    "next": "Selanjutnya",
+    "previous": "Sebelumnya",
+    "close": "Tutup",
+    "confirm": "Konfirmasi"
+  },
+  "states": {
+    "loading": "Memuat...",
+    "noData": "Tidak ada data tersedia",
+    "error": "Terjadi kesalahan",
+    "success": "Operasi berhasil diselesaikan",
+    "empty": "Tidak ada hasil ditemukan",
+    "searching": "Mencari...",
+    "saving": "Menyimpan...",
+    "deleting": "Menghapus...",
+    "creating": "Membuat..."
+  },
+  "navigation": {
+    "dashboard": "Dashboard",
+    "profile": "Profil",
+    "settings": "Pengaturan",
+    "logout": "Keluar",
+    "home": "Beranda"
+  },
+  "table": {
+    "actions": "Aksi",
+    "noResults": "Tidak ada hasil ditemukan",
+    "showing": "Menampilkan",
+    "of": "dari",
+    "entries": "entri",
+    "previous": "Sebelumnya",
+    "next": "Selanjutnya"
+  },
+  "validation": {
+    "required": "Field ini diperlukan",
+    "email": "Silakan masukkan alamat email yang valid",
+    "minLength": "Minimal {min} karakter diperlukan",
+    "maxLength": "Maksimal {max} karakter diperbolehkan"
+  },
+  "brand": {
+    "name": "MyIradat",
+    "tagline": "Platform aman untuk manajemen data Anda"
+  },
+  "language": {
+    "comingSoon": "Segera Hadir"
+  }
+}
