@@ -3,10 +3,11 @@ import { computed, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
 import { Alert, AlertDescription } from '@/components/ui/alert'
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip'
 import { useQuizManagement } from '@/composables/quiz/useQuizManagement'
-import { AlertTriangle, Loader2, Mail, ArrowLeft } from 'lucide-vue-next'
+import { CustomProgressLoader } from '@/components/custom/loading'
+import { AlertTriangle, Mail, ArrowLeft } from 'lucide-vue-next'
 
 const route = useRoute()
 const router = useRouter()
@@ -16,7 +17,7 @@ const { useQuizResult } = useQuizManagement()
 
 // Load quiz result
 const {
-  data: resultData,
+  result: quizResult,
   isLoading: isLoadingResult,
   error: resultError,
   refetch: refetchResult,
@@ -24,7 +25,7 @@ const {
 
 // Set dynamic page title
 watch(
-  () => resultData.value?.data,
+  () => quizResult.value,
   (data) => {
     if (data) {
       document.title = `${data.quiz_title} - Results`
@@ -34,9 +35,6 @@ watch(
   },
   { immediate: true },
 )
-
-// Computed properties
-const quizResult = computed(() => resultData.value?.data)
 
 const hasError = computed(() => {
   return resultError.value || (!quizResult.value && !isLoadingResult.value)
@@ -74,12 +72,6 @@ const formattedRecommendations = computed(() => {
   return recommendations.length > 0 ? recommendations : [quizResult.value.score.recommendations]
 })
 
-// Check if severity level should be displayed
-const shouldDisplaySeverityLevel = computed(() => {
-  return (
-    quizResult.value?.score.severity_level && quizResult.value.score.severity_level.trim() !== ''
-  )
-})
 
 const formatDuration = (seconds: number): string => {
   const minutes = Math.floor(seconds / 60)
@@ -112,16 +104,14 @@ const handleRetry = () => {
 </script>
 
 <template>
-  <div class="min-h-screen bg-background">
-    <div class="container mx-auto px-4 py-8 max-w-2xl">
+  <TooltipProvider>
+    <div class="min-h-screen bg-background">
+      <div class="container mx-auto px-4 py-8 max-w-2xl">
       <!-- Loading State -->
       <div v-if="isLoadingResult">
         <Card>
           <CardContent class="flex items-center justify-center py-16">
-            <div class="text-center space-y-4">
-              <Loader2 class="h-8 w-8 animate-spin mx-auto text-primary" />
-              <p class="text-muted-foreground">Loading your results...</p>
-            </div>
+            <CustomProgressLoader type="results" :is-loading="isLoadingResult" />
           </CardContent>
         </Card>
       </div>
@@ -155,23 +145,24 @@ const handleRetry = () => {
             <div class="bg-muted/30 rounded-lg p-3 mb-2">
               <div class="text-lg font-medium text-muted-foreground mb-1">Score</div>
               <div class="text-2xl font-semibold text-foreground">
-                {{ quizResult.score.total_score }} / {{ quizResult.score.max_possible_score }}
+                <!-- {{ quizResult.score.total_score }} -->
+                {{ scorePercentage }}%
+                <!-- <div class="text-sm text-muted-foreground"></div> -->
               </div>
-              <div class="text-sm text-muted-foreground">({{ scorePercentage }}%)</div>
             </div>
 
             <!-- Severity Level Badge (if exists) -->
-            <div v-if="shouldDisplaySeverityLevel" class="mt-2">
+            <!-- <div v-if="shouldDisplaySeverityLevel" class="mt-2">
               <Badge variant="outline" class="text-xs">
                 {{ quizResult.score.severity_level }}
               </Badge>
-            </div>
+            </div> -->
           </CardHeader>
 
           <CardContent class="space-y-4">
             <!-- Interpretation -->
             <div v-if="quizResult.score.interpretation" class="bg-muted/50 rounded-lg p-4">
-              <h4 class="font-medium text-sm mb-2 text-foreground">Assessment Result</h4>
+              <!-- <h4 class="font-medium text-sm mb-2 text-foreground">Kondisi kamu</h4> -->
               <p class="text-sm leading-relaxed">
                 {{ quizResult.score.interpretation }}
               </p>
@@ -179,7 +170,7 @@ const handleRetry = () => {
 
             <!-- Recommendations -->
             <div v-if="quizResult.score.recommendations" class="space-y-3">
-              <h4 class="font-medium text-sm text-foreground">Recommendations</h4>
+              <h4 class="font-medium text-sm text-foreground">Rekomendasi</h4>
               <div
                 class="bg-blue-50 dark:bg-blue-950/30 rounded-lg p-4 border border-blue-200 dark:border-blue-800"
               >
@@ -205,11 +196,11 @@ const handleRetry = () => {
             <!-- Quiz Details -->
             <div class="grid grid-cols-2 gap-4 pt-4 border-t text-sm">
               <div class="text-center">
-                <div class="font-medium">Duration</div>
+                <div class="font-medium">Durasi</div>
                 <div class="text-muted-foreground">{{ formatDuration(quizResult.time_taken) }}</div>
               </div>
               <div class="text-center">
-                <div class="font-medium">Completed</div>
+                <div class="font-medium">Diselesaikan pda</div>
                 <div class="text-muted-foreground">
                   {{ formatDate(quizResult.score.calculated_at) }}
                 </div>
@@ -222,21 +213,28 @@ const handleRetry = () => {
         <Card>
           <CardContent class="p-6 space-y-3">
             <!-- Send Results Email (Disabled) -->
-            <Button
-              disabled
-              variant="outline"
-              class="w-full flex items-center gap-2"
-              title="Feature coming soon"
-            >
-              <Mail class="h-4 w-4" />
-              Send Results via Email
-            </Button>
-            <p class="text-xs text-muted-foreground text-center">Email feature coming soon</p>
+            <Tooltip>
+              <TooltipTrigger as-child>
+                <div class="w-full">
+                  <Button
+                    disabled
+                    variant="outline"
+                    class="w-full flex items-center gap-2"
+                  >
+                    <Mail class="h-4 w-4" />
+                    Kirim Hasil via Email
+                  </Button>
+                </div>
+              </TooltipTrigger>
+              <TooltipContent>
+                <p>Fitur ini sedang dalam pengembangan dan akan segera tersedia</p>
+              </TooltipContent>
+            </Tooltip>
 
             <!-- Back to Dashboard -->
             <Button @click="handleBackToDashboard" class="w-full flex items-center gap-2">
               <ArrowLeft class="h-4 w-4" />
-              Back to Dashboard
+              Kembali ke Laman Utama
             </Button>
           </CardContent>
         </Card>
@@ -247,10 +245,11 @@ const handleRetry = () => {
         <Card>
           <CardContent class="text-center py-16">
             <p class="text-muted-foreground mb-4">No results to display.</p>
-            <Button @click="handleBackToDashboard"> Back to Dashboard </Button>
+            <Button @click="handleBackToDashboard"> Kembali ke Laman Utama </Button>
           </CardContent>
         </Card>
       </div>
     </div>
   </div>
+  </TooltipProvider>
 </template>
