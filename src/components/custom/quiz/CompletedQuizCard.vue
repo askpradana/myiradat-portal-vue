@@ -1,7 +1,18 @@
 <script setup lang="ts">
+import { ref } from 'vue'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Clock, CheckCircle2, Users } from 'lucide-vue-next'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
+import { Clock, CheckCircle2, Users, AlertTriangle } from 'lucide-vue-next'
 import type { QuizSubmission } from '@/types/quiz'
 
 interface Props {
@@ -14,6 +25,9 @@ const emit = defineEmits<{
   viewResults: [quizId: string]
   retakeQuiz: [quizId: string]
 }>()
+
+// Confirmation dialog state
+const showRetakeConfirmation = ref(false)
 
 const formatDuration = (seconds: number): string => {
   const minutes = Math.floor(seconds / 60)
@@ -39,8 +53,17 @@ const handleViewResults = () => {
   emit('viewResults', props.submission.id)
 }
 
-const handleRetakeQuiz = () => {
-  emit('retakeQuiz', props.submission.id)
+const handleRetakeQuizClick = () => {
+  showRetakeConfirmation.value = true
+}
+
+const handleConfirmRetake = () => {
+  showRetakeConfirmation.value = false
+  emit('retakeQuiz', props.submission.quiz_id)
+}
+
+const handleCancelRetake = () => {
+  showRetakeConfirmation.value = false
 }
 </script>
 
@@ -87,7 +110,7 @@ const handleRetakeQuiz = () => {
         View Results
       </Button>
       <Button
-        @click="handleRetakeQuiz"
+        @click="handleRetakeQuizClick"
         variant="outline"
         size="sm"
         class="flex-1 min-h-[44px]"
@@ -96,4 +119,33 @@ const handleRetakeQuiz = () => {
       </Button>
     </CardFooter>
   </Card>
+
+  <!-- Retake Confirmation Dialog -->
+  <AlertDialog :open="showRetakeConfirmation">
+    <AlertDialogContent>
+      <AlertDialogHeader>
+        <AlertDialogTitle class="flex items-center gap-2">
+          <AlertTriangle class="h-5 w-5 text-amber-500" />
+          Retake Quiz Confirmation
+        </AlertDialogTitle>
+        <AlertDialogDescription>
+          Are you sure you want to retake "<strong>{{ props.submission.quiz_title }}</strong>"?
+          <br><br>
+          <span class="text-amber-600 dark:text-amber-400 font-medium">
+            Warning: This will permanently replace your existing submission and results with the new submission.
+          </span>
+          <br>
+          This action cannot be undone.
+        </AlertDialogDescription>
+      </AlertDialogHeader>
+      <AlertDialogFooter>
+        <AlertDialogCancel @click="handleCancelRetake">
+          Cancel
+        </AlertDialogCancel>
+        <AlertDialogAction @click="handleConfirmRetake" variant="destructive">
+          Yes, Retake Quiz
+        </AlertDialogAction>
+      </AlertDialogFooter>
+    </AlertDialogContent>
+  </AlertDialog>
 </template>

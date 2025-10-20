@@ -20,6 +20,8 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
   takeQuiz: [quizId: string]
+  viewResults: [quizId: string]
+  retakeQuiz: [quizId: string]
 }>()
 
 const buttonText = computed(() => {
@@ -48,6 +50,14 @@ const getQuizTypeLabel = (type: string) => {
 
 const handleTakeQuiz = () => {
   emit('takeQuiz', props.quiz.id)
+}
+
+const handleViewResults = () => {
+  emit('viewResults', props.quiz.id)
+}
+
+const handleRetakeQuiz = () => {
+  emit('retakeQuiz', props.quiz.id)
 }
 
 </script>
@@ -97,16 +107,37 @@ const handleTakeQuiz = () => {
     </CardContent>
 
     <CardFooter class="pt-3 mt-auto">
+      <!-- Single button for non-completed quizzes -->
       <Button
+        v-if="!isCompleted"
         @click="handleTakeQuiz"
-        :disabled="isLoading || isCompleted"
-        :variant="isCompleted ? 'secondary' : 'default'"
+        :disabled="isLoading"
+        variant="default"
         class="w-full min-h-[44px]"
-        :class="{ 'opacity-75 cursor-not-allowed': isCompleted }"
         size="sm"
       >
         {{ buttonText }}
       </Button>
+
+      <!-- Dual buttons for completed quizzes -->
+      <div v-else class="flex gap-2 w-full">
+        <Button
+          @click="handleViewResults"
+          variant="default"
+          class="flex-1 min-h-[44px]"
+          size="sm"
+        >
+          View Results
+        </Button>
+        <Button
+          @click="handleRetakeQuiz"
+          variant="outline"
+          class="flex-1 min-h-[44px]"
+          size="sm"
+        >
+          Retake
+        </Button>
+      </div>
     </CardFooter>
   </Card>
 </template>

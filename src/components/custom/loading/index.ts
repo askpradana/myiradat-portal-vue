@@ -1,0 +1,1 @@
+export { default as CustomProgressLoader } from './CustomProgressLoader.vue'

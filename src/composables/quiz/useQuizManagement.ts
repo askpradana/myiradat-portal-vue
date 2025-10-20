@@ -135,6 +135,40 @@ export function useQuizManagement() {
     }
   }
 
+  // Start quiz for retake - bypasses submission checks
+  const startQuizForRetake = async (quizId: string) => {
+    try {
+      state.isLoading = true
+      state.error = null
+      quizStore.clearError()
+      quizStore.setLoadingState('loading')
+
+      // Skip submission check for retakes and go directly to quiz detail
+      const response = await getQuizDetail(quizId)
+      if (response?.success && response.data) {
+        // Start the quiz session immediately here so the QuizTakingView doesn't need to reload
+        quizStore.startQuizSession(response.data.quiz, response.data.questions)
+        router.push(`/quiz/${quizId}`)
+      } else {
+        throw new Error(response?.message || 'Failed to load quiz details')
+      }
+    } catch (error) {
+      const errorMessage = error instanceof Error ? error.message : 'Failed to start quiz for retake'
+      state.error = errorMessage
+      quizStore.setError({
+        type: 'network',
+        message: 'Failed to start quiz',
+        details: errorMessage
+      })
+      toast('Error', {
+        description: errorMessage
+      })
+    } finally {
+      state.isLoading = false
+      quizStore.setLoadingState('idle')
+    }
+  }
+
   // Submit quiz with improved error handling
   const submitCurrentQuiz = async () => {
     const submission = quizStore.prepareSubmission()
@@ -161,9 +195,6 @@ export function useQuizManagement() {
 
         // Navigate to results page
         router.push(`/quiz/${submission.quiz_id}/results`)
-
-        // Refresh completed quizzes data
-        await fetchQuizSubmissions()
 
         toast('Success', {
           description: 'Quiz submitted successfully! View your results.'
@@ -197,7 +228,7 @@ export function useQuizManagement() {
 
   const retakeQuiz = (quizId: string) => {
     quizStore.clearSession()
-    startQuiz(quizId)
+    startQuizForRetake(quizId)
   }
 
   const goToQuizHub = () => {
@@ -246,6 +277,7 @@ export function useQuizManagement() {
     // Actions - simplified API
     fetchData,
     startQuiz,
+    startQuizForRetake,
     submitCurrentQuiz,
     viewQuizResult,
     retakeQuiz,

@@ -9,6 +9,7 @@ import {
   QuestionCard,
   QuizNavigation
 } from '@/components/custom/quiz'
+import { CustomProgressLoader } from '@/components/custom/loading'
 import { useQuizManagement } from '@/composables/quiz/useQuizManagement'
 import { useQuizSession } from '@/composables/quiz/useQuizSession'
 import { useQuizTimer } from '@/composables/quiz/useQuizTimer'
@@ -160,6 +161,18 @@ const isLoading = computed(() => {
 </script>
 
 <template>
+  <!-- Submission Loading Overlay -->
+  <div
+    v-if="isSubmitting"
+    class="fixed inset-0 bg-background/80 backdrop-blur-sm z-50 flex items-center justify-center"
+  >
+    <Card class="w-auto">
+      <CardContent class="flex items-center justify-center py-8 px-12">
+        <CustomProgressLoader type="submission" :is-loading="isSubmitting" />
+      </CardContent>
+    </Card>
+  </div>
+
   <!-- Mobile Quiz Layout (full screen on mobile) -->
   <div class="min-h-screen bg-background sm:hidden">
     <!-- Mobile Quiz Content -->

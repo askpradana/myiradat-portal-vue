@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue'
-import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import { computed } from 'vue'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { BookOpen, CheckCircle2, AlertCircle } from 'lucide-vue-next'
+import { BookOpen, AlertCircle } from 'lucide-vue-next'
 import QuizCard from './QuizCard.vue'
 import CompletedQuizCard from './CompletedQuizCard.vue'
+import QuizListFilter from '@/components/custom/filters/QuizListFilter.vue'
 import type { Quiz, QuizSubmission } from '@/types/quiz'
+import type { QuizFilterParams } from '@/components/custom/filters/QuizListFilter.vue'
+import { useQuizFilter } from '@/composables/quiz/useQuizFilter'
 
 interface Props {
   availableQuizzes: Quiz[]
@@ -28,14 +30,34 @@ const emit = defineEmits<{
   refreshData: []
 }>()
 
-const activeTab = ref('available')
+const { currentFilters, filterQuizzes, getQuizCompletionStatus, updateFilters } = useQuizFilter()
 
-const stats = computed(() => ({
-  totalAvailable: props.availableQuizzes.length,
-}))
+// Filtered quizzes based on current filters
+const filteredQuizzes = computed(() => {
+  return filterQuizzes(props.availableQuizzes, props.completedQuizzes, currentFilters.value)
+})
+
+// Stats for display
+const stats = computed(() => {
+  const completedQuizIds = new Set(props.completedQuizzes.map(s => s.quiz_id))
+  const availableCount = props.availableQuizzes.filter(q => !completedQuizIds.has(q.id)).length
+
+  return {
+    total: props.availableQuizzes.length,
+    available: availableCount,
+    completed: props.completedQuizzes.length,
+    filtered: filteredQuizzes.value.length,
+  }
+})
 
 const isQuizCompleted = computed(() => (quizId: string) => {
-  return props.completedQuizzes.some((submission) => submission.quiz_id === quizId)
+  return getQuizCompletionStatus(quizId, props.completedQuizzes).isCompleted
+})
+
+// Get completed quizzes for the completed filter view
+const completedQuizzesForDisplay = computed(() => {
+  if (currentFilters.value.completion_status !== 'completed') return []
+  return props.completedQuizzes
 })
 
 const handleTakeQuiz = (quizId: string) => {
@@ -53,6 +75,20 @@ const handleRetakeQuiz = (quizId: string) => {
 const handleRefresh = () => {
   emit('refreshData')
 }
+
+// Filter handlers
+const handleFiltersChanged = (filters: QuizFilterParams) => {
+  updateFilters(filters)
+}
+
+
+// Get filter status text
+const getFilterStatusText = computed(() => {
+  const status = currentFilters.value.completion_status
+  if (status === 'available') return 'Available Quizzes'
+  if (status === 'completed') return 'Completed Quizzes'
+  return 'All Quizzes'
+})
 </script>
 
 <template>
@@ -62,10 +98,24 @@ const handleRefresh = () => {
       <div class="flex items-center justify-between">
         <div>
           <h1 class="text-3xl font-bold tracking-tight">Quizzes</h1>
-          <p class="text-muted-foreground">Discover and take fun quizzes</p>
+          <p class="text-muted-foreground">Discover and take quizzes</p>
+        </div>
+        <div class="text-right">
+          <div class="text-sm text-muted-foreground">
+            {{ getFilterStatusText }}: {{ stats.filtered }} of {{ stats.total }}
+          </div>
+          <div class="text-xs text-muted-foreground">
+            Available: {{ stats.available }} • Completed: {{ stats.completed }}
+          </div>
         </div>
       </div>
     </div>
+
+    <!-- Filter Component -->
+    <QuizListFilter
+      :initial-filters="currentFilters"
+      @filters-changed="handleFiltersChanged"
+    />
 
     <!-- Error State -->
     <Card v-if="error" class="border-destructive">
@@ -85,85 +135,66 @@ const handleRefresh = () => {
       </CardContent>
     </Card>
 
-    <!-- Main Content Tabs -->
-    <Tabs v-model="activeTab" class="space-y-4">
-      <TabsList class="grid w-full grid-cols-2">
-        <TabsTrigger value="available" class="flex items-center gap-2">
-          <BookOpen class="h-4 w-4" />
-          Available ({{ stats.totalAvailable }})
-        </TabsTrigger>
-        <TabsTrigger value="completed" class="flex items-center gap-2">
-          <CheckCircle2 class="h-4 w-4" />
-          Completed ({{ completedQuizzes.length }})
-        </TabsTrigger>
-      </TabsList>
+    <!-- Main Content -->
+    <div class="space-y-4">
+      <!-- Loading State -->
+      <div v-if="isLoading" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <!-- Loading skeletons -->
+        <Card v-for="n in 6" :key="n" class="animate-pulse">
+          <CardHeader>
+            <div class="h-4 bg-muted rounded w-3/4"></div>
+            <div class="h-3 bg-muted rounded w-full"></div>
+          </CardHeader>
+          <CardContent>
+            <div class="h-3 bg-muted rounded w-1/2"></div>
+          </CardContent>
+        </Card>
+      </div>
 
-      <!-- Available Quizzes Tab -->
-      <TabsContent value="available" class="space-y-4">
-        <div v-if="isLoading" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <!-- Loading skeletons -->
-          <Card v-for="n in 6" :key="n" class="animate-pulse">
-            <CardHeader>
-              <div class="h-4 bg-muted rounded w-3/4"></div>
-              <div class="h-3 bg-muted rounded w-full"></div>
-            </CardHeader>
-            <CardContent>
-              <div class="h-3 bg-muted rounded w-1/2"></div>
-            </CardContent>
-          </Card>
-        </div>
+      <!-- Empty State for Available/All Quizzes -->
+      <div v-else-if="filteredQuizzes.length === 0 && currentFilters.completion_status !== 'completed'" class="text-center py-12">
+        <BookOpen class="mx-auto h-12 w-12 text-muted-foreground" />
+        <h3 class="mt-4 text-lg font-semibold">
+          {{ currentFilters.search_query ? 'No quizzes found' : 'No quizzes available' }}
+        </h3>
+        <p class="mt-2 text-sm text-muted-foreground">
+          {{ currentFilters.search_query ? 'Try adjusting your search or filters.' : 'Check back later for new quizzes.' }}
+        </p>
+      </div>
 
-        <div v-else-if="availableQuizzes.length === 0" class="text-center py-12">
-          <BookOpen class="mx-auto h-12 w-12 text-muted-foreground" />
-          <h3 class="mt-4 text-lg font-semibold">No quizzes available</h3>
-          <p class="mt-2 text-sm text-muted-foreground">Check back later for new quizzes.</p>
-        </div>
+      <!-- Empty State for Completed Quizzes -->
+      <div v-else-if="completedQuizzesForDisplay.length === 0 && currentFilters.completion_status === 'completed'" class="text-center py-12">
+        <BookOpen class="mx-auto h-12 w-12 text-muted-foreground" />
+        <h3 class="mt-4 text-lg font-semibold">No completed quizzes</h3>
+        <p class="mt-2 text-sm text-muted-foreground">
+          Complete your first quiz to see results here.
+        </p>
+      </div>
 
-        <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <QuizCard
-            v-for="quiz in availableQuizzes"
-            :key="quiz.id"
-            :quiz="quiz"
-            :is-loading="isCheckingSubmission?.(quiz.id) || false"
-            :is-completed="isQuizCompleted(quiz.id)"
-            @take-quiz="handleTakeQuiz"
-          />
-        </div>
-      </TabsContent>
+      <!-- Quiz Grid for Available/All -->
+      <div v-else-if="currentFilters.completion_status !== 'completed'" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <QuizCard
+          v-for="quiz in filteredQuizzes"
+          :key="quiz.id"
+          :quiz="quiz"
+          :is-loading="isCheckingSubmission?.(quiz.id) || false"
+          :is-completed="isQuizCompleted(quiz.id)"
+          @take-quiz="handleTakeQuiz"
+          @view-results="handleViewResults"
+          @retake-quiz="handleRetakeQuiz"
+        />
+      </div>
 
-      <!-- Completed Quizzes Tab -->
-      <TabsContent value="completed" class="space-y-4">
-        <div v-if="isLoading" class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <!-- Loading skeletons -->
-          <Card v-for="n in 6" :key="n" class="animate-pulse">
-            <CardHeader>
-              <div class="h-4 bg-muted rounded w-3/4"></div>
-              <div class="h-3 bg-muted rounded w-full"></div>
-            </CardHeader>
-            <CardContent>
-              <div class="h-3 bg-muted rounded w-1/2"></div>
-            </CardContent>
-          </Card>
-        </div>
-
-        <div v-else-if="completedQuizzes.length === 0" class="text-center py-12">
-          <CheckCircle2 class="mx-auto h-12 w-12 text-muted-foreground" />
-          <h3 class="mt-4 text-lg font-semibold">No completed quizzes</h3>
-          <p class="mt-2 text-sm text-muted-foreground">
-            Complete your first quiz to see results here.
-          </p>
-        </div>
-
-        <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-          <CompletedQuizCard
-            v-for="submission in completedQuizzes"
-            :key="submission.id"
-            :submission="submission"
-            @view-results="handleViewResults"
-            @retake-quiz="handleRetakeQuiz"
-          />
-        </div>
-      </TabsContent>
-    </Tabs>
+      <!-- Completed Quizzes Grid -->
+      <div v-else class="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+        <CompletedQuizCard
+          v-for="submission in completedQuizzesForDisplay"
+          :key="submission.id"
+          :submission="submission"
+          @view-results="handleViewResults"
+          @retake-quiz="handleRetakeQuiz"
+        />
+      </div>
+    </div>
   </div>
 </template>
