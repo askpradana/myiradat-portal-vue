@@ -1,0 +1,1 @@
+export { default as LanguageChooser } from './LanguageChooser.vue'

@@ -1,0 +1,16 @@
+{
+  "header": {
+    "brand": {
+      "name": "IRADAT",
+      "tagline": "Konsultan"
+    },
+    "trust": {
+      "uptime": "99.9% Waktu Aktif",
+      "certified": "Tersertifikasi SOC 2"
+    },
+    "buttons": {
+      "signIn": "Masuk",
+      "startFreeTrial": "Daftar"
+    }
+  }
+}
