@@ -1,6 +1,6 @@
 <template>
   <Card class="mx-6 p-4 flex gap-4 relative">
-    <p class="font-semibold text-sm">Login at: {{ formatDate(data?.login_time) }}</p>
+    <p class="font-semibold text-sm">{{ t('common.sessions.loginAt') }}: {{ formatDate(data?.login_time) }}</p>
     <div
       class="flex flex-col md:flex-row justify-center md:items-start md:justify-between md:w-full"
     >
@@ -17,20 +17,20 @@
               'w-5 h-5 rounded-full absolute right-0 bottom-1 border-2',
               data.is_active ? 'bg-green-500 border-white ' : 'bg-gray-400',
             ]"
-            :title="data.is_active ? 'Active' : 'Inactive'"
+            :title="data.is_active ? t('common.sessions.active') : t('common.sessions.inactive')"
           ></div>
         </div>
         <div class="flex flex-col my-4 text-center md:text-start">
           <h4 class="font-semibold text-base">{{ data.os }} - {{ data.browser }}</h4>
-          <p class="text-sm text-gray-500 dark:text-gray-400">IP Address: {{ data.ip_address }}</p>
+          <p class="text-sm text-gray-500 dark:text-gray-400">{{ t('common.sessions.ipAddress') }}: {{ data.ip_address }}</p>
           <p class="text-sm text-gray-500 dark:text-gray-400">
-            Last activity: {{ formatDate(data.last_activity) }}
+            {{ t('common.sessions.lastActivity') }}: {{ formatDate(data.last_activity) }}
           </p>
         </div>
       </div>
       <div class="flex flex-col md:items-end items-center justify-center gap-2">
         <Badge v-if="data.is_current" class="text-center w-fit" variant="default"
-          >Current Session</Badge
+          >{{ t('common.sessions.currentSession') }}</Badge
         >
         <DeleteSessionSpecificAlert
           v-if="!data.is_current"
@@ -44,12 +44,15 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { type sessionInterface } from '@/types/sessionsType'
 import { Card } from '@/components/ui/card'
 import { Badge } from '@/components/ui/badge'
 import { Laptop, Smartphone, Tablet } from 'lucide-vue-next'
 import { formatDate } from '@/lib/dateFromate'
 import DeleteSessionSpecificAlert from '@/components/custom/alerts/DeleteSessionSpecificAlert.vue'
+
+const { t } = useI18n()
 
 const props = defineProps<{
   data: sessionInterface

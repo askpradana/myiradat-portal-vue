@@ -1,0 +1,45 @@
+{
+  "required": "Bidang ini wajib diisi",
+  "email": "Harus berupa email yang valid",
+  "minLength": "Minimal {min} karakter diperlukan",
+  "maxLength": "Maksimal {max} karakter diizinkan",
+  "password": {
+    "minLength": "Kata sandi minimal mengandung {min} karakter",
+    "tooShort": "Kata sandi terlalu pendek",
+    "required": "Kata sandi wajib diisi"
+  },
+  "phone": {
+    "minLength": "Nomor telepon minimal mengandung {min} karakter",
+    "invalid": "Format nomor telepon tidak valid"
+  },
+  "username": {
+    "minLength": "Nama pengguna minimal mengandung {min} karakter",
+    "tooShort": "Nama pengguna terlalu pendek"
+  },
+  "name": {
+    "minLength": "Nama minimal mengandung {min} karakter",
+    "required": "Nama wajib diisi"
+  },
+  "role": {
+    "required": "Pemilihan peran wajib diisi"
+  },
+  "organization": {
+    "nameRequired": "Nama organisasi wajib diisi",
+    "industryRequired": "Industri wajib diisi",
+    "sizeRequired": "Ukuran organisasi wajib diisi",
+    "emailRequired": "Email kontak wajib diisi",
+    "phoneRequired": "Telepon kontak wajib diisi"
+  },
+  "batch": {
+    "atLeastOneUser": "Setidaknya satu pengguna diperlukan",
+    "invalidCSV": "Format CSV tidak valid",
+    "noUsersToRegister": "Tidak ada pengguna untuk didaftarkan",
+    "fixValidationErrors": "Harap perbaiki semua kesalahan validasi sebelum mengirim"
+  },
+  "common": {
+    "fieldRequired": "Bidang ini wajib diisi",
+    "invalidFormat": "Format tidak valid",
+    "valueTooLong": "Nilai terlalu panjang",
+    "valueTooShort": "Nilai terlalu pendek"
+  }
+}

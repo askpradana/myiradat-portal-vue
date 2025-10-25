@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
@@ -18,6 +19,8 @@ const props = withDefaults(defineProps<Props>(), {
   isCompleted: false,
 })
 
+const { t } = useI18n()
+
 const emit = defineEmits<{
   takeQuiz: [quizId: string]
   viewResults: [quizId: string]
@@ -25,9 +28,9 @@ const emit = defineEmits<{
 }>()
 
 const buttonText = computed(() => {
-  if (props.isLoading) return 'Checking...'
-  if (props.isCompleted) return 'Completed'
-  return 'Take Quiz'
+  if (props.isLoading) return t('common.states.loading')
+  if (props.isCompleted) return t('quiz.status.completed')
+  return t('quiz.actions.startQuiz')
 })
 
 const getQuizTypeBadgeVariant = (type: string) => {
@@ -41,11 +44,11 @@ const getQuizTypeBadgeVariant = (type: string) => {
 
 const getQuizTypeLabel = (type: string) => {
   const labels = {
-    likert4: '4-Point Scale',
-    likert5: '5-Point Scale',
-    yesno: 'Yes/No'
+    likert4: t('quiz.types.fourPointScale'),
+    likert5: t('quiz.types.fivePointScale'),
+    yesno: t('quiz.types.yesNo')
   } as const
-  return labels[type as keyof typeof labels] || 'Assessment'
+  return labels[type as keyof typeof labels] || t('quiz.types.assessment')
 }
 
 const handleTakeQuiz = () => {
@@ -101,7 +104,7 @@ const handleRetakeQuiz = () => {
           class="flex items-center gap-1"
         >
           <FileText class="h-4 w-4 flex-shrink-0" />
-          <span>{{ quiz.questions }} questions</span>
+          <span>{{ t('quiz.labels.questions', { count: quiz.questions }) }}</span>
         </div>
       </div>
     </CardContent>
@@ -127,7 +130,7 @@ const handleRetakeQuiz = () => {
           class="flex-1 min-h-[44px]"
           size="sm"
         >
-          View Results
+          {{ t('quiz.actions.viewResults') }}
         </Button>
         <Button
           @click="handleRetakeQuiz"
@@ -135,7 +138,7 @@ const handleRetakeQuiz = () => {
           class="flex-1 min-h-[44px]"
           size="sm"
         >
-          Retake
+          {{ t('quiz.actions.retakeQuiz') }}
         </Button>
       </div>
     </CardFooter>

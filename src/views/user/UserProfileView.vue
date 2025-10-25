@@ -57,7 +57,7 @@
 
     <Card class="space-x-6">
       <div class="flex justify-between items-center">
-        <h2 class="px-6 font-bold">Where you're logged in</h2>
+        <h2 class="px-6 font-bold">{{ t('profile.sessions.whereLoggedIn') }}</h2>
         <DeleteSessionAllAlert />
       </div>
       <template v-if="isPending">
@@ -75,16 +75,15 @@
     <AlertDialog :open="showConfirmDialog">
       <AlertDialogContent>
         <AlertDialogHeader>
-          <AlertDialogTitle>Discard Changes?</AlertDialogTitle>
+          <AlertDialogTitle>{{ t('profile.form.discardChangesTitle') }}</AlertDialogTitle>
           <AlertDialogDescription>
-            You have unsaved changes. Are you sure you want to discard them? This action cannot be
-            undone.
+            {{ t('profile.form.discardChangesMessage') }}
           </AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-          <AlertDialogCancel @click="dismissCancel">Keep Editing</AlertDialogCancel>
+          <AlertDialogCancel @click="dismissCancel">{{ t('profile.form.keepEditing') }}</AlertDialogCancel>
           <AlertDialogAction @click="confirmCancel" variant="destructive">
-            Discard Changes
+            {{ t('profile.form.discardChanges') }}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
@@ -94,6 +93,7 @@
 
 <script setup lang="ts">
 import { computed, type Ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import {
   AlertDialog,
@@ -128,6 +128,7 @@ import DeleteSessionAllAlert from '@/components/custom/alerts/DeleteSessionAllAl
 import ResetPasswordByUserForm from '@/components/custom/custom-form/ResetPasswordByUserForm.vue'
 
 // Composables
+const { t } = useI18n()
 const {
   user,
   isLoading,
@@ -162,7 +163,7 @@ const { isPending, data } = useQuery({
   isPending: Ref<boolean>
 }
 
-console.log(data.value?.sessions)
+// Uncomment for debugging: console.log(data.value?.sessions)
 
 // Computed properties for header
 const initials = computed(() => getInitials())

@@ -1,0 +1,12 @@
+{
+  "deleteAllTitle": "Delete all session except current session",
+  "deleteAllButton": "Delete All Session",
+  "deleteAllDialogTitle": "Delete All Session",
+  "deleteAllConfirmMessage": "Are you sure you want to delete all session",
+  "exceptCurrent": "except current session",
+  "enterWordPrompt": "Please enter the word according to this term",
+  "deleteConfirmText": "Delete All",
+  "enterWordPlaceholder": "Enter the word above",
+  "deleteConfirmError": "Term is not match! Pay attention to uppercase and lowercase letters.",
+  "yesDelete": "Yes, delete"
+}

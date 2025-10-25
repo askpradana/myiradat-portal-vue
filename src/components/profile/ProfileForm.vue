@@ -3,21 +3,21 @@
     @submit.prevent="onSubmit" 
     class="space-y-6"
     role="form"
-    aria-label="Edit profile information"
+    :aria-label="t('profile.form.editAriaLabel')"
   >
     <!-- Editable Fields Section -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
       <!-- Name Field -->
       <div class="space-y-2">
         <label for="profile-name" class="text-sm font-medium text-foreground">
-          Full Name *
+          {{ t('profile.form.fullName') }} *
         </label>
         <Input
           id="profile-name"
           :model-value="fields.name.value.value"
           @update:model-value="(value: string | number) => $emit('update:name', String(value))"
           type="text"
-          placeholder="Enter your full name"
+          :placeholder="t('profile.form.fullNamePlaceholder')"
           :class="{
             'border-red-300 focus:border-red-500': fields.name.errorMessage.value,
           }"
@@ -40,14 +40,14 @@
       <!-- Email Field -->
       <div class="space-y-2">
         <label for="profile-email" class="text-sm font-medium text-foreground">
-          Email Address *
+          {{ t('profile.form.emailAddress') }} *
         </label>
         <Input
           id="profile-email"
           :model-value="fields.email.value.value"
           @update:model-value="(value: string | number) => $emit('update:email', String(value))"
           type="email"
-          placeholder="Enter your email"
+          :placeholder="t('profile.form.emailPlaceholder')"
           :class="{
             'border-red-300 focus:border-red-500': fields.email.errorMessage.value,
           }"
@@ -70,14 +70,14 @@
       <!-- Phone Field -->
       <div class="space-y-2">
         <label for="profile-phone" class="text-sm font-medium text-foreground">
-          Phone Number *
+          {{ t('profile.form.phoneNumber') }} *
         </label>
         <Input
           id="profile-phone"
           :model-value="fields.phone.value.value"
           @update:model-value="(value: string | number) => $emit('update:phone', String(value))"
           type="tel"
-          placeholder="Enter your phone number"
+          :placeholder="t('profile.form.phonePlaceholder')"
           :class="{
             'border-red-300 focus:border-red-500': fields.phone.errorMessage.value,
           }"
@@ -99,17 +99,17 @@
 
       <!-- Date of Birth Field (Read Only) -->
       <div class="space-y-2">
-        <label class="text-sm font-medium text-foreground">Date of Birth</label>
+        <label class="text-sm font-medium text-foreground">{{ t('profile.form.dateOfBirth') }}</label>
         <div
           class="px-3 py-2 bg-muted text-muted-foreground rounded-md border text-sm min-h-[40px] flex items-center"
           role="textbox"
           aria-readonly="true"
-          aria-label="Date of birth, read-only field"
+          :aria-label="t('profile.form.dateOfBirthAriaLabel')"
         >
-          {{ formatDate(user?.date_of_birth || '') || 'Not provided' }}
+          {{ formatDate(user?.date_of_birth || '') || t('profile.form.notProvided') }}
         </div>
         <p class="text-xs text-muted-foreground">
-          Contact support to change your date of birth
+          {{ t('profile.form.contactSupportDateOfBirth') }}
         </p>
       </div>
     </div>
@@ -123,7 +123,7 @@
     >
       <div class="flex items-center">
         <AlertIcon class="w-4 h-4 text-yellow-600 mr-2" />
-        You have unsaved changes
+        {{ t('profile.form.unsavedChanges') }}
       </div>
     </div>
   </form>
@@ -131,6 +131,7 @@
 
 <script setup lang="ts">
 import { Input } from '@/components/ui/input'
+import { useI18n } from 'vue-i18n'
 import { AlertIcon } from '@/components/ui/icons'
 import { formatDate } from '@/lib/dateFromate'
 import type { UserDataInterface } from '@/types/userType'
@@ -163,6 +164,7 @@ withDefaults(defineProps<Props>(), {
   hasChanges: false
 })
 
+const { t } = useI18n()
 const emit = defineEmits<Emits>()
 
 const onSubmit = () => emit('submit')

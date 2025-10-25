@@ -5,6 +5,7 @@
     "delete": "Delete",
     "edit": "Edit",
     "create": "Create",
+    "update": "Update",
     "submit": "Submit",
     "loading": "Loading...",
     "search": "Search",
@@ -14,7 +15,21 @@
     "next": "Next",
     "previous": "Previous",
     "close": "Close",
-    "confirm": "Confirm"
+    "confirm": "Confirm",
+    "viewDetails": "View details",
+    "retry": "Retry",
+    "refresh": "Refresh",
+    "add": "Add",
+    "remove": "Remove",
+    "continue": "Continue",
+    "finish": "Finish",
+    "skip": "Skip",
+    "download": "Download",
+    "upload": "Upload",
+    "export": "Export",
+    "import": "Import",
+    "copy": "Copy",
+    "share": "Share"
   },
   "states": {
     "loading": "Loading...",
@@ -25,14 +40,33 @@
     "searching": "Searching...",
     "saving": "Saving...",
     "deleting": "Deleting...",
-    "creating": "Creating..."
+    "creating": "Creating...",
+    "updating": "Updating...",
+    "processing": "Processing...",
+    "uploading": "Uploading...",
+    "downloading": "Downloading...",
+    "verifying": "Verifying...",
+    "completed": "Completed",
+    "failed": "Failed",
+    "active": "Active",
+    "inactive": "Inactive",
+    "pending": "Pending"
   },
   "navigation": {
     "dashboard": "Dashboard",
+    "usersManagement": "Users Management",
+    "users": "Users",
+    "organizations": "Organizations",
+    "userData": "User Data",
+    "data": "Data",
+    "funQuiz": "Fun Quiz",
+    "quiz": "Quiz",
+    "userProfile": "User Profile",
     "profile": "Profile",
     "settings": "Settings",
     "logout": "Logout",
-    "home": "Home"
+    "home": "Home",
+    "assessments": "Assessments"
   },
   "table": {
     "actions": "Actions",
@@ -55,5 +89,13 @@
   },
   "language": {
     "comingSoon": "Coming Soon"
+  },
+  "sessions": {
+    "loginAt": "Login at",
+    "lastActivity": "Last activity",
+    "ipAddress": "IP Address",
+    "currentSession": "Current Session",
+    "active": "Active",
+    "inactive": "Inactive"
   }
 }

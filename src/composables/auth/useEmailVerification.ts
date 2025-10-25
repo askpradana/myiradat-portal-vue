@@ -2,6 +2,7 @@ import { ref, computed, onMounted, onUnmounted } from 'vue'
 import { useMutation } from '@tanstack/vue-query'
 import { useForm } from 'vee-validate'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { resendVerificationEmail } from '@/api/auth/verifyRequest'
 import { verifyEmailOtp } from '@/api/auth/verifyOtp'
 import { ResendVerificationSchema, VerifyOtpSchema } from '@/lib/zod-schemas/EmailVerificationSchema'
@@ -13,6 +14,7 @@ export function useEmailVerification(initialEmail?: string, initialUserId?: stri
   // Dependencies
   const router = useRouter()
   const userStore = useUserStore()
+  const { t } = useI18n()
   
   // Verification state
   const state = ref<VerificationState>({
@@ -115,7 +117,7 @@ export function useEmailVerification(initialEmail?: string, initialUserId?: stri
       // Show OTP in dev environment
       if (data?.data?.otp) {
         // Data logged
-        toast.success('Verification Code', {
+        toast.success(t('notifications.success.verificationCode'), {
           description: `Dev OTP: ${data.data.otp}`,
         })
       }
@@ -136,8 +138,8 @@ export function useEmailVerification(initialEmail?: string, initialUserId?: stri
       setOtpValue('code', '')
       
       // Use actual API response message
-      toast.success('Email Verified Successfully!', {
-        description: data.message || 'Your email has been verified. Please log in to continue.',
+      toast.success(t('notifications.success.emailVerified'), {
+        description: data.message || t('notifications.success.emailVerifiedDescription'),
       })
       
       // Clear the temporary verification token

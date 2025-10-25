@@ -5,6 +5,7 @@
     "delete": "Hapus",
     "edit": "Edit",
     "create": "Buat",
+    "update": "Perbarui",
     "submit": "Kirim",
     "loading": "Memuat...",
     "search": "Cari",
@@ -14,7 +15,21 @@
     "next": "Selanjutnya",
     "previous": "Sebelumnya",
     "close": "Tutup",
-    "confirm": "Konfirmasi"
+    "confirm": "Konfirmasi",
+    "viewDetails": "Lihat detail",
+    "retry": "Coba Lagi",
+    "refresh": "Segarkan",
+    "add": "Tambah",
+    "remove": "Hapus",
+    "continue": "Lanjutkan",
+    "finish": "Selesai",
+    "skip": "Lewati",
+    "download": "Unduh",
+    "upload": "Unggah",
+    "export": "Ekspor",
+    "import": "Impor",
+    "copy": "Salin",
+    "share": "Bagikan"
   },
   "states": {
     "loading": "Memuat...",
@@ -25,14 +40,33 @@
     "searching": "Mencari...",
     "saving": "Menyimpan...",
     "deleting": "Menghapus...",
-    "creating": "Membuat..."
+    "creating": "Membuat...",
+    "updating": "Memperbarui...",
+    "processing": "Memproses...",
+    "uploading": "Mengunggah...",
+    "downloading": "Mengunduh...",
+    "verifying": "Memverifikasi...",
+    "completed": "Selesai",
+    "failed": "Gagal",
+    "active": "Aktif",
+    "inactive": "Tidak Aktif",
+    "pending": "Pending"
   },
   "navigation": {
-    "dashboard": "Dashboard",
+    "dashboard": "Beranda",
+    "usersManagement": "Manajemen Pengguna",
+    "users": "Pengguna",
+    "organizations": "Organisasi",
+    "userData": "Data Pengguna",
+    "data": "Data",
+    "funQuiz": "Kuis Santai",
+    "quiz": "Kuis",
+    "userProfile": "Profil Pengguna",
     "profile": "Profil",
     "settings": "Pengaturan",
     "logout": "Keluar",
-    "home": "Beranda"
+    "home": "Beranda",
+    "assessments": "Penilaian"
   },
   "table": {
     "actions": "Aksi",
@@ -55,5 +89,13 @@
   },
   "language": {
     "comingSoon": "Segera Hadir"
+  },
+  "sessions": {
+    "loginAt": "Masuk pada",
+    "lastActivity": "Aktivitas terakhir",
+    "ipAddress": "Alamat IP",
+    "currentSession": "Sesi Saat Ini",
+    "active": "Aktif",
+    "inactive": "Tidak Aktif"
   }
 }

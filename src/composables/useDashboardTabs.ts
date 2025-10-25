@@ -1,8 +1,9 @@
-import { ref, computed, watch, onMounted, type Ref } from 'vue'
+import { ref, computed, watch, onMounted, onUnmounted, type Ref } from 'vue'
 import { useRouter, useRoute } from 'vue-router'
 
 import type { DashboardTab, UserRole, TabConfig } from '@/types/dashboard'
 import { getAccessibleTabs, isTabAccessible } from '@/lib/dashboard-utils'
+import { useErrorStateManager } from '@/composables/api/useErrorStateManager'
 
 interface DashboardTabsOptions {
   userRole: Ref<UserRole>
@@ -10,6 +11,7 @@ interface DashboardTabsOptions {
   persistToUrl?: boolean
   persistToStorage?: boolean
   storageKey?: string
+  clearErrorsOnTabChange?: boolean
 }
 
 interface DashboardTabsReturn {
@@ -21,6 +23,11 @@ interface DashboardTabsReturn {
   canAccessTab: (tab: DashboardTab) => boolean
   getTabLabel: (tab: DashboardTab) => string
   initializeTabs: () => Promise<void>
+
+  // Error management
+  clearTabErrors: () => void
+  hasTabErrors: Ref<boolean>
+  tabErrorManager: ReturnType<typeof useErrorStateManager>
 }
 
 export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsReturn {
@@ -30,15 +37,24 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
     persistToUrl = true,
     persistToStorage = true,
     storageKey = 'dashboard-active-tab',
+    clearErrorsOnTabChange = true,
   } = options
 
   const router = useRouter()
   const route = useRoute()
 
+  // Error state management
+  const tabErrorManager = useErrorStateManager('dashboard-tabs', {
+    clearOnNavigation: clearErrorsOnTabChange,
+    showToast: false, // We'll handle toasts manually for better UX
+    persistAcrossTabs: false
+  })
+
   // Reactive state
   const activeTab = ref<DashboardTab>(defaultTab)
   const isTabLoading = ref(false)
   const tabError = ref<string | null>(null)
+  const hasTabErrors = computed(() => tabErrorManager.hasErrors.value)
 
   // Tab configuration
   const tabConfigs: Record<DashboardTab, TabConfig> = {
@@ -151,11 +167,23 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
   // Main tab change function
   const changeTab = async (tab: DashboardTab): Promise<void> => {
     try {
+      // Clear previous tab errors if enabled
+      if (clearErrorsOnTabChange) {
+        tabErrorManager.clearOnTabChange()
+      }
+
       // Reset error state
       tabError.value = null
 
       // Validate tab access
       if (!canAccessTab(tab)) {
+        tabErrorManager.addError({
+          message: `Access denied to tab: ${getTabLabel(tab)}`,
+          severity: 'warning',
+          context: 'component',
+          source: 'dashboard-navigation',
+          recoveryActions: ['navigate']
+        })
         throw new Error(`Access denied to tab: ${tab}`)
       }
 
@@ -171,9 +199,23 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
 
       // Simulate async tab loading (if needed for data fetching)
       await new Promise((resolve) => setTimeout(resolve, 100))
-    } catch (error) {  
+
+      // Clear any navigation-related errors on successful tab change
+      tabErrorManager.clearErrors('component')
+
+    } catch (error) {
       const message = error instanceof Error ? error.message : 'Failed to change tab'
       tabError.value = message
+
+      // Add error to the error manager for better tracking
+      tabErrorManager.addError({
+        message,
+        severity: 'error',
+        context: 'component',
+        source: 'dashboard-tab-change',
+        recoveryActions: ['retry', 'navigate'],
+        details: { targetTab: tab, currentTab: activeTab.value }
+      })
     } finally {
       isTabLoading.value = false
     }
@@ -225,9 +267,21 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
     { immediate: false },
   )
 
+  // Error management functions
+  const clearTabErrors = (): void => {
+    tabErrorManager.clearAllErrors()
+    tabError.value = null
+  }
+
   // Auto-initialize on mount
   onMounted(() => {
     initializeTabs()
+  })
+
+  // Cleanup on unmount
+  onUnmounted(() => {
+    // Clear page-level errors when component unmounts
+    tabErrorManager.clearOnPageLeave()
   })
 
   return {
@@ -239,5 +293,10 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
     canAccessTab,
     getTabLabel,
     initializeTabs,
+
+    // Error management
+    clearTabErrors,
+    hasTabErrors,
+    tabErrorManager,
   }
 }

@@ -5,22 +5,14 @@
         class="bg-background/80 backdrop-blur-lg border border-border/30 rounded-full shadow-lg hover:shadow-xl transition-all duration-300 px-6 py-3"
       >
         <div class="flex justify-between items-center">
-          <!-- Left side: Logo and Language Chooser -->
-          <div class="flex items-center space-x-6">
-            <!-- Logo -->
-            <div class="flex items-center space-x-3">
-              <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
-                <span class="text-primary-foreground font-bold text-sm">IR</span>
-              </div>
-              <div class="flex flex-col">
-                <span class="text-xl font-bold text-foreground">{{ t('homepage.header.brand.name') }}</span>
-                <span class="text-xs text-muted-foreground -mt-1">{{ t('homepage.header.brand.tagline') }}</span>
-              </div>
+          <!-- Left side: Logo -->
+          <div class="flex items-center space-x-3">
+            <div class="w-8 h-8 bg-primary rounded-lg flex items-center justify-center">
+              <span class="text-primary-foreground font-bold text-sm">IR</span>
             </div>
-
-            <!-- Language Chooser -->
-            <div class="hidden sm:block">
-              <LanguageChooser />
+            <div class="flex flex-col">
+              <span class="text-xl font-bold text-foreground">{{ t('homepage.header.brand.name') }}</span>
+              <span class="text-xs text-muted-foreground -mt-1">{{ t('homepage.header.brand.tagline') }}</span>
             </div>
           </div>
 
@@ -38,7 +30,13 @@
 
           <!-- Actions -->
           <div class="flex items-center gap-3">
+            <!-- Utility Controls -->
+            <div class="hidden sm:block">
+              <LanguageChooser />
+            </div>
             <ThemeToggle />
+
+            <!-- Action Buttons -->
             <Button @click="navigateToLogin" variant="ghost" size="sm" class="hidden sm:flex">
               {{ t('homepage.header.buttons.signIn') }}
             </Button>

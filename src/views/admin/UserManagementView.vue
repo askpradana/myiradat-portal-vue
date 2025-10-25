@@ -132,12 +132,17 @@
                   >
                     <Pencil :size="18" />
                   </Button>
-                  <ResetPasswordByAdminAlert :user-i-d="user.id" :user-name="user.name" />
+                  <ResetPasswordByAdminAlert
+                    v-if="user.role_id !== 1"
+                    :user-i-d="user.id"
+                    :user-name="user.name"
+                  />
                   <DeleteSessionSpecificByAdminAlert
                     :name-of-user="user.name"
                     :user-i-d="user.id"
                   />
                   <DeleteUserAlert
+                    v-if="user.role_id !== 1"
                     :user-i-d="user.id"
                     :name-of-user="user.name"
                     :organization-i-d="user.id"

@@ -1,0 +1,48 @@
+{
+  "success": {
+    "verificationCode": "Kode Verifikasi",
+    "emailVerified": "Email Berhasil Diverifikasi!",
+    "emailVerifiedDescription": "Email Anda telah diverifikasi. Silakan masuk untuk melanjutkan.",
+    "profileUpdated": "Profil Diperbarui",
+    "profileUpdatedDescription": "Profil Anda telah berhasil diperbarui",
+    "profileRefreshed": "Profil berhasil disegarkan",
+    "subscribed": "Berhasil berlangganan!",
+    "subscriptionDescription": "Terima kasih telah berlangganan newsletter kami",
+    "verificationEmailSent": "Email Verifikasi Dikirim",
+    "verificationEmailDescription": "Silakan periksa email Anda untuk kode verifikasi"
+  },
+  "error": {
+    "redirectFailed": "Pengalihan gagal",
+    "serviceUnavailable": "Layanan tidak tersedia",
+    "invalidService": "Layanan tidak valid",
+    "autoVerificationFailed": "Verifikasi Otomatis Gagal",
+    "verificationFailed": "Verifikasi Gagal",
+    "networkError": "Kesalahan Jaringan",
+    "failedToSendEmail": "Gagal Mengirim Email",
+    "subscriptionFailed": "Langganan gagal",
+    "updateFailed": "Pembaruan Gagal",
+    "loadingError": "Kesalahan memuat data",
+    "operationFailed": "Operasi gagal",
+    "invalidCredentials": "Kredensial tidak valid",
+    "accessDenied": "Akses ditolak",
+    "serverError": "Kesalahan server",
+    "notFound": "Sumber daya tidak ditemukan"
+  },
+  "info": {
+    "loading": "Memuat...",
+    "processing": "Memproses...",
+    "saving": "Menyimpan...",
+    "deleting": "Menghapus...",
+    "updating": "Memperbarui...",
+    "verifying": "Memverifikasi...",
+    "redirecting": "Mengalihkan...",
+    "uploading": "Mengunggah...",
+    "downloading": "Mengunduh..."
+  },
+  "warning": {
+    "unsavedChanges": "Anda memiliki perubahan yang belum disimpan",
+    "dataLoss": "Perubahan Anda mungkin hilang",
+    "confirmation": "Apakah Anda yakin?",
+    "irreversibleAction": "Tindakan ini tidak dapat dibatalkan"
+  }
+}

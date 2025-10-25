@@ -73,7 +73,7 @@ const { mutate, isPending } = useMutation({
     data: NewDataSubmitInterface
     userID: string
     role: number
-  }) => editUserData(data, userID, role),
+  }) => editUserData(data, { userID, role }),
   onSuccess: (response) => {
     if (response) {
       toast('Success', {

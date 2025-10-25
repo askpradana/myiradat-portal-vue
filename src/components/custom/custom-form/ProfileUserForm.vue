@@ -352,12 +352,14 @@ const handleDateChange = (newDate: Date | null) => {
 const queryClient = useQueryClient()
 const { isPending: isSubmitting, mutate } = useMutation({
   mutationFn: ({ userID, data, role }: { data: DataUserProps; userID: string; role: number }) =>
-    editUserData(data, userID, role),
+    editUserData(data, { userID, role }),
   onSuccess: () => {
     isEditing.value = false
     toast('Profile Updated', {
       description: 'User profile has been successfully updated.',
     })
+    // Store is already updated in editUserData API call
+    // Query invalidation ensures any cached data is also refreshed
     queryClient.invalidateQueries({
       queryKey: ['profile', props.userID],
       exact: false,

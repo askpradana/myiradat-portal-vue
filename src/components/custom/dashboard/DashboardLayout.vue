@@ -45,7 +45,7 @@
         >
           <div class="flex flex-col items-center gap-3">
             <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
-            <p class="text-sm text-muted-foreground">Loading {{ activeTab }}...</p>
+            <p class="text-sm text-muted-foreground">{{ t('common.states.loading') }} {{ activeTab }}...</p>
           </div>
         </div>
 
@@ -104,8 +104,11 @@
 
 <script setup lang="ts">
 import { computed, onMounted, onErrorCaptured, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { AlertCircle, RefreshCw, Plus } from 'lucide-vue-next'
+
+const { t } = useI18n()
 
 import HeaderDashboard from './HeaderDashboard.vue'
 import NavigationTab from './NavigationTab.vue'
