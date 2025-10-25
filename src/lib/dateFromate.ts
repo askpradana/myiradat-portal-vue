@@ -1,7 +1,7 @@
 // Helper function for date formatting
 export const formatDate = (dateString: string) => {
   const date = new Date(dateString)
-  return date.toLocaleDateString()
+  return date.toLocaleDateString('id-ID')
 }
 
 export const formatLastUpdated = (date: string): string => {

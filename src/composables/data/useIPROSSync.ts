@@ -10,7 +10,7 @@ import type {
   IPROSSyncError,
   PPIAspect,
   RIASECResult,
-  IPROSScoreInterpretation
+  IPROSScoreInterpretation,
 } from '@/types/ipros'
 
 export interface IPROSSyncOptions {
@@ -78,7 +78,7 @@ const defaultOptions: Required<IPROSSyncOptions> = {
   clearOnNavigation: true,
   showToast: true,
   persistAcrossTabs: false,
-  useStore: true
+  useStore: true,
 }
 
 export function useIPROSSync(options: IPROSSyncOptions = {}): UseIPROSSyncReturn {
@@ -97,7 +97,7 @@ export function useIPROSSync(options: IPROSSyncOptions = {}): UseIPROSSyncReturn
         autoRetryDelay: config.autoRetryDelay,
         clearOnNavigation: config.clearOnNavigation,
         showToast: config.showToast,
-        persistAcrossTabs: config.persistAcrossTabs
+        persistAcrossTabs: config.persistAcrossTabs,
       })
     : null
 
@@ -144,6 +144,12 @@ export function useIPROSSync(options: IPROSSyncOptions = {}): UseIPROSSyncReturn
           throw new Error('No data received from IPROS sync')
         }
 
+        // Check if data is unavailable (204 response) - this is not an error
+        if (result.isDataUnavailable) {
+          syncState.value = 'data-unavailable'
+          return result
+        }
+
         return result
       } catch (error) {
         if (config.useEnhancedErrorHandling) {
@@ -162,8 +168,8 @@ export function useIPROSSync(options: IPROSSyncOptions = {}): UseIPROSSyncReturn
               consecutiveFailures: consecutiveFailures.value,
               canRetry: canRetry.value,
               timestamp: Date.now(),
-              originalError: error
-            }
+              originalError: error,
+            },
           })
         }
 
@@ -178,7 +184,13 @@ export function useIPROSSync(options: IPROSSyncOptions = {}): UseIPROSSyncReturn
         iprosData.value = data
       }
 
-      syncState.value = 'success'
+      // Set appropriate success state based on data availability
+      if (data.isDataUnavailable) {
+        syncState.value = 'data-unavailable'
+      } else {
+        syncState.value = 'success'
+      }
+
       consecutiveFailures.value = 0
 
       // Clear any previous errors on success (enhanced mode)
@@ -196,7 +208,7 @@ export function useIPROSSync(options: IPROSSyncOptions = {}): UseIPROSSyncReturn
         handleError(error, 'Failed to sync IPROS data')
       }
       // Enhanced error handling is done in mutationFn
-    }
+    },
   })
 
   // Computed properties
@@ -213,7 +225,7 @@ export function useIPROSSync(options: IPROSSyncOptions = {}): UseIPROSSyncReturn
       if (managerError) {
         return {
           message: managerError.message,
-          context: managerError.source || 'IPROS Sync'
+          context: managerError.source || 'IPROS Sync',
         }
       }
     }
@@ -225,7 +237,7 @@ export function useIPROSSync(options: IPROSSyncOptions = {}): UseIPROSSyncReturn
     if (syncMutation.error.value) {
       return {
         message: syncMutation.error.value.message || 'Unknown sync error',
-        context: 'IPROS Sync Mutation'
+        context: 'IPROS Sync Mutation',
       }
     }
 
@@ -234,38 +246,30 @@ export function useIPROSSync(options: IPROSSyncOptions = {}): UseIPROSSyncReturn
 
   // Data access helpers
   const hasPPIData = computed(() =>
-    Boolean(currentIPROSData.value?.hasPrivileges && currentIPROSData.value.ppiResults !== null)
+    Boolean(currentIPROSData.value?.hasPrivileges && currentIPROSData.value.ppiResults !== null),
   )
 
   const hasRIASECData = computed(() =>
-    Boolean(currentIPROSData.value?.hasPrivileges && currentIPROSData.value.riasecResults !== null)
+    Boolean(currentIPROSData.value?.hasPrivileges && currentIPROSData.value.riasecResults !== null),
   )
 
-  const hasAnyQuizData = computed(() =>
-    Boolean(hasPPIData.value || hasRIASECData.value)
-  )
+  const hasAnyQuizData = computed(() => Boolean(hasPPIData.value || hasRIASECData.value))
 
   // PPI helpers
-  const getPPIAspects = computed(() =>
-    currentIPROSData.value?.ppiResults || null
-  )
+  const getPPIAspects = computed(() => currentIPROSData.value?.ppiResults || null)
 
   const getPPIScore = (aspectName: string): number | null => {
     const aspects = getPPIAspects.value
     if (!aspects) return null
 
-    const aspect = aspects.find(a => a.aspek === aspectName)
+    const aspect = aspects.find((a) => a.aspek === aspectName)
     return aspect?.skor || null
   }
 
   // RIASEC helpers
-  const getRIASECResults = computed(() =>
-    currentIPROSData.value?.riasecResults || null
-  )
+  const getRIASECResults = computed(() => currentIPROSData.value?.riasecResults || null)
 
-  const getRIASECTopThree = computed(() =>
-    getRIASECResults.value?.top_three || null
-  )
+  const getRIASECTopThree = computed(() => getRIASECResults.value?.top_three || null)
 
   const getRIASECScore = (dimension: string): number | null => {
     const results = getRIASECResults.value
@@ -281,21 +285,21 @@ export function useIPROSSync(options: IPROSSyncOptions = {}): UseIPROSSyncReturn
         level: 'high',
         color: 'green',
         description: 'Sangat Baik - Kemampuan tinggi pada aspek ini',
-        range: '4 - 5'
+        range: '4 - 5',
       }
     } else if (score === 3) {
       return {
         level: 'medium',
         color: 'yellow',
         description: 'Baik - Kemampuan memadai pada aspek ini',
-        range: '3'
+        range: '3',
       }
     } else {
       return {
         level: 'low',
         color: 'red',
         description: 'Perlu Pengembangan - Aspek ini perlu ditingkatkan',
-        range: '1 - 2'
+        range: '1 - 2',
       }
     }
   }
@@ -306,21 +310,21 @@ export function useIPROSSync(options: IPROSSyncOptions = {}): UseIPROSSyncReturn
         level: 'high',
         color: 'green',
         description: 'Dominan - Minat yang sangat kuat',
-        range: '20 - 25'
+        range: '20 - 25',
       }
     } else if (score >= 15) {
       return {
         level: 'medium',
         color: 'yellow',
         description: 'Sedang - Minat yang cukup',
-        range: '15 - 19'
+        range: '15 - 19',
       }
     } else {
       return {
         level: 'low',
         color: 'red',
         description: 'Rendah - Minat yang kurang',
-        range: '0 - 14'
+        range: '0 - 14',
       }
     }
   }
@@ -333,7 +337,7 @@ export function useIPROSSync(options: IPROSSyncOptions = {}): UseIPROSSyncReturn
         month: 'long',
         day: 'numeric',
         hour: '2-digit',
-        minute: '2-digit'
+        minute: '2-digit',
       })
     } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
       return date
@@ -346,7 +350,7 @@ export function useIPROSSync(options: IPROSSyncOptions = {}): UseIPROSSyncReturn
     if (currentIPROSData.value.hasPrivileges) {
       return 'Akses Penuh'
     } else {
-      return 'Tidak Ada Akses Kuis'
+      return 'Kuis belum dilakukan'
     }
   })
 
@@ -358,7 +362,7 @@ export function useIPROSSync(options: IPROSSyncOptions = {}): UseIPROSSyncReturn
         severity: 'warning',
         context: 'component',
         source: 'ipros-sync-rate-limit',
-        recoveryActions: ['ignore']
+        recoveryActions: ['ignore'],
       })
       return
     }
@@ -456,7 +460,7 @@ export function useIPROSSync(options: IPROSSyncOptions = {}): UseIPROSSyncReturn
 
     // Utility functions
     formatSyncDate,
-    getPrivilegeStatus
+    getPrivilegeStatus,
   }
 
   // Add enhanced features conditionally
@@ -471,7 +475,7 @@ export function useIPROSSync(options: IPROSSyncOptions = {}): UseIPROSSyncReturn
       // Enhanced actions
       retrySync,
       resetSyncState,
-      clearOnNavigation
+      clearOnNavigation,
     }
   }
 
@@ -479,7 +483,9 @@ export function useIPROSSync(options: IPROSSyncOptions = {}): UseIPROSSyncReturn
 }
 
 // Convenience function for enhanced usage
-export function useEnhancedIPROSSync(options: Omit<IPROSSyncOptions, 'useEnhancedErrorHandling'> = {}) {
+export function useEnhancedIPROSSync(
+  options: Omit<IPROSSyncOptions, 'useEnhancedErrorHandling'> = {},
+) {
   return useIPROSSync({
     ...options,
     useEnhancedErrorHandling: true,
@@ -488,6 +494,6 @@ export function useEnhancedIPROSSync(options: Omit<IPROSSyncOptions, 'useEnhance
     autoRetryDelay: options.autoRetryDelay ?? 2000,
     clearOnNavigation: options.clearOnNavigation ?? true,
     showToast: options.showToast ?? true,
-    persistAcrossTabs: options.persistAcrossTabs ?? false
+    persistAcrossTabs: options.persistAcrossTabs ?? false,
   })
 }

@@ -29,7 +29,7 @@
           </div>
 
           <!-- Actions -->
-          <div class="flex items-center gap-3">
+          <div class="flex items-center gap-2">
             <!-- Utility Controls -->
             <div class="hidden sm:block">
               <LanguageChooser />

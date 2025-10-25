@@ -97,5 +97,24 @@
     "currentSession": "Sesi Saat Ini",
     "active": "Aktif",
     "inactive": "Tidak Aktif"
+  },
+  "dialog": {
+    "logout": {
+      "title": "Keluar",
+      "description": "Apakah Anda yakin ingin mengakhiri sesi ini?"
+    }
+  },
+  "messages": {
+    "success": {
+      "profileRefreshed": "Profil berhasil disegarkan"
+    },
+    "error": {
+      "refreshFailed": "Gagal menyegarkan profil"
+    }
+  },
+  "aria": {
+    "refreshProfile": "Segarkan data profil",
+    "refreshingProfile": "Menyegarkan data profil",
+    "refreshCooldown": "Refresh tersedia dalam {seconds} detik"
   }
 }

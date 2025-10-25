@@ -2,6 +2,56 @@ import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import type { AvatarCache, PersonMetadata, CompanyMetadata } from '@/types/avatar'
 
+// Apple/shadcn-ui inspired gradient avatar generation
+const generateGradientAvatarUrl = (seed: string, initials: string): string => {
+  // For now, return a data URL with SVG gradient avatar
+  // This matches the ProfileHeader.vue gradient system
+  const gradientColors = [
+    ['#f1f5f9', '#e2e8f0'], // slate
+    ['#f9fafb', '#f3f4f6'], // gray
+    ['#fafaf9', '#f5f5f4'], // stone
+    ['#fafafa', '#f5f5f5'], // neutral
+    ['#fafafa', '#f4f4f5'], // zinc
+    ['#fdf2f8', '#fce7f3']  // rose
+  ]
+
+  const textColors = [
+    '#334155', // slate-700
+    '#374151', // gray-700
+    '#57534e', // stone-700
+    '#404040', // neutral-700
+    '#3f3f46', // zinc-700
+    '#be185d'  // rose-700
+  ]
+
+  // Generate consistent index based on seed
+  let hash = 0
+  for (let i = 0; i < seed.length; i++) {
+    const char = seed.charCodeAt(i)
+    hash = ((hash << 5) - hash) + char
+    hash = hash & hash
+  }
+  const index = Math.abs(hash) % gradientColors.length
+
+  const [color1, color2] = gradientColors[index]
+  const textColor = textColors[index]
+
+  const svg = `
+    <svg width="128" height="128" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" style="stop-color:${color1}" />
+          <stop offset="100%" style="stop-color:${color2}" />
+        </linearGradient>
+      </defs>
+      <circle cx="64" cy="64" r="64" fill="url(#grad)" />
+      <text x="64" y="64" font-family="system-ui, -apple-system, sans-serif" font-size="48" font-weight="600" text-anchor="middle" dominant-baseline="central" fill="${textColor}">${initials}</text>
+    </svg>
+  `.trim()
+
+  return `data:image/svg+xml;base64,${btoa(svg)}`
+}
+
 export const useAvatarStore = defineStore('avatar', () => {
   // State
   const cache = ref<AvatarCache>({})
@@ -58,15 +108,16 @@ export const useAvatarStore = defineStore('avatar', () => {
           throw new Error('Primary API failed')
         }
       } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
-        // Fallback to UI Avatars with initials
+        // Fallback to local gradient avatar generation
         const initials = metadata?.name
           ?.split(' ')
           .map(n => n[0])
           .join('')
           .slice(0, 2)
           .toUpperCase() || 'U'
-        
-        avatarUrl = `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=3b82f6&color=fff&size=128&format=png`
+
+        // Generate gradient-based avatar URL with consistent coloring
+        avatarUrl = generateGradientAvatarUrl(seed, initials)
       }
 
       // Cache the result
@@ -84,15 +135,15 @@ export const useAvatarStore = defineStore('avatar', () => {
     } catch (err) {  
       error.value = err instanceof Error ? err.message : 'Failed to generate avatar'
       
-      // Return fallback avatar
+      // Return fallback gradient avatar
       const initials = metadata?.name
         ?.split(' ')
         .map(n => n[0])
         .join('')
         .slice(0, 2)
         .toUpperCase() || 'U'
-      
-      return `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=6b7280&color=fff&size=128&format=png`
+
+      return generateGradientAvatarUrl(seed, initials)
     } finally {
       isLoading.value = false
     }

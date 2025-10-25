@@ -59,5 +59,21 @@
     "last": "Terakhir",
     "loadMore": "Muat Lebih Banyak",
     "showMore": "Tampilkan Lebih Banyak"
+  },
+  "theme": {
+    "light": "Terang",
+    "dark": "Gelap",
+    "switchToLight": "Beralih ke mode terang",
+    "switchToDark": "Beralih ke mode gelap"
+  },
+  "refresh": {
+    "refresh": "Segarkan",
+    "refreshing": "Menyegarkan"
+  },
+  "logout": {
+    "logout": "Keluar",
+    "cancel": "Batal",
+    "confirm": "Ya, akhiri sesi",
+    "loading": "Mohon tunggu..."
   }
 }

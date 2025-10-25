@@ -32,16 +32,16 @@ const handleLocaleChange = (newLocale: unknown) => {
 <template>
   <Select :model-value="currentLocale" @update:model-value="handleLocaleChange">
     <SelectTrigger
-      class="w-auto border-0 bg-transparent p-0 h-10 shadow-none focus:ring-0 rounded-md px-3 py-2 hover:bg-muted/50 transition-colors"
+      class="w-auto border-0 bg-transparent p-0 h-9 sm:h-auto sm:px-3 sm:py-2 shadow-none focus:ring-0 rounded-md hover:bg-muted/50 transition-colors"
     >
       <SelectValue>
         <div class="flex items-center gap-2 text-sm">
-          <Languages :size="14" class="text-muted-foreground" />
-          <span class="text-muted-foreground hidden sm:inline">
+          <Languages class="w-4 h-4 text-muted-foreground shrink-0" />
+          <span class="text-muted-foreground hidden sm:inline shrink-0">
             {{ currentLocaleInfo?.flag }}
           </span>
           <!-- Hide text on mobile for space efficiency -->
-          <span class="text-muted-foreground hidden md:inline">
+          <span class="text-muted-foreground hidden md:inline w-16 text-left">
             {{ currentLocaleInfo?.name }}
           </span>
         </div>

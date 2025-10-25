@@ -2,6 +2,7 @@ import { ref, computed, onMounted, onUnmounted, type Ref, type ComputedRef } fro
 import { useUserStore } from '@/stores/userStores'
 import { getProfile } from '@/api/users/getProfile'
 import { useApiError } from '@/composables/api/useApiError'
+import { useI18n } from 'vue-i18n'
 
 export type RefreshButtonState = 'ready' | 'loading' | 'cooldown'
 
@@ -21,6 +22,7 @@ const STORAGE_KEY = 'last_profile_refresh'
 export function useProfileRefresh(): UseProfileRefreshReturn {
   const userStore = useUserStore()
   const { error: apiError, handleError, clearError } = useApiError()
+  const { t } = useI18n()
 
   const isLoading = ref(false)
   const cooldownTime = ref(0)
@@ -39,13 +41,13 @@ export function useProfileRefresh(): UseProfileRefreshReturn {
   const ariaLabel = computed(() => {
     switch (state.value) {
       case 'ready':
-        return 'Refresh profile data'
+        return t('common.aria.refreshProfile')
       case 'loading':
-        return 'Refreshing profile data'
+        return t('common.aria.refreshingProfile')
       case 'cooldown':
-        return `Refresh available in ${cooldownTime.value} seconds`
+        return t('common.aria.refreshCooldown', { seconds: cooldownTime.value })
       default:
-        return 'Refresh profile data'
+        return t('common.aria.refreshProfile')
     }
   })
 
@@ -105,7 +107,7 @@ export function useProfileRefresh(): UseProfileRefreshReturn {
       startCooldownTimer(COOLDOWN_DURATION)
 
     } catch (error) {  
-      handleError(error, 'Failed to refresh profile')
+      handleError(error, t('common.messages.error.refreshFailed'))
       throw error
     } finally {
       isLoading.value = false

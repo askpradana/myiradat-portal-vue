@@ -59,5 +59,21 @@
     "last": "Last",
     "loadMore": "Load More",
     "showMore": "Show More"
+  },
+  "theme": {
+    "light": "Light",
+    "dark": "Dark",
+    "switchToLight": "Switch to light mode",
+    "switchToDark": "Switch to dark mode"
+  },
+  "refresh": {
+    "refresh": "Refresh",
+    "refreshing": "Refreshing"
+  },
+  "logout": {
+    "logout": "Logout",
+    "cancel": "Cancel",
+    "confirm": "Yes, end session",
+    "loading": "Please wait..."
   }
 }
