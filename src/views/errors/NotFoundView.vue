@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/userStores'
 import { getUserRole, getRoleRedirectPath } from '@/lib/dashboard-utils'
 import { Button } from '@/components/ui/button'
 
 const router = useRouter()
 const userStore = useUserStore()
+const { t } = useI18n()
 
 const isAuthenticated = computed(() => userStore.isAuthenticated && userStore.isTokenValid())
 const userRole = computed(() => getUserRole(userStore.user))
@@ -65,17 +67,17 @@ const goToDashboard = () => {
               />
             </svg>
           </div>
-          <h1 class="text-3xl font-bold text-foreground mb-2">MyIradat</h1>
-          <p class="text-muted-foreground">Your secure platform for data management</p>
+          <h1 class="text-3xl font-bold text-foreground mb-2">{{ t('common.brand.name') }}</h1>
+          <p class="text-muted-foreground">{{ t('common.brand.tagline') }}</p>
         </div>
 
         <!-- 404 Error Content -->
         <div class="mb-8">
           <div class="mb-6">
-            <h2 class="text-8xl font-bold text-primary/20 mb-2">404</h2>
-            <h3 class="text-2xl font-semibold text-foreground mb-2">Page Not Found</h3>
+            <h2 class="text-8xl font-bold text-primary/20 mb-2">{{ t('errors.notFound.code') }}</h2>
+            <h3 class="text-2xl font-semibold text-foreground mb-2">{{ t('errors.notFound.title') }}</h3>
             <p class="text-muted-foreground max-w-sm mx-auto">
-              The page you're looking for doesn't exist or has been moved to a different location.
+              {{ t('errors.notFound.description') }}
             </p>
           </div>
 
@@ -92,7 +94,7 @@ const goToDashboard = () => {
                     d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
                   />
                 </svg>
-                Go Home
+                {{ t('buttons.navigation.goHome') }}
               </Button>
               <Button @click="goToLogin" variant="outline" class="w-full">
                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -103,7 +105,7 @@ const goToDashboard = () => {
                     d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1"
                   />
                 </svg>
-                Login
+                {{ t('buttons.navigation.login') }}
               </Button>
             </template>
 
@@ -118,7 +120,7 @@ const goToDashboard = () => {
                     d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
                   />
                 </svg>
-                Go to Dashboard
+                {{ t('buttons.navigation.goToDashboard') }}
               </Button>
 
               <template v-if="userRole === 'admin'">
@@ -131,7 +133,7 @@ const goToDashboard = () => {
                       d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197m13.5-9a2.5 2.5 0 11-5 0 2.5 2.5 0 015 0z"
                     />
                   </svg>
-                  Admin Panel
+                  {{ t('buttons.navigation.adminPanel') }}
                 </Button>
               </template>
             </template>
@@ -140,7 +142,7 @@ const goToDashboard = () => {
 
         <!-- Additional help text -->
         <div class="text-sm text-muted-foreground">
-          <p>If you think this is an error, please contact our support team.</p>
+          <p>{{ t('errors.notFound.helpText') }}</p>
         </div>
       </div>
     </div>

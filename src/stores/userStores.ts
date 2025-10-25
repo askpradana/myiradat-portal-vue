@@ -64,6 +64,13 @@ export const useUserStore = defineStore('user', () => {
   }
 
   const setUserProfileData = (userData: Partial<UserLoginInterface>) => {
+    console.log('📝 userStore: setUserProfileData called with:', {
+      userId: userData.id,
+      name: userData.name,
+      email: userData.email,
+      hasExistingUser: !!user.value
+    })
+
     if (user.value) {
       // Gabungkan properti dari userData ke user.value
       user.value = {
@@ -72,10 +79,12 @@ export const useUserStore = defineStore('user', () => {
       }
       // Perbarui data_user di localStorage
       localStorage.setItem('data_user', JSON.stringify(user.value))
+      console.log('🔄 userStore: Updated existing user data in store and localStorage')
     } else {
       // Jika user.value belum ada, inisialisasi dengan userData
       user.value = userData as UserLoginInterface
       localStorage.setItem('data_user', JSON.stringify(userData))
+      console.log('🆕 userStore: Initialized new user data in store and localStorage')
     }
   }
 
@@ -101,6 +110,7 @@ export const useUserStore = defineStore('user', () => {
     localStorage.removeItem('data_user')
     localStorage.removeItem('data_services')
     localStorage.removeItem('temp_verification_token')
+    localStorage.removeItem('ipros_data') // Clear IPROS data on logout
   }
 
   const isTokenValid = (): boolean => {

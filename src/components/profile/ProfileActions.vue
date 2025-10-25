@@ -7,10 +7,10 @@
       variant="outline"
       disabled
       class="w-full"
-      aria-label="Loading profile data"
+      :aria-label="t('profile.actions.loadingProfile')"
     >
       <LoaderIcon class="w-4 h-4 mr-2 animate-spin" />
-      Loading...
+      {{ t('common.states.loading') }}
     </Button>
 
     <!-- Error State -->
@@ -20,10 +20,10 @@
       variant="outline"
       @click="onRetry"
       class="w-full"
-      aria-label="Retry loading profile data"
+      :aria-label="t('profile.actions.retryLoading')"
     >
       <RefreshIcon class="w-4 h-4 mr-2" />
-      Retry
+      {{ t('common.actions.retry') }}
     </Button>
 
     <!-- Edit Mode Actions -->
@@ -36,10 +36,10 @@
         @click="onCancel"
         :disabled="isSubmitting"
         class="w-full"
-        aria-label="Cancel editing and discard changes"
+        :aria-label="t('profile.actions.cancelEditing')"
       >
         <CancelIcon class="w-4 h-4 mr-2" />
-        Cancel
+        {{ t('common.actions.cancel') }}
       </Button>
 
       <!-- Save Button -->
@@ -49,11 +49,11 @@
         :disabled="isSubmitting || !isFormValid || !hasChanges"
         class="w-full"
         @click="onSave"
-        :aria-label="isSubmitting ? 'Saving changes...' : 'Save profile changes'"
+        :aria-label="isSubmitting ? t('profile.actions.savingChanges') : t('profile.actions.saveChanges')"
       >
         <LoaderIcon v-if="isSubmitting" class="w-4 h-4 mr-2 animate-spin" />
         <SaveIcon v-else class="w-4 h-4 mr-2" />
-        {{ isSubmitting ? 'Saving...' : 'Save' }}
+        {{ isSubmitting ? t('common.states.saving') : t('common.actions.save') }}
       </Button>
     </template>
 
@@ -64,16 +64,17 @@
       size="sm"
       @click="onEdit"
       class="w-full"
-      aria-label="Edit profile information"
+      :aria-label="t('profile.actions.editProfile')"
     >
       <EditIcon class="w-4 h-4 mr-2" />
-      Edit Profile
+      {{ t('profile.actions.editProfileButton') }}
     </Button>
   </div>
 </template>
 
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
+import { useI18n } from 'vue-i18n'
 import { EditIcon, SaveIcon, CancelIcon, RefreshIcon, LoaderIcon } from '@/components/ui/icons'
 
 interface Props {
@@ -101,6 +102,7 @@ withDefaults(defineProps<Props>(), {
   hasChanges: false,
 })
 
+const { t } = useI18n()
 const emit = defineEmits<Emits>()
 
 const onEdit = () => emit('edit')

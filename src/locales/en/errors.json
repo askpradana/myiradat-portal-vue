@@ -1,0 +1,59 @@
+{
+  "notFound": {
+    "title": "Page Not Found",
+    "code": "404",
+    "description": "The page you're looking for doesn't exist or has been moved to a different location.",
+    "helpText": "If you think this is an error, please contact our support team."
+  },
+  "unauthorized": {
+    "title": "Unauthorized Access",
+    "code": "401",
+    "description": "You don't have permission to access this resource."
+  },
+  "forbidden": {
+    "title": "Access Forbidden",
+    "code": "403",
+    "description": "Access to this resource is forbidden."
+  },
+  "serverError": {
+    "title": "Server Error",
+    "code": "500",
+    "description": "Something went wrong on our end. Please try again later."
+  },
+  "loading": {
+    "quiz": "Loading quiz...",
+    "organization": "Loading organization data...",
+    "profile": "Loading profile...",
+    "users": "Loading users...",
+    "services": "Loading services...",
+    "data": "Loading data...",
+    "content": "Loading content..."
+  },
+  "empty": {
+    "noData": "No data available",
+    "noResults": "No results found",
+    "noDataToReview": "No data to review",
+    "noResultsToDisplay": "No results to display.",
+    "noQuizzes": "No quizzes available",
+    "noUsers": "No users found",
+    "noOrganizations": "No organizations found",
+    "noServices": "No services found"
+  },
+  "generic": {
+    "errorOccurred": "An error occurred",
+    "somethingWentWrong": "Something went wrong",
+    "tryAgain": "Please try again",
+    "contactSupport": "Please contact support if the problem persists",
+    "unexpectedError": "An unexpected error occurred"
+  },
+  "network": {
+    "connectionError": "Connection error",
+    "timeoutError": "Request timeout",
+    "networkUnavailable": "Network unavailable"
+  },
+  "api": {
+    "invalidResponse": "Invalid response from server",
+    "serverUnavailable": "Server is currently unavailable",
+    "maintenanceMode": "System is under maintenance"
+  }
+}

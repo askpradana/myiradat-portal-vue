@@ -11,8 +11,10 @@ import { resetPasswordByUser } from '@/api/auth/resetPasswordByUser'
 import { toast } from 'vue-sonner'
 import { Eye, EyeClosed, Save, PenBox, X } from 'lucide-vue-next'
 import { useMutation } from '@tanstack/vue-query'
+import { useI18n } from 'vue-i18n'
 
 const router = useRouter()
+const { t } = useI18n()
 
 const validationSchema = ResetPasswordByUserFormSchema
 const { handleSubmit, errors, resetForm } = useForm({
@@ -49,7 +51,7 @@ const { mutate, isPending } = useMutation({
     resetPasswordByUser(currentPasword, newPassword),
   onSuccess: (response) => {
     if (response) {
-      toast('Success', {
+      toast(t('common.states.success'), {
         description: `${response?.message}`,
       })
 
@@ -69,9 +71,9 @@ const onSubmit = handleSubmit((values) => {
     <CardHeader class="space-y-1 pb-2">
       <div class="flex justify-between">
         <span>
-          <CardTitle class="text-lg font-semibold text-foreground">Reset Password</CardTitle>
+          <CardTitle class="text-lg font-semibold text-foreground">{{ t('auth.password.resetTitle') }}</CardTitle>
           <CardDescription class="text-muted-foreground">
-            Enter your new credentials to reset your password
+            {{ t('auth.password.resetDescription') }}
           </CardDescription>
         </span>
         <span>
@@ -82,7 +84,7 @@ const onSubmit = handleSubmit((values) => {
             :disabled="isPending"
           >
             <PenBox :size="18" />
-            Edit password</Button
+            {{ t('auth.password.editButton') }}</Button
           >
           <Button
             variant="outline"
@@ -92,7 +94,7 @@ const onSubmit = handleSubmit((values) => {
             :disabled="isPending"
           >
             <X :size="18" />
-            Cancel</Button
+            {{ t('common.actions.cancel') }}</Button
           >
         </span>
       </div>
@@ -102,13 +104,13 @@ const onSubmit = handleSubmit((values) => {
       <form @submit="onSubmit" class="space-y-4">
         <div class="space-y-2">
           <Label for="currentPassword" class="text-sm font-medium text-foreground"
-            >Current password</Label
+            >{{ t('auth.password.currentPassword') }}</Label
           >
           <div class="relative">
             <Input
               id="currentPassword"
               :type="isShowCurrentPassword ? 'text' : 'password'"
-              placeholder="Enter your current password"
+              :placeholder="t('auth.password.currentPasswordPlaceholder')"
               class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
               required
               v-model="currentPassword"
@@ -130,12 +132,12 @@ const onSubmit = handleSubmit((values) => {
         </div>
 
         <div class="space-y-2">
-          <Label for="newPassword" class="text-sm font-medium text-foreground">New password</Label>
+          <Label for="newPassword" class="text-sm font-medium text-foreground">{{ t('auth.password.newPassword') }}</Label>
           <div class="relative">
             <Input
               id="newPassword"
               :type="isShowNewPassword ? 'text' : 'password'"
-              placeholder="Enter your new password"
+              :placeholder="t('auth.password.newPasswordPlaceholder')"
               class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
               required
               v-model="newPassword"
@@ -158,13 +160,13 @@ const onSubmit = handleSubmit((values) => {
 
         <div class="space-y-2">
           <Label for="confirmPassword" class="text-sm font-medium text-foreground"
-            >Confirm password</Label
+            >{{ t('auth.password.confirmPassword') }}</Label
           >
           <div class="relative">
             <Input
               id="confirmPassword"
               :type="isShowConfirmPassword ? 'text' : 'password'"
-              placeholder="Enter new password"
+              :placeholder="t('auth.password.confirmPasswordPlaceholder')"
               class="h-11 transition-all duration-200 focus:ring-2 focus:ring-primary/20"
               required
               v-model="confirmPassword"
@@ -193,7 +195,7 @@ const onSubmit = handleSubmit((values) => {
           :class="isPending && 'bg-gray-500 pointer-events-none'"
         >
           <Save :size="18" />
-          {{ isPending ? 'Please wait...' : 'Save' }}
+          {{ isPending ? t('common.states.loading') : t('common.actions.save') }}
         </Button>
       </form>
     </CardContent>

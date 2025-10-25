@@ -1,0 +1,63 @@
+{
+  "navigation": {
+    "goHome": "Go Home",
+    "goBack": "Go Back",
+    "goToDashboard": "Go to Dashboard",
+    "login": "Login",
+    "logout": "Logout",
+    "register": "Register",
+    "dashboard": "Dashboard",
+    "profile": "Profile",
+    "settings": "Settings",
+    "adminPanel": "Admin Panel",
+    "home": "Home"
+  },
+  "actions": {
+    "search": "Search",
+    "filter": "Filter",
+    "sort": "Sort",
+    "refresh": "Refresh",
+    "reload": "Reload",
+    "retry": "Try Again",
+    "download": "Download",
+    "upload": "Upload",
+    "export": "Export",
+    "import": "Import",
+    "copy": "Copy",
+    "share": "Share",
+    "print": "Print"
+  },
+  "management": {
+    "add": "Add",
+    "addNew": "Add New",
+    "addUser": "Add User",
+    "addMember": "Add Member",
+    "remove": "Remove",
+    "delete": "Delete",
+    "deleteAll": "Delete All",
+    "selectAll": "Select All",
+    "clearAll": "Clear All",
+    "manage": "Manage",
+    "assign": "Assign",
+    "unassign": "Unassign"
+  },
+  "confirmation": {
+    "yes": "Yes",
+    "no": "No",
+    "ok": "OK",
+    "agree": "I Agree",
+    "disagree": "Disagree",
+    "accept": "Accept",
+    "decline": "Decline",
+    "approve": "Approve",
+    "reject": "Reject"
+  },
+  "pagination": {
+    "previous": "Previous",
+    "next": "Next",
+    "first": "First",
+    "last": "Last",
+    "loadMore": "Load More",
+    "showMore": "Show More"
+  }
+}

@@ -132,13 +132,13 @@ const onSubmit = handleSubmit(async (values) => {
             </div>
           </div>
           <div class="flex justify-end mt-1">
-            <buton
+            <button
               @click="() => router.replace('/forgot-password')"
               type="button"
               class="text-sm text-primary hover:text-primary/80 transition-colors duration-200 underline-offset-4 hover:underline"
             >
               {{ t('auth.buttons.forgotPassword') }}
-            </buton>
+            </button>
           </div>
           <span class="text-xs text-red-400">{{ errors.password }}</span>
         </div>

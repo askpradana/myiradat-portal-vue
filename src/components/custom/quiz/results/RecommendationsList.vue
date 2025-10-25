@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+
+const { t } = useI18n()
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -114,13 +117,13 @@ const getRecommendationIcon = (text: string) => {
 const getPriorityBadge = (priority: string) => {
   switch (priority) {
     case 'high':
-      return { variant: 'destructive', text: 'High Priority' }
+      return { variant: 'destructive', text: t('quiz.recommendations.priority.high') }
     case 'medium':
-      return { variant: 'default', text: 'Medium Priority' }
+      return { variant: 'default', text: t('quiz.recommendations.priority.medium') }
     case 'low':
-      return { variant: 'secondary', text: 'Low Priority' }
+      return { variant: 'secondary', text: t('quiz.recommendations.priority.low') }
     default:
-      return { variant: 'secondary', text: 'General' }
+      return { variant: 'secondary', text: t('quiz.recommendations.priority.general') }
   }
 }
 
@@ -153,10 +156,10 @@ const hasRecommendations = computed(() => parsedRecommendations.value.length > 0
       <CardHeader>
         <CardTitle class="flex items-center gap-2">
           <Lightbulb class="h-5 w-5 text-yellow-600" />
-          Recommendations
+          {{ t('quiz.recommendations.title') }}
         </CardTitle>
         <p class="text-sm text-muted-foreground">
-          Based on your {{ quizTitle }} results, here are personalized suggestions for improvement.
+          {{ t('quiz.recommendations.description', { quizTitle }) }}
         </p>
       </CardHeader>
     </Card>
@@ -165,9 +168,9 @@ const hasRecommendations = computed(() => parsedRecommendations.value.length > 0
     <Card v-if="!hasRecommendations">
       <CardContent class="text-center py-8">
         <CheckCircle2 class="mx-auto h-12 w-12 text-green-600 mb-4" />
-        <h3 class="text-lg font-semibold mb-2">Great Job!</h3>
+        <h3 class="text-lg font-semibold mb-2">{{ t('quiz.recommendations.greatJob') }}</h3>
         <p class="text-muted-foreground">
-          Your results indicate you're doing well. Keep up the good work!
+          {{ t('quiz.recommendations.keepUpGoodWork') }}
         </p>
       </CardContent>
     </Card>
@@ -215,14 +218,14 @@ const hasRecommendations = computed(() => parsedRecommendations.value.length > 0
       <CardContent class="p-4">
         <div class="flex items-center justify-between">
           <div>
-            <h4 class="font-medium">Need More Support?</h4>
+            <h4 class="font-medium">{{ t('quiz.recommendations.needMoreSupport') }}</h4>
             <p class="text-sm text-muted-foreground">
-              Consider speaking with a professional for personalized guidance.
+              {{ t('quiz.recommendations.professionalGuidance') }}
             </p>
           </div>
           <Button variant="outline" size="sm" class="shrink-0">
             <ExternalLink class="h-4 w-4 mr-2" />
-            Find Help
+            {{ t('quiz.recommendations.findHelp') }}
           </Button>
         </div>
       </CardContent>
@@ -233,7 +236,7 @@ const hasRecommendations = computed(() => parsedRecommendations.value.length > 0
       <CardContent class="p-4">
         <div class="flex items-center gap-2">
           <Target class="h-4 w-4 text-muted-foreground" />
-          <span class="text-sm font-medium">Assessment Level:</span>
+          <span class="text-sm font-medium">{{ t('quiz.score.level') }}:</span>
           <Badge variant="outline">{{ severityLevel }}</Badge>
         </div>
       </CardContent>

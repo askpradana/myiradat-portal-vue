@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Progress } from '@/components/ui/progress'
 import { Badge } from '@/components/ui/badge'
 import { TrendingUp, Target, Award, Clock } from 'lucide-vue-next'
 import type { QuizScore } from '@/types/quiz'
+
+const { t } = useI18n()
 
 interface Props {
   score: QuizScore
@@ -116,7 +119,7 @@ const formatDate = (dateString: string): string => {
         <!-- Progress Bar -->
         <div class="space-y-2">
           <div class="flex justify-between text-sm">
-            <span>Score Progress</span>
+            <span>{{ t('quiz.score.progress') }}</span>
             <span>{{ scorePercentage }}%</span>
           </div>
           <Progress
@@ -132,7 +135,7 @@ const formatDate = (dateString: string): string => {
       <!-- Score Details -->
       <Card>
         <CardHeader class="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle class="text-sm font-medium">Score Details</CardTitle>
+          <CardTitle class="text-sm font-medium">{{ t('quiz.score.details') }}</CardTitle>
           <Target class="h-4 w-4 text-muted-foreground" />
         </CardHeader>
         <CardContent>

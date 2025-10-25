@@ -111,7 +111,10 @@ const getQuizTypeBadgeVariant = (type: string) => {
   </div>
 
   <!-- Desktop Mode: Full card layout -->
-  <Card v-else class="w-full max-w-4xl mx-auto shadow-sm hover:shadow-md transition-shadow duration-300">
+  <Card
+    v-else
+    class="w-full max-w-4xl mx-auto shadow-sm hover:shadow-md transition-shadow duration-300"
+  >
     <CardHeader class="space-y-4">
       <!-- Question Header -->
       <div class="flex items-center justify-between gap-4">
@@ -156,15 +159,6 @@ const getQuizTypeBadgeVariant = (type: string) => {
         <p class="text-sm text-muted-foreground text-center">
           Multiple choice questions coming soon...
         </p>
-      </div>
-
-      <!-- Answer Status -->
-      <div
-        v-if="currentAnswer !== null"
-        class="flex items-center justify-center gap-2 text-sm text-green-700 bg-green-50 py-3 px-4 rounded-lg border border-green-100"
-      >
-        <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-        <span>Jawaban {{ currentAnswer }} Tersimpan</span>
       </div>
     </CardContent>
   </Card>

@@ -1,0 +1,92 @@
+{
+  "loading": {
+    "default": "Memuat...",
+    "data": "Memuat data...",
+    "content": "Memuat konten...",
+    "page": "Memuat halaman...",
+    "quiz": "Memuat kuis...",
+    "organization": "Memuat data organisasi...",
+    "profile": "Memuat profil...",
+    "users": "Memuat pengguna...",
+    "services": "Memuat layanan...",
+    "results": "Memuat hasil...",
+    "dashboard": "Memuat dashboard...",
+    "assessment": "Memuat penilaian...",
+    "quizzes": "Memuat kuis..."
+  },
+  "saving": {
+    "default": "Menyimpan...",
+    "profile": "Menyimpan profil...",
+    "organization": "Menyimpan organisasi...",
+    "user": "Menyimpan pengguna...",
+    "settings": "Menyimpan pengaturan...",
+    "data": "Menyimpan data...",
+    "changes": "Menyimpan perubahan..."
+  },
+  "processing": {
+    "default": "Memproses...",
+    "request": "Memproses permintaan...",
+    "upload": "Memproses unggahan...",
+    "verification": "Memproses verifikasi...",
+    "registration": "Memproses pendaftaran...",
+    "login": "Memproses login...",
+    "logout": "Memproses logout..."
+  },
+  "success": {
+    "default": "Berhasil",
+    "saved": "Berhasil disimpan",
+    "updated": "Berhasil diperbarui",
+    "created": "Berhasil dibuat",
+    "deleted": "Berhasil dihapus",
+    "completed": "Operasi berhasil diselesaikan",
+    "verified": "Berhasil diverifikasi",
+    "uploaded": "Berhasil diunggah",
+    "sent": "Berhasil dikirim"
+  },
+  "error": {
+    "default": "Terjadi kesalahan",
+    "generic": "Ada yang salah",
+    "network": "Kesalahan jaringan",
+    "server": "Kesalahan server",
+    "validation": "Kesalahan validasi",
+    "authentication": "Kesalahan autentikasi",
+    "authorization": "Kesalahan otorisasi",
+    "notFound": "Tidak ditemukan",
+    "timeout": "Waktu permintaan habis",
+    "unknown": "Kesalahan tidak dikenal"
+  },
+  "empty": {
+    "default": "Tidak ada data tersedia",
+    "results": "Tidak ada hasil ditemukan",
+    "users": "Tidak ada pengguna ditemukan",
+    "organizations": "Tidak ada organisasi ditemukan",
+    "services": "Tidak ada layanan ditemukan",
+    "quizzes": "Tidak ada kuis tersedia",
+    "assessments": "Tidak ada penilaian tersedia",
+    "data": "Tidak ada data untuk ditampilkan",
+    "content": "Tidak ada konten tersedia"
+  },
+  "progress": {
+    "uploading": "Mengunggah...",
+    "downloading": "Mengunduh...",
+    "syncing": "Menyinkronkan...",
+    "connecting": "Menghubungkan...",
+    "verifying": "Memverifikasi...",
+    "analyzing": "Menganalisis...",
+    "generating": "Menghasilkan...",
+    "calculating": "Menghitung..."
+  },
+  "status": {
+    "active": "Aktif",
+    "inactive": "Tidak Aktif",
+    "pending": "Pending",
+    "completed": "Selesai",
+    "inProgress": "Dalam Proses",
+    "cancelled": "Dibatalkan",
+    "failed": "Gagal",
+    "verified": "Terverifikasi",
+    "unverified": "Belum Terverifikasi",
+    "approved": "Disetujui",
+    "rejected": "Ditolak"
+  }
+}

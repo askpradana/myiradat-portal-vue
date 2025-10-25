@@ -1,0 +1,53 @@
+{
+  "status": {
+    "complete": "Profile Complete",
+    "incomplete": "Profile Incomplete"
+  },
+  "labels": {
+    "verified": "Verified",
+    "invalidDate": "Invalid date"
+  },
+  "organization": {
+    "memberOf": "Member of {name}",
+    "ariaLabel": "Organization: {name}",
+    "personal": "Personal",
+    "personalAccount": "Personal account",
+    "personalAriaLabel": "Personal account - not affiliated with an organization"
+  },
+  "actions": {
+    "loadingProfile": "Loading profile data",
+    "retryLoading": "Retry loading profile data",
+    "cancelEditing": "Cancel editing and discard changes",
+    "savingChanges": "Saving changes...",
+    "saveChanges": "Save profile changes",
+    "editProfile": "Edit profile information",
+    "editProfileButton": "Edit Profile"
+  },
+  "completion": {
+    "bannerAnnouncement": "Profile completion announcement",
+    "helpMessage": "Help us provide better psychological insights by completing your profile",
+    "addDateOfBirth": "Add date of birth",
+    "dismissBanner": "Dismiss profile completion banner"
+  },
+  "form": {
+    "editAriaLabel": "Edit profile information",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Enter your full name",
+    "emailAddress": "Email Address",
+    "emailPlaceholder": "Enter your email",
+    "phoneNumber": "Phone Number",
+    "phonePlaceholder": "Enter your phone number",
+    "dateOfBirth": "Date of Birth",
+    "dateOfBirthAriaLabel": "Date of birth, read-only field",
+    "notProvided": "Not provided",
+    "contactSupportDateOfBirth": "Contact support to change your date of birth",
+    "unsavedChanges": "You have unsaved changes",
+    "discardChangesTitle": "Discard Changes?",
+    "discardChangesMessage": "You have unsaved changes. Are you sure you want to discard them? This action cannot be undone.",
+    "keepEditing": "Keep Editing",
+    "discardChanges": "Discard Changes"
+  },
+  "sessions": {
+    "whereLoggedIn": "Where you're logged in"
+  }
+}

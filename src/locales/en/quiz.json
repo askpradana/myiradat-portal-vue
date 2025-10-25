@@ -1,0 +1,153 @@
+{
+  "titles": {
+    "quizzes": "Quizzes",
+    "assessment": "Assessment",
+    "results": "Results"
+  },
+  "status": {
+    "resultsSent": "Results sent",
+    "completed": "Completed",
+    "inProgress": "In Progress",
+    "notStarted": "Not Started",
+    "assessmentNotDone": "Assessment not done yet",
+    "noAssessmentData": "No assessment data available",
+    "notAvailable": "Not Available",
+    "available": "Available"
+  },
+  "score": {
+    "progress": "Score Progress",
+    "details": "Score Details",
+    "level": "Assessment Level",
+    "total": "Total Score",
+    "percentage": "Percentage"
+  },
+  "actions": {
+    "startQuiz": "Start Quiz",
+    "continueQuiz": "Continue Quiz",
+    "viewResults": "View Results",
+    "retakeQuiz": "Retake Quiz"
+  },
+  "types": {
+    "fourPointScale": "4-Point Scale",
+    "fivePointScale": "5-Point Scale",
+    "yesNo": "Yes/No",
+    "assessment": "Assessment"
+  },
+  "labels": {
+    "questions": "{count} questions",
+    "minutes": "{count} min"
+  },
+  "assessment": {
+    "details": "Assessment Details",
+    "viewMoreItems": "View {count} more items",
+    "types": {
+      "ipro": {
+        "title": "IPRO Assessment",
+        "description": "Psychological assessment measuring personality traits and behavioral tendencies"
+      },
+      "iprob": {
+        "title": "IPROB Assessment",
+        "description": "Behavioral assessment evaluating work-related personality characteristics"
+      },
+      "ipros": {
+        "title": "IPROS Assessment",
+        "description": "Comprehensive psychological evaluation measuring cognitive abilities and work competencies"
+      }
+    },
+    "fields": {
+      "inisiatif": "Initiative",
+      "kerjasama": "Cooperation",
+      "kepemimpinan": "Leadership",
+      "fleksibilitas": "Flexibility",
+      "komitmenTugas": "Task Commitment",
+      "kecerdasanUmum": "General Intelligence",
+      "logikaBerpikir": "Logical Thinking",
+      "kelincahanPikir": "Mental Agility",
+      "kepercayaanDiri": "Self Confidence",
+      "penyesuaianDiri": "Self Adjustment",
+      "stabilitasEmosi": "Emotional Stability",
+      "sistematikaKerja": "Work Systematization",
+      "dayaAnalisaSintesa": "Analysis Synthesis Ability",
+      "dayaBerpikirAbtrak": "Abstract Thinking Ability",
+      "dayaTahanKerjaRutin": "Routine Work Endurance",
+      "motivasiBerprestasi": "Achievement Motivation",
+      "dayaTahanKerjaStress": "Stress Work Endurance",
+      "pengambilanKeputusan": "Decision Making",
+      "hubunganInterpersonal": "Interpersonal Relations",
+      "perencanaanDanPerorganisasian": "Planning and Organization",
+      "kemandirian": "Independence",
+      "ketangguhan": "Resilience",
+      "ketelitianKerja": "Work Accuracy",
+      "penalaranVerbal": "Verbal Reasoning",
+      "penalaranNumerik": "Numerical Reasoning",
+      "penalaranNonVerbal": "Non Verbal Reasoning",
+      "kecepatanPerseptual": "Perceptual Speed"
+    },
+    "errors": {
+      "failedToLoad": "Failed to Load Assessment Data",
+      "errorMessage": "An error occurred while loading your assessment data.",
+      "tryAgain": "Try Again"
+    }
+  },
+  "recommendations": {
+    "title": "Recommendations",
+    "description": "Based on your {quizTitle} results, here are personalized suggestions for improvement.",
+    "greatJob": "Great Job!",
+    "keepUpGoodWork": "Your results indicate you're doing well. Keep up the good work!",
+    "needMoreSupport": "Need More Support?",
+    "professionalGuidance": "Consider speaking with a professional for personalized guidance.",
+    "findHelp": "Find Help",
+    "priority": {
+      "high": "High Priority",
+      "medium": "Medium Priority",
+      "low": "Low Priority",
+      "general": "General"
+    }
+  },
+  "filters": {
+    "searchPlaceholder": "Search quizzes...",
+    "status": "Status",
+    "type": "Type",
+    "sort": "Sort",
+    "active": "Active",
+    "search": "Search",
+    "availableOnly": "Available Only",
+    "allQuizzes": "All Quizzes",
+    "completedOnly": "Completed Only",
+    "allTypes": "All Types",
+    "fourPoint": "4-Point",
+    "fivePoint": "5-Point",
+    "yesNo": "Yes/No",
+    "multipleChoice": "Multiple Choice",
+    "aToZ": "A to Z",
+    "zToA": "Z to A",
+    "timeAsc": "Time ↑",
+    "timeDesc": "Time ↓",
+    "likert4Point": "Likert 4-Point",
+    "likert5Point": "Likert 5-Point",
+    "titleZA": "Title Z-A",
+    "timeLowHigh": "Time Limit (Low to High)",
+    "timeHighLow": "Time Limit (High to Low)"
+  },
+  "navigation": {
+    "previous": "Previous",
+    "next": "Next",
+    "submit": "Submit",
+    "continue": "Continue",
+    "submitting": "Submitting...",
+    "readyToSubmit": "Ready to submit?",
+    "reviewAnswersWarning": "Please review your answers before submitting. You won't be able to change them after submission."
+  },
+  "messages": {
+    "noQuizzes": "No quizzes available",
+    "loadingQuizzes": "Loading quizzes...",
+    "quizCompleted": "Quiz completed successfully",
+    "savingProgress": "Saving progress...",
+    "discoverQuizzes": "Discover and take quizzes",
+    "availableQuizzes": "Available Quizzes",
+    "completedQuizzes": "Completed Quizzes",
+    "allQuizzes": "All Quizzes",
+    "available": "Available",
+    "completed": "Completed"
+  }
+}

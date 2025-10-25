@@ -1,0 +1,92 @@
+{
+  "loading": {
+    "default": "Loading...",
+    "data": "Loading data...",
+    "content": "Loading content...",
+    "page": "Loading page...",
+    "quiz": "Loading quiz...",
+    "organization": "Loading organization data...",
+    "profile": "Loading profile...",
+    "users": "Loading users...",
+    "services": "Loading services...",
+    "results": "Loading results...",
+    "dashboard": "Loading dashboard...",
+    "assessment": "Loading assessment...",
+    "quizzes": "Loading quizzes..."
+  },
+  "saving": {
+    "default": "Saving...",
+    "profile": "Saving profile...",
+    "organization": "Saving organization...",
+    "user": "Saving user...",
+    "settings": "Saving settings...",
+    "data": "Saving data...",
+    "changes": "Saving changes..."
+  },
+  "processing": {
+    "default": "Processing...",
+    "request": "Processing request...",
+    "upload": "Processing upload...",
+    "verification": "Processing verification...",
+    "registration": "Processing registration...",
+    "login": "Processing login...",
+    "logout": "Processing logout..."
+  },
+  "success": {
+    "default": "Success",
+    "saved": "Saved successfully",
+    "updated": "Updated successfully",
+    "created": "Created successfully",
+    "deleted": "Deleted successfully",
+    "completed": "Operation completed successfully",
+    "verified": "Verified successfully",
+    "uploaded": "Uploaded successfully",
+    "sent": "Sent successfully"
+  },
+  "error": {
+    "default": "An error occurred",
+    "generic": "Something went wrong",
+    "network": "Network error",
+    "server": "Server error",
+    "validation": "Validation error",
+    "authentication": "Authentication error",
+    "authorization": "Authorization error",
+    "notFound": "Not found",
+    "timeout": "Request timeout",
+    "unknown": "Unknown error"
+  },
+  "empty": {
+    "default": "No data available",
+    "results": "No results found",
+    "users": "No users found",
+    "organizations": "No organizations found",
+    "services": "No services found",
+    "quizzes": "No quizzes available",
+    "assessments": "No assessments available",
+    "data": "No data to display",
+    "content": "No content available"
+  },
+  "progress": {
+    "uploading": "Uploading...",
+    "downloading": "Downloading...",
+    "syncing": "Syncing...",
+    "connecting": "Connecting...",
+    "verifying": "Verifying...",
+    "analyzing": "Analyzing...",
+    "generating": "Generating...",
+    "calculating": "Calculating..."
+  },
+  "status": {
+    "active": "Active",
+    "inactive": "Inactive",
+    "pending": "Pending",
+    "completed": "Completed",
+    "inProgress": "In Progress",
+    "cancelled": "Cancelled",
+    "failed": "Failed",
+    "verified": "Verified",
+    "unverified": "Unverified",
+    "approved": "Approved",
+    "rejected": "Rejected"
+  }
+}

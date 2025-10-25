@@ -92,14 +92,16 @@ export function useUserProfile(): UseUserProfileReturn {
   // Profile update function
   const updateProfile = async (data: UpdateProfilePayload) => {
     if (!isAuthenticated.value) return
-    
+
     isUpdating.value = true
     try {
       const response = await updateProfileAPI(data)
+      // Store is already updated in updateProfileAPI, but verify response
       if (response?.user) {
+        // Ensure store is updated with latest data
         userStore.setUserProfileData(response.user)
       }
-    } catch (error) {  
+    } catch (error) {
       handleError(error, 'Failed to update profile')
       throw error
     } finally {

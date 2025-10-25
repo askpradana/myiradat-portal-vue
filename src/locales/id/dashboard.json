@@ -1,6 +1,6 @@
 {
   "navigation": {
-    "dashboard": "Dashboard",
+    "dashboard": "Beranda",
     "userManagement": "Manajemen Pengguna",
     "organizationManagement": "Manajemen Organisasi",
     "services": "Layanan",
@@ -9,12 +9,12 @@
     "results": "Hasil"
   },
   "header": {
-    "adminDashboard": "Dashboard Admin",
-    "csDashboard": "Dashboard CS",
+    "adminDashboard": "Beranda Admin",
+    "csDashboard": "Beranda CS",
     "iradat": "Iradat",
     "adminSubtitle": "Kelola pengguna dan organisasi",
     "csSubtitle": "Panel dukungan pelanggan",
-    "welcomeSubtitle": "Selamat datang di dashboard Anda"
+    "welcomeSubtitle": "Selamat datang di beranda Anda"
   },
   "admin": {
     "users": {
@@ -55,5 +55,15 @@
     "completed": "Selesai",
     "inProgress": "Sedang Berlangsung",
     "notStarted": "Belum Dimulai"
+  },
+  "welcome": "Selamat datang kembali, {name}!",
+  "defaultUser": "Pengguna",
+  "description": "Akses layanan Anda dan kelola akun Anda dari beranda Anda.",
+  "services": {
+    "title": "Layanan Anda",
+    "available": "{count} layanan tersedia",
+    "failedToLoad": "Gagal memuat layanan",
+    "tryAgain": "Coba Lagi",
+    "availableAriaLabel": "Layanan tersedia"
   }
 }

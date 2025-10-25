@@ -1,0 +1,153 @@
+{
+  "titles": {
+    "quizzes": "Kuis",
+    "assessment": "Penilaian",
+    "results": "Hasil"
+  },
+  "status": {
+    "resultsSent": "Hasil dikirim",
+    "completed": "Selesai",
+    "inProgress": "Sedang Berlangsung",
+    "notStarted": "Belum Dimulai",
+    "assessmentNotDone": "Penilaian belum dilakukan",
+    "noAssessmentData": "Belum ada data penilaian",
+    "notAvailable": "Belum Tersedia",
+    "available": "Tersedia"
+  },
+  "score": {
+    "progress": "Progres Skor",
+    "details": "Detail Skor",
+    "level": "Level Penilaian",
+    "total": "Total Skor",
+    "percentage": "Persentase"
+  },
+  "actions": {
+    "startQuiz": "Mulai Kuis",
+    "continueQuiz": "Lanjutkan Kuis",
+    "viewResults": "Lihat Hasil",
+    "retakeQuiz": "Ulangi Kuis"
+  },
+  "types": {
+    "fourPointScale": "Skala 4-Poin",
+    "fivePointScale": "Skala 5-Poin",
+    "yesNo": "Ya/Tidak",
+    "assessment": "Penilaian"
+  },
+  "labels": {
+    "questions": "{count} pertanyaan",
+    "minutes": "{count} menit"
+  },
+  "assessment": {
+    "details": "Detail Penilaian",
+    "viewMoreItems": "Lihat {count} item lainnya",
+    "types": {
+      "ipro": {
+        "title": "Penilaian IPRO",
+        "description": "Penilaian psikologis yang mengukur sifat kepribadian dan kecenderungan perilaku"
+      },
+      "iprob": {
+        "title": "Penilaian IPROB",
+        "description": "Penilaian perilaku yang mengevaluasi karakteristik kepribadian yang berkaitan dengan pekerjaan"
+      },
+      "ipros": {
+        "title": "Penilaian IPROS",
+        "description": "Evaluasi psikologis komprehensif yang mengukur kemampuan kognitif dan kompetensi kerja"
+      }
+    },
+    "fields": {
+      "inisiatif": "Inisiatif",
+      "kerjasama": "Kerjasama",
+      "kepemimpinan": "Kepemimpinan",
+      "fleksibilitas": "Fleksibilitas",
+      "komitmenTugas": "Komitmen Tugas",
+      "kecerdasanUmum": "Kecerdasan Umum",
+      "logikaBerpikir": "Logika Berpikir",
+      "kelincahanPikir": "Kelincahan Pikir",
+      "kepercayaanDiri": "Kepercayaan Diri",
+      "penyesuaianDiri": "Penyesuaian Diri",
+      "stabilitasEmosi": "Stabilitas Emosi",
+      "sistematikaKerja": "Sistematika Kerja",
+      "dayaAnalisaSintesa": "Daya Analisa Sintesa",
+      "dayaBerpikirAbtrak": "Daya Berpikir Abstrak",
+      "dayaTahanKerjaRutin": "Daya Tahan Kerja Rutin",
+      "motivasiBerprestasi": "Motivasi Berprestasi",
+      "dayaTahanKerjaStress": "Daya Tahan Kerja Stress",
+      "pengambilanKeputusan": "Pengambilan Keputusan",
+      "hubunganInterpersonal": "Hubungan Interpersonal",
+      "perencanaanDanPerorganisasian": "Perencanaan Dan Perorganisasian",
+      "kemandirian": "Kemandirian",
+      "ketangguhan": "Ketangguhan",
+      "ketelitianKerja": "Ketelitian Kerja",
+      "penalaranVerbal": "Penalaran Verbal",
+      "penalaranNumerik": "Penalaran Numerik",
+      "penalaranNonVerbal": "Penalaran Non Verbal",
+      "kecepatanPerseptual": "Kecepatan Perseptual"
+    },
+    "errors": {
+      "failedToLoad": "Gagal Memuat Data Penilaian",
+      "errorMessage": "Terjadi kesalahan saat memuat data penilaian Anda.",
+      "tryAgain": "Coba Lagi"
+    }
+  },
+  "recommendations": {
+    "title": "Rekomendasi",
+    "description": "Berdasarkan hasil {quizTitle} Anda, berikut saran yang dipersonalisasi untuk perbaikan.",
+    "greatJob": "Kerja Bagus!",
+    "keepUpGoodWork": "Hasil Anda menunjukkan bahwa Anda melakukan dengan baik. Tetap pertahankan!",
+    "needMoreSupport": "Butuh Dukungan Lebih?",
+    "professionalGuidance": "Pertimbangkan untuk berbicara dengan profesional untuk panduan yang dipersonalisasi.",
+    "findHelp": "Cari Bantuan",
+    "priority": {
+      "high": "Prioritas Tinggi",
+      "medium": "Prioritas Sedang",
+      "low": "Prioritas Rendah",
+      "general": "Umum"
+    }
+  },
+  "filters": {
+    "searchPlaceholder": "Cari kuis...",
+    "status": "Status",
+    "type": "Tipe",
+    "sort": "Urutkan",
+    "active": "Aktif",
+    "search": "Cari",
+    "availableOnly": "Tersedia",
+    "allQuizzes": "Semua",
+    "completedOnly": "Terselesaikan",
+    "allTypes": "Semua",
+    "fourPoint": "4-Poin",
+    "fivePoint": "5-Poin",
+    "yesNo": "Ya/Tidak",
+    "multipleChoice": "Pilihan Ganda",
+    "aToZ": "A ke Z",
+    "zToA": "Z ke A",
+    "timeAsc": "Waktu ↑",
+    "timeDesc": "Waktu ↓",
+    "likert4Point": "Likert 4-Poin",
+    "likert5Point": "Likert 5-Poin",
+    "titleZA": "Judul Z-A",
+    "timeLowHigh": "Batas Waktu (Rendah ke Tinggi)",
+    "timeHighLow": "Batas Waktu (Tinggi ke Rendah)"
+  },
+  "navigation": {
+    "previous": "Sebelumnya",
+    "next": "Selanjutnya",
+    "submit": "Kirim",
+    "continue": "Lanjutkan",
+    "submitting": "Mengirim...",
+    "readyToSubmit": "Siap untuk mengirim?",
+    "reviewAnswersWarning": "Harap tinjau jawaban Anda sebelum mengirim. Anda tidak akan dapat mengubahnya setelah pengiriman."
+  },
+  "messages": {
+    "noQuizzes": "Tidak ada kuis tersedia",
+    "loadingQuizzes": "Memuat kuis...",
+    "quizCompleted": "Kuis berhasil diselesaikan",
+    "savingProgress": "Menyimpan progres...",
+    "discoverQuizzes": "Temukan dan ikuti kuis",
+    "availableQuizzes": "Kuis Tersedia",
+    "completedQuizzes": "Kuis Selesai",
+    "allQuizzes": "Semua Kuis",
+    "available": "Tersedia",
+    "completed": "Selesai"
+  }
+}

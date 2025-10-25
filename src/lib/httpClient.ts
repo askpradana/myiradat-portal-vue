@@ -47,7 +47,16 @@ class HTTPClient {
       throw error
     }
 
-    return await response.json()
+    const responseData = await response.json()
+
+    // Handle backend format: {status: "success", code: 200, data: {...}}
+    // Convert to frontend format: {success: boolean, data: {...}}
+    return {
+      success: responseData.status === 'success' || responseData.code === 200,
+      message: responseData.message || '',
+      data: responseData.data,
+      timestamp: responseData.timestamp || new Date().toISOString()
+    }
   }
 
   private async makeRequest<T>(

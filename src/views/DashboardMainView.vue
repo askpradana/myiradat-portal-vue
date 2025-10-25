@@ -3,10 +3,10 @@
     <!-- Welcome Section -->
     <div class="mb-8 sm:mb-12">
       <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-2 sm:mb-3 leading-tight tracking-tight">
-        Welcome back, {{ userStore.user?.name || 'User' }}!
+        {{ t('dashboard.welcome', { name: userStore.user?.name || t('dashboard.defaultUser') }) }}
       </h1>
       <p class="text-base sm:text-lg text-muted-foreground leading-relaxed">
-        Access your services and manage your account from your dashboard.
+        {{ t('dashboard.description') }}
       </p>
     </div>
 
@@ -15,10 +15,10 @@
       <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4 sm:gap-0">
         <div>
           <h2 id="services-heading" class="text-xl sm:text-2xl font-semibold text-foreground mb-1 leading-snug tracking-tight">
-            Your Services
+            {{ t('dashboard.services.title') }}
           </h2>
           <p class="text-sm sm:text-base text-muted-foreground">
-            {{ servicesCount }} service{{ servicesCount === 1 ? '' : 's' }} available
+            {{ t('dashboard.services.available', { count: servicesCount }) }}
           </p>
         </div>
 
@@ -30,7 +30,7 @@
             class="w-full sm:w-auto h-10 sm:h-auto"
           >
             <RefreshCw :size="16" class="mr-2" />
-            Refresh
+            {{ t('common.actions.refresh') }}
           </Button>
         </div>
       </div>
@@ -46,11 +46,11 @@
         class="flex flex-col items-center justify-center py-12 px-4 border-2 border-dashed border-muted rounded-lg"
       >
         <AlertCircle class="h-12 w-12 text-muted-foreground mb-4" />
-        <h3 class="text-xl font-semibold text-foreground mb-3 leading-snug tracking-tight">Failed to load services</h3>
+        <h3 class="text-xl font-semibold text-foreground mb-3 leading-snug tracking-tight">{{ t('dashboard.services.failedToLoad') }}</h3>
         <p class="text-base text-muted-foreground text-center leading-relaxed mb-6">{{ error }}</p>
         <Button @click="handleRefreshServices" variant="outline">
           <RefreshCw :size="16" class="mr-2" />
-          Try Again
+          {{ t('dashboard.services.tryAgain') }}
         </Button>
       </div>
 
@@ -59,7 +59,7 @@
         v-else
         class="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
         role="grid"
-        aria-label="Available services"
+        :aria-label="t('dashboard.services.availableAriaLabel')"
       >
         <ServiceCard
           v-for="service in displayServices"
@@ -81,6 +81,7 @@
 
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { 
   RefreshCw, 
@@ -98,6 +99,7 @@ import { getUserRole, transformServiceForDisplay } from '@/lib/dashboard-utils'
 import type { DashboardServiceInterface } from '@/types/dashboard'
 
 // Store instance
+const { t } = useI18n()
 const userStore = useUserStore()
 
 // Local state

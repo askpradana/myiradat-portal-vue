@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import { computed, onMounted, onUnmounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
-import { ChevronLeft, ChevronRight, Send, AlertTriangle } from 'lucide-vue-next'
+import { ChevronLeft, ChevronRight, Send } from 'lucide-vue-next'
 
 interface Props {
   canGoPrevious: boolean
@@ -26,11 +27,13 @@ const emit = defineEmits<{
   submit: []
 }>()
 
+const { t } = useI18n()
+
 const nextButtonText = computed(() => {
   if (props.isLastQuestion) {
-    return 'Kirim'
+    return t('quiz.navigation.submit')
   }
-  return 'Selanjutnya'
+  return t('quiz.navigation.next')
 })
 
 const nextButtonIcon = computed(() => {
@@ -91,21 +94,6 @@ onUnmounted(() => {
 
 <template>
   <div :class="mobileMode ? 'space-y-2' : 'space-y-4'">
-    <!-- Submit Warning (hidden in mobile mode) -->
-    <div
-      v-if="!mobileMode && showSubmitWarning && isLastQuestion"
-      class="flex items-start gap-3 p-4 bg-amber-50 border border-amber-200 rounded-lg"
-    >
-      <AlertTriangle class="h-5 w-5 text-amber-600 shrink-0 mt-0.5" />
-      <div class="space-y-1">
-        <p class="text-sm font-medium text-amber-800">Ready to submit?</p>
-        <p class="text-sm text-amber-700">
-          Please review your answers before submitting. You won't be able to change them after
-          submission.
-        </p>
-      </div>
-    </div>
-
     <!-- Navigation Buttons -->
     <div class="flex items-center justify-between gap-4">
       <!-- Previous Button -->
@@ -114,10 +102,14 @@ onUnmounted(() => {
         :disabled="!canGoPrevious || isSubmitting"
         variant="outline"
         :size="mobileMode ? 'default' : 'lg'"
-        :class="mobileMode ? 'flex items-center gap-2 min-w-[100px] px-3 py-2' : 'flex items-center gap-2 min-w-[120px]'"
+        :class="
+          mobileMode
+            ? 'flex items-center gap-2 min-w-[100px] px-3 py-2'
+            : 'flex items-center gap-2 min-w-[120px]'
+        "
       >
         <ChevronLeft :class="mobileMode ? 'h-3 w-3' : 'h-4 w-4'" />
-        Sebelumnya
+        {{ t('quiz.navigation.previous') }}
       </Button>
 
       <!-- Next/Submit Button -->
@@ -127,7 +119,9 @@ onUnmounted(() => {
         :variant="isLastQuestion ? 'default' : 'default'"
         :size="mobileMode ? 'default' : 'lg'"
         :class="[
-          mobileMode ? 'flex items-center gap-2 min-w-[100px] px-3 py-2' : 'flex items-center gap-2 min-w-[120px]',
+          mobileMode
+            ? 'flex items-center gap-2 min-w-[100px] px-3 py-2'
+            : 'flex items-center gap-2 min-w-[120px]',
           {
             'bg-green-600 hover:bg-green-700': isLastQuestion && canProceed,
             'bg-primary hover:bg-primary/90': !isLastQuestion && canProceed,
@@ -136,34 +130,47 @@ onUnmounted(() => {
       >
         <span v-if="!isSubmitting">{{ nextButtonText }}</span>
         <span v-else>
-          {{ isLastQuestion ? 'Submitting...' : 'Loading...' }}
+          {{ isLastQuestion ? t('quiz.navigation.submitting') : t('common.states.loading') }}
         </span>
 
-        <component :is="nextButtonIcon" v-if="!isSubmitting" :class="mobileMode ? 'h-3 w-3' : 'h-4 w-4'" />
+        <component
+          :is="nextButtonIcon"
+          v-if="!isSubmitting"
+          :class="mobileMode ? 'h-3 w-3' : 'h-4 w-4'"
+        />
 
         <!-- Loading spinner -->
         <div
           v-else
-          :class="mobileMode ? 'h-3 w-3 border-2 border-current border-t-transparent rounded-full animate-spin' : 'h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin'"
+          :class="
+            mobileMode
+              ? 'h-3 w-3 border-2 border-current border-t-transparent rounded-full animate-spin'
+              : 'h-4 w-4 border-2 border-current border-t-transparent rounded-full animate-spin'
+          "
         />
       </Button>
     </div>
 
     <!-- Keyboard Hints (Desktop only, hidden in mobile mode) -->
-    <div v-if="!mobileMode" class="hidden sm:flex items-center justify-center gap-6 text-xs text-muted-foreground">
+    <div
+      v-if="!mobileMode"
+      class="hidden sm:flex items-center justify-center gap-6 text-xs text-muted-foreground"
+    >
       <div v-if="canGoPrevious" class="flex items-center gap-1">
         <kbd class="px-2 py-1 bg-muted rounded text-xs">←</kbd>
-        <span>Sebelumnya</span>
+        <span>{{ t('quiz.navigation.previous') }}</span>
       </div>
 
       <div v-if="canProceed" class="flex items-center gap-1">
         <kbd class="px-2 py-1 bg-muted rounded text-xs">→</kbd>
-        <span>{{ isLastQuestion ? 'Submit' : 'Next' }}</span>
+        <span>{{ isLastQuestion ? t('quiz.navigation.submit') : t('quiz.navigation.next') }}</span>
       </div>
 
       <div v-if="canProceed" class="flex items-center gap-1">
         <kbd class="px-2 py-1 bg-muted rounded text-xs">Enter</kbd>
-        <span>{{ isLastQuestion ? 'Submit' : 'Continue' }}</span>
+        <span>{{
+          isLastQuestion ? t('quiz.navigation.submit') : t('quiz.navigation.continue')
+        }}</span>
       </div>
     </div>
   </div>

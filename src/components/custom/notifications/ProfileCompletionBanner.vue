@@ -1,11 +1,13 @@
 <script setup lang="ts">
 import { computed, ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
+import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/userStores'
 import Button from '@/components/ui/button/Button.vue'
 import { User, X } from 'lucide-vue-next'
 
 const router = useRouter()
+const { t } = useI18n()
 const userStore = useUserStore()
 
 const isDismissed = ref(false)
@@ -40,19 +42,19 @@ const navigateToProfile = () => {
 </script>
 
 <template>
-  <div v-if="shouldShowBanner" role="banner" aria-label="Profile completion announcement">
+  <div v-if="shouldShowBanner" role="banner" :aria-label="t('profile.completion.bannerAnnouncement')">
     <div class="flex items-center justify-between border-b bg-blue-50/80 dark:bg-blue-950/30 px-4 py-3 text-blue-900 dark:text-blue-100 border-blue-200 dark:border-blue-800">
       <div class="flex items-center gap-3">
         <User class="h-4 w-4 text-blue-600 dark:text-blue-400" />
         <div class="flex flex-col sm:flex-row sm:items-center gap-1 sm:gap-2">
-          <span class="text-sm font-medium">Help us provide better psychological insights by completing your profile</span>
+          <span class="text-sm font-medium">{{ t('profile.completion.helpMessage') }}</span>
           <Button
             variant="link"
             size="sm"
             class="h-auto p-0 text-blue-700 dark:text-blue-300 underline text-sm hover:text-blue-800 dark:hover:text-blue-200"
             @click="navigateToProfile"
           >
-            Add date of birth
+            {{ t('profile.completion.addDateOfBirth') }}
           </Button>
         </div>
       </div>
@@ -61,7 +63,7 @@ const navigateToProfile = () => {
         size="sm"
         class="h-auto p-1.5 text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-blue-900/50"
         @click="dismissBanner"
-        aria-label="Dismiss profile completion banner"
+        :aria-label="t('profile.completion.dismissBanner')"
       >
         <X class="h-4 w-4" aria-hidden="true" />
       </Button>
