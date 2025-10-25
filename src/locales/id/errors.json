@@ -1,0 +1,59 @@
+{
+  "notFound": {
+    "title": "Halaman Tidak Ditemukan",
+    "code": "404",
+    "description": "Halaman yang Anda cari tidak ada atau telah dipindahkan ke lokasi lain.",
+    "helpText": "Jika Anda pikir ini adalah kesalahan, silakan hubungi tim dukungan kami."
+  },
+  "unauthorized": {
+    "title": "Akses Tidak Sah",
+    "code": "401",
+    "description": "Anda tidak memiliki izin untuk mengakses sumber daya ini."
+  },
+  "forbidden": {
+    "title": "Akses Dilarang",
+    "code": "403",
+    "description": "Akses ke sumber daya ini dilarang."
+  },
+  "serverError": {
+    "title": "Kesalahan Server",
+    "code": "500",
+    "description": "Terjadi kesalahan di sisi kami. Silakan coba lagi nanti."
+  },
+  "loading": {
+    "quiz": "Memuat kuis...",
+    "organization": "Memuat data organisasi...",
+    "profile": "Memuat profil...",
+    "users": "Memuat pengguna...",
+    "services": "Memuat layanan...",
+    "data": "Memuat data...",
+    "content": "Memuat konten..."
+  },
+  "empty": {
+    "noData": "Tidak ada data tersedia",
+    "noResults": "Tidak ada hasil ditemukan",
+    "noDataToReview": "Tidak ada data untuk ditinjau",
+    "noResultsToDisplay": "Tidak ada hasil untuk ditampilkan.",
+    "noQuizzes": "Tidak ada kuis tersedia",
+    "noUsers": "Tidak ada pengguna ditemukan",
+    "noOrganizations": "Tidak ada organisasi ditemukan",
+    "noServices": "Tidak ada layanan ditemukan"
+  },
+  "generic": {
+    "errorOccurred": "Terjadi kesalahan",
+    "somethingWentWrong": "Ada yang salah",
+    "tryAgain": "Silakan coba lagi",
+    "contactSupport": "Silakan hubungi dukungan jika masalah berlanjut",
+    "unexpectedError": "Terjadi kesalahan yang tidak terduga"
+  },
+  "network": {
+    "connectionError": "Kesalahan koneksi",
+    "timeoutError": "Waktu permintaan habis",
+    "networkUnavailable": "Jaringan tidak tersedia"
+  },
+  "api": {
+    "invalidResponse": "Respons tidak valid dari server",
+    "serverUnavailable": "Server saat ini tidak tersedia",
+    "maintenanceMode": "Sistem sedang dalam pemeliharaan"
+  }
+}

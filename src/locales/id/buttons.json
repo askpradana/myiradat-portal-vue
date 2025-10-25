@@ -1,0 +1,63 @@
+{
+  "navigation": {
+    "goHome": "Ke Beranda",
+    "goBack": "Kembali",
+    "goToDashboard": "Ke Dashboard",
+    "login": "Masuk",
+    "logout": "Keluar",
+    "register": "Daftar",
+    "dashboard": "Dashboard",
+    "profile": "Profil",
+    "settings": "Pengaturan",
+    "adminPanel": "Panel Admin",
+    "home": "Beranda"
+  },
+  "actions": {
+    "search": "Cari",
+    "filter": "Filter",
+    "sort": "Urutkan",
+    "refresh": "Segarkan",
+    "reload": "Muat Ulang",
+    "retry": "Coba Lagi",
+    "download": "Unduh",
+    "upload": "Unggah",
+    "export": "Ekspor",
+    "import": "Impor",
+    "copy": "Salin",
+    "share": "Bagikan",
+    "print": "Cetak"
+  },
+  "management": {
+    "add": "Tambah",
+    "addNew": "Tambah Baru",
+    "addUser": "Tambah Pengguna",
+    "addMember": "Tambah Anggota",
+    "remove": "Hapus",
+    "delete": "Hapus",
+    "deleteAll": "Hapus Semua",
+    "selectAll": "Pilih Semua",
+    "clearAll": "Hapus Semua",
+    "manage": "Kelola",
+    "assign": "Tetapkan",
+    "unassign": "Batalkan"
+  },
+  "confirmation": {
+    "yes": "Ya",
+    "no": "Tidak",
+    "ok": "OK",
+    "agree": "Saya Setuju",
+    "disagree": "Tidak Setuju",
+    "accept": "Terima",
+    "decline": "Tolak",
+    "approve": "Setujui",
+    "reject": "Tolak"
+  },
+  "pagination": {
+    "previous": "Sebelumnya",
+    "next": "Selanjutnya",
+    "first": "Pertama",
+    "last": "Terakhir",
+    "loadMore": "Muat Lebih Banyak",
+    "showMore": "Tampilkan Lebih Banyak"
+  }
+}

@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { BookOpen, AlertCircle } from 'lucide-vue-next'
+
+const { t } = useI18n()
 import QuizCard from './QuizCard.vue'
 import CompletedQuizCard from './CompletedQuizCard.vue'
 import QuizListFilter from '@/components/custom/filters/QuizListFilter.vue'
@@ -50,6 +53,18 @@ const stats = computed(() => {
   }
 })
 
+// Determine if filters should be shown
+const shouldShowFilters = computed(() => {
+  // Hide filters during initial loading
+  if (props.isLoading) return false
+
+  // Hide filters if there's an error and no cached data
+  if (props.error && props.availableQuizzes.length === 0 && props.completedQuizzes.length === 0) return false
+
+  // Show filters if we have any quiz data (available or completed)
+  return props.availableQuizzes.length > 0 || props.completedQuizzes.length > 0
+})
+
 const isQuizCompleted = computed(() => (quizId: string) => {
   return getQuizCompletionStatus(quizId, props.completedQuizzes).isCompleted
 })
@@ -85,9 +100,9 @@ const handleFiltersChanged = (filters: QuizFilterParams) => {
 // Get filter status text
 const getFilterStatusText = computed(() => {
   const status = currentFilters.value.completion_status
-  if (status === 'available') return 'Available Quizzes'
-  if (status === 'completed') return 'Completed Quizzes'
-  return 'All Quizzes'
+  if (status === 'available') return t('quiz.messages.availableQuizzes')
+  if (status === 'completed') return t('quiz.messages.completedQuizzes')
+  return t('quiz.messages.allQuizzes')
 })
 </script>
 
@@ -97,35 +112,53 @@ const getFilterStatusText = computed(() => {
     <div class="space-y-4">
       <div class="flex items-center justify-between">
         <div>
-          <h1 class="text-3xl font-bold tracking-tight">Quizzes</h1>
-          <p class="text-muted-foreground">Discover and take quizzes</p>
+          <h1 class="text-3xl font-bold tracking-tight">{{ t('quiz.titles.quizzes') }}</h1>
+          <p class="text-muted-foreground">{{ t('quiz.messages.discoverQuizzes') }}</p>
         </div>
-        <div class="text-right">
+        <div v-if="shouldShowFilters" class="text-right">
           <div class="text-sm text-muted-foreground">
             {{ getFilterStatusText }}: {{ stats.filtered }} of {{ stats.total }}
           </div>
           <div class="text-xs text-muted-foreground">
-            Available: {{ stats.available }} • Completed: {{ stats.completed }}
+            {{ t('quiz.messages.available') }}: {{ stats.available }} • {{ t('quiz.messages.completed') }}: {{ stats.completed }}
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Filter Component -->
+    <!-- Filter Component with Loading State -->
     <QuizListFilter
+      v-if="shouldShowFilters"
       :initial-filters="currentFilters"
       @filters-changed="handleFiltersChanged"
     />
+
+    <!-- Filter Loading Skeleton -->
+    <div v-else-if="isLoading" class="space-y-4">
+      <div class="animate-pulse">
+        <div class="h-10 bg-muted rounded-md w-full max-w-md"></div>
+      </div>
+      <div class="flex gap-2 animate-pulse">
+        <div class="h-8 bg-muted rounded-full w-16"></div>
+        <div class="h-8 bg-muted rounded-full w-20"></div>
+        <div class="h-8 bg-muted rounded-full w-18"></div>
+      </div>
+    </div>
 
     <!-- Error State -->
     <Card v-if="error" class="border-destructive">
       <CardHeader>
         <div class="flex items-center gap-2">
           <AlertCircle class="h-5 w-5 text-destructive" />
-          <CardTitle class="text-destructive">Error Loading Quizzes</CardTitle>
+          <CardTitle class="text-destructive">
+            {{ shouldShowFilters ? 'Error Loading Additional Data' : 'Error Loading Quizzes' }}
+          </CardTitle>
         </div>
         <CardDescription>
           {{ error }}
+          <span v-if="shouldShowFilters" class="block mt-1 text-xs">
+            Some quiz data is available below, but recent updates failed to load.
+          </span>
         </CardDescription>
       </CardHeader>
       <CardContent>

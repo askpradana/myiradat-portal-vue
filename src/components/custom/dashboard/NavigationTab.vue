@@ -17,8 +17,8 @@
           :aria-selected="activeTab === 'dashboard'"
         >
           <span class="sm:hidden">📊</span>
-          <span class="hidden sm:inline">Dashboard</span>
-          <span class="sm:hidden ml-2">Dashboard</span>
+          <span class="hidden sm:inline">{{ t('common.navigation.dashboard') }}</span>
+          <span class="sm:hidden ml-2">{{ t('common.navigation.dashboard') }}</span>
         </button>
         <button
           v-if="userStore.user?.role_id === 1"
@@ -34,8 +34,8 @@
           :aria-selected="activeTab === 'users'"
         >
           <span class="sm:hidden">👥</span>
-          <span class="hidden sm:inline">Users Management</span>
-          <span class="sm:hidden ml-2">Users</span>
+          <span class="hidden sm:inline">{{ t('common.navigation.usersManagement') }}</span>
+          <span class="sm:hidden ml-2">{{ t('common.navigation.users') }}</span>
         </button>
         <button
           v-if="userStore.user?.role_id === 1"
@@ -51,8 +51,8 @@
           :aria-selected="activeTab === 'organizations'"
         >
           <span class="sm:hidden">🏢</span>
-          <span class="hidden sm:inline">Organizations</span>
-          <span class="sm:hidden ml-2">Organizations</span>
+          <span class="hidden sm:inline">{{ t('common.navigation.organizations') }}</span>
+          <span class="sm:hidden ml-2">{{ t('common.navigation.organizations') }}</span>
         </button>
         <button
           @click="selectTab('data')"
@@ -67,10 +67,11 @@
           :aria-selected="activeTab === 'data'"
         >
           <span class="sm:hidden">📋</span>
-          <span class="hidden sm:inline">User Data</span>
-          <span class="sm:hidden ml-2">Data</span>
+          <span class="hidden sm:inline">{{ t('common.navigation.userData') }}</span>
+          <span class="sm:hidden ml-2">{{ t('common.navigation.data') }}</span>
         </button>
         <button
+          v-if="userStore.user?.role_id !== 1"
           @click="selectTab('assessments')"
           :class="[
             'py-3 px-4 sm:py-2 sm:px-1 border-b-2 font-medium text-sm sm:text-sm whitespace-nowrap flex-shrink-0 snap-start touch-manipulation transition-colors',
@@ -83,8 +84,8 @@
           :aria-selected="activeTab === 'assessments'"
         >
           <span class="sm:hidden">🎯</span>
-          <span class="hidden sm:inline">Fun Quiz</span>
-          <span class="sm:hidden ml-2">Quiz</span>
+          <span class="hidden sm:inline">{{ t('common.navigation.funQuiz') }}</span>
+          <span class="sm:hidden ml-2">{{ t('common.navigation.quiz') }}</span>
         </button>
         <button
           v-if="userStore.user?.role_id === 2"
@@ -100,8 +101,8 @@
           :aria-selected="activeTab === 'profile'"
         >
           <span class="sm:hidden">👤</span>
-          <span class="hidden sm:inline">User Profile</span>
-          <span class="sm:hidden ml-2">Profile</span>
+          <span class="hidden sm:inline">{{ t('common.navigation.userProfile') }}</span>
+          <span class="sm:hidden ml-2">{{ t('common.navigation.profile') }}</span>
         </button>
       </nav>
     </div>
@@ -109,9 +110,11 @@
 </template>
 
 <script setup lang="ts">
+import { useI18n } from 'vue-i18n'
 import { useUserStore } from '@/stores/userStores'
 import type { DashboardTab } from '@/types/dashboard'
 
+const { t } = useI18n()
 const userStore = useUserStore()
 
 const { activeTab } = defineProps<{

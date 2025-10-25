@@ -1,5 +1,5 @@
 import { useUserStore } from '@/stores/userStores'
-import { refreshToken } from '@/api/refreshToken'
+import { httpClient, type APIResponse } from '@/lib/httpClient'
 import type { UserProfileInterface, UserDataInterface } from '@/types/userType'
 
 export interface DataUserProps {
@@ -11,74 +11,56 @@ export interface DataUserProps {
   avatar_picture?: string | null
 }
 
-export interface EditUserAPIResponse {
-  data: UserProfileInterface | UserDataInterface
-  message?: string
-  success: boolean
-  timestamp: string
+export interface EditUserResponseData {
+  user: UserProfileInterface | UserDataInterface
+}
+
+export type EditUserAPIResponse = APIResponse<EditUserResponseData>
+
+export interface EditUserOptions {
+  userID?: string
+  role?: number
+  updateStore?: boolean
 }
 
 export const editUserData = async (
   newUserData: DataUserProps,
-  userID?: string,
-  role?: number,
+  options: EditUserOptions = {}
 ): Promise<EditUserAPIResponse> => {
   try {
+    const { userID, role, updateStore = true } = options
     const userStore = useUserStore()
-    const token = userStore.auth?.token
 
-    const adminAPI = `${import.meta.env.VITE_API_URL}/admin/users/${userID}`
-    const userAPI = `${import.meta.env.VITE_API_URL}/profile`
+    // Determine endpoint based on role
+    const endpoint = role === 1 ? `/admin/users/${userID}` : '/profile'
 
-    const response = await fetch(role === 1 ? adminAPI : userAPI, {
-      method: 'PUT',
-      body: JSON.stringify(newUserData),
-      headers: {
-        Authorization: `bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-    })
+    const response: EditUserAPIResponse = await httpClient.put(endpoint, newUserData)
 
-    if (!response.ok) {
-      const errorData = await response.json()
-      const errorMessage = errorData.message || 'An error occurs on the server'
-
-      if (response.status === 404) {
-        throw new Error(errorMessage)
-      } else if (response.status === 401) {
-        try {
-          const refreshResponse = await refreshToken()
-          if (userStore.auth && refreshResponse.data) {
-            userStore.auth.token = refreshResponse.data.token
-            userStore.auth.expires_at = refreshResponse.data.expires_at
-
-            const auth = {
-              token: refreshResponse.data.token,
-              expires_at: refreshResponse.data.expires_at,
-            }
-            localStorage.setItem('auth_token', JSON.stringify(auth))
-
-            // Coba lagi setelah refresh token
-            return await editUserData(newUserData, userID, role)
-          } else {
-            throw new Error(errorMessage || 'The session has ended, please login again')
-          }
-        } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
-          throw new Error(errorMessage || 'Failed to update the token')
-        }
-      } else if (response.status === 400) {
-        throw new Error(errorMessage)
-      } else {
-        throw new Error(errorMessage)
-      }
+    // Only update store if requested and the current user is editing their own profile
+    if (updateStore && response.data?.user && userStore.user?.id === response.data.user.id) {
+      console.log('🔄 editUser: Updating store with new user data:', {
+        userId: response.data.user.id,
+        name: response.data.user.name,
+        email: response.data.user.email
+      })
+      userStore.setUserProfileData(response.data.user)
     }
 
-    const data = await response.json()
-    if (!role) {
-      userStore.setUserProfileData(data.data.user)
-    }
-    return data
-  } catch (error) {  
+    return response
+  } catch (error) {
     throw error
   }
+}
+
+// Convenience functions for backward compatibility and clarity
+export const editUserProfile = async (userData: DataUserProps): Promise<EditUserAPIResponse> => {
+  return editUserData(userData, { role: 0, updateStore: true })
+}
+
+export const editUserAsAdmin = async (
+  userData: DataUserProps,
+  userID: string,
+  updateStore = false
+): Promise<EditUserAPIResponse> => {
+  return editUserData(userData, { userID, role: 1, updateStore })
 }

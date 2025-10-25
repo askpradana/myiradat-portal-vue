@@ -1,0 +1,12 @@
+{
+  "deleteAllTitle": "Hapus semua sesi kecuali sesi saat ini",
+  "deleteAllButton": "Hapus Semua Sesi",
+  "deleteAllDialogTitle": "Hapus Semua Sesi",
+  "deleteAllConfirmMessage": "Apakah Anda yakin ingin menghapus semua sesi",
+  "exceptCurrent": "kecuali sesi saat ini",
+  "enterWordPrompt": "Silakan masukkan kata sesuai dengan istilah ini",
+  "deleteConfirmText": "Hapus Semua",
+  "enterWordPlaceholder": "Masukkan kata di atas",
+  "deleteConfirmError": "Istilah tidak cocok! Perhatikan huruf besar dan kecil.",
+  "yesDelete": "Ya, hapus"
+}

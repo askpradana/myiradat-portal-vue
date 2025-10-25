@@ -24,7 +24,7 @@
 
     <!-- Profile Info -->
     <div class="flex-1 text-center sm:text-left">
-      <h2 class="text-2xl font-bold text-foreground">{{ user?.name || 'Loading...' }}</h2>
+      <h2 class="text-2xl font-bold text-foreground">{{ user?.name || t('common.states.loading') }}</h2>
       <p class="text-muted-foreground mt-1">{{ user?.email }}</p>
 
       <!-- Badges Container -->
@@ -54,7 +54,7 @@
       <!-- Additional Info - Verified date only shows when NOT editing -->
       <div class="mt-4 grid grid-cols-1 gap-3 text-sm" v-if="!isEditing && user?.verified_at">
         <div>
-          <span class="text-muted-foreground">Verified:</span>
+          <span class="text-muted-foreground">{{ t('profile.labels.verified') }}:</span>
           <span class="ml-2 text-foreground">{{ formatVerifiedDate(user.verified_at) }}</span>
         </div>
       </div>
@@ -71,6 +71,7 @@
 
 <script setup lang="ts">
 import { computed, type ComputedRef } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { CheckIcon, UserIcon, HomeIcon, BuildingIcon } from '@/components/ui/icons'
 
 import type { UserDataInterface } from '@/types/userType'
@@ -91,6 +92,8 @@ const props = withDefaults(defineProps<Props>(), {
   isEditing: false
 })
 
+const { t } = useI18n()
+
 // Profile completion status
 const isProfileComplete: ComputedRef<boolean> = computed(() => {
   return props.profileStats.completionPercentage >= 80
@@ -100,12 +103,12 @@ const statusIndicator: ComputedRef<{ classes: string; text: string }> = computed
   if (isProfileComplete.value) {
     return {
       classes: 'bg-green-500 text-white',
-      text: 'Profile Complete'
+      text: t('profile.status.complete')
     }
   }
   return {
     classes: 'bg-yellow-500 text-white',
-    text: 'Profile Incomplete'
+    text: t('profile.status.incomplete')
   }
 })
 
@@ -129,7 +132,7 @@ const formatVerifiedDate = (dateString: string): string => {
       day: 'numeric',
     })
   } catch {
-    return 'Invalid date'
+    return t('profile.labels.invalidDate')
   }
 }
 
@@ -149,18 +152,18 @@ const organizationDisplay: ComputedRef<{
       text: props.user.organization_name,
       icon: BuildingIcon,
       classes: 'bg-emerald-100 text-emerald-800 dark:bg-emerald-900/20 dark:text-emerald-400',
-      title: `Member of ${props.user.organization_name}`,
-      ariaLabel: `Organization: ${props.user.organization_name}`
+      title: t('profile.organization.memberOf', { name: props.user.organization_name }),
+      ariaLabel: t('profile.organization.ariaLabel', { name: props.user.organization_name })
     }
   } 
   
   // User is personal (no organization)
   return {
-    text: 'Personal',
+    text: t('profile.organization.personal'),
     icon: HomeIcon,
     classes: 'bg-gray-100 text-gray-800 dark:bg-gray-900/20 dark:text-gray-400',
-    title: 'Personal account',
-    ariaLabel: 'Personal account - not affiliated with an organization'
+    title: t('profile.organization.personalAccount'),
+    ariaLabel: t('profile.organization.personalAriaLabel')
   }
 })
 </script>

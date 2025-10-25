@@ -1,0 +1,48 @@
+{
+  "success": {
+    "verificationCode": "Verification Code",
+    "emailVerified": "Email Verified Successfully!",
+    "emailVerifiedDescription": "Your email has been verified. Please log in to continue.",
+    "profileUpdated": "Profile Updated",
+    "profileUpdatedDescription": "Your profile has been updated successfully",
+    "profileRefreshed": "Profile refreshed successfully",
+    "subscribed": "Successfully subscribed!",
+    "subscriptionDescription": "Thank you for subscribing to our newsletter",
+    "verificationEmailSent": "Verification Email Sent",
+    "verificationEmailDescription": "Please check your email for verification code"
+  },
+  "error": {
+    "redirectFailed": "Redirect failed",
+    "serviceUnavailable": "Service unavailable",
+    "invalidService": "Invalid service",
+    "autoVerificationFailed": "Auto-verification Failed",
+    "verificationFailed": "Verification Failed",
+    "networkError": "Network Error",
+    "failedToSendEmail": "Failed to Send Email",
+    "subscriptionFailed": "Subscription failed",
+    "updateFailed": "Update Failed",
+    "loadingError": "Error loading data",
+    "operationFailed": "Operation failed",
+    "invalidCredentials": "Invalid credentials",
+    "accessDenied": "Access denied",
+    "serverError": "Server error",
+    "notFound": "Resource not found"
+  },
+  "info": {
+    "loading": "Loading...",
+    "processing": "Processing...",
+    "saving": "Saving...",
+    "deleting": "Deleting...",
+    "updating": "Updating...",
+    "verifying": "Verifying...",
+    "redirecting": "Redirecting...",
+    "uploading": "Uploading...",
+    "downloading": "Downloading..."
+  },
+  "warning": {
+    "unsavedChanges": "You have unsaved changes",
+    "dataLoss": "Your changes may be lost",
+    "confirmation": "Are you sure?",
+    "irreversibleAction": "This action cannot be undone"
+  }
+}

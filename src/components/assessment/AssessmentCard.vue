@@ -12,7 +12,7 @@
           <button
             @click="toggleExpanded"
             class="p-1 rounded-full hover:bg-accent text-muted-foreground hover:text-foreground transition-colors"
-            :aria-label="isExpanded ? 'Tutup detail' : 'Lihat detail'"
+            :aria-label="isExpanded ? t('common.actions.close') : t('common.actions.viewDetails')"
             type="button"
           >
             <svg
@@ -60,8 +60,8 @@
             />
           </svg>
         </div>
-        <p class="text-muted-foreground">Belum ada data assessment</p>
-        <p class="text-xs text-muted-foreground mt-1">Assessment belum dilakukan</p>
+        <p class="text-muted-foreground">{{ t('quiz.status.noAssessmentData') }}</p>
+        <p class="text-xs text-muted-foreground mt-1">{{ t('quiz.status.assessmentNotDone') }}</p>
       </div>
 
       <!-- Assessment Data -->
@@ -80,7 +80,7 @@
           :class="isExpanded ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'"
         >
           <div class="pt-4 border-t border-border">
-            <h4 class="text-sm font-medium text-foreground mb-3">Detail Assessment</h4>
+            <h4 class="text-sm font-medium text-foreground mb-3">{{ t('quiz.assessment.details') }}</h4>
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-3">
               <div
                 v-for="entry in remainingEntries"
@@ -99,7 +99,7 @@
             @click="toggleExpanded"
             class="w-full py-2 text-sm text-muted-foreground hover:text-foreground transition-colors"
           >
-            Lihat {{ remainingEntries.length }} item lainnya
+            {{ t('quiz.assessment.viewMoreItems', { count: remainingEntries.length }) }}
             <svg class="w-4 h-4 inline ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path
                 stroke-linecap="round"
@@ -117,6 +117,7 @@
 
 <script setup lang="ts">
 import { computed, ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import ScoreIndicator from './ScoreIndicator.vue'
 import type { AssessmentType } from '@/composables/data/useAssessmentData'
@@ -141,6 +142,7 @@ const props = withDefaults(defineProps<Props>(), {
   maxSummaryItems: 4,
 })
 
+const { t } = useI18n()
 const isExpanded = ref(false)
 
 // Data processing
@@ -163,8 +165,8 @@ const remainingEntries = computed(() => entries.value.slice(props.maxSummaryItem
 
 // Completion status
 const completionText = computed(() => {
-  if (!hasData.value) return 'Belum Tersedia'
-  return 'Tersedia'
+  if (!hasData.value) return t('quiz.status.notAvailable')
+  return t('quiz.status.available')
 })
 
 const completionBadgeClasses = computed(() => {
@@ -179,42 +181,19 @@ const toggleExpanded = () => {
   isExpanded.value = !isExpanded.value
 }
 
-// Helper function to format field labels
+// Helper function to format field labels using i18n
 const formatFieldLabel = (key: string): string => {
-  const labelMap: Record<string, string> = {
-    // IPRO/IPROB labels
-    inisiatif: 'Inisiatif',
-    kerjasama: 'Kerjasama',
-    kepemimpinan: 'Kepemimpinan',
-    fleksibilitas: 'Fleksibilitas',
-    komitmenTugas: 'Komitmen Tugas',
-    kecerdasanUmum: 'Kecerdasan Umum',
-    logikaBerpikir: 'Logika Berpikir',
-    kelincahanPikir: 'Kelincahan Pikir',
-    kepercayaanDiri: 'Kepercayaan Diri',
-    penyesuaianDiri: 'Penyesuaian Diri',
-    stabilitasEmosi: 'Stabilitas Emosi',
-    sistematikaKerja: 'Sistematika Kerja',
-    dayaAnalisaSintesa: 'Daya Analisa Sintesa',
-    dayaBerpikirAbtrak: 'Daya Berpikir Abstrak',
-    dayaTahanKerjaRutin: 'Daya Tahan Kerja Rutin',
-    motivasiBerprestasi: 'Motivasi Berprestasi',
-    dayaTahanKerjaStress: 'Daya Tahan Kerja Stress',
-    pengambilanKeputusan: 'Pengambilan Keputusan',
-    hubunganInterpersonal: 'Hubungan Interpersonal',
-    perencanaanDanPerorganisasian: 'Perencanaan Dan Perorganisasian',
+  // Try to get the translated label from i18n
+  const translationKey = `quiz.assessment.fields.${key}`
+  const translatedLabel = t(translationKey)
 
-    // IPROS labels
-    kemandirian: 'Kemandirian',
-    ketangguhan: 'Ketangguhan',
-    ketelitianKerja: 'Ketelitian Kerja',
-    penalaranVerbal: 'Penalaran Verbal',
-    penalaranNumerik: 'Penalaran Numerik',
-    penalaranNonVerbal: 'Penalaran Non Verbal',
-    kecepatanPerseptual: 'Kecepatan Perseptual',
+  // If translation exists and is different from the key, use it
+  if (translatedLabel !== translationKey) {
+    return translatedLabel
   }
 
-  return labelMap[key] || key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())
+  // Fallback to formatted key if no translation found
+  return key.replace(/([A-Z])/g, ' $1').replace(/^./, (str) => str.toUpperCase())
 }
 </script>
 

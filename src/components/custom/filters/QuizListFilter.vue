@@ -4,7 +4,7 @@
     <div class="relative max-w-md">
       <Input
         v-model="searchInput"
-        placeholder="Search quizzes..."
+        :placeholder="t('quiz.filters.searchPlaceholder')"
         class="pr-10"
       />
       <button
@@ -21,7 +21,7 @@
     <div class="space-y-3">
       <!-- Status Filters -->
       <div class="flex flex-wrap items-center gap-2">
-        <span class="text-sm font-medium text-muted-foreground mr-2">Status:</span>
+        <span class="text-sm font-medium text-muted-foreground mr-2">{{ t('quiz.filters.status') }}:</span>
         <Badge
           v-for="status in statusOptions"
           :key="status.value"
@@ -35,7 +35,7 @@
 
       <!-- Type Filters -->
       <div class="flex flex-wrap items-center gap-2">
-        <span class="text-sm font-medium text-muted-foreground mr-2">Type:</span>
+        <span class="text-sm font-medium text-muted-foreground mr-2">{{ t('quiz.filters.type') }}:</span>
         <Badge
           v-for="type in typeOptions"
           :key="type.value"
@@ -49,7 +49,7 @@
 
       <!-- Sort Options -->
       <div class="flex flex-wrap items-center gap-2">
-        <span class="text-sm font-medium text-muted-foreground mr-2">Sort:</span>
+        <span class="text-sm font-medium text-muted-foreground mr-2">{{ t('quiz.filters.sort') }}:</span>
         <Badge
           v-for="sort in sortOptions"
           :key="sort.value"
@@ -65,7 +65,7 @@
     <!-- Active Filters Display -->
     <div v-if="hasActiveFilters" class="pt-3 border-t border-border">
       <div class="flex flex-wrap items-center gap-2">
-        <span class="text-sm font-medium text-foreground">Active:</span>
+        <span class="text-sm font-medium text-foreground">{{ t('quiz.filters.active') }}:</span>
         <FilterChip
           v-for="(filter, key) in activeFiltersDisplay"
           :key="key"
@@ -81,6 +81,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { debouncedRef } from '@vueuse/core'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
@@ -111,6 +112,9 @@ interface Props {
 const props = withDefaults(defineProps<Props>(), {
   initialFilters: () => ({}),
 })
+
+// i18n
+const { t } = useI18n()
 
 // Emits
 const emit = defineEmits<{
@@ -143,26 +147,26 @@ const searchInput = ref(localFilters.value.search_query || '')
 const debouncedSearch = debouncedRef(searchInput, 3000)
 
 // Filter options
-const statusOptions = [
-  { value: 'available', label: 'Available Only' },
-  { value: 'all', label: 'All Quizzes' },
-  { value: 'completed', label: 'Completed Only' },
-]
+const statusOptions = computed(() => [
+  { value: 'available', label: t('quiz.filters.availableOnly') },
+  { value: 'all', label: t('quiz.filters.allQuizzes') },
+  { value: 'completed', label: t('quiz.filters.completedOnly') },
+])
 
-const typeOptions = [
-  { value: 'all', label: 'All Types' },
-  { value: 'likert4', label: '4-Point' },
-  { value: 'likert5', label: '5-Point' },
-  { value: 'yesno', label: 'Yes/No' },
-  { value: 'multiple_choice', label: 'Multiple Choice' },
-]
+const typeOptions = computed(() => [
+  { value: 'all', label: t('quiz.filters.allTypes') },
+  { value: 'likert4', label: t('quiz.filters.fourPoint') },
+  { value: 'likert5', label: t('quiz.filters.fivePoint') },
+  { value: 'yesno', label: t('quiz.filters.yesNo') },
+  { value: 'multiple_choice', label: t('quiz.filters.multipleChoice') },
+])
 
-const sortOptions = [
-  { value: 'title_asc', label: 'A to Z' },
-  { value: 'title_desc', label: 'Z to A' },
-  { value: 'time_asc', label: 'Time ↑' },
-  { value: 'time_desc', label: 'Time ↓' },
-]
+const sortOptions = computed(() => [
+  { value: 'title_asc', label: t('quiz.filters.aToZ') },
+  { value: 'title_desc', label: t('quiz.filters.zToA') },
+  { value: 'time_asc', label: t('quiz.filters.timeAsc') },
+  { value: 'time_desc', label: t('quiz.filters.timeDesc') },
+])
 
 // Computed
 const hasActiveFilters = computed(() => {
@@ -180,43 +184,43 @@ const activeFiltersDisplay = computed(() => {
 
   if (localFilters.value.search_query) {
     filters.search_query = {
-      label: 'Search',
+      label: t('quiz.filters.search'),
       value: localFilters.value.search_query,
     }
   }
 
   if (localFilters.value.completion_status && localFilters.value.completion_status !== 'available') {
     const statusMap = {
-      all: 'All Quizzes',
-      completed: 'Completed Only'
+      all: t('quiz.filters.allQuizzes'),
+      completed: t('quiz.filters.completedOnly')
     }
     filters.completion_status = {
-      label: 'Status',
+      label: t('quiz.filters.status'),
       value: statusMap[localFilters.value.completion_status as keyof typeof statusMap] || localFilters.value.completion_status,
     }
   }
 
   if (localFilters.value.quiz_type && localFilters.value.quiz_type !== 'all') {
     const typeMap = {
-      likert4: 'Likert 4-Point',
-      likert5: 'Likert 5-Point',
-      yesno: 'Yes/No',
-      multiple_choice: 'Multiple Choice'
+      likert4: t('quiz.filters.likert4Point'),
+      likert5: t('quiz.filters.likert5Point'),
+      yesno: t('quiz.filters.yesNo'),
+      multiple_choice: t('quiz.filters.multipleChoice')
     }
     filters.quiz_type = {
-      label: 'Type',
+      label: t('quiz.filters.type'),
       value: typeMap[localFilters.value.quiz_type as keyof typeof typeMap] || localFilters.value.quiz_type,
     }
   }
 
   if (localFilters.value.sort_order && localFilters.value.sort_order !== 'title_asc') {
     const sortMap = {
-      title_desc: 'Title Z-A',
-      time_asc: 'Time Limit (Low to High)',
-      time_desc: 'Time Limit (High to Low)'
+      title_desc: t('quiz.filters.titleZA'),
+      time_asc: t('quiz.filters.timeLowHigh'),
+      time_desc: t('quiz.filters.timeHighLow')
     }
     filters.sort_order = {
-      label: 'Sort',
+      label: t('quiz.filters.sort'),
       value: sortMap[localFilters.value.sort_order as keyof typeof sortMap] || localFilters.value.sort_order,
     }
   }

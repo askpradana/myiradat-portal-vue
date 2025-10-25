@@ -3,6 +3,10 @@
     <div class="flex-1 min-w-0">
       <h4 class="font-medium text-foreground text-sm truncate">{{ label }}</h4>
       <p class="text-xs text-muted-foreground mt-1">{{ value }}</p>
+      <!-- Show numerical score if available -->
+      <div v-if="scoreType === 'numerical' && numericalScore !== null" class="text-xs font-medium text-foreground mt-1">
+        Skor: {{ numericalScore }}/{{ maxScore }}
+      </div>
       <div v-if="showTooltip" class="text-xs text-muted-foreground mt-1 italic">
         {{ interpretation.description }}
       </div>
@@ -52,22 +56,86 @@ interface Props {
   showProgressBar?: boolean
   hasTooltip?: boolean
   size?: 'sm' | 'md' | 'lg'
+  // IPROS-specific props
+  numericalScore?: number | null
+  maxScore?: number
+  scoreType?: 'text' | 'numerical'
 }
 
 const props = withDefaults(defineProps<Props>(), {
   showProgressBar: true,
   hasTooltip: true,
-  size: 'md'
+  size: 'md',
+  numericalScore: null,
+  maxScore: 5,
+  scoreType: 'text'
 })
 
 const { interpretScore } = useAssessmentData()
 const showTooltip = ref(false)
 
-// Score interpretation
-const interpretation = computed(() => interpretScore(props.value))
+// Score interpretation - handle both text and numerical scores
+const interpretation = computed(() => {
+  if (props.scoreType === 'numerical' && props.numericalScore !== null) {
+    return interpretNumericalScore(props.numericalScore, props.maxScore)
+  }
+  return interpretScore(props.value)
+})
+
+// Numerical score interpretation for IPROS scores
+const interpretNumericalScore = (score: number, maxScore: number) => {
+  // For 5-point scale: 4-5 = high, 3 = medium, 1-2 = low
+  if (maxScore === 5) {
+    if (score >= 4) {
+      return {
+        level: 'high',
+        color: 'green',
+        description: `Skor tinggi (${score}/${maxScore}) - Kemampuan sangat baik`
+      }
+    } else if (score === 3) {
+      return {
+        level: 'medium',
+        color: 'yellow',
+        description: `Skor sedang (${score}/${maxScore}) - Kemampuan memadai`
+      }
+    } else {
+      return {
+        level: 'low',
+        color: 'red',
+        description: `Skor rendah (${score}/${maxScore}) - Perlu pengembangan`
+      }
+    }
+  } else {
+    // For other scales, use percentage-based logic
+    const percentage = (score / maxScore) * 100
+    if (percentage >= 85) {
+      return {
+        level: 'high',
+        color: 'green',
+        description: `Skor tinggi (${score}/${maxScore}) - Kemampuan sangat baik`
+      }
+    } else if (percentage >= 70) {
+      return {
+        level: 'medium',
+        color: 'yellow',
+        description: `Skor sedang (${score}/${maxScore}) - Kemampuan memadai`
+      }
+    } else {
+      return {
+        level: 'low',
+        color: 'red',
+        description: `Skor rendah (${score}/${maxScore}) - Perlu pengembangan`
+      }
+    }
+  }
+}
 
 // Progress calculation for visual representation
 const progressPercentage = computed(() => {
+  if (props.scoreType === 'numerical' && props.numericalScore !== null) {
+    return Math.min((props.numericalScore / props.maxScore) * 100, 100)
+  }
+
   switch (interpretation.value.level) {
     case 'low': return 25
     case 'medium': return 60

@@ -55,5 +55,15 @@
     "completed": "Completed",
     "inProgress": "In Progress",
     "notStarted": "Not Started"
+  },
+  "welcome": "Welcome back, {name}!",
+  "defaultUser": "User",
+  "description": "Access your services and manage your account from your dashboard.",
+  "services": {
+    "title": "Your Services",
+    "available": "{count} service available | {count} services available",
+    "failedToLoad": "Failed to load services",
+    "tryAgain": "Try Again",
+    "availableAriaLabel": "Available services"
   }
 }

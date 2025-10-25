@@ -1,7 +1,10 @@
 <script setup lang="ts">
 import { ref } from 'vue'
+import { useI18n } from 'vue-i18n'
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
+
+const { t } = useI18n()
 import {
   AlertDialog,
   AlertDialogAction,
@@ -76,7 +79,7 @@ const handleCancelRetake = () => {
         </CardTitle>
         <div class="flex items-center gap-1 text-green-600 shrink-0 mt-1 sm:mt-0">
           <CheckCircle2 class="h-4 w-4 flex-shrink-0" />
-          <span class="text-xs font-medium">Completed</span>
+          <span class="text-xs font-medium">{{ t('quiz.status.completed') }}</span>
         </div>
       </div>
       <CardDescription class="text-sm text-muted-foreground">
@@ -95,7 +98,7 @@ const handleCancelRetake = () => {
           class="flex items-center gap-1 text-blue-600"
         >
           <Users class="h-4 w-4 flex-shrink-0" />
-          <span class="text-xs">Results sent</span>
+          <span class="text-xs">{{ t('quiz.status.resultsSent') }}</span>
         </div>
       </div>
     </CardContent>

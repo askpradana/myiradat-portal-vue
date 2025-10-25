@@ -1,0 +1,53 @@
+{
+  "status": {
+    "complete": "Profil Lengkap",
+    "incomplete": "Profil Belum Lengkap"
+  },
+  "labels": {
+    "verified": "Terverifikasi",
+    "invalidDate": "Tanggal tidak valid"
+  },
+  "organization": {
+    "memberOf": "Anggota {name}",
+    "ariaLabel": "Organisasi: {name}",
+    "personal": "Pribadi",
+    "personalAccount": "Akun pribadi",
+    "personalAriaLabel": "Akun pribadi - tidak tergabung dengan organisasi"
+  },
+  "actions": {
+    "loadingProfile": "Memuat data profil",
+    "retryLoading": "Coba muat ulang data profil",
+    "cancelEditing": "Batalkan perubahan dan buang perubahan",
+    "savingChanges": "Menyimpan perubahan...",
+    "saveChanges": "Simpan perubahan profil",
+    "editProfile": "Edit informasi profil",
+    "editProfileButton": "Ubah Profil"
+  },
+  "completion": {
+    "bannerAnnouncement": "Pengumuman kelengkapan profil",
+    "helpMessage": "Bantu kami memberikan wawasan psikologis yang lebih baik dengan melengkapi profil Anda",
+    "addDateOfBirth": "Atur tanggal lahir",
+    "dismissBanner": "Tutup banner kelengkapan profil"
+  },
+  "form": {
+    "editAriaLabel": "Edit informasi profil",
+    "fullName": "Nama Lengkap",
+    "fullNamePlaceholder": "Masukkan nama lengkap Anda",
+    "emailAddress": "Alamat Email",
+    "emailPlaceholder": "Masukkan email Anda",
+    "phoneNumber": "Nomor Telepon",
+    "phonePlaceholder": "Masukkan nomor telepon Anda",
+    "dateOfBirth": "Tanggal Lahir",
+    "dateOfBirthAriaLabel": "Tanggal lahir, field hanya baca",
+    "notProvided": "Tidak disediakan",
+    "contactSupportDateOfBirth": "Hubungi dukungan untuk mengubah tanggal lahir Anda",
+    "unsavedChanges": "Anda memiliki perubahan yang belum disimpan",
+    "discardChangesTitle": "Buang Perubahan?",
+    "discardChangesMessage": "Anda memiliki perubahan yang belum disimpan. Apakah Anda yakin ingin membuangnya? Tindakan ini tidak dapat dibatalkan.",
+    "keepEditing": "Lanjut Edit",
+    "discardChanges": "Buang Perubahan"
+  },
+  "sessions": {
+    "whereLoggedIn": "Di mana Anda masuk"
+  }
+}
