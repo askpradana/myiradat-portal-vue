@@ -5,12 +5,12 @@
 
     <!-- Assessment Cards -->
     <div class="space-y-6">
-      <!-- Error State -->
-      <div v-if="error && !isLoading" class="text-center py-12">
+      <!-- Assessment Data Error State (only for profile-based assessments) -->
+      <div v-if="error && !isLoading" class="text-center py-8 bg-red-50 rounded-lg border border-red-200">
         <div
-          class="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center"
+          class="w-12 h-12 mx-auto mb-3 bg-red-100 rounded-full flex items-center justify-center"
         >
-          <svg class="w-8 h-8 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <svg class="w-6 h-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path
               stroke-linecap="round"
               stroke-linejoin="round"
@@ -19,13 +19,13 @@
             />
           </svg>
         </div>
-        <h3 class="text-lg font-semibold text-foreground mb-2">
+        <h3 class="text-base font-semibold text-foreground mb-2">
           {{ t('quiz.assessment.errors.failedToLoad') }}
         </h3>
-        <p class="text-muted-foreground mb-4">
+        <p class="text-sm text-muted-foreground mb-3">
           {{ error.message || t('quiz.assessment.errors.errorMessage') }}
         </p>
-        <Button @click="refetchAssessmentData" variant="outline">
+        <Button @click="refetchAssessmentData" variant="outline" size="sm">
           <svg class="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path
               stroke-linecap="round"
@@ -38,7 +38,7 @@
         </Button>
       </div>
 
-      <!-- IPROS External Sync Section -->
+      <!-- IPROS External Sync Section (always shown regardless of assessment data errors) -->
       <div class="mt-8">
         <IPROSQuizResultsCard />
       </div>

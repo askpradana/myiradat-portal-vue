@@ -51,43 +51,67 @@
         </div>
       </div>
 
-      <!-- Error State -->
-      <div v-else-if="error" class="text-center py-8">
+      <!-- Data Unavailable State (204 responses - not an error) -->
+      <div v-else-if="syncState === 'data-unavailable'" class="text-center py-8">
+        <div
+          class="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center"
+        >
+          <Database class="w-8 h-8 text-blue-600" />
+        </div>
+        <h3 class="text-lg font-semibold text-foreground mb-2">Data Not Available</h3>
+        <p class="text-muted-foreground mb-2">Your data is not yet available in the IPROS system</p>
+        <p class="text-xs text-muted-foreground mb-4">
+          Please check back later or contact support if you believe this is incorrect
+        </p>
+        <Button @click="handleRetry" variant="outline" size="sm">
+          <RefreshCw class="w-4 h-4 mr-2" />
+          Check Again
+        </Button>
+      </div>
+
+      <!-- Actual Error State (network/API errors) -->
+      <div v-else-if="error && syncState === 'error'" class="text-center py-8">
         <div
           class="w-16 h-16 mx-auto mb-4 bg-red-100 rounded-full flex items-center justify-center"
         >
           <AlertCircle class="w-8 h-8 text-red-600" />
         </div>
-        <h3 class="text-lg font-semibold text-foreground mb-2">Gagal Menyinkronkan</h3>
+        <h3 class="text-lg font-semibold text-foreground mb-2">Sync Failed</h3>
         <p class="text-muted-foreground mb-4">{{ error.message }}</p>
         <Button @click="handleRetry" variant="outline" size="sm">
           <RefreshCw class="w-4 h-4 mr-2" />
-          Coba Lagi
+          Try Again
         </Button>
       </div>
 
-      <!-- No Privileges State -->
-      <div v-else-if="iprosData && !iprosData.hasPrivileges" class="text-center py-12">
+      <!-- Incomplete Quizzes State (user has access but hasn't completed quizzes) -->
+      <div
+        v-else-if="iprosData && !iprosData.hasPrivileges && !iprosData.isDataUnavailable"
+        class="text-center py-8"
+      >
+        <div
+          class="w-16 h-16 mx-auto mb-4 bg-amber-50 rounded-full flex items-center justify-center"
+        >
+          <Target class="w-8 h-8 text-amber-600" />
+        </div>
+        <h3 class="text-lg font-semibold text-foreground mb-3">Siap Mulai Assessment?</h3>
+        <p class="text-muted-foreground mb-4 max-w-md mx-auto">
+          Lengkapi assessment IPRO Student untuk hasil analisis kepribadian dan karir
+        </p>
+        <div
+          class="inline-flex items-center gap-2 px-3 py-2 bg-amber-50 border border-amber-200 rounded-lg"
+        >
+          <ExternalLink class="w-4 h-4 text-amber-600" />
+          <span class="text-sm text-amber-800 font-medium">Tersedia di IPRO Student</span>
+        </div>
+      </div>
+
+      <!-- No Data Yet State (never synced before) -->
+      <div v-else-if="!iprosData && syncState === 'idle'" class="text-center py-12">
         <div
           class="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center"
         >
-          <Lock class="w-8 h-8 text-gray-400" />
-        </div>
-        <h3 class="text-lg font-semibold text-foreground mb-2">Akses Kuis Tidak Tersedia</h3>
-        <p class="text-muted-foreground mb-2">
-          Anda belum memiliki akses untuk mengikuti kuis IPROS
-        </p>
-        <p class="text-xs text-muted-foreground">
-          Hubungi administrator untuk mengaktifkan akses kuis
-        </p>
-      </div>
-
-      <!-- No Data Yet State -->
-      <div v-else-if="!iprosData" class="text-center py-12">
-        <div
-          class="w-16 h-16 mx-auto mb-4 bg-blue-100 rounded-full flex items-center justify-center"
-        >
-          <Database class="w-8 h-8 text-blue-600" />
+          <Database class="w-8 h-8 text-gray-600" />
         </div>
         <h3 class="text-sm text-muted-foreground font-semibold mb-2">Data belum disinkronkan</h3>
         <p class="text-xs text-muted-foreground mb-4">
@@ -192,7 +216,6 @@
             </div>
           </div>
         </div>
-
       </div>
 
       <!-- No Quiz Data Available -->
@@ -215,7 +238,7 @@
 import { computed, watch } from 'vue'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { RefreshCw, AlertCircle, Lock, Database, AlertTriangle } from 'lucide-vue-next'
+import { RefreshCw, AlertCircle, Database, AlertTriangle, Target, ExternalLink } from 'lucide-vue-next'
 
 // Import custom components
 import RIASECScoreChart from './RIASECScoreChart.vue'
@@ -228,6 +251,7 @@ const {
   iprosData,
   isLoading,
   error,
+  syncState,
   syncIPROSData,
   clearError,
   hasPPIData,

@@ -16,23 +16,83 @@ export class IPROSSyncService extends BaseApiService {
   async syncIPROSData(): Promise<ProcessedIPROSData | null> {
     console.log('🔄 Starting IPROS sync...')
 
-    return this.handleRequestWithToast(
-      () => {
-        console.log('📤 Making GET request to:', IPROSSyncService.SYNC_ENDPOINT)
-        return httpClient.get<IPROSSyncData>(IPROSSyncService.SYNC_ENDPOINT, {})
-      },
-      'Failed to sync IPROS data',
-      'Gagal menyinkronkan data IPROS',
-    ).then((response) => {
+    try {
+      this.clearError()
+      console.log('📤 Making GET request to:', IPROSSyncService.SYNC_ENDPOINT)
+      const response = await httpClient.get<IPROSSyncData>(IPROSSyncService.SYNC_ENDPOINT, {})
+
       console.log('📥 IPROS response received:', response)
-      if (!response) {
-        console.error('❌ No response received from IPROS sync')
-        return null
+
+      // Handle 204 No Content specifically - this is NOT an error
+      if (!response.success) {
+        console.log('📭 204 No Content: Data not available from IPROS service')
+        // Return a special response indicating data is not available (not an error)
+        return {
+          hasPrivileges: false,
+          quizPrivileges: 'none',
+          ppiResults: null,
+          riasecResults: null,
+          syncedAt: new Date().toISOString(),
+          userInfo: {
+            userId: '',
+            email: '',
+            name: '',
+            grade: '',
+            school: '',
+          },
+          isDataUnavailable: true
+        }
       }
-      const processed = this.processIPROSResponse(response)
+
+      if (!response.data) {
+        console.log('📭 No data in response from IPROS service')
+        return {
+          hasPrivileges: false,
+          quizPrivileges: 'none',
+          ppiResults: null,
+          riasecResults: null,
+          syncedAt: new Date().toISOString(),
+          userInfo: {
+            userId: '',
+            email: '',
+            name: '',
+            grade: '',
+            school: '',
+          },
+          isDataUnavailable: true
+        }
+      }
+
+      const processed = this.processIPROSResponse(response.data)
       console.log('✅ Processed IPROS data:', processed)
       return processed
-    })
+    } catch (error) {
+      console.error('❌ IPROS sync error:', error)
+
+      // Check if it's a 204 response that was caught as an error
+      if (error instanceof Error && (error.message.includes('204') || error.message.includes('No Content'))) {
+        console.log('📭 Handling 204 as data unavailable')
+        return {
+          hasPrivileges: false,
+          quizPrivileges: 'none',
+          ppiResults: null,
+          riasecResults: null,
+          syncedAt: new Date().toISOString(),
+          userInfo: {
+            userId: '',
+            email: '',
+            name: '',
+            grade: '',
+            school: '',
+          },
+          isDataUnavailable: true
+        }
+      }
+
+      // Only treat actual network errors, 4xx/5xx as errors
+      this.errorHandler.handleError(error, 'Failed to sync IPROS data')
+      return null
+    }
   }
 
   /**

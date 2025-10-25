@@ -23,12 +23,6 @@ export const updateProfile = async (payload: UpdateProfilePayload): Promise<Upda
 
     const response: APIResponse<UpdateProfileResponse> = await httpClient.put('/profile', payload)
 
-    console.log('✅ updateProfile: Profile update successful, data received:', {
-      userId: response.data?.user?.id,
-      name: response.data?.user?.name,
-      email: response.data?.user?.email
-    })
-
     toast.success('Profile Updated', {
       description: 'Your profile has been updated successfully',
     })

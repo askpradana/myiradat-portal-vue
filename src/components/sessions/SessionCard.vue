@@ -6,12 +6,17 @@
     >
       <div class="flex space-x-6 items-center flex-col md:flex-row">
         <div
-          class="ml-6 md:ml-0 relative w-20 h-20 sm:w-24 sm:h-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-white text-2xl sm:text-3xl font-bold shadow-lg"
+          :class="cn(
+            'ml-6 md:ml-0 relative w-20 h-20 sm:w-24 sm:h-24 rounded-full flex items-center justify-center text-2xl sm:text-3xl font-semibold',
+            'shadow-lg ring-2 ring-black/10 dark:ring-white/20 transition-all duration-200 hover:shadow-xl hover:scale-105',
+            deviceGradientClass,
+            deviceTextColorClass
+          )"
           :title="`${data?.device_type}`"
           role="img"
           :aria-label="`Avatar for ${data?.device_type || 'Desktop'}`"
         >
-          <component :is="deviceIcon" :size="40" class="text-white" />
+          <component :is="deviceIcon" :size="40" :class="deviceIconColorClass" />
           <div
             :class="[
               'w-5 h-5 rounded-full absolute right-0 bottom-1 border-2',
@@ -51,6 +56,7 @@ import { Badge } from '@/components/ui/badge'
 import { Laptop, Smartphone, Tablet } from 'lucide-vue-next'
 import { formatDate } from '@/lib/dateFromate'
 import DeleteSessionSpecificAlert from '@/components/custom/alerts/DeleteSessionSpecificAlert.vue'
+import { cn } from '@/lib/utils'
 
 const { t } = useI18n()
 
@@ -70,5 +76,52 @@ const deviceIcon = computed(() => {
     default:
       return Laptop
   }
+})
+
+// Device-specific gradient system matching ProfileHeader.vue
+const deviceGradients = [
+  'bg-gradient-to-br from-slate-200 to-slate-300 dark:from-slate-700 dark:to-slate-800', // desktop
+  'bg-gradient-to-br from-blue-200 to-blue-300 dark:from-blue-700 dark:to-blue-800',    // mobile
+  'bg-gradient-to-br from-purple-200 to-purple-300 dark:from-purple-700 dark:to-purple-800' // tablet
+]
+
+const deviceTextColors = [
+  'text-slate-800 dark:text-slate-200', // desktop
+  'text-blue-800 dark:text-blue-200',   // mobile
+  'text-purple-800 dark:text-purple-200' // tablet
+]
+
+const deviceIconColors = [
+  'text-slate-700 dark:text-slate-300', // desktop
+  'text-blue-700 dark:text-blue-300',   // mobile
+  'text-purple-700 dark:text-purple-300' // tablet
+]
+
+const getDeviceIndex = (deviceType: string): number => {
+  switch (deviceType) {
+    case 'desktop':
+      return 0
+    case 'mobile':
+      return 1
+    case 'tablet':
+      return 2
+    default:
+      return 0
+  }
+}
+
+const deviceGradientClass = computed(() => {
+  const index = getDeviceIndex(props.data.device_type)
+  return deviceGradients[index]
+})
+
+const deviceTextColorClass = computed(() => {
+  const index = getDeviceIndex(props.data.device_type)
+  return deviceTextColors[index]
+})
+
+const deviceIconColorClass = computed(() => {
+  const index = getDeviceIndex(props.data.device_type)
+  return deviceIconColors[index]
 })
 </script>

@@ -37,7 +37,7 @@ const dismissBanner = () => {
 }
 
 const navigateToProfile = () => {
-  router.push('/dashboard')
+  router.push('/dashboard/profile')
 }
 </script>
 

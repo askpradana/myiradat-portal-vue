@@ -1,23 +1,25 @@
 <template>
   <header class="bg-card border-b border-border">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 sm:py-6 gap-4 sm:gap-0">
+      <div
+        class="flex flex-col sm:flex-row justify-between items-start sm:items-center py-4 sm:py-6 gap-4 sm:gap-0"
+      >
         <!-- Left: Title & Subtitle -->
         <div class="min-w-0 flex-1">
           <h1 class="text-2xl sm:text-3xl font-bold text-foreground truncate">
             {{ dashboardTitle }}
           </h1>
-          <p class="text-sm text-muted-foreground mt-1 sm:hidden">
+          <!-- <p class="text-sm text-muted-foreground mt-1 sm:hidden">
             {{ dashboardSubtitle }}
-          </p>
+          </p> -->
         </div>
 
         <!-- Right: Utility Controls -->
-        <div class="flex items-center gap-3 sm:gap-2 w-full sm:w-auto justify-end">
+        <div class="flex items-center gap-2 w-full sm:w-auto justify-end">
           <LanguageChooser />
-          <RefreshProfileButton class="h-10 w-10 sm:h-auto sm:w-auto" />
-          <ThemeToggle class="h-10 w-10 sm:h-auto sm:w-auto" />
-          <LogoutAlert class="h-10 sm:h-auto flex-shrink-0" />
+          <RefreshProfileButton />
+          <ThemeToggle />
+          <LogoutAlert />
         </div>
       </div>
     </div>
@@ -51,15 +53,14 @@ const dashboardTitle = computed(() => {
   }
 })
 
-const dashboardSubtitle = computed(() => {
-  switch (roleUser) {
-    case 'admin':
-      return t('dashboard.header.adminSubtitle')
-    case 'cs':
-      return t('dashboard.header.csSubtitle')
-    default:
-      return t('dashboard.header.welcomeSubtitle')
-  }
-})
-
+// const dashboardSubtitle = computed(() => {
+//   switch (roleUser) {
+//     case 'admin':
+//       return t('dashboard.header.adminSubtitle')
+//     case 'cs':
+//       return t('dashboard.header.csSubtitle')
+//     default:
+//       return t('dashboard.header.welcomeSubtitle')
+//   }
+// })
 </script>

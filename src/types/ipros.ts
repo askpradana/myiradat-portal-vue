@@ -106,10 +106,11 @@ export interface ProcessedIPROSData {
     grade?: string
     school?: string
   }
+  isDataUnavailable?: boolean // Flag for 204 responses - data not found in IPROS
 }
 
 // Loading States for IPROS Sync
-export type IPROSSyncState = 'idle' | 'syncing' | 'success' | 'error'
+export type IPROSSyncState = 'idle' | 'syncing' | 'success' | 'error' | 'data-unavailable'
 
 // IPROS Sync Error Interface
 export interface IPROSSyncError {

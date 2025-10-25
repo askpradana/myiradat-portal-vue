@@ -97,5 +97,24 @@
     "currentSession": "Current Session",
     "active": "Active",
     "inactive": "Inactive"
+  },
+  "dialog": {
+    "logout": {
+      "title": "Logout",
+      "description": "Are you sure you want to end this session?"
+    }
+  },
+  "messages": {
+    "success": {
+      "profileRefreshed": "Profile refreshed successfully"
+    },
+    "error": {
+      "refreshFailed": "Failed to refresh profile"
+    }
+  },
+  "aria": {
+    "refreshProfile": "Refresh profile data",
+    "refreshingProfile": "Refreshing profile data",
+    "refreshCooldown": "Refresh available in {seconds} seconds"
   }
 }

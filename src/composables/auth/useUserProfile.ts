@@ -96,9 +96,19 @@ export function useUserProfile(): UseUserProfileReturn {
     isUpdating.value = true
     try {
       const response = await updateProfileAPI(data)
-      // Store is already updated in updateProfileAPI, but verify response
+
+      // The API returns success in the message but doesn't include user data
+      // Since the updateProfileAPI function doesn't throw an error, we know the update was successful
+      // Always trigger refresh to get the latest profile data
+      try {
+        await refreshProfile()
+      } catch (refreshError) {
+        // Log refresh error but don't throw it to avoid breaking the main update flow
+        console.warn('Profile refresh after update failed:', refreshError)
+      }
+
+      // If the API response includes user data, also update the store directly
       if (response?.user) {
-        // Ensure store is updated with latest data
         userStore.setUserProfileData(response.user)
       }
     } catch (error) {
@@ -112,14 +122,14 @@ export function useUserProfile(): UseUserProfileReturn {
   // Refresh profile from API
   const refreshProfile = async () => {
     if (!isAuthenticated.value) return
-    
+
     isLoading.value = true
     try {
       const response = await getProfile()
       if (response?.user) {
         userStore.setUserProfileData(response.user)
       }
-    } catch (error) {  
+    } catch (error) {
       handleError(error, 'Failed to fetch profile')
       throw error
     } finally {
