@@ -22,7 +22,8 @@ export const useServiceRedirect = () => {
       return await serviceRedirect(request)
     },
     onSuccess: (response) => {
-      if (response.success && response.data.redirect_url) {
+      // Check if we have a redirect URL regardless of success flag
+      if (response.data && response.data.redirect_url) {
         // Navigate to the service with the JWT token
         window.location.href = response.data.redirect_url
       } else {
