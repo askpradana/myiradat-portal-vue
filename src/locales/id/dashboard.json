@@ -65,5 +65,10 @@
     "failedToLoad": "Gagal memuat layanan",
     "tryAgain": "Coba Lagi",
     "availableAriaLabel": "Layanan tersedia"
+  },
+  "availableServices": {
+    "title": "Layanan Tersedia",
+    "description": "{count} layanan tambahan akan segera hadir",
+    "ariaLabel": "Layanan tersedia yang belum dapat diakses"
   }
 }

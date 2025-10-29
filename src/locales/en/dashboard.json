@@ -65,5 +65,10 @@
     "failedToLoad": "Failed to load services",
     "tryAgain": "Try Again",
     "availableAriaLabel": "Available services"
+  },
+  "availableServices": {
+    "title": "Available Services",
+    "description": "{count} additional service coming soon | {count} additional services coming soon",
+    "ariaLabel": "Available services that are not yet accessible"
   }
 }

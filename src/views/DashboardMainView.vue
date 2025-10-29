@@ -1,20 +1,25 @@
 <template>
   <div class="space-y-8">
     <!-- Welcome Section -->
-    <div class="mb-8 sm:mb-12">
+    <!-- <div class="mb-8 sm:mb-12">
       <h1 class="text-2xl sm:text-3xl lg:text-4xl font-bold text-foreground mb-2 sm:mb-3 leading-tight tracking-tight">
         {{ t('dashboard.welcome', { name: userStore.user?.name || t('dashboard.defaultUser') }) }}
       </h1>
       <p class="text-base sm:text-lg text-muted-foreground leading-relaxed">
         {{ t('dashboard.description') }}
       </p>
-    </div>
+    </div> -->
 
     <!-- Services Section -->
     <section aria-labelledby="services-heading">
-      <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4 sm:gap-0">
+      <div
+        class="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-6 sm:mb-8 gap-4 sm:gap-0"
+      >
         <div>
-          <h2 id="services-heading" class="text-xl sm:text-2xl font-semibold text-foreground mb-1 leading-snug tracking-tight">
+          <h2
+            id="services-heading"
+            class="text-xl sm:text-2xl font-semibold text-foreground mb-1 leading-snug tracking-tight"
+          >
             {{ t('dashboard.services.title') }}
           </h2>
           <p class="text-sm sm:text-base text-muted-foreground">
@@ -41,12 +46,14 @@
       </div>
 
       <!-- Error State -->
-      <div 
-        v-else-if="error" 
+      <div
+        v-else-if="error"
         class="flex flex-col items-center justify-center py-12 px-4 border-2 border-dashed border-muted rounded-lg"
       >
         <AlertCircle class="h-12 w-12 text-muted-foreground mb-4" />
-        <h3 class="text-xl font-semibold text-foreground mb-3 leading-snug tracking-tight">{{ t('dashboard.services.failedToLoad') }}</h3>
+        <h3 class="text-xl font-semibold text-foreground mb-3 leading-snug tracking-tight">
+          {{ t('dashboard.services.failedToLoad') }}
+        </h3>
         <p class="text-base text-muted-foreground text-center leading-relaxed mb-6">{{ error }}</p>
         <Button @click="handleRefreshServices" variant="outline">
           <RefreshCw :size="16" class="mr-2" />
@@ -70,12 +77,45 @@
       </div>
 
       <!-- Empty State -->
-      <EmptyServicesState 
+      <EmptyServicesState
         v-if="!isLoading && !error && displayServices.length === 0"
         :user-role="userRole"
       />
     </section>
 
+    <!-- Available Services Section -->
+    <section
+      v-if="!isLoading && !error && displayAvailableServices.length > 0"
+      aria-labelledby="available-services-heading"
+      class="mt-12"
+    >
+      <div class="mb-6 sm:mb-8">
+        <h2
+          id="available-services-heading"
+          class="text-xl sm:text-2xl font-semibold text-foreground mb-1 leading-snug tracking-tight"
+        >
+          {{ t('dashboard.availableServices.title') }}
+        </h2>
+        <p class="text-sm sm:text-base text-muted-foreground">
+          {{ t('dashboard.availableServices.description', { count: availableServicesCount }) }}
+        </p>
+      </div>
+
+      <!-- Available Services Grid -->
+      <div
+        class="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+        role="grid"
+        :aria-label="t('dashboard.availableServices.ariaLabel')"
+      >
+        <AvailableServiceCard
+          v-for="service in displayAvailableServices"
+          :key="`available-${service.code}`"
+          :service="service"
+          :status="userRole === 'admin' ? 'contact-admin' : 'coming-soon'"
+          :show-description="true"
+        />
+      </div>
+    </section>
   </div>
 </template>
 
@@ -83,13 +123,11 @@
 import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
-import { 
-  RefreshCw, 
-  AlertCircle
-} from 'lucide-vue-next'
+import { RefreshCw, AlertCircle } from 'lucide-vue-next'
 
 // Components
 import ServiceCard from '@/components/custom/dashboard/ServiceCard.vue'
+import AvailableServiceCard from '@/components/custom/dashboard/AvailableServiceCard.vue'
 import CardServiceSkeleton from '@/components/custom/skeletons/CardServiceSkeleton.vue'
 import EmptyServicesState from '@/components/custom/dashboard/EmptyServicesState.vue'
 
@@ -109,7 +147,6 @@ const error = ref<string | null>(null)
 // Computed properties
 const userRole = computed(() => getUserRole(userStore.user))
 
-
 // Transform and display services
 const displayServices = computed<DashboardServiceInterface[]>(() => {
   if (userStore.services && userStore.services.length > 0) {
@@ -118,9 +155,26 @@ const displayServices = computed<DashboardServiceInterface[]>(() => {
   return []
 })
 
+// Transform and filter available services (exclude duplicates)
+const displayAvailableServices = computed<DashboardServiceInterface[]>(() => {
+  if (!userStore.availableServices || userStore.availableServices.length === 0) {
+    return []
+  }
+
+  // Get codes of already accessible services to filter out duplicates
+  const activeServiceCodes = new Set(displayServices.value.map(service => service.code))
+
+  // Filter out services that user already has access to
+  const filteredServices = userStore.availableServices.filter(
+    service => !activeServiceCodes.has(service.code)
+  )
+
+  return filteredServices.map(transformServiceForDisplay)
+})
+
 // Services count
 const servicesCount = computed(() => displayServices.value.length)
-
+const availableServicesCount = computed(() => displayAvailableServices.value.length)
 
 // Event handlers
 const handleRefreshServices = async () => {
@@ -132,7 +186,7 @@ const handleRefreshServices = async () => {
     // This refresh just provides visual feedback to the user
 
     // Add a small delay for better UX
-    await new Promise(resolve => setTimeout(resolve, 500))
+    await new Promise((resolve) => setTimeout(resolve, 500))
   } catch (err) {
     error.value = err instanceof Error ? err.message : 'Failed to refresh services'
     console.error('Failed to refresh services:', err)
@@ -143,11 +197,10 @@ const handleRefreshServices = async () => {
 
 const handleServiceClick = (service: DashboardServiceInterface) => {
   console.log('Service clicked:', service.name)
-  
+
   // Track service usage (could be sent to analytics)
   // Analytics.track('service_accessed', { service_code: service.code })
 }
-
 
 // Initialize component
 onMounted(async () => {

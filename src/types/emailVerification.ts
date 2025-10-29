@@ -68,6 +68,7 @@ export interface LoginResponse {
     expires_at?: string
     user?: UserProfileInterface
     services?: ServiceInterface[]
+    availableservices?: ServiceInterface[]
     requires_verification?: boolean
     email?: string
     user_id?: string
