@@ -40,6 +40,7 @@ export const useUserStore = defineStore('user', () => {
   const auth = ref<TokenInterface | null>(null)
   const user = ref<UserLoginInterface | null>(null)
   const services = ref<Service[] | null>(null)
+  const availableServices = ref<Service[] | null>(null)
   const isAuthenticated = ref<boolean>(false)
   const tempVerificationToken = ref<string | null>(null)
   const isInitializing = ref<boolean>(false)
@@ -50,10 +51,12 @@ export const useUserStore = defineStore('user', () => {
     auth: TokenInterface
     user: UserLoginInterface
     services: Service[]
+    availableservices?: Service[]
   }) => {
     auth.value = authData.auth
     user.value = authData.user
     services.value = authData.services
+    availableServices.value = authData.availableservices || null
     isAuthenticated.value = true
     isInitialized.value = true
 
@@ -61,6 +64,9 @@ export const useUserStore = defineStore('user', () => {
     localStorage.setItem('auth_token', JSON.stringify(authData.auth))
     localStorage.setItem('data_user', JSON.stringify(authData.user))
     localStorage.setItem('data_services', JSON.stringify(authData.services))
+    if (authData.availableservices) {
+      localStorage.setItem('data_available_services', JSON.stringify(authData.availableservices))
+    }
   }
 
   const setUserProfileData = (userData: Partial<UserLoginInterface>) => {
@@ -102,6 +108,7 @@ export const useUserStore = defineStore('user', () => {
     auth.value = null
     user.value = null
     services.value = null
+    availableServices.value = null
     isAuthenticated.value = false
     tempVerificationToken.value = null
     isInitialized.value = false
@@ -109,6 +116,7 @@ export const useUserStore = defineStore('user', () => {
     localStorage.removeItem('auth_token')
     localStorage.removeItem('data_user')
     localStorage.removeItem('data_services')
+    localStorage.removeItem('data_available_services')
     localStorage.removeItem('temp_verification_token')
     localStorage.removeItem('ipros_data') // Clear IPROS data on logout
   }
@@ -147,6 +155,7 @@ export const useUserStore = defineStore('user', () => {
       const storedToken = localStorage.getItem('auth_token')
       const storedUser = localStorage.getItem('data_user')
       const storedServices = localStorage.getItem('data_services')
+      const storedAvailableServices = localStorage.getItem('data_available_services')
       const storedTempToken = localStorage.getItem('temp_verification_token')
 
       // Restore temporary verification token if it exists
@@ -165,6 +174,7 @@ export const useUserStore = defineStore('user', () => {
             auth.value = tokenData
             user.value = JSON.parse(storedUser)
             services.value = storedServices ? JSON.parse(storedServices) : null
+            availableServices.value = storedAvailableServices ? JSON.parse(storedAvailableServices) : null
             isAuthenticated.value = true
           } else {
             // Token expired, clear all data
@@ -187,6 +197,7 @@ export const useUserStore = defineStore('user', () => {
     auth,
     user,
     services,
+    availableServices,
     isAuthenticated,
     tempVerificationToken,
     isInitializing,

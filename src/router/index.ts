@@ -75,6 +75,18 @@ const publicRoutes: RouteRecordRaw[] = [
     () => import('@/views/ContactUsView.vue'),
     'Contact Us',
   ),
+  // New navigation pages
+  createRoute('/about', 'about', () => import('@/views/AboutView.vue'), 'About Us'),
+  createRoute('/articles', 'articles', () => import('@/views/ArticlesView.vue'), 'Articles'),
+  createRoute('/articles/:slug', 'article-detail', () => import('@/views/ArticleView.vue'), 'Article'),
+  createRoute('/contact', 'contact', () => import('@/views/ContactView.vue'), 'Contact'),
+  // Service pages
+  createRoute('/services/eap-improve', 'service-eap-improve', () => import('@/views/services/EAPImproveView.vue'), 'EAP Improve'),
+  createRoute('/services/learning-development', 'service-learning-development', () => import('@/views/services/LearningDevelopmentView.vue'), 'Learning & Development'),
+  createRoute('/services/evaluation-assessment', 'service-evaluation-assessment', () => import('@/views/services/EvaluationAssessmentView.vue'), 'Evaluation Selection & Assessment'),
+  createRoute('/services/lhh', 'service-lhh', () => import('@/views/services/LHHView.vue'), 'LHH'),
+  createRoute('/services/iradat-go', 'service-iradat-go', () => import('@/views/services/IradatGoView.vue'), 'Iradat Go'),
+  createRoute('/services/iradat-profiling', 'service-iradat-profiling', () => import('@/views/services/IradatProfilingView.vue'), 'Iradat - Profiling'),
 ]
 
 const guestOnlyRoutes: RouteRecordRaw[] = [

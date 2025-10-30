@@ -7,19 +7,19 @@
     <HeroSection />
 
     <!-- Trust Indicators -->
-    <TrustIndicatorsSection />
+    <!-- <TrustIndicatorsSection /> -->
 
     <!-- Interactive Bento Grid Features -->
-    <BentoGridSection />
+    <!-- <BentoGridSection /> -->
 
     <!-- Use Case Carousel -->
-    <UseCaseCarouselSection />
+    <!-- <UseCaseCarouselSection /> -->
 
     <!-- Enhanced Testimonials -->
     <TestimonialsSection />
 
     <!-- Pricing Section -->
-    <PricingSection />
+    <!-- <PricingSection /> -->
 
     <!-- FAQ Section -->
     <FAQSection />
@@ -36,11 +36,11 @@ import { useViewportTracker } from './composables'
 import {
   HeaderSection,
   HeroSection,
-  TrustIndicatorsSection,
-  BentoGridSection,
-  UseCaseCarouselSection,
+  // TrustIndicatorsSection,
+  // BentoGridSection,
+  // UseCaseCarouselSection,
   TestimonialsSection,
-  PricingSection,
+  // PricingSection,
   FAQSection,
   FooterSection,
 } from './components/sections'
