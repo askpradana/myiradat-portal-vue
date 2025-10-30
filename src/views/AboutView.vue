@@ -9,7 +9,7 @@
     >
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center max-w-3xl mx-auto">
-          <h1 class="text-4xl sm:text-5xl font-bold text-foreground mb-6">About Iradat</h1>
+          <h1 class="text-4xl sm:text-5xl font-bold mb-6">About Iradat</h1>
           <p class="text-xl text-muted-foreground">
             Pioneering psychological assessment and human resource solutions across Indonesia
           </p>
@@ -22,7 +22,7 @@
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid lg:grid-cols-2 gap-12 items-center">
           <div>
-            <h2 class="text-3xl font-bold text-foreground mb-6">Our Story</h2>
+            <h2 class="text-3xl font-bold mb-6">Our Story</h2>
             <p class="text-lg text-muted-foreground mb-6">
               Founded with a mission to revolutionize psychological assessment and human resource
               management in Indonesia, Iradat has become a trusted partner for organizations seeking
@@ -54,7 +54,7 @@
             >
               <Users class="w-12 h-12 text-primary" />
             </div>
-            <h3 class="text-2xl font-bold text-foreground text-center mb-4">People First</h3>
+            <h3 class="text-2xl font-bold  text-center mb-4">People First</h3>
             <p class="text-muted-foreground text-center">
               Our approach centers on understanding human potential and creating pathways for growth
               and success.
@@ -74,7 +74,7 @@
             >
               <Target class="w-8 h-8 text-primary" />
             </div>
-            <h3 class="text-2xl font-bold text-foreground mb-4">Our Mission</h3>
+            <h3 class="text-2xl font-bold mb-4">Our Mission</h3>
             <p class="text-muted-foreground">
               To provide scientifically-backed psychological assessment tools and services that
               empower organizations to make informed decisions about their human capital, fostering
@@ -87,7 +87,7 @@
             >
               <Eye class="w-8 h-8 text-primary" />
             </div>
-            <h3 class="text-2xl font-bold text-foreground mb-4">Our Vision</h3>
+            <h3 class="text-2xl font-bold mb-4">Our Vision</h3>
             <p class="text-muted-foreground">
               To be Indonesia's leading provider of psychological assessment and human resource
               solutions, recognized for our innovation, expertise, and commitment to helping
@@ -102,7 +102,7 @@
     <section class="py-20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-foreground mb-4">Our Core Values</h2>
+          <h2 class="text-3xl font-bold mb-4">Our Core Values</h2>
           <p class="text-lg text-muted-foreground">The principles that guide everything we do</p>
         </div>
 
@@ -113,7 +113,7 @@
             >
               <Award class="w-6 h-6 text-primary" />
             </div>
-            <h3 class="text-xl font-semibold text-foreground mb-3">Excellence</h3>
+            <h3 class="text-xl font-semibold mb-3">Excellence</h3>
             <p class="text-muted-foreground">
               Committed to delivering the highest quality services and solutions
             </p>
@@ -124,7 +124,7 @@
             >
               <Brain class="w-6 h-6 text-primary" />
             </div>
-            <h3 class="text-xl font-semibold text-foreground mb-3">Innovation</h3>
+            <h3 class="text-xl font-semibold mb-3">Innovation</h3>
             <p class="text-muted-foreground">Continuously advancing our methods and technologies</p>
           </div>
           <div class="text-center">
@@ -133,7 +133,7 @@
             >
               <Shield class="w-6 h-6 text-primary" />
             </div>
-            <h3 class="text-xl font-semibold text-foreground mb-3">Integrity</h3>
+            <h3 class="text-xl font-semibold mb-3">Integrity</h3>
             <p class="text-muted-foreground">
               Maintaining the highest ethical standards in all our practices
             </p>
@@ -144,7 +144,7 @@
             >
               <Heart class="w-6 h-6 text-primary" />
             </div>
-            <h3 class="text-xl font-semibold text-foreground mb-3">Empathy</h3>
+            <h3 class="text-xl font-semibold mb-3">Empathy</h3>
             <p class="text-muted-foreground">
               Understanding and caring for the human side of business
             </p>
@@ -157,7 +157,7 @@
     <section class="py-20 bg-card/30">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="text-center mb-12">
-          <h2 class="text-3xl font-bold text-foreground mb-4">Our Team</h2>
+          <h2 class="text-3xl font-bold mb-4">Our Team</h2>
           <p class="text-lg text-muted-foreground">
             Meet the professionals behind Iradat's success
           </p>
@@ -167,7 +167,7 @@
           <div v-for="(members, teamKey) in teamsData" :key="teamKey" class="team-section">
             <!-- Team Category Header -->
             <div class="text-center mb-8">
-              <h3 class="text-2xl font-bold text-foreground mb-2">
+              <h3 class="text-2xl font-bold mb-2">
                 {{ teamCategories[teamKey as keyof typeof teamCategories] }}
               </h3>
               <div class="w-16 h-1 bg-primary mx-auto rounded-full"></div>
@@ -195,7 +195,7 @@
                     loading="lazy"
                   />
                 </div>
-                <h4 class="text-lg font-semibold text-foreground mb-2">{{ member.name }}</h4>
+                <h4 class="text-lg font-semibold mb-2">{{ member.name }}</h4>
                 <p v-if="member.position" class="text-sm text-primary mb-3 font-medium">
                   {{ member.position }}
                 </p>
@@ -257,7 +257,11 @@ import {
 } from 'lucide-vue-next'
 import HeaderSection from '@/views/home/components/sections/HeaderSection.vue'
 import FooterSection from '@/views/home/components/sections/FooterSection.vue'
-import teamsData from '@/data/teams.json'
+import rawTeamsData from '@/data/teams.json'
+import type { TeamsData } from '@/types/team'
+
+// Type assertion for the imported JSON data
+const teamsData = rawTeamsData as TeamsData
 
 // Team category labels
 const teamCategories = {

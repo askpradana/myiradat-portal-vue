@@ -27,7 +27,7 @@
 
     <!-- Error State -->
     <div v-else-if="error" class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-20 text-center">
-      <h1 class="text-3xl font-bold text-foreground mb-4">Article Not Found</h1>
+      <h1 class="text-3xl font-bold mb-4">Article Not Found</h1>
       <p class="text-muted-foreground mb-8">{{ error }}</p>
       <div class="space-x-4">
         <Button @click="router.push('/articles')" variant="outline">
@@ -44,11 +44,11 @@
       <!-- Breadcrumb -->
       <nav class="mb-8">
         <div class="flex items-center space-x-2 text-sm text-muted-foreground">
-          <button @click="router.push('/articles')" class="hover:text-foreground transition-colors">
+          <button @click="router.push('/articles')" class="hover:text-primary transition-colors">
             Articles
           </button>
           <span>•</span>
-          <span class="text-foreground">{{ article.title }}</span>
+          <span class="text-primary">{{ article.title }}</span>
         </div>
       </nav>
 
@@ -56,11 +56,11 @@
       <header class="mb-12">
         <!-- Category Badge -->
         <div class="mb-4">
-          <Badge variant="secondary">{{ article.category }}</Badge>
+          <Badge variant="secondary">{{ article.primary_tag?.name || 'Article' }}</Badge>
         </div>
 
         <!-- Title -->
-        <h1 class="text-4xl sm:text-5xl font-bold text-foreground mb-6 leading-tight">
+        <h1 class="text-4xl sm:text-5xl font-bold mb-6 leading-tight">
           {{ article.title }}
         </h1>
 
@@ -71,20 +71,20 @@
               <User class="w-6 h-6 text-primary" />
             </div>
             <div>
-              <p class="font-medium text-foreground">{{ article.author }}</p>
-              <p class="text-sm">{{ formatDate(article.publishedAt) }}</p>
+              <p class="font-medium">{{ article.primary_author.name }}</p>
+              <p class="text-sm">{{ formatDate(article.published_at || article.created_at) }}</p>
             </div>
           </div>
           <div class="flex items-center space-x-2">
             <Clock class="w-4 h-4" />
-            <span class="text-sm">{{ article.readTime }}</span>
+            <span class="text-sm">{{ article.reading_time }} min read</span>
           </div>
         </div>
 
         <!-- Featured Image -->
-        <div v-if="article.featuredImage" class="mb-12">
+        <div v-if="article.feature_image" class="mb-12">
           <img
-            :src="article.featuredImage"
+            :src="article.feature_image"
             :alt="article.title"
             class="w-full h-96 object-cover rounded-2xl shadow-lg"
           />
@@ -100,7 +100,7 @@
       <footer class="mt-16 pt-8 border-t border-border">
         <!-- Tags -->
         <div v-if="article.tags && article.tags.length > 0" class="mb-8">
-          <h3 class="text-lg font-semibold text-foreground mb-4">Tags</h3>
+          <h3 class="text-lg font-semibold mb-4">Tags</h3>
           <div class="flex flex-wrap gap-2">
             <Badge v-for="tag in article.tags" :key="tag.id" variant="outline">
               {{ tag.name }}
@@ -115,7 +115,7 @@
               <User class="w-8 h-8 text-primary" />
             </div>
             <div>
-              <h3 class="text-xl font-semibold text-foreground mb-2">{{ article.primary_author.name }}</h3>
+              <h3 class="text-xl font-semibold mb-2">{{ article.primary_author.name }}</h3>
               <p v-if="article.primary_author.bio" class="text-muted-foreground mb-4">
                 {{ article.primary_author.bio }}
               </p>
@@ -220,72 +220,130 @@ onMounted(() => {
 .article-content :deep(h4),
 .article-content :deep(h5),
 .article-content :deep(h6) {
-  @apply text-foreground font-semibold mt-8 mb-4;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
 }
 
 .article-content :deep(h1) {
-  @apply text-3xl;
+  font-size: 1.875rem;
+  line-height: 2.25rem;
 }
 
 .article-content :deep(h2) {
-  @apply text-2xl;
+  font-size: 1.5rem;
+  line-height: 2rem;
 }
 
 .article-content :deep(h3) {
-  @apply text-xl;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
 }
 
 .article-content :deep(p) {
-  @apply text-muted-foreground leading-relaxed mb-4;
+  color: oklch(var(--muted-foreground));
+  line-height: 1.625;
+  margin-bottom: 1rem;
 }
 
 .article-content :deep(a) {
-  @apply text-primary hover:underline;
+  color: oklch(var(--primary));
+}
+
+.article-content :deep(a:hover) {
+  text-decoration-line: underline;
 }
 
 .article-content :deep(blockquote) {
-  @apply border-l-4 border-primary pl-6 py-2 my-6 bg-card rounded-r-lg;
+  border-left-width: 4px;
+  border-left-color: oklch(var(--primary));
+  padding-left: 1.5rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  background-color: oklch(var(--card));
+  border-radius: 0 0.5rem 0.5rem 0;
 }
 
 .article-content :deep(ul),
 .article-content :deep(ol) {
-  @apply ml-6 mb-4 space-y-2;
+  margin-left: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+.article-content :deep(ul) > :deep(li),
+.article-content :deep(ol) > :deep(li) {
+  margin-top: 0.5rem;
 }
 
 .article-content :deep(li) {
-  @apply text-muted-foreground;
+  color: oklch(var(--muted-foreground));
 }
 
 .article-content :deep(code) {
-  @apply bg-card px-2 py-1 rounded text-sm font-mono;
+  background-color: oklch(var(--card));
+  padding-left: 0.5rem;
+  padding-right: 0.5rem;
+  padding-top: 0.25rem;
+  padding-bottom: 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.875rem;
+  line-height: 1.25rem;
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 .article-content :deep(pre) {
-  @apply bg-card p-4 rounded-lg overflow-x-auto mb-4;
+  background-color: oklch(var(--card));
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin-bottom: 1rem;
 }
 
 .article-content :deep(img) {
-  @apply rounded-lg shadow-md my-6 max-w-full h-auto;
+  border-radius: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  max-width: 100%;
+  height: auto;
 }
 
 .article-content :deep(hr) {
-  @apply border-border my-8;
+  border-color: oklch(var(--border));
+  margin-top: 2rem;
+  margin-bottom: 2rem;
 }
 
 .article-content :deep(table) {
-  @apply w-full border-collapse border border-border rounded-lg overflow-hidden my-6;
+  width: 100%;
+  border-collapse: collapse;
+  border-width: 1px;
+  border-color: oklch(var(--border));
+  border-radius: 0.5rem;
+  overflow: hidden;
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
 }
 
 .article-content :deep(th),
 .article-content :deep(td) {
-  @apply border border-border px-4 py-2 text-left;
+  border-width: 1px;
+  border-color: oklch(var(--border));
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  text-align: left;
 }
 
 .article-content :deep(th) {
-  @apply bg-card font-semibold text-foreground;
+  background-color: oklch(var(--card));
+  font-weight: 600;
 }
 
 .article-content :deep(td) {
-  @apply text-muted-foreground;
+  color: oklch(var(--muted-foreground));
 }
 </style>

@@ -23,7 +23,7 @@
             {{ t('dashboard.services.title') }}
           </h2>
           <p class="text-sm sm:text-base text-muted-foreground">
-            {{ t('dashboard.services.available', { count: servicesCount }) }}
+            {{ servicesCount }} accessible • {{ lockedServicesCount }} locked • {{ totalServicesCount }} total
           </p>
         </div>
 
@@ -61,58 +61,63 @@
         </Button>
       </div>
 
-      <!-- Services Grid -->
-      <div
-        v-else
-        class="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-        role="grid"
-        :aria-label="t('dashboard.services.availableAriaLabel')"
-      >
-        <ServiceCard
-          v-for="service in displayServices"
-          :key="service.code"
-          :service="service"
-          @click="handleServiceClick"
-        />
-      </div>
+      <!-- Comprehensive Services Grid -->
+      <div v-else>
+        <!-- Accessible Services Section -->
+        <div v-if="displayServices.length > 0" class="mb-8">
+          <div class="mb-4">
+            <h3 class="text-lg font-medium text-foreground mb-1 flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-green-500"></div>
+              Available Services
+              <span class="text-sm font-normal text-muted-foreground">({{ servicesCount }})</span>
+            </h3>
+            <p class="text-sm text-muted-foreground">Services you have access to and can use immediately</p>
+          </div>
 
-      <!-- Empty State -->
-      <EmptyServicesState
-        v-if="!isLoading && !error && displayServices.length === 0"
-        :user-role="userRole"
-      />
-    </section>
+          <div
+            class="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+            role="grid"
+            aria-label="Accessible services grid"
+          >
+            <ServiceCard
+              v-for="service in displayServices"
+              :key="service.code"
+              :service="service"
+              @click="handleServiceClick"
+            />
+          </div>
+        </div>
 
-    <!-- Available Services Section -->
-    <section
-      v-if="!isLoading && !error && displayAvailableServices.length > 0"
-      aria-labelledby="available-services-heading"
-      class="mt-12"
-    >
-      <div class="mb-6 sm:mb-8">
-        <h2
-          id="available-services-heading"
-          class="text-xl sm:text-2xl font-semibold text-foreground mb-1 leading-snug tracking-tight"
-        >
-          {{ t('dashboard.availableServices.title') }}
-        </h2>
-        <p class="text-sm sm:text-base text-muted-foreground">
-          {{ t('dashboard.availableServices.description', { count: availableServicesCount }) }}
-        </p>
-      </div>
+        <!-- Locked Services Section -->
+        <div v-if="displayLockedServices.length > 0" class="mb-8">
+          <div class="mb-4">
+            <h3 class="text-lg font-medium text-foreground mb-1 flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-orange-500"></div>
+              Additional Services
+              <span class="text-sm font-normal text-muted-foreground">({{ lockedServicesCount }})</span>
+            </h3>
+            <p class="text-sm text-muted-foreground">Services available in our platform that require additional access</p>
+          </div>
 
-      <!-- Available Services Grid -->
-      <div
-        class="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
-        role="grid"
-        :aria-label="t('dashboard.availableServices.ariaLabel')"
-      >
-        <AvailableServiceCard
-          v-for="service in displayAvailableServices"
-          :key="`available-${service.code}`"
-          :service="service"
-          :status="userRole === 'admin' ? 'contact-admin' : 'coming-soon'"
-          :show-description="true"
+          <div
+            class="grid gap-4 sm:gap-6 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+            role="grid"
+            aria-label="Additional services grid"
+          >
+            <AvailableServiceCard
+              v-for="service in displayLockedServices"
+              :key="`locked-${service.code}`"
+              :service="service"
+              :status="userRole === 'admin' ? 'contact-admin' : 'request-access'"
+              :show-description="true"
+            />
+          </div>
+        </div>
+
+        <!-- Empty State -->
+        <EmptyServicesState
+          v-if="displayServices.length === 0 && displayLockedServices.length === 0"
+          :user-role="userRole"
         />
       </div>
     </section>
@@ -147,7 +152,7 @@ const error = ref<string | null>(null)
 // Computed properties
 const userRole = computed(() => getUserRole(userStore.user))
 
-// Transform and display services
+// Transform and display accessible services
 const displayServices = computed<DashboardServiceInterface[]>(() => {
   if (userStore.services && userStore.services.length > 0) {
     return userStore.services.map(transformServiceForDisplay)
@@ -155,8 +160,8 @@ const displayServices = computed<DashboardServiceInterface[]>(() => {
   return []
 })
 
-// Transform and filter available services (exclude duplicates)
-const displayAvailableServices = computed<DashboardServiceInterface[]>(() => {
+// Transform and filter locked services (exclude services user already has access to)
+const displayLockedServices = computed<DashboardServiceInterface[]>(() => {
   if (!userStore.availableServices || userStore.availableServices.length === 0) {
     return []
   }
@@ -165,16 +170,22 @@ const displayAvailableServices = computed<DashboardServiceInterface[]>(() => {
   const activeServiceCodes = new Set(displayServices.value.map(service => service.code))
 
   // Filter out services that user already has access to
-  const filteredServices = userStore.availableServices.filter(
+  const lockedServices = userStore.availableServices.filter(
     service => !activeServiceCodes.has(service.code)
   )
 
-  return filteredServices.map(transformServiceForDisplay)
+  return lockedServices.map(transformServiceForDisplay)
+})
+
+// All services combined for comprehensive display
+const allAvailableServices = computed<DashboardServiceInterface[]>(() => {
+  return [...displayServices.value, ...displayLockedServices.value]
 })
 
 // Services count
 const servicesCount = computed(() => displayServices.value.length)
-const availableServicesCount = computed(() => displayAvailableServices.value.length)
+const lockedServicesCount = computed(() => displayLockedServices.value.length)
+const totalServicesCount = computed(() => allAvailableServices.value.length)
 
 // Event handlers
 const handleRefreshServices = async () => {
