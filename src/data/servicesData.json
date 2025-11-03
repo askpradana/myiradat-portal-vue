@@ -1,0 +1,370 @@
+{
+  "services": [
+    {
+      "id": "eap-improve",
+      "slug": "eap-improve",
+      "title": "EAP Improve",
+      "description": "Comprehensive Employee Assistance Program designed to support your workforce's mental health and well-being",
+      "iconName": "Heart",
+      "features": [
+        {
+          "iconName": "Heart",
+          "title": "Mental Health Support",
+          "description": "Professional counseling and psychological support for employees facing personal or work-related challenges"
+        },
+        {
+          "iconName": "Users",
+          "title": "24/7 Helpline",
+          "description": "Round-the-clock access to trained counselors and mental health professionals"
+        },
+        {
+          "iconName": "Shield",
+          "title": "Confidential Services",
+          "description": "Complete privacy and confidentiality for all employee interactions and sessions"
+        },
+        {
+          "iconName": "TrendingUp",
+          "title": "Performance Improvement",
+          "description": "Proven strategies to enhance employee performance and workplace satisfaction"
+        },
+        {
+          "iconName": "Clock",
+          "title": "Crisis Intervention",
+          "description": "Immediate support and intervention services for employees in crisis situations"
+        },
+        {
+          "iconName": "Award",
+          "title": "Expert Therapists",
+          "description": "Access to certified and experienced mental health professionals across Indonesia"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Reduced Absenteeism",
+          "description": "Significant decrease in sick days and unplanned absences through proactive mental health support"
+        },
+        {
+          "title": "Improved Productivity",
+          "description": "Enhanced focus and performance when employees feel supported and valued"
+        },
+        {
+          "title": "Lower Turnover",
+          "description": "Increased employee retention through comprehensive well-being programs"
+        },
+        {
+          "title": "Cost Savings",
+          "description": "Reduced healthcare costs and improved overall organizational efficiency"
+        },
+        {
+          "title": "Better Workplace Culture",
+          "description": "Creating a supportive environment that prioritizes employee mental health"
+        }
+      ]
+    },
+    {
+      "id": "learning-development",
+      "slug": "learning-development",
+      "title": "Learning & Development",
+      "description": "Comprehensive training and skill development programs to enhance your workforce capabilities and drive organizational growth",
+      "iconName": "GraduationCap",
+      "features": [
+        {
+          "iconName": "BookOpen",
+          "title": "Customized Training Programs",
+          "description": "Tailored learning solutions designed to meet your organization's specific needs and objectives"
+        },
+        {
+          "iconName": "Target",
+          "title": "Skills Assessment",
+          "description": "Comprehensive evaluation of current skill levels and identification of development opportunities"
+        },
+        {
+          "iconName": "Users",
+          "title": "Team Building Workshops",
+          "description": "Interactive sessions to enhance collaboration, communication, and team dynamics"
+        },
+        {
+          "iconName": "Award",
+          "title": "Leadership Development",
+          "description": "Specialized programs to develop effective leaders at all organizational levels"
+        },
+        {
+          "iconName": "TrendingUp",
+          "title": "Performance Tracking",
+          "description": "Continuous monitoring and evaluation of learning outcomes and skill development progress"
+        },
+        {
+          "iconName": "GraduationCap",
+          "title": "Professional Certification",
+          "description": "Industry-recognized certifications to validate and enhance employee credentials"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Enhanced Skills",
+          "description": "Systematic development of technical and soft skills across your organization"
+        },
+        {
+          "title": "Improved Performance",
+          "description": "Measurable increases in employee productivity and job performance"
+        },
+        {
+          "title": "Career Advancement",
+          "description": "Clear pathways for employee growth and professional development"
+        },
+        {
+          "title": "Innovation Culture",
+          "description": "Foster a learning environment that encourages creativity and innovation"
+        },
+        {
+          "title": "Competitive Advantage",
+          "description": "Stay ahead of industry trends with cutting-edge training and development"
+        }
+      ]
+    },
+    {
+      "id": "evaluation-assessment",
+      "slug": "evaluation-assessment",
+      "title": "Evaluation Selection & Assessment",
+      "description": "Comprehensive assessment solutions for talent evaluation, selection, and performance measurement to make informed hiring and development decisions",
+      "iconName": "ClipboardCheck",
+      "features": [
+        {
+          "iconName": "Search",
+          "title": "Talent Assessment",
+          "description": "In-depth evaluation of candidate skills, competencies, and cultural fit"
+        },
+        {
+          "iconName": "BarChart",
+          "title": "Psychometric Testing",
+          "description": "Scientific psychological assessments to understand personality traits and cognitive abilities"
+        },
+        {
+          "iconName": "Users",
+          "title": "Interview Evaluation",
+          "description": "Structured interview processes with standardized evaluation criteria"
+        },
+        {
+          "iconName": "CheckCircle",
+          "title": "Competency Mapping",
+          "description": "Detailed analysis of required competencies for specific roles and positions"
+        },
+        {
+          "iconName": "Target",
+          "title": "Performance Prediction",
+          "description": "Data-driven insights to predict candidate success and job performance"
+        },
+        {
+          "iconName": "ClipboardCheck",
+          "title": "Comprehensive Reports",
+          "description": "Detailed assessment reports with actionable insights and recommendations"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Better Hiring Decisions",
+          "description": "Reduce hiring mistakes with comprehensive candidate evaluation and assessment"
+        },
+        {
+          "title": "Reduced Turnover",
+          "description": "Improve employee retention by selecting candidates who are the right fit"
+        },
+        {
+          "title": "Objective Selection",
+          "description": "Eliminate bias with standardized, scientific assessment methodologies"
+        },
+        {
+          "title": "Time Efficiency",
+          "description": "Streamline the selection process with efficient and reliable assessment tools"
+        },
+        {
+          "title": "Quality Workforce",
+          "description": "Build a high-performing team with candidates who match your requirements"
+        }
+      ]
+    },
+    {
+      "id": "lhh",
+      "slug": "lhh",
+      "title": "LHH (Lee Hecht Harrison)",
+      "description": "Global talent solutions and career transition services to help organizations and individuals navigate workforce transformation and career development",
+      "iconName": "Building",
+      "features": [
+        {
+          "iconName": "Briefcase",
+          "title": "Career Transition",
+          "description": "Professional outplacement services to support employees during career transitions"
+        },
+        {
+          "iconName": "Users",
+          "title": "Leadership Consulting",
+          "description": "Strategic leadership development and executive coaching services"
+        },
+        {
+          "iconName": "TrendingUp",
+          "title": "Talent Mobility",
+          "description": "Internal talent movement and career progression planning solutions"
+        },
+        {
+          "iconName": "Globe",
+          "title": "Global Network",
+          "description": "Access to LHH's worldwide network of career transition and talent experts"
+        },
+        {
+          "iconName": "Award",
+          "title": "Executive Search",
+          "description": "Premium executive search and recruitment services for senior-level positions"
+        },
+        {
+          "iconName": "Building",
+          "title": "Organizational Consulting",
+          "description": "Strategic consulting to optimize organizational structure and performance"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Seamless Transitions",
+          "description": "Smooth career transitions with minimal disruption to business operations"
+        },
+        {
+          "title": "Enhanced Reputation",
+          "description": "Maintain positive employer brand during organizational changes"
+        },
+        {
+          "title": "Cost Optimization",
+          "description": "Efficient workforce transition solutions that control costs and risks"
+        },
+        {
+          "title": "Global Expertise",
+          "description": "Leverage international best practices and proven methodologies"
+        },
+        {
+          "title": "Strategic Alignment",
+          "description": "Align talent strategies with business objectives and market demands"
+        }
+      ]
+    },
+    {
+      "id": "iradat-go",
+      "slug": "iradat-go",
+      "title": "Iradat Go",
+      "description": "Mobile-first assessment platform that brings psychological evaluation and testing capabilities directly to your smartphone for convenient, anytime access",
+      "iconName": "Smartphone",
+      "features": [
+        {
+          "iconName": "Smartphone",
+          "title": "Mobile Assessment",
+          "description": "Complete psychological assessments directly from your mobile device"
+        },
+        {
+          "iconName": "Zap",
+          "title": "Instant Results",
+          "description": "Real-time processing and immediate delivery of assessment results"
+        },
+        {
+          "iconName": "Shield",
+          "title": "Secure Platform",
+          "description": "Enterprise-grade security ensuring data privacy and confidentiality"
+        },
+        {
+          "iconName": "BarChart",
+          "title": "Interactive Dashboards",
+          "description": "Comprehensive analytics and visualization of assessment data"
+        },
+        {
+          "iconName": "Clock",
+          "title": "24/7 Availability",
+          "description": "Access assessments anytime, anywhere with offline capability"
+        },
+        {
+          "iconName": "Users",
+          "title": "Multi-user Support",
+          "description": "Collaborative features for teams, managers, and HR professionals"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Increased Accessibility",
+          "description": "Remove geographical barriers and enable remote assessment capabilities"
+        },
+        {
+          "title": "Cost Efficiency",
+          "description": "Reduce administrative costs with automated, digital assessment processes"
+        },
+        {
+          "title": "Faster Processing",
+          "description": "Accelerate assessment cycles with instant digital delivery and results"
+        },
+        {
+          "title": "Better Engagement",
+          "description": "Modern, user-friendly interface increases participant completion rates"
+        },
+        {
+          "title": "Scalable Solution",
+          "description": "Easily scale assessment programs across large organizations and multiple locations"
+        }
+      ]
+    },
+    {
+      "id": "iradat-profiling",
+      "slug": "iradat-profiling",
+      "title": "Iradat - Profiling",
+      "description": "Advanced psychological profiling services that provide deep insights into personality traits, behavioral patterns, and professional competencies",
+      "iconName": "User",
+      "features": [
+        {
+          "iconName": "Brain",
+          "title": "Psychological Analysis",
+          "description": "Comprehensive psychological evaluation using scientifically validated assessment tools"
+        },
+        {
+          "iconName": "Target",
+          "title": "Behavioral Profiling",
+          "description": "Detailed analysis of behavioral patterns and personality characteristics"
+        },
+        {
+          "iconName": "BarChart",
+          "title": "Competency Assessment",
+          "description": "Evaluation of professional competencies and skill sets for specific roles"
+        },
+        {
+          "iconName": "FileText",
+          "title": "Detailed Reports",
+          "description": "Comprehensive profiling reports with actionable insights and recommendations"
+        },
+        {
+          "iconName": "CheckCircle",
+          "title": "Validated Methods",
+          "description": "Research-based assessment methodologies with proven reliability and validity"
+        },
+        {
+          "iconName": "User",
+          "title": "Personal Development",
+          "description": "Personalized development plans based on individual profiling results"
+        }
+      ],
+      "benefits": [
+        {
+          "title": "Self-Awareness",
+          "description": "Enhanced understanding of personal strengths, weaknesses, and behavioral patterns"
+        },
+        {
+          "title": "Career Guidance",
+          "description": "Data-driven career recommendations aligned with personality and competencies"
+        },
+        {
+          "title": "Team Optimization",
+          "description": "Better team composition and dynamics through individual profiling insights"
+        },
+        {
+          "title": "Performance Improvement",
+          "description": "Targeted development strategies based on comprehensive personality analysis"
+        },
+        {
+          "title": "Decision Support",
+          "description": "Informed decision-making for recruitment, promotion, and development initiatives"
+        }
+      ]
+    }
+  ]
+}

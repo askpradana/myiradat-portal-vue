@@ -60,12 +60,6 @@
     "loadMore": "Muat Lebih Banyak",
     "showMore": "Tampilkan Lebih Banyak"
   },
-  "theme": {
-    "light": "Terang",
-    "dark": "Gelap",
-    "switchToLight": "Beralih ke mode terang",
-    "switchToDark": "Beralih ke mode gelap"
-  },
   "refresh": {
     "refresh": "Segarkan",
     "refreshing": "Menyegarkan"

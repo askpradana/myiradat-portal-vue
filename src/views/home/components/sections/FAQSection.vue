@@ -38,27 +38,7 @@
           :title="faq.question"
           class="border border-border rounded-lg px-6"
         >
-          <div class="flex items-start gap-3 mb-4">
-            <div
-              class="w-6 h-6 bg-primary/10 rounded-full flex items-center justify-center flex-shrink-0 mt-1"
-            >
-              <svg
-                class="w-4 h-4 text-primary"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  stroke-width="2"
-                  d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
-                ></path>
-              </svg>
-            </div>
-            <span class="font-semibold text-foreground">{{ faq.question }}</span>
-          </div>
-          <div class="text-muted-foreground pb-6 pl-9" v-html="faq.answer"></div>
+          <div class="text-muted-foreground pb-6" v-html="faq.answer"></div>
         </AccordionItem>
       </Accordion>
 

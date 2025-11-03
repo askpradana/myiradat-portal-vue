@@ -13,12 +13,22 @@ import { useUserStore } from '@/stores/userStores'
 import { Eye, EyeClosed } from 'lucide-vue-next'
 import type { UserLoginInterface, Service } from '@/stores/userStores'
 import { useI18n } from 'vue-i18n'
+import { useUmami } from '@/composables/utils/useUmami'
+
+// Define emits for better component composition
+const emit = defineEmits<{
+  'form-submit': [values: { email: string; password: string }]
+  'login-success': [data: { user: UserLoginInterface; services: Service[] }]
+  'login-error': [error: string]
+  'verification-required': [data: { email: string; user_id: string }]
+}>()
 
 const loading = ref(false)
 const isShowPassword = ref(false)
 const router = useRouter()
 const userStore = useUserStore()
 const { t } = useI18n()
+const { trackEvent } = useUmami()
 
 const showPassword = () => {
   isShowPassword.value = !isShowPassword.value
@@ -34,12 +44,37 @@ const { value: password } = useField<string>('password')
 
 const onSubmit = handleSubmit(async (values) => {
   loading.value = true
+
+  // Emit form submit event
+  emit('form-submit', values)
+
+  // Track login attempt
+  trackEvent('login-attempt', {
+    action: 'masuk',
+    email: values.email,
+    timestamp: new Date().toISOString()
+  })
+
   const response = await login(values)
   loading.value = false
 
   if (response?.success) {
+    // Track successful login
+    trackEvent('login-success', {
+      action: 'masuk-berhasil',
+      email: values.email,
+      user_role: response.data?.user?.role_name || 'unknown',
+      timestamp: new Date().toISOString()
+    })
+
     // Check if email verification is required
     if (response.data?.requires_verification) {
+      // Emit verification required event
+      emit('verification-required', {
+        email: response.data.email || '',
+        user_id: response.data.user_id || '',
+      })
+
       // Store the temporary verification token
       if (response.data.token) {
         userStore.setTempVerificationToken(response.data.token)
@@ -49,8 +84,8 @@ const onSubmit = handleSubmit(async (values) => {
       router.push({
         path: '/verify-email',
         query: {
-          email: response.data.email,
-          user_id: response.data.user_id,
+          email: response.data.email || '',
+          user_id: response.data.user_id || '',
         },
       })
       toast(t('auth.messages.emailVerificationRequired'), {
@@ -61,19 +96,38 @@ const onSubmit = handleSubmit(async (values) => {
 
     // Normal login success flow
     if (response.data.token && response.data.expires_at && response.data.user) {
-      userStore.setUserData({
+      const userData = {
         auth: {
           token: response.data.token,
           expires_at: response.data.expires_at,
         },
         user: response.data.user as unknown as UserLoginInterface,
         services: (response.data.services || []) as unknown as Service[],
+      }
+
+      userStore.setUserData(userData)
+
+      // Emit login success event
+      emit('login-success', {
+        user: userData.user,
+        services: userData.services,
       })
     }
     toast(t('auth.messages.success'), {
       description: `${response?.message}`,
     })
     router.replace('/dashboard')
+  } else {
+    // Emit login error event
+    emit('login-error', response?.message || 'Login failed')
+
+    // Track failed login
+    trackEvent('login-failed', {
+      action: 'masuk-gagal',
+      email: values.email,
+      error: response?.message || 'Unknown error',
+      timestamp: new Date().toISOString()
+    })
   }
 })
 </script>

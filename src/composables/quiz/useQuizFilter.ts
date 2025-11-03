@@ -1,6 +1,5 @@
 import { ref, computed } from 'vue'
-import type { Quiz, QuizSubmission } from '@/types/quiz'
-import type { QuizFilterParams } from '@/components/custom/filters/QuizListFilter.vue'
+import type { Quiz, QuizSubmission, QuizFilterParams } from '@/types/quiz'
 
 export function useQuizFilter() {
   // Filter state

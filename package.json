@@ -8,8 +8,10 @@
   },
   "scripts": {
     "dev": "vite",
+    "dev:docker": "bun dev --host 0.0.0.0 --port 8500",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
+    "serve": "bun run server.ts",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
     "lint": "eslint . --fix",

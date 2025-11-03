@@ -119,13 +119,7 @@
           <Button size="lg" variant="secondary" class="text-lg px-8 py-4">
             Start Free Trial
           </Button>
-          <Button
-            size="lg"
-            variant="outline"
-            class="text-lg px-8 py-4 border-primary-foreground text-primary hover:bg-primary-foreground hover:text-primary"
-          >
-            Contact Sales
-          </Button>
+          <Button size="lg" variant="secondary" class="text-lg px-8 py-4"> Contact Sales </Button>
         </div>
       </div>
     </section>

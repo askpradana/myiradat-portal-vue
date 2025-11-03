@@ -1,0 +1,82 @@
+{
+  "services": [
+    {
+      "id": "eap-improve",
+      "title": "EAP Improve",
+      "subtitle": "24/7 Mental Wellness Support",
+      "description": "Professional mental health support for your workforce",
+      "icon": "heart",
+      "featured": true,
+      "category": "wellness",
+      "keyBenefits": [
+        "24/7 Professional Support",
+        "Confidential Counseling"
+      ]
+    },
+    {
+      "id": "learning-development",
+      "title": "Learning & Development",
+      "subtitle": "Unlock Team Potential",
+      "description": "Custom training programs that drive growth",
+      "icon": "graduation-cap",
+      "featured": false,
+      "category": "training",
+      "keyBenefits": [
+        "Customized Training",
+        "Skill Enhancement"
+      ]
+    },
+    {
+      "id": "evaluation-assessment",
+      "title": "Evaluation & Assessment",
+      "subtitle": "Hire with Confidence",
+      "description": "Science-backed talent evaluation and selection",
+      "icon": "clipboard-check",
+      "featured": false,
+      "category": "assessment",
+      "keyBenefits": [
+        "Objective Selection",
+        "Reduced Turnover"
+      ]
+    },
+    {
+      "id": "lhh",
+      "title": "LHH Solutions",
+      "subtitle": "Global Talent Expertise",
+      "description": "Career transition and leadership consulting",
+      "icon": "building",
+      "featured": false,
+      "category": "consulting",
+      "keyBenefits": [
+        "Global Network",
+        "Expert Consulting"
+      ]
+    },
+    {
+      "id": "iradat-go",
+      "title": "Iradat Go",
+      "subtitle": "Mobile Assessment Platform",
+      "description": "Psychological assessments on your smartphone",
+      "icon": "smartphone",
+      "featured": false,
+      "category": "mobile",
+      "keyBenefits": [
+        "Mobile Access",
+        "Instant Results"
+      ]
+    },
+    {
+      "id": "iradat-profiling",
+      "title": "Iradat Profiling",
+      "subtitle": "Deep Psychological Insights",
+      "description": "Advanced personality and behavioral profiling",
+      "icon": "user",
+      "featured": false,
+      "category": "profiling",
+      "keyBenefits": [
+        "Behavioral Analysis",
+        "Personal Development"
+      ]
+    }
+  ]
+}

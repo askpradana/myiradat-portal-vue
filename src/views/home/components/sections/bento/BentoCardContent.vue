@@ -48,15 +48,21 @@ import IntegrationCardContent from './content/IntegrationCardContent.vue'
 import PlaceholderCardContent from './content/PlaceholderCardContent.vue'
 
 // Import icons (you may need to adjust these based on your icon library)
-import { 
-  Database, 
-  Zap, 
-  ShieldCheck, 
-  Plug, 
-  Activity, 
+import {
+  Database,
+  Zap,
+  ShieldCheck,
+  Plug,
+  Activity,
   Route,
   Brain,
-  Workflow
+  Workflow,
+  Heart,
+  GraduationCap,
+  ClipboardCheck,
+  Building,
+  Smartphone,
+  User
 } from 'lucide-vue-next'
 
 interface Props {
@@ -89,19 +95,30 @@ const iconComponent = computed(() => {
     'activity': Activity,
     'route': Route,
     'brain': Brain,
-    'workflow': Workflow
+    'workflow': Workflow,
+    'heart': Heart,
+    'graduation-cap': GraduationCap,
+    'clipboard-check': ClipboardCheck,
+    'building': Building,
+    'smartphone': Smartphone,
+    'user': User
   }
   return iconMap[props.card.icon] || Database
 })
 
 const iconClasses = computed(() => {
   const baseClasses = 'w-12 h-12 rounded-xl flex items-center justify-center'
-  
+
   if (props.card.type === 'hero') {
     return `${baseClasses} bg-primary/10`
   }
-  
-  // Use subtle neutral background for all other cards
+
+  // Use service-specific theme accent for icon background
+  if (props.card.theme.accent) {
+    return `${baseClasses} ${props.card.theme.accent}`
+  }
+
+  // Fallback to subtle neutral background
   return `${baseClasses} bg-muted/50`
 })
 
@@ -109,8 +126,8 @@ const iconColorClasses = computed(() => {
   if (props.card.type === 'hero') {
     return 'text-primary'
   }
-  
-  // Use neutral colors for all non-hero cards
+
+  // Use consistent neutral colors for all service cards
   return 'text-muted-foreground'
 })
 

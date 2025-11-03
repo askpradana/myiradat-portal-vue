@@ -1,6 +1,14 @@
 // Quiz Type Definitions
 export type QuizType = 'likert4' | 'likert5' | 'yesno' | 'multiple_choice'
 
+// Quiz filter parameters interface
+export interface QuizFilterParams {
+  search_query?: string
+  completion_status?: 'all' | 'available' | 'completed'
+  quiz_type?: 'all' | 'likert4' | 'likert5' | 'yesno' | 'multiple_choice'
+  sort_order?: 'title_asc' | 'title_desc' | 'time_asc' | 'time_desc'
+}
+
 // Core Quiz Interface with stronger typing
 export interface Quiz {
   id: string

@@ -17,6 +17,8 @@ import QuizResultView from '@/views/quiz/QuizResultView.vue'
 import { useUserStore } from '@/stores/userStores'
 import { getUserRole, getRoleRedirectPath, isTabAccessible } from '@/lib/dashboard-utils'
 import type { DashboardTab } from '@/types/dashboard'
+import { useUmami } from '@/composables/utils/useUmami'
+import { useRecentPages } from '@/composables/navigation/useRecentPages'
 import '@/types/router'
 
 // Route configuration helpers
@@ -80,13 +82,9 @@ const publicRoutes: RouteRecordRaw[] = [
   createRoute('/articles', 'articles', () => import('@/views/ArticlesView.vue'), 'Articles'),
   createRoute('/articles/:slug', 'article-detail', () => import('@/views/ArticleView.vue'), 'Article'),
   createRoute('/contact', 'contact', () => import('@/views/ContactView.vue'), 'Contact'),
-  // Service pages
-  createRoute('/services/eap-improve', 'service-eap-improve', () => import('@/views/services/EAPImproveView.vue'), 'EAP Improve'),
-  createRoute('/services/learning-development', 'service-learning-development', () => import('@/views/services/LearningDevelopmentView.vue'), 'Learning & Development'),
-  createRoute('/services/evaluation-assessment', 'service-evaluation-assessment', () => import('@/views/services/EvaluationAssessmentView.vue'), 'Evaluation Selection & Assessment'),
-  createRoute('/services/lhh', 'service-lhh', () => import('@/views/services/LHHView.vue'), 'LHH'),
-  createRoute('/services/iradat-go', 'service-iradat-go', () => import('@/views/services/IradatGoView.vue'), 'Iradat Go'),
-  createRoute('/services/iradat-profiling', 'service-iradat-profiling', () => import('@/views/services/IradatProfilingView.vue'), 'Iradat - Profiling'),
+  // Solutions and services pages
+  createRoute('/solutions', 'solutions', () => import('@/views/SolutionsView.vue'), 'Solutions'),
+  createRoute('/services/:slug', 'service-detail', () => import('@/views/services/ServiceView.vue'), 'Service Detail'),
 ]
 
 const guestOnlyRoutes: RouteRecordRaw[] = [
@@ -315,6 +313,27 @@ router.beforeEach(async (to, from, next) => {
 
   // Proceed with navigation
   next()
+})
+
+// Track page views and recent pages after navigation
+router.afterEach((to, from) => {
+  const { trackPageView, isReady } = useUmami()
+  const { addRecentPage } = useRecentPages()
+
+  // Add to recent pages for authenticated users (exclude from and error pages)
+  if (from.path !== '/' && !from.path.includes('login') && !from.path.includes('register')) {
+    const userStore = useUserStore()
+    if (userStore.isAuthenticated && userStore.isTokenValid()) {
+      addRecentPage(from.path, from.meta.title as string)
+    }
+  }
+
+  // Wait a brief moment for Umami script to load if needed
+  setTimeout(() => {
+    if (isReady()) {
+      trackPageView(to.path, to.meta.title as string)
+    }
+  }, 100)
 })
 
 export default router
