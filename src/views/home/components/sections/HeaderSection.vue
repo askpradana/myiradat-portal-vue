@@ -22,8 +22,8 @@
             </div>
           </RouterLink>
 
-          <!-- Navigation (Desktop) -->
-          <div class="hidden xl:flex items-center space-x-6 text-sm text-muted-foreground">
+          <!-- Navigation (Desktop & Tablet) -->
+          <div class="hidden lg:flex items-center space-x-6 text-sm text-muted-foreground">
             <router-link to="/about" class="hover:text-primary transition-colors duration-200">
               About
             </router-link>
@@ -39,25 +39,25 @@
           <!-- Actions -->
           <div class="flex items-center gap-2">
             <!-- Utility Controls -->
-            <div class="hidden sm:block">
+            <div class="hidden lg:block">
               <LanguageChooser />
             </div>
             <ThemeToggle />
 
             <!-- Action Buttons -->
-            <Button @click="navigateToLogin" variant="ghost" size="sm" class="hidden sm:flex">
+            <Button @click="navigateToLogin" variant="ghost" size="sm" class="hidden lg:flex">
               {{ t('homepage.header.buttons.signIn') }}
             </Button>
             <Button
               @click="navigateToRegister"
               size="sm"
-              class="shadow-sm hover:shadow-md transition-shadow hidden sm:block"
+              class="shadow-sm hover:shadow-md transition-shadow hidden lg:block"
             >
               {{ t('homepage.header.buttons.startFreeTrial') }}
             </Button>
 
             <!-- Mobile Menu Button -->
-            <Button variant="ghost" size="sm" class="sm:hidden" @click="toggleMobileMenu">
+            <Button variant="ghost" size="sm" class="lg:hidden" @click="toggleMobileMenu">
               <Menu class="w-5 h-5" />
             </Button>
           </div>
@@ -66,7 +66,7 @@
     </div>
 
     <!-- Mobile Navigation Overlay -->
-    <div v-if="showMobileMenu" class="sm:hidden">
+    <div v-if="showMobileMenu" class="lg:hidden">
       <div class="max-w-7xl mx-auto px-4 mt-2">
         <div
           class="bg-background/90 backdrop-blur-lg border border-border/30 rounded-2xl shadow-lg py-4 animate-in slide-in-from-top-2 duration-200"
@@ -87,49 +87,22 @@
                 About
               </router-link>
               <div class="text-foreground">
-                <div class="font-medium mb-2">Services</div>
+                <router-link
+                  to="/solutions"
+                  class="font-medium mb-2 block hover:text-primary transition-colors"
+                  @click="closeMobileMenu"
+                >
+                  Services
+                </router-link>
                 <div class="pl-4 space-y-2 text-sm text-muted-foreground">
                   <router-link
-                    to="/services/eap-improve"
+                    v-for="service in services"
+                    :key="service.slug"
+                    :to="`/services/${service.slug}`"
                     class="block hover:text-primary transition-colors"
                     @click="closeMobileMenu"
                   >
-                    EAP Improve
-                  </router-link>
-                  <router-link
-                    to="/services/learning-development"
-                    class="block hover:text-primary transition-colors"
-                    @click="closeMobileMenu"
-                  >
-                    Learning & Development
-                  </router-link>
-                  <router-link
-                    to="/services/evaluation-assessment"
-                    class="block hover:text-primary transition-colors"
-                    @click="closeMobileMenu"
-                  >
-                    Evaluation Selection & Assessment
-                  </router-link>
-                  <router-link
-                    to="/services/lhh"
-                    class="block hover:text-primary transition-colors"
-                    @click="closeMobileMenu"
-                  >
-                    LHH
-                  </router-link>
-                  <router-link
-                    to="/services/iradat-go"
-                    class="block hover:text-primary transition-colors"
-                    @click="closeMobileMenu"
-                  >
-                    Iradat Go
-                  </router-link>
-                  <router-link
-                    to="/services/iradat-profiling"
-                    class="block hover:text-primary transition-colors"
-                    @click="closeMobileMenu"
-                  >
-                    Iradat - Profiling
+                    {{ service.title }}
                   </router-link>
                 </div>
               </div>
@@ -166,7 +139,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { Button } from '@/components/ui/button'
 import ThemeToggle from '@/components/ThemeToggle.vue'
 import { useRouter } from 'vue-router'
@@ -174,10 +147,14 @@ import { Menu } from 'lucide-vue-next'
 import { useI18n } from 'vue-i18n'
 import { LanguageChooser } from '@/components/custom'
 import ServicesDropdown from '@/components/custom/navigation/ServicesDropdown.vue'
+import { useServicesData } from '@/composables/services/useServicesData'
 
 const router = useRouter()
 const showMobileMenu = ref(false)
 const { t } = useI18n()
+const { getAllServices } = useServicesData()
+
+const services = computed(() => getAllServices())
 
 const navigateToLogin = () => {
   router.push('/login')

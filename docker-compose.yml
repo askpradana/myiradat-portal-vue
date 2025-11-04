@@ -1,0 +1,35 @@
+services:
+  app:
+    build: .
+    ports:
+      - '8500:8500'
+    environment:
+      - NODE_ENV=production
+      - PORT=8500
+      - VITE_UMAMI_WEBSITE_ID=${VITE_UMAMI_WEBSITE_ID}
+      - VITE_UMAMI_URL=${VITE_UMAMI_URL}
+
+  umami:
+    image: ghcr.io/umami-software/umami:postgresql-latest
+    ports:
+      - '2008:3000'
+    environment:
+      - DATABASE_URL=postgresql://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
+      - DATABASE_TYPE=postgresql
+      - APP_SECRET=${UMAMI_APP_SECRET}
+    depends_on:
+      - postgres
+    restart: unless-stopped
+
+  postgres:
+    image: postgres:16-alpine
+    environment:
+      - POSTGRES_DB=${POSTGRES_DB}
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: unless-stopped
+
+volumes:
+  postgres_data:

@@ -12,7 +12,8 @@
           Dipercaya psikolog terdepan Indonesia
         </h2>
         <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Lihat bagaimana IRADAT telah mentransformasi praktik psikologi dan memberikan hasil terukur untuk psikolog profesional di seluruh Indonesia.
+          Lihat bagaimana IRADAT telah mentransformasi praktik psikologi dan memberikan hasil
+          terukur untuk psikolog profesional di seluruh Indonesia.
         </p>
       </div>
 
@@ -90,29 +91,6 @@
           </CardContent>
         </Card>
       </div>
-
-      <!-- Case Studies CTA -->
-      <div class="text-center mt-16">
-        <div class="bg-gradient-to-r from-primary/5 to-primary/10 rounded-2xl p-8 lg:p-12">
-          <h3 class="text-2xl font-bold text-foreground mb-4">
-            Siap bergabung dengan kisah sukses kami?
-          </h3>
-          <p class="text-lg text-muted-foreground mb-6 max-w-2xl mx-auto">
-            Temukan bagaimana IRADAT dapat mentransformasi praktik psikologi Anda dengan demo personal 
-            yang disesuaikan dengan kebutuhan praktik Anda.
-          </p>
-          <div class="flex flex-col sm:flex-row gap-4 justify-center">
-            <Button size="lg" @click="requestDemo" class="shadow-lg">
-              Request Custom Demo
-              <Calendar class="w-4 h-4 ml-2" />
-            </Button>
-            <Button size="lg" variant="outline" @click="viewCaseStudies">
-              View All Case Studies
-              <ExternalLink class="w-4 h-4 ml-2" />
-            </Button>
-          </div>
-        </div>
-      </div>
     </div>
   </section>
 </template>
@@ -120,14 +98,9 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { Card, CardContent } from '@/components/ui/card'
-import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import DynamicAvatar from '@/components/ui/avatar/DynamicAvatar.vue'
-import { useRouter } from 'vue-router'
-import { Star, Calendar, ExternalLink } from 'lucide-vue-next'
-
-const router = useRouter()
-// const homepageStore = useHomepageStore()
+import { Star } from 'lucide-vue-next'
 
 const overallMetrics = computed(() => [
   { value: '500', suffix: '+', label: 'Enterprise Clients' },
@@ -197,13 +170,5 @@ const getIndustryVariant = (
     Manufacturing: 'destructive',
   }
   return variants[industry || ''] || 'default'
-}
-
-const requestDemo = () => {
-  router.push('/book-demo')
-}
-
-const viewCaseStudies = () => {
-  router.push('/case-studies')
 }
 </script>

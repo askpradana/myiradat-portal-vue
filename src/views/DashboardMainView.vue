@@ -79,7 +79,7 @@
             role="grid"
             aria-label="Accessible services grid"
           >
-            <ServiceCard
+            <DashboardServiceCard
               v-for="service in displayServices"
               :key="service.code"
               :service="service"
@@ -104,7 +104,7 @@
             role="grid"
             aria-label="Additional services grid"
           >
-            <AvailableServiceCard
+            <AvailableDashboardServiceCard
               v-for="service in displayLockedServices"
               :key="`locked-${service.code}`"
               :service="service"
@@ -131,7 +131,7 @@ import { Button } from '@/components/ui/button'
 import { RefreshCw, AlertCircle } from 'lucide-vue-next'
 
 // Components
-import ServiceCard from '@/components/custom/dashboard/ServiceCard.vue'
+import DashboardServiceCard from '@/components/custom/dashboard/DashboardServiceCard.vue'
 import AvailableServiceCard from '@/components/custom/dashboard/AvailableServiceCard.vue'
 import CardServiceSkeleton from '@/components/custom/skeletons/CardServiceSkeleton.vue'
 import EmptyServicesState from '@/components/custom/dashboard/EmptyServicesState.vue'

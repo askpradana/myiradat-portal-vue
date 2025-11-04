@@ -1,12 +1,20 @@
 <template>
   <div class="relative" @mouseenter="showDropdown" @mouseleave="hideDropdown">
     <!-- Services Trigger -->
-    <div class="flex items-center space-x-1 cursor-pointer">
-      <span>Services</span>
-      <ChevronDown
-        class="w-3 h-3 transition-transform duration-200"
-        :class="{ 'rotate-180': isDropdownVisible }"
-      />
+    <div class="flex items-center space-x-1">
+      <router-link
+        to="/solutions"
+        class="hover:text-primary transition-colors duration-200"
+        @click="handleServicesTriggerClick"
+      >
+        Services
+      </router-link>
+      <button @click="toggleDropdown" class="p-1 hover:text-primary transition-colors duration-200">
+        <ChevronDown
+          class="w-3 h-3 transition-transform duration-200"
+          :class="{ 'rotate-180': isDropdownVisible }"
+        />
+      </button>
     </div>
 
     <!-- Dropdown Menu -->
@@ -28,7 +36,7 @@
             :key="service.path"
             :to="service.path"
             class="block px-4 py-3 rounded-lg text-sm text-foreground hover:bg-primary/10 hover:text-primary transition-colors duration-200 group"
-            @click="hideDropdown"
+            @click="() => handleServiceSelect(service)"
           >
             <div class="flex items-center justify-between">
               <div>
@@ -45,10 +53,19 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { ChevronDown, ArrowRight } from 'lucide-vue-next'
+import { useServicesData } from '@/composables/services/useServicesData'
 
-interface Service {
+// Define emits for better component composition
+const emit = defineEmits<{
+  'dropdown-shown': []
+  'dropdown-hidden': []
+  'service-selected': [service: ServiceItem]
+  'services-trigger-clicked': []
+}>()
+
+interface ServiceItem {
   name: string
   path: string
   description: string
@@ -57,38 +74,15 @@ interface Service {
 const isDropdownVisible = ref(false)
 let hideTimeout: ReturnType<typeof setTimeout> | null = null
 
-const services: Service[] = [
-  {
-    name: 'EAP Improve',
-    path: '/services/eap-improve',
-    description: 'Employee Assistance Program'
-  },
-  {
-    name: 'Learning & Development',
-    path: '/services/learning-development',
-    description: 'Training and skill development'
-  },
-  {
-    name: 'Evaluation Selection & Assessment',
-    path: '/services/evaluation-assessment',
-    description: 'Comprehensive assessment solutions'
-  },
-  {
-    name: 'LHH',
-    path: '/services/lhh',
-    description: 'Lee Hecht Harrison services'
-  },
-  {
-    name: 'Iradat Go',
-    path: '/services/iradat-go',
-    description: 'Mobile assessment platform'
-  },
-  {
-    name: 'Iradat - Profiling',
-    path: '/services/iradat-profiling',
-    description: 'Professional profiling services'
-  }
-]
+const { getAllServices } = useServicesData()
+
+const services = computed<ServiceItem[]>(() => {
+  return getAllServices().map(service => ({
+    name: service.title,
+    path: `/services/${service.slug}`,
+    description: service.description.slice(0, 50) + '...'
+  }))
+})
 
 const showDropdown = () => {
   if (hideTimeout) {
@@ -96,11 +90,31 @@ const showDropdown = () => {
     hideTimeout = null
   }
   isDropdownVisible.value = true
+  emit('dropdown-shown')
 }
 
 const hideDropdown = () => {
   hideTimeout = setTimeout(() => {
     isDropdownVisible.value = false
+    emit('dropdown-hidden')
   }, 150)
+}
+
+const toggleDropdown = () => {
+  if (isDropdownVisible.value) {
+    hideDropdown()
+  } else {
+    showDropdown()
+  }
+}
+
+const handleServicesTriggerClick = () => {
+  emit('services-trigger-clicked')
+  hideDropdown()
+}
+
+const handleServiceSelect = (service: ServiceItem) => {
+  emit('service-selected', service)
+  hideDropdown()
 }
 </script>

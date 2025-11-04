@@ -10,7 +10,7 @@
     <!-- <TrustIndicatorsSection /> -->
 
     <!-- Interactive Bento Grid Features -->
-    <!-- <BentoGridSection /> -->
+    <BentoGridSection />
 
     <!-- Use Case Carousel -->
     <!-- <UseCaseCarouselSection /> -->
@@ -37,7 +37,7 @@ import {
   HeaderSection,
   HeroSection,
   // TrustIndicatorsSection,
-  // BentoGridSection,
+  BentoGridSection,
   // UseCaseCarouselSection,
   TestimonialsSection,
   // PricingSection,

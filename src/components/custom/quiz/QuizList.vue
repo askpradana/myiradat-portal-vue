@@ -8,8 +8,7 @@ const { t } = useI18n()
 import QuizCard from './QuizCard.vue'
 import CompletedQuizCard from './CompletedQuizCard.vue'
 import QuizListFilter from '@/components/custom/filters/QuizListFilter.vue'
-import type { Quiz, QuizSubmission } from '@/types/quiz'
-import type { QuizFilterParams } from '@/components/custom/filters/QuizListFilter.vue'
+import type { Quiz, QuizSubmission, QuizFilterParams } from '@/types/quiz'
 import { useQuizFilter } from '@/composables/quiz/useQuizFilter'
 
 interface Props {

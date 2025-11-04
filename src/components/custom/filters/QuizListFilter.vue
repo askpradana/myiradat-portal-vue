@@ -87,14 +87,7 @@ import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { X } from 'lucide-vue-next'
 import FilterChip from '@/components/custom/filters/FilterChip.vue'
-
-// Quiz filter parameters interface
-export interface QuizFilterParams {
-  search_query?: string
-  completion_status?: 'all' | 'available' | 'completed'
-  quiz_type?: 'all' | 'likert4' | 'likert5' | 'yesno' | 'multiple_choice'
-  sort_order?: 'title_asc' | 'title_desc' | 'time_asc' | 'time_desc'
-}
+import type { QuizFilterParams } from '@/types/quiz'
 
 // Component-specific filter params that match form inputs
 interface FilterParams {
