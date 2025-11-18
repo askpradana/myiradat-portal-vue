@@ -16,7 +16,7 @@
     >
       <!-- Service Image -->
       <div
-        class="aspect-video bg-gradient-to-br from-primary/10 to-primary/5 relative overflow-hidden"
+        class="aspect-video bg-gradient-to-br from-background to-primary/5 relative overflow-hidden"
       >
         <div
           v-if="imageLoading"
@@ -27,7 +27,7 @@
           v-if="!imageError && service.icon_url"
           :src="service.icon_url"
           :alt="`${service.name} service icon`"
-          class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+          class="w-full h-full object-contain p-4 transition-transform duration-300 group-hover:scale-105"
           @load="handleImageLoad"
           @error="handleImageError"
           :class="{ 'opacity-0': imageLoading }"
