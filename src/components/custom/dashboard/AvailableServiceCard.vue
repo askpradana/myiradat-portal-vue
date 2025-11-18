@@ -5,10 +5,10 @@
     >
       <!-- Service Image with Disabled Overlay -->
       <div
-        class="aspect-video bg-gradient-to-br from-muted/20 to-muted/10 relative overflow-hidden"
+        class="aspect-video bg-gradient-to-br from-background to-muted/10 relative overflow-hidden"
       >
         <!-- Disabled overlay -->
-        <div class="absolute inset-0 bg-background/60 backdrop-blur-[1px]" />
+        <div class="absolute inset-0 bg-background/40 backdrop-blur-[0.5px]" />
 
         <div
           v-if="imageLoading"
@@ -19,7 +19,7 @@
           v-if="!imageError && service.icon_url"
           :src="service.icon_url"
           :alt="`${service.name} service icon`"
-          class="w-full h-full object-cover grayscale"
+          class="w-full h-full object-contain p-4 grayscale-[0.7] opacity-80"
           @load="handleImageLoad"
           @error="handleImageError"
           :class="{ 'opacity-0': imageLoading }"
