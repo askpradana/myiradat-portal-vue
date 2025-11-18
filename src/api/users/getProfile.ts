@@ -2,8 +2,9 @@ import { toast } from 'vue-sonner'
 import { useUserStore } from '@/stores/userStores'
 import { refreshToken } from '@/api/refreshToken'
 import type { UserDataInterface } from '@/types/userType'
+import type { ServiceInterface } from '@/types/serviceType'
 
-export const getProfile = async (): Promise<{user: UserDataInterface}> => {
+export const getProfile = async (): Promise<{user: UserDataInterface, services?: ServiceInterface[], availableservices?: ServiceInterface[]}> => {
   try {
     const userStore = useUserStore()
     const token = userStore.auth?.token
@@ -51,12 +52,16 @@ export const getProfile = async (): Promise<{user: UserDataInterface}> => {
 
     const data = await response.json()
 
-    // API returns: { success: true, data: { user: {...} } }
-    // We need to return: { user: {...} }
+    // API returns: { success: true, data: { user: {...}, services: [...], availableservices: [...] } }
+    // We need to return: { user: {...}, services: [...], availableservices: [...] }
     if (data.data && data.data.user) {
-      return { user: data.data.user }
+      return {
+        user: data.data.user,
+        services: data.data.services || [],
+        availableservices: data.data.availableservices || []
+      }
     }
-    
+
     throw new Error('Invalid response structure')
   } catch (error) {  
     toast('Error', {
