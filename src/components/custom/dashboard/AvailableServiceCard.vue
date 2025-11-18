@@ -4,7 +4,9 @@
       class="h-full transition-all duration-300 ease-out overflow-hidden min-h-[160px] sm:min-h-[200px] border-muted/50"
     >
       <!-- Service Image with Disabled Overlay -->
-      <div class="aspect-video bg-gradient-to-br from-muted/20 to-muted/10 relative overflow-hidden">
+      <div
+        class="aspect-video bg-gradient-to-br from-muted/20 to-muted/10 relative overflow-hidden"
+      >
         <!-- Disabled overlay -->
         <div class="absolute inset-0 bg-background/60 backdrop-blur-[1px]" />
 
@@ -58,13 +60,6 @@
             >
               {{ service.code }}
             </span>
-
-            <!-- Coming Soon Badge -->
-            <span
-              class="inline-flex items-center px-2 py-1 rounded-md text-xs font-medium bg-orange-100 text-orange-700 dark:bg-orange-900/20 dark:text-orange-400"
-            >
-              {{ statusText }}
-            </span>
           </div>
 
           <!-- Optional description for why it's not available -->
@@ -92,24 +87,12 @@ interface Props {
 
 const props = withDefaults(defineProps<Props>(), {
   status: 'coming-soon',
-  showDescription: false
+  showDescription: false,
 })
 
 // Image loading state
 const imageLoading = ref(true)
 const imageError = ref(false)
-
-// Status text based on props
-const statusText = computed(() => {
-  switch (props.status) {
-    case 'request-access':
-      return 'Request Access'
-    case 'contact-admin':
-      return 'Contact Admin'
-    default:
-      return 'Coming Soon'
-  }
-})
 
 // Description text based on status
 const descriptionText = computed(() => {

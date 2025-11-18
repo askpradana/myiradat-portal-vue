@@ -104,7 +104,7 @@
             role="grid"
             aria-label="Additional services grid"
           >
-            <AvailableDashboardServiceCard
+            <AvailableServiceCard
               v-for="service in displayLockedServices"
               :key="`locked-${service.code}`"
               :service="service"
@@ -129,6 +129,7 @@ import { computed, ref, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import { Button } from '@/components/ui/button'
 import { RefreshCw, AlertCircle } from 'lucide-vue-next'
+import { getProfile } from '@/api/users/getProfile'
 
 // Components
 import DashboardServiceCard from '@/components/custom/dashboard/DashboardServiceCard.vue'
@@ -193,11 +194,22 @@ const handleRefreshServices = async () => {
   error.value = null
 
   try {
-    // Services are already available from auth initialization
-    // This refresh just provides visual feedback to the user
+    const response = await getProfile()
+    if (response?.user) {
+      userStore.setUserProfileData(response.user)
 
-    // Add a small delay for better UX
-    await new Promise((resolve) => setTimeout(resolve, 500))
+      // Update services data
+      if (response.services !== undefined) {
+        userStore.services = response.services
+        localStorage.setItem('data_services', JSON.stringify(response.services))
+      }
+
+      // Update available services data
+      if (response.availableservices !== undefined) {
+        userStore.availableServices = response.availableservices
+        localStorage.setItem('data_available_services', JSON.stringify(response.availableservices))
+      }
+    }
   } catch (err) {
     error.value = err instanceof Error ? err.message : 'Failed to refresh services'
     console.error('Failed to refresh services:', err)
@@ -215,8 +227,7 @@ const handleServiceClick = (service: DashboardServiceInterface) => {
 
 // Initialize component
 onMounted(async () => {
-  if (!userStore.services) {
-    await handleRefreshServices()
-  }
+  // Always refresh to ensure we have the latest services and availableservices data
+  await handleRefreshServices()
 })
 </script>

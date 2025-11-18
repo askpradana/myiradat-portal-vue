@@ -99,6 +99,18 @@ export function useProfileRefresh(): UseProfileRefreshReturn {
       const response = await getProfile()
       if (response?.user) {
         userStore.setUserProfileData(response.user)
+
+        // Update services data if available
+        if (response.services !== undefined) {
+          userStore.services = response.services
+          localStorage.setItem('data_services', JSON.stringify(response.services))
+        }
+
+        // Update available services data if available
+        if (response.availableservices !== undefined) {
+          userStore.availableServices = response.availableservices
+          localStorage.setItem('data_available_services', JSON.stringify(response.availableservices))
+        }
       }
 
       // Set cooldown
