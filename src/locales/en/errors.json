@@ -22,7 +22,6 @@
   },
   "loading": {
     "quiz": "Loading quiz...",
-    "organization": "Loading organization data...",
     "profile": "Loading profile...",
     "users": "Loading users...",
     "services": "Loading services...",
@@ -36,7 +35,6 @@
     "noResultsToDisplay": "No results to display.",
     "noQuizzes": "No quizzes available",
     "noUsers": "No users found",
-    "noOrganizations": "No organizations found",
     "noServices": "No services found"
   },
   "generic": {

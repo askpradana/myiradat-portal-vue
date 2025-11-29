@@ -39,17 +39,6 @@
       </Suspense>
     </div>
 
-    <!-- Organizations Tab Content -->
-    <div v-if="activeTab === 'organizations'" class="space-y-6">
-      <Suspense>
-        <template #default>
-          <OrganizationManagementView />
-        </template>
-        <template #fallback>
-          <ListUserTableSkeleton />
-        </template>
-      </Suspense>
-    </div>
 
     <!-- Data Tab Content -->
     <div v-if="activeTab === 'data'">
@@ -109,7 +98,6 @@ const UserManagementView = defineAsyncComponent(() => import('./admin/UserManage
 const UserProfileView = defineAsyncComponent(() => import('./user/UserProfileView.vue'))
 const DataView = defineAsyncComponent(() => import('./user/DataView.vue'))
 const QuizListView = defineAsyncComponent(() => import('./quiz/QuizListView.vue'))
-const OrganizationManagementView = defineAsyncComponent(() => import('./admin/OrganizationManagementView.vue'))
 
 // Layout and skeleton components
 import DashboardLayout from '@/components/custom/dashboard/DashboardLayout.vue'

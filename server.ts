@@ -25,7 +25,6 @@ const SPA_ROUTES = [
   // Dashboard routes
   '/dashboard',
   '/dashboard/users',
-  '/dashboard/organizations',
   '/dashboard/data',
   '/dashboard/assessments',
   '/dashboard/profile',
@@ -33,7 +32,6 @@ const SPA_ROUTES = [
   // Admin routes
   '/dashboard/admin/create-user',
   '/dashboard/admin/create-user-batch',
-  '/dashboard/admin/create-organization',
 
   // Quiz routes
   '/quiz'
@@ -44,8 +42,6 @@ const DYNAMIC_ROUTE_PATTERNS = [
   /^\/articles\/[^\/]+$/, // /articles/:slug
   /^\/services\/[^\/]+$/, // /services/:slug
   /^\/dashboard\/[^\/]+\/services$/, // /dashboard/:id/services
-  /^\/dashboard\/admin\/organization\/[^\/]+\/update$/, // /dashboard/admin/organization/:id/update
-  /^\/dashboard\/admin\/organization\/[^\/]+\/details$/, // /dashboard/admin/organization/:id/details
   /^\/dashboard\/admin\/users\/[^\/]+\/profile$/, // /dashboard/admin/users/:id/profile
   /^\/quiz\/[^\/]+$/, // /quiz/:id
   /^\/quiz\/[^\/]+\/results$/ // /quiz/:id/results

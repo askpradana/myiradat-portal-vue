@@ -9,10 +9,8 @@
     "username": "Nama Pengguna",
     "phone": "Nomor Telepon",
     "role": "Peran",
-    "organization": "Organisasi",
     "industry": "Industri",
     "description": "Deskripsi",
-    "size": "Ukuran Organisasi",
     "status": "Status",
     "contactEmail": "Email Kontak",
     "contactPhone": "Telepon Kontak",
@@ -42,13 +40,10 @@
     "quickSearch": "Pencarian cepat berdasarkan nama atau email...",
     "searchServices": "Cari layanan berdasarkan nama atau kode...",
     "searchUsers": "Cari pengguna berdasarkan nama pengguna...",
-    "searchOrganization": "Cari organisasi...",
     "searchQuizzes": "Cari kuis...",
     "searchTerm": "Masukkan kata kunci pencarian...",
     "enterIndustry": "Masukkan industri...",
-    "enterOrganizationName": "Masukkan nama organisasi",
     "industryExample": "contoh: Teknologi, Kesehatan",
-    "describeOrganization": "Deskripsikan organisasi Anda",
     "contactEmailExample": "email kontak",
     "phoneExample": "+628123456789",
     "websiteExample": "https://website.com",
@@ -67,8 +62,6 @@
   "options": {
     "selectRole": "Pilih peran",
     "chooseRole": "Pilih peran",
-    "selectOrganizationSize": "Pilih ukuran organisasi",
-    "selectOrganizationStatus": "Pilih status organisasi",
     "selectField": "Pilih bidang",
     "selectSize": "Pilih ukuran",
     "selectStatus": "Pilih status",
@@ -81,10 +74,6 @@
   "titles": {
     "createAccount": "Buat Akun",
     "resetPassword": "Reset Kata Sandi",
-    "createNewOrganization": "Buat Organisasi Baru",
     "filterUsers": "Filter Pengguna",
-    "filterOrganizations": "Filter Organisasi",
-    "organizationDetail": "Detail organisasi",
-    "updateDataOrganization": "Perbarui data organisasi"
   }
 }

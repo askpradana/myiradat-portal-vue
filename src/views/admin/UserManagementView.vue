@@ -82,7 +82,6 @@
             <TableHead class="text-foreground font-semibold">Name</TableHead>
             <TableHead class="text-foreground font-semibold">Email</TableHead>
             <TableHead class="text-foreground font-semibold">Phone</TableHead>
-            <TableHead class="text-foreground font-semibold">Organization</TableHead>
             <TableHead class="text-foreground font-semibold">Role</TableHead>
             <TableHead class="text-right text-foreground font-semibold">Actions</TableHead>
           </TableRow>
@@ -101,7 +100,6 @@
               </TableCell>
               <TableCell class="text-foreground">{{ user.email }}</TableCell>
               <TableCell class="text-foreground">{{ user.phone }}</TableCell>
-              <TableCell class="text-foreground">{{ user.organization_name || '-' }}</TableCell>
               <TableCell>
                 <span :class="getRoleBadgeClass(user.role_id)">
                   {{ user.role_name }}
@@ -145,7 +143,6 @@
                     v-if="user.role_id !== 1"
                     :user-i-d="user.id"
                     :name-of-user="user.name"
-                    :organization-i-d="user.id"
                   />
                 </div>
               </TableCell>

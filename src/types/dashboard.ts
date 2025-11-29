@@ -1,7 +1,7 @@
 import type { ServiceInterface } from './serviceType'
 
 // Dashboard tab types
-export type DashboardTab = 'dashboard' | 'users' | 'data' | 'profile' | 'organizations' | 'assessments'
+export type DashboardTab = 'dashboard' | 'users' | 'data' | 'profile' | 'assessments'
 
 // User role types
 export type UserRole = 'admin' | 'user' | 'cs'

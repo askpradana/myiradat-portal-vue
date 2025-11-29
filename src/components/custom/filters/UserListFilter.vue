@@ -79,13 +79,6 @@
           </Select>
         </div>
 
-        <!-- Organization Filter -->
-        <div class="space-y-2">
-          <Label for="filter-organization" class="text-sm font-medium text-foreground"
-            >Organization</Label
-          >
-          <OrganizationCombobox v-model="localFilters.filter_organization_id" />
-        </div>
 
         <!-- Sort Field -->
         <!-- <div class="space-y-2">
@@ -183,7 +176,6 @@ import {
 import { Filter, RotateCcw, X } from 'lucide-vue-next'
 import AnimatedFilterCard from '@/components/custom/transitions/AnimatedFilterCard.vue'
 import FilterChip from '@/components/custom/filters/FilterChip.vue'
-import OrganizationCombobox from '@/components/custom/combobox/OrganizationCombobox.vue'
 import type { UserFilterParams } from '@/types/userFilterType'
 
 // Component-specific filter params that match form inputs
@@ -191,7 +183,6 @@ interface FilterParams {
   search_by?: string
   search_query?: string
   filter_role?: string
-  filter_organization_id?: string
   filter_email_verified?: string
   order_by?: string
   order_direction?: string
@@ -220,7 +211,6 @@ const convertFromUserFilterParams = (userParams: UserFilterParams): FilterParams
   if (userParams.search_by) result.search_by = userParams.search_by
   if (userParams.search_query) result.search_query = userParams.search_query
   if (userParams.filter_role) result.filter_role = userParams.filter_role
-  if (userParams.filter_organization_id) result.filter_organization_id = userParams.filter_organization_id
   if (userParams.filter_email_verified !== undefined) {
     result.filter_email_verified = String(userParams.filter_email_verified)
   }
@@ -236,7 +226,6 @@ const localFilters = ref<FilterParams>({
   search_by: '',
   search_query: '',
   filter_role: '',
-  filter_organization_id: '',
   filter_email_verified: '',
   order_by: 'created_at',
   order_direction: 'desc',
@@ -279,12 +268,6 @@ const activeFiltersDisplay = computed(() => {
     }
   }
 
-  if (localFilters.value.filter_organization_id) {
-    filters.filter_organization_id = {
-      label: 'Organization',
-      value: localFilters.value.filter_organization_id,
-    }
-  }
 
   if (
     localFilters.value.order_by !== 'created_at' ||
@@ -315,7 +298,6 @@ const convertToUserFilterParams = (filters: FilterParams): UserFilterParams => {
   }
   if (filters.search_query) result.search_query = filters.search_query
   if (filters.filter_role) result.filter_role = filters.filter_role
-  if (filters.filter_organization_id) result.filter_organization_id = filters.filter_organization_id
   if (filters.filter_email_verified) {
     result.filter_email_verified = filters.filter_email_verified === 'true' ? true : 
                                    filters.filter_email_verified === 'false' ? false : 
@@ -355,8 +337,7 @@ const resetFilters = () => {
     search_by: '',
     search_query: '',
     filter_role: '',
-    filter_organization_id: '',
-    filter_email_verified: '',
+      filter_email_verified: '',
     order_by: 'created_at',
     order_direction: 'desc',
     page_size: '10',
@@ -375,9 +356,6 @@ const removeFilter = (filterKey: string) => {
       break
     case 'filter_email_verified':
       localFilters.value.filter_email_verified = ''
-      break
-    case 'filter_organization_id':
-      localFilters.value.filter_organization_id = ''
       break
     case 'sort':
       localFilters.value.order_by = 'created_at'

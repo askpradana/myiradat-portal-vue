@@ -54,7 +54,7 @@
             >
               <Users class="w-12 h-12 text-primary" />
             </div>
-            <h3 class="text-2xl font-bold  text-center mb-4">People First</h3>
+            <h3 class="text-2xl font-bold text-center mb-4">People First</h3>
             <p class="text-muted-foreground text-center">
               Our approach centers on understanding human potential and creating pathways for growth
               and success.
@@ -179,7 +179,7 @@
               :class="{
                 'md:grid-cols-1 max-w-md mx-auto': members.length === 1,
                 'md:grid-cols-2 max-w-2xl mx-auto': members.length === 2,
-                'md:grid-cols-3 max-w-4xl mx-auto': members.length >= 3
+                'md:grid-cols-3 max-w-4xl mx-auto': members.length >= 3,
               }"
             >
               <div
@@ -187,7 +187,9 @@
                 :key="member.email"
                 class="bg-background rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-shadow"
               >
-                <div class="w-24 h-24 rounded-full mx-auto mb-4 overflow-hidden ring-2 ring-primary/10">
+                <div
+                  class="w-24 h-24 rounded-full mx-auto mb-4 overflow-hidden ring-2 ring-primary/10"
+                >
                   <img
                     :src="member.image"
                     :alt="member.name"
@@ -242,19 +244,7 @@
 
 <script setup lang="ts">
 import { Button } from '@/components/ui/button'
-import {
-  Users,
-  Target,
-  Eye,
-  Award,
-  Brain,
-  Shield,
-  Heart,
-  GraduationCap,
-  Briefcase,
-  TrendingUp,
-  Mail,
-} from 'lucide-vue-next'
+import { Users, Target, Eye, Award, Brain, Shield, Heart, Mail } from 'lucide-vue-next'
 import HeaderSection from '@/views/home/components/sections/HeaderSection.vue'
 import FooterSection from '@/views/home/components/sections/FooterSection.vue'
 import rawTeamsData from '@/data/teams.json'
@@ -270,6 +260,6 @@ const teamCategories = {
   lhh: 'Lee Hecht Harrison',
   lnd: 'Learning & Development',
   hr: 'Human Resources',
-  esas: 'Employee Satisfaction & Assessment Specialists'
+  esas: 'Employee Satisfaction & Assessment Specialists',
 }
 </script>

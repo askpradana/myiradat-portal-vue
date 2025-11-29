@@ -1,17 +1,14 @@
 {
   "services": [
     {
-      "id": "eap-improve",
-      "title": "EAP Improve",
+      "id": "improve-care",
+      "title": "Improve Care",
       "subtitle": "24/7 Mental Wellness Support",
       "description": "Professional mental health support for your workforce",
       "icon": "heart",
       "featured": true,
       "category": "wellness",
-      "keyBenefits": [
-        "24/7 Professional Support",
-        "Confidential Counseling"
-      ]
+      "keyBenefits": ["24/7 Professional Support", "Confidential Counseling"]
     },
     {
       "id": "learning-development",
@@ -21,10 +18,7 @@
       "icon": "graduation-cap",
       "featured": false,
       "category": "training",
-      "keyBenefits": [
-        "Customized Training",
-        "Skill Enhancement"
-      ]
+      "keyBenefits": ["Customized Training", "Skill Enhancement"]
     },
     {
       "id": "evaluation-assessment",
@@ -34,10 +28,7 @@
       "icon": "clipboard-check",
       "featured": false,
       "category": "assessment",
-      "keyBenefits": [
-        "Objective Selection",
-        "Reduced Turnover"
-      ]
+      "keyBenefits": ["Objective Selection", "Reduced Turnover"]
     },
     {
       "id": "lhh",
@@ -47,10 +38,7 @@
       "icon": "building",
       "featured": false,
       "category": "consulting",
-      "keyBenefits": [
-        "Global Network",
-        "Expert Consulting"
-      ]
+      "keyBenefits": ["Global Network", "Expert Consulting"]
     },
     {
       "id": "iradat-go",
@@ -60,10 +48,7 @@
       "icon": "smartphone",
       "featured": false,
       "category": "mobile",
-      "keyBenefits": [
-        "Mobile Access",
-        "Instant Results"
-      ]
+      "keyBenefits": ["Mobile Access", "Instant Results"]
     },
     {
       "id": "iradat-profiling",
@@ -73,10 +58,7 @@
       "icon": "user",
       "featured": false,
       "category": "profiling",
-      "keyBenefits": [
-        "Behavioral Analysis",
-        "Personal Development"
-      ]
+      "keyBenefits": ["Behavioral Analysis", "Personal Development"]
     }
   ]
 }

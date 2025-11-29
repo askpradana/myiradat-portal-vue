@@ -38,23 +38,6 @@
           <span class="sm:hidden ml-2">{{ t('common.navigation.users') }}</span>
         </button>
         <button
-          v-if="userStore.user?.role_id === 1"
-          @click="selectTab('organizations')"
-          :class="[
-            'py-3 px-4 sm:py-2 sm:px-1 border-b-2 font-medium text-sm sm:text-sm whitespace-nowrap flex-shrink-0 snap-start touch-manipulation transition-colors',
-            'min-w-[44px] h-12 sm:h-auto flex items-center justify-center sm:block',
-            activeTab === 'organizations'
-              ? 'border-primary text-primary'
-              : 'border-transparent text-muted-foreground hover:text-foreground hover:border-border',
-          ]"
-          role="tab"
-          :aria-selected="activeTab === 'organizations'"
-        >
-          <span class="sm:hidden">🏢</span>
-          <span class="hidden sm:inline">{{ t('common.navigation.organizations') }}</span>
-          <span class="sm:hidden ml-2">{{ t('common.navigation.organizations') }}</span>
-        </button>
-        <button
           @click="selectTab('data')"
           :class="[
             'py-3 px-4 sm:py-2 sm:px-1 border-b-2 font-medium text-sm sm:text-sm whitespace-nowrap flex-shrink-0 snap-start touch-manipulation transition-colors',

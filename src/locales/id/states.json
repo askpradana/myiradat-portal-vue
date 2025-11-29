@@ -5,7 +5,6 @@
     "content": "Memuat konten...",
     "page": "Memuat halaman...",
     "quiz": "Memuat kuis...",
-    "organization": "Memuat data organisasi...",
     "profile": "Memuat profil...",
     "users": "Memuat pengguna...",
     "services": "Memuat layanan...",
@@ -17,7 +16,6 @@
   "saving": {
     "default": "Menyimpan...",
     "profile": "Menyimpan profil...",
-    "organization": "Menyimpan organisasi...",
     "user": "Menyimpan pengguna...",
     "settings": "Menyimpan pengaturan...",
     "data": "Menyimpan data...",
@@ -59,7 +57,6 @@
     "default": "Tidak ada data tersedia",
     "results": "Tidak ada hasil ditemukan",
     "users": "Tidak ada pengguna ditemukan",
-    "organizations": "Tidak ada organisasi ditemukan",
     "services": "Tidak ada layanan ditemukan",
     "quizzes": "Tidak ada kuis tersedia",
     "assessments": "Tidak ada penilaian tersedia",

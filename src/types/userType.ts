@@ -8,9 +8,6 @@ export interface UserProfileInterface {
   name: string
   avatar_picture: string | null
   date_of_birth: string | null
-  organization_id: string | null
-  organization_name: string | null
-  organization_industry?: string | null
   verified_at: string
 }
 

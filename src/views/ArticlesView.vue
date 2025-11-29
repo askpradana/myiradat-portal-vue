@@ -265,16 +265,16 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed } from 'vue'
+import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
-import { Brain, Filter, User, ArrowRight, Mail, Loader2 } from 'lucide-vue-next'
+import { Brain, User, ArrowRight, Mail, Loader2 } from 'lucide-vue-next'
 import HeaderSection from '@/views/home/components/sections/HeaderSection.vue'
 import FooterSection from '@/views/home/components/sections/FooterSection.vue'
 import { ghostApi } from '@/api/articles/ghostApi'
-import type { ArticleCardData, GhostPost } from '@/types/articles'
+import type { ArticleCardData } from '@/types/articles'
 
 const router = useRouter()
 
@@ -287,7 +287,7 @@ const hasMoreArticles = ref(true)
 const loadingMore = ref(false)
 
 const getCategoryIcon = (category: string) => {
-  const icons: Record<string, any> = {
+  const icons: Record<string, typeof Brain> = {
     Psychology: Brain,
     'HR Tech': Brain,
     Leadership: Brain,

@@ -19,7 +19,7 @@
   <ServicePageLayout
     v-else-if="service"
     :service="service"
-    :icon-component="service.icon"
+    :icon-url="service.icon"
   />
 </template>
 

@@ -66,7 +66,6 @@ src/api/
 │   └── ...
 ├── auth/              # Legacy auth endpoints (to be migrated)
 ├── users/             # Legacy user endpoints (to be migrated)
-├── organizations/     # Legacy org endpoints (to be migrated)
 ├── sessions/          # Legacy session endpoints (to be migrated)
 └── README.md          # This file
 ```

@@ -6,9 +6,6 @@ import EmailVerificationView from '@/views/auth/EmailVerificationView.vue'
 import CreateNewUserView from '@/views/admin/CreateNewUserView.vue'
 import UserServicesListView from '@/views/admin/UserServicesListView.vue'
 import CreateUserBatchView from '@/views/admin/CreateUserBatchView.vue'
-import CreateNewOrganizationView from '@/views/admin/CreateNewOrganizationView.vue'
-import OrganizationDetailView from '@/views/admin/OrganizationDetailView.vue'
-import EditOrganizationView from '@/views/admin/EditOrganizationView.vue'
 import ForgotPasswordUserView from '@/views/auth/ForgotPasswordUserView.vue'
 import NotFoundView from '@/views/errors/NotFoundView.vue'
 import ProfileUserDetailView from '@/views/admin/ProfileUserDetailView.vue'
@@ -105,10 +102,6 @@ const protectedRoutes: RouteRecordRaw[] = [
 
   // Clean dashboard tab routes
   createProtectedRoute('/dashboard/users', 'dashboard-users', DashboardView, 'User Management'),
-  createRoute('/dashboard/organizations', 'dashboard-organizations', DashboardView, 'Organization Management', {
-    requiresAuth: true,
-    requiredRoles: ['admin', 'cs'],
-  }),
   createProtectedRoute('/dashboard/data', 'dashboard-data', DashboardView, 'Data'),
   createProtectedRoute('/dashboard/assessments', 'dashboard-assessments', DashboardView, 'Assessments'),
   createProtectedRoute('/dashboard/profile', 'dashboard-profile', DashboardView, 'Profile'),
@@ -141,39 +134,6 @@ const protectedRoutes: RouteRecordRaw[] = [
     'user-service-list',
     UserServicesListView,
     'User Services',
-  ),
-  createRoute(
-    '/dashboard/admin/create-organization',
-    'create-organization-page',
-    CreateNewOrganizationView,
-    'Create Organization',
-    {
-      requiresAuth: true,
-      requiredRoles: ['admin'],
-      fallbackRoute: '/dashboard',
-    },
-  ),
-  createRoute(
-    '/dashboard/admin/organization/:id/update',
-    'edit-organization-page',
-    EditOrganizationView,
-    'Edit Organization',
-    {
-      requiresAuth: true,
-      requiredRoles: ['admin'],
-      fallbackRoute: '/dashboard',
-    },
-  ),
-  createRoute(
-    '/dashboard/admin/organization/:id/details',
-    'organization-detail-page',
-    OrganizationDetailView,
-    'Organization Details',
-    {
-      requiresAuth: true,
-      requiredRoles: ['admin'],
-      fallbackRoute: '/dashboard',
-    },
   ),
   createRoute(
     '/dashboard/admin/users/:id/profile',

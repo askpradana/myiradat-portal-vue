@@ -105,15 +105,6 @@ const cardSizes = {
   'iradat-profiling': 'large' as const,
 }
 
-// Icon name mapping from services data to Lucide icons
-const iconMapping: Record<string, string> = {
-  Heart: 'heart',
-  GraduationCap: 'graduation-cap',
-  ClipboardCheck: 'clipboard-check',
-  Building: 'building',
-  Smartphone: 'smartphone',
-  User: 'user',
-}
 
 // Transform services data into bento cards
 const createServiceCards = () => {
@@ -125,7 +116,7 @@ const createServiceCards = () => {
       id: service.id,
       title: content.hook,
       description: content.hint,
-      icon: iconMapping[service.iconName] || 'user',
+      icon: 'https://improvecare.iradatkonsultan.com/images/logo.png',
       gridArea: service.id,
       size,
       type: service.id === 'eap-improve' ? ('hero' as const) : ('feature' as const),

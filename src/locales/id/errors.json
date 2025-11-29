@@ -22,7 +22,6 @@
   },
   "loading": {
     "quiz": "Memuat kuis...",
-    "organization": "Memuat data organisasi...",
     "profile": "Memuat profil...",
     "users": "Memuat pengguna...",
     "services": "Memuat layanan...",
@@ -36,7 +35,6 @@
     "noResultsToDisplay": "Tidak ada hasil untuk ditampilkan.",
     "noQuizzes": "Tidak ada kuis tersedia",
     "noUsers": "Tidak ada pengguna ditemukan",
-    "noOrganizations": "Tidak ada organisasi ditemukan",
     "noServices": "Tidak ada layanan ditemukan"
   },
   "generic": {

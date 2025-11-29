@@ -20,7 +20,6 @@ export function useRecentPages() {
   const getRouteIcon = (path: string): string => {
     if (path.includes('/dashboard/admin')) return 'settings'
     if (path.includes('/dashboard/users')) return 'users'
-    if (path.includes('/dashboard/organizations')) return 'building'
     if (path.includes('/dashboard/assessments')) return 'clipboard'
     if (path.includes('/dashboard/profile')) return 'user'
     if (path.includes('/dashboard')) return 'dashboard'
@@ -37,9 +36,7 @@ export function useRecentPages() {
 
     // Fallback titles based on path
     if (path.includes('/dashboard/admin/create-user')) return t('pages.createUser', 'Create User')
-    if (path.includes('/dashboard/admin/create-organization')) return t('pages.createOrganization', 'Create Organization')
     if (path.includes('/dashboard/users')) return t('pages.userManagement', 'User Management')
-    if (path.includes('/dashboard/organizations')) return t('pages.organizationManagement', 'Organizations')
     if (path.includes('/dashboard/assessments')) return t('pages.assessments', 'Assessments')
     if (path.includes('/dashboard/profile')) return t('pages.profile', 'Profile')
     if (path.includes('/dashboard')) return t('pages.dashboard', 'Dashboard')

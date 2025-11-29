@@ -1,9 +1,9 @@
 {
   "services": [
     {
-      "id": "eap-improve",
-      "slug": "eap-improve",
-      "title": "EAP Improve",
+      "id": "improve-care",
+      "slug": "improve-care",
+      "title": "Improve Care",
       "description": "Comprehensive Employee Assistance Program designed to support your workforce's mental health and well-being",
       "iconName": "Heart",
       "features": [

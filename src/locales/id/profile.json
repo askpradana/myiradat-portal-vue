@@ -7,13 +7,6 @@
     "verified": "Terverifikasi",
     "invalidDate": "Tanggal tidak valid"
   },
-  "organization": {
-    "memberOf": "Anggota {name}",
-    "ariaLabel": "Organisasi: {name}",
-    "personal": "Pribadi",
-    "personalAccount": "Akun pribadi",
-    "personalAriaLabel": "Akun pribadi - tidak tergabung dengan organisasi"
-  },
   "actions": {
     "loadingProfile": "Memuat data profil",
     "retryLoading": "Coba muat ulang data profil",
