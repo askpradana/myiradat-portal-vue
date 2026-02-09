@@ -64,6 +64,10 @@
     "refresh": "Segarkan",
     "refreshing": "Menyegarkan"
   },
+  "theme": {
+    "switchToDark": "Beralih ke mode gelap",
+    "switchToLight": "Beralih ke mode terang"
+  },
   "logout": {
     "logout": "Keluar",
     "cancel": "Batal",

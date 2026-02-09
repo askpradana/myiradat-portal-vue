@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
+import { i18n } from '@/i18n'
 
 export interface RecentPage {
   path: string
@@ -14,7 +14,7 @@ const MAX_RECENT_PAGES = 5
 
 export function useRecentPages() {
   const router = useRouter()
-  const { t } = useI18n()
+  const t = i18n.global.t
 
   // Get icon based on route path
   const getRouteIcon = (path: string): string => {
