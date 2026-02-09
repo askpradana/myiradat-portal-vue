@@ -44,14 +44,6 @@ export function useI18nValidation() {
       required: () => t('validation.role.required'),
     },
 
-    // Organization validation
-    organization: {
-      nameRequired: () => t('validation.organization.nameRequired'),
-      industryRequired: () => t('validation.organization.industryRequired'),
-      sizeRequired: () => t('validation.organization.sizeRequired'),
-      emailRequired: () => t('validation.organization.emailRequired'),
-      phoneRequired: () => t('validation.organization.phoneRequired'),
-    },
 
     // Batch validation
     batch: {

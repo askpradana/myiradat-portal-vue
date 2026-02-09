@@ -13,28 +13,42 @@ export function useBentoAnimation(animationId?: string) {
   const activeSource = ref(0)
   const animationController = ref<AbortController | null>(null)
 
+  // Timing state for proper pause/resume
+  let startTime = 0
+  let pausedTime = 0
+
   const startAnimation = (sources: string[], interval = 2000) => {
     if (animationController.value) return // Already running
-    
+
     animationController.value = new AbortController()
     isAnimating.value = true
-    
+    startTime = Date.now()
+    pausedTime = 0
+
     const animate = () => {
       if (animationController.value?.signal.aborted) return
-      
+
       activeSource.value = (activeSource.value + 1) % sources.length
-      
-      // Schedule next animation
-      setTimeout(() => {
+
+      // Schedule next animation with precise timing
+      const timeoutId = setTimeout(() => {
         if (!animationController.value?.signal.aborted) {
           animate()
         }
       }, interval)
+
+      // Store timeout ID for proper cleanup
+      animationController.value.signal.addEventListener('abort', () => {
+        clearTimeout(timeoutId)
+      })
     }
-    
+
     // Start animation after initial delay
-    setTimeout(animate, interval)
-    
+    const initialTimeoutId = setTimeout(animate, interval)
+    animationController.value.signal.addEventListener('abort', () => {
+      clearTimeout(initialTimeoutId)
+    })
+
     // Store controller for cleanup if animationId provided
     if (animationId && animationController.value) {
       animationControllers.set(animationId, {
@@ -58,16 +72,55 @@ export function useBentoAnimation(animationId?: string) {
   }
 
   const pauseAnimation = () => {
-    if (animationController.value) {
+    if (animationController.value && isAnimating.value) {
+      pausedTime = Date.now()
       animationController.value.abort()
       animationController.value = null
+      isAnimating.value = false
     }
-    isAnimating.value = false
   }
 
   const resumeAnimation = (sources: string[], interval = 2000) => {
-    if (!animationController.value) {
-      startAnimation(sources, interval)
+    if (!animationController.value && !isAnimating.value) {
+      // Calculate remaining time in the current cycle if we were paused
+      let nextDelay = interval
+      if (pausedTime > 0 && startTime > 0) {
+        const elapsed = pausedTime - startTime
+        const cyclePosition = elapsed % interval
+        nextDelay = interval - cyclePosition
+
+        // Ensure minimum delay to prevent too rapid transitions
+        if (nextDelay < 100) {
+          nextDelay = interval
+        }
+      }
+
+      animationController.value = new AbortController()
+      isAnimating.value = true
+      startTime = Date.now() - (pausedTime > 0 ? (pausedTime - startTime) % interval : 0)
+
+      const animate = () => {
+        if (animationController.value?.signal.aborted) return
+
+        activeSource.value = (activeSource.value + 1) % sources.length
+
+        // Schedule next animation with consistent timing
+        const timeoutId = setTimeout(() => {
+          if (!animationController.value?.signal.aborted) {
+            animate()
+          }
+        }, interval)
+
+        animationController.value.signal.addEventListener('abort', () => {
+          clearTimeout(timeoutId)
+        })
+      }
+
+      // Start with calculated delay to maintain timing
+      const resumeTimeoutId = setTimeout(animate, nextDelay)
+      animationController.value.signal.addEventListener('abort', () => {
+        clearTimeout(resumeTimeoutId)
+      })
     }
   }
 

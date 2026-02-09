@@ -62,7 +62,7 @@ export function useServicesData() {
   const services = computed<ServiceWithIcons[]>(() => {
     return data.value.services.map((service: Service) => ({
       ...service,
-      icon: getIconComponent(service.iconName),
+      icon: 'https://improvecare.iradatkonsultan.com/images/logo.png',
       features: service.features.map(feature => ({
         ...feature,
         icon: getIconComponent(feature.iconName)

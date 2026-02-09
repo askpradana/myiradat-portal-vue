@@ -1,0 +1,60 @@
+{
+  "features": [
+    {
+      "id": "task-management",
+      "title": "Task Management",
+      "description": "Organize and prioritize tasks efficiently for your team's success.",
+      "icon": "clipboard-list",
+      "iconColor": "red"
+    },
+    {
+      "id": "real-time-updates",
+      "title": "Real-time Updates",
+      "description": "Stay informed with instant notifications on project progress.",
+      "icon": "zap",
+      "iconColor": "blue"
+    },
+    {
+      "id": "team-collaboration",
+      "title": "Team Collaboration",
+      "description": "Foster teamwork with integrated communication tools.",
+      "icon": "users",
+      "iconColor": "green"
+    },
+    {
+      "id": "goal-tracking",
+      "title": "Goal Tracking",
+      "description": "Set and monitor project milestones and objectives easily.",
+      "icon": "target",
+      "iconColor": "yellow"
+    },
+    {
+      "id": "analytics-dashboard",
+      "title": "Analytics Dashboard",
+      "description": "Gain insights with comprehensive project performance metrics.",
+      "icon": "bar-chart-3",
+      "iconColor": "purple"
+    },
+    {
+      "id": "resource-scheduling",
+      "title": "Resource Scheduling",
+      "description": "Optimize resource allocation for maximum efficiency.",
+      "icon": "calendar",
+      "iconColor": "orange"
+    },
+    {
+      "id": "client-communication",
+      "title": "Client Communication",
+      "description": "Streamline client interactions within the project platform.",
+      "icon": "message-circle",
+      "iconColor": "pink"
+    },
+    {
+      "id": "project-templates",
+      "title": "Project Templates",
+      "description": "Kickstart projects quickly with customizable templates.",
+      "icon": "file-text",
+      "iconColor": "gray"
+    }
+  ]
+}

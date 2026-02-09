@@ -30,7 +30,7 @@ export interface ServiceWithIcons {
   slug: string
   title: string
   description: string
-  icon: Component
+  icon: string
   features: Array<{
     icon: Component
     title: string

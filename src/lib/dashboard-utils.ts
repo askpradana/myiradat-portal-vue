@@ -22,9 +22,9 @@ export const getUserRole = (user: { role_id?: number } | null): UserRole => {
 
 // Define role-based tab access
 const ROLE_TAB_ACCESS: Record<UserRole, DashboardTab[]> = {
-  admin: ['dashboard', 'users', 'organizations', 'data', 'assessments', 'profile'],
+  admin: ['dashboard', 'users', 'data', 'assessments', 'profile'],
   user: ['dashboard', 'data', 'assessments', 'profile'],
-  cs: ['dashboard', 'users', 'organizations', 'data', 'assessments', 'profile']
+  cs: ['dashboard', 'users', 'data', 'assessments', 'profile']
 }
 
 // Check if tab is accessible for user role

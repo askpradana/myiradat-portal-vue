@@ -1,6 +1,4 @@
-export { default as AddMemberAlert } from './AddMemberAlert.vue'
 export { default as BaseConfirmationAlert } from './BaseConfirmationAlert.vue'
-export { default as DeleteOrganizationAlert } from './DeleteOrganizationAlert.vue'
 export { default as DeleteSessionAllAlert } from './DeleteSessionAllAlert.vue'
 export { default as DeleteSessionSpecificAlert } from './DeleteSessionSpecificAlert.vue'
 export { default as DeleteSessionSpecificByAdminAlert } from './DeleteSessionSpecificByAdminAlert.vue'

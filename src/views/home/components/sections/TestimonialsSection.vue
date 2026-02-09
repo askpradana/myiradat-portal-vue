@@ -1,5 +1,5 @@
 <template>
-  <section id="testimonials" class="py-20 bg-background">
+  <section id="testimonials" class="py-20 bg-testimonials-enhanced">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <!-- Section Header -->
       <div class="text-center mb-16">
@@ -9,11 +9,11 @@
           KISAH SUKSES PSIKOLOG PROFESIONAL
         </div>
         <h2 class="text-3xl md:text-4xl font-bold text-foreground mb-4">
-          Dipercaya psikolog terdepan Indonesia
+          Dipercaya psikolog Indonesia
         </h2>
         <p class="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Lihat bagaimana IRADAT telah mentransformasi praktik psikologi dan memberikan hasil
-          terukur untuk psikolog profesional di seluruh Indonesia.
+          Kami membantu membuka potensi penuh tim dengan menawarkan wawasan berbasis data dan solusi
+          pragmatis.
         </p>
       </div>
 

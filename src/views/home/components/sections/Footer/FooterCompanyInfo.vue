@@ -15,47 +15,31 @@
       <p>Jakarta 10430</p>
     </div>
 
-    <!-- Trust Indicators -->
-    <div class="mb-6">
-      <div class="flex flex-wrap items-center gap-4 mb-4">
-        <div class="flex items-center space-x-2">
-          <ShieldCheck class="w-4 h-4 text-green-600" />
-          <span class="text-sm text-muted-foreground">SOC 2 Certified</span>
-        </div>
-        <div class="flex items-center space-x-2">
-          <Lock class="w-4 h-4 text-blue-600" />
-          <span class="text-sm text-muted-foreground">ISO 27001</span>
-        </div>
-        <div class="flex items-center space-x-2">
-          <CheckCircle class="w-4 h-4 text-green-600" />
-          <span class="text-sm text-muted-foreground">GDPR Compliant</span>
-        </div>
-      </div>
-    </div>
-
     <!-- Social Links -->
-    <div class="flex space-x-4">
+    <div class="flex flex-col space-y-3">
       <a
         v-for="social in socialLinks"
         :key="social.name"
         :href="social.url"
-        class="text-muted-foreground hover:text-foreground transition-colors p-2 hover:bg-muted rounded-lg"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center space-x-2 text-muted-foreground hover:text-foreground transition-colors text-sm"
         :aria-label="social.name"
       >
-        <component :is="social.icon" class="w-5 h-5" />
+        <component :is="social.icon" class="w-4 h-4" />
+        <span>{{ social.name }}</span>
       </a>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import { ShieldCheck, Lock, CheckCircle } from 'lucide-vue-next'
+import { Instagram, Youtube, Linkedin } from 'lucide-vue-next'
 
 // Social media links
 const socialLinks = [
-  { name: 'Twitter', icon: 'twitter', url: 'https://twitter.com/iradat' },
-  { name: 'LinkedIn', icon: 'linkedin', url: 'https://linkedin.com/company/iradat' },
-  { name: 'GitHub', icon: 'github', url: 'https://github.com/iradat' },
-  { name: 'YouTube', icon: 'youtube', url: 'https://youtube.com/iradat' },
+  { name: 'Instagram', icon: Instagram, url: 'https://www.instagram.com/iradat.konsultan/' },
+  { name: 'YouTube', icon: Youtube, url: 'https://www.youtube.com/channel/UC0TkH_E4eqxmDzu6MvaSXYQ' },
+  { name: 'LinkedIn', icon: Linkedin, url: 'https://id.linkedin.com/company/iradatkonsultan' },
 ]
 </script>

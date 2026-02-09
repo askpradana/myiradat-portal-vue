@@ -1,81 +1,259 @@
 {
   "services": [
     {
-      "id": "eap-improve",
-      "title": "EAP Improve",
-      "subtitle": "24/7 Mental Wellness Support",
-      "description": "Professional mental health support for your workforce",
-      "icon": "heart",
-      "featured": true,
+      "id": "improve-care",
+      "title": "Improve Care",
       "category": "wellness",
-      "keyBenefits": [
-        "24/7 Professional Support",
-        "Confidential Counseling"
+      "featured": true,
+      "icon": "heart",
+      "animationConfig": {
+        "interval": 5000,
+        "animationType": "fade"
+      },
+      "variations": [
+        {
+          "id": "eap-consultation",
+          "subtitle": "Employee Assistance Program",
+          "description": "Comprehensive mental health support with licensed professionals for immediate crisis intervention and ongoing counseling",
+          "image": "/images/services/improve-care-eap.jpg",
+          "keyBenefits": [
+            "24/7 Crisis Hotline",
+            "Licensed Counselors",
+            "Confidential Services",
+            "Multi-language Support"
+          ],
+          "stats": {
+            "availability": "24/7",
+            "languages": "10+",
+            "responseTime": "< 2 minutes"
+          }
+        },
+        {
+          "id": "journaling-wellness",
+          "subtitle": "Digital Wellness Platform",
+          "description": "Interactive journaling tools and mindfulness resources designed to promote daily mental wellness and emotional regulation",
+          "image": "/images/services/improve-care-journaling.jpg",
+          "keyBenefits": [
+            "Guided Journaling",
+            "Mood Tracking",
+            "Mindfulness Exercises",
+            "Progress Analytics"
+          ],
+          "stats": {
+            "dailyUsers": "5000+",
+            "moodImprovement": "85%",
+            "exercises": "200+"
+          }
+        },
+        {
+          "id": "wellbeing-programs",
+          "subtitle": "Corporate Wellbeing",
+          "description": "Holistic workplace wellness programs focusing on stress management, work-life balance, and team mental health",
+          "image": "/images/services/improve-care-wellbeing.jpg",
+          "keyBenefits": [
+            "Stress Management",
+            "Team Workshops",
+            "Wellbeing Assessments",
+            "Manager Training"
+          ],
+          "stats": {
+            "programsDelivered": "500+",
+            "participantSatisfaction": "94%",
+            "stressReduction": "72%"
+          }
+        }
       ]
     },
     {
       "id": "learning-development",
       "title": "Learning & Development",
-      "subtitle": "Unlock Team Potential",
-      "description": "Custom training programs that drive growth",
-      "icon": "graduation-cap",
-      "featured": false,
       "category": "training",
-      "keyBenefits": [
-        "Customized Training",
-        "Skill Enhancement"
+      "featured": false,
+      "icon": "graduation-cap",
+      "animationConfig": {
+        "interval": 4500,
+        "animationType": "slideUp"
+      },
+      "variations": [
+        {
+          "id": "ilearning-platform",
+          "subtitle": "iLearning Digital Platform",
+          "description": "Comprehensive e-learning ecosystem with AI-powered personalized learning paths and interactive content delivery",
+          "image": "/images/services/lnd-ilearning.jpg",
+          "keyBenefits": [
+            "AI-Powered Learning",
+            "Mobile Compatible",
+            "Progress Tracking",
+            "Certification Programs"
+          ],
+          "stats": {
+            "courses": "1000+",
+            "completionRate": "89%",
+            "learners": "25000+"
+          }
+        },
+        {
+          "id": "coaching-mentoring",
+          "subtitle": "Professional Coaching",
+          "description": "One-on-one executive coaching and structured mentoring programs designed to accelerate leadership development",
+          "image": "/images/services/lnd-coaching.jpg",
+          "keyBenefits": [
+            "Executive Coaching",
+            "Leadership Development",
+            "360° Feedback",
+            "Goal Achievement"
+          ],
+          "stats": {
+            "coaches": "200+",
+            "successRate": "92%",
+            "sessions": "10000+"
+          }
+        },
+        {
+          "id": "custom-training",
+          "subtitle": "Custom Training Solutions",
+          "description": "Tailored training programs designed specifically for your organization's needs, culture, and strategic objectives",
+          "image": "/images/services/lnd-training.jpg",
+          "keyBenefits": [
+            "Customized Content",
+            "Expert Facilitators",
+            "Blended Learning",
+            "ROI Measurement"
+          ],
+          "stats": {
+            "programs": "300+",
+            "industries": "50+",
+            "satisfaction": "96%"
+          }
+        }
       ]
     },
     {
       "id": "evaluation-assessment",
       "title": "Evaluation & Assessment",
-      "subtitle": "Hire with Confidence",
-      "description": "Science-backed talent evaluation and selection",
-      "icon": "clipboard-check",
-      "featured": false,
       "category": "assessment",
-      "keyBenefits": [
-        "Objective Selection",
-        "Reduced Turnover"
+      "featured": false,
+      "icon": "clipboard-check",
+      "animationConfig": {
+        "interval": 5000,
+        "animationType": "scaleRotate"
+      },
+      "variations": [
+        {
+          "id": "intact-assessment",
+          "subtitle": "INTACT Personality Assessment",
+          "description": "Comprehensive personality and behavioral assessment tool for recruitment, development, and team optimization",
+          "image": "/images/services/assessment-intact.jpg",
+          "keyBenefits": [
+            "Personality Insights",
+            "Behavioral Prediction",
+            "Team Compatibility",
+            "Cultural Fit Analysis"
+          ],
+          "stats": {
+            "accuracy": "94%",
+            "assessments": "100000+",
+            "predictiveValidity": "0.85"
+          }
+        },
+        {
+          "id": "ipro-business",
+          "subtitle": "iPro Business Solutions",
+          "description": "Advanced psychometric assessments for leadership potential, decision-making, and business acumen evaluation",
+          "image": "/images/services/assessment-ipro-business.jpg",
+          "keyBenefits": [
+            "Leadership Assessment",
+            "Business Acumen",
+            "Decision Making",
+            "Strategic Thinking"
+          ],
+          "stats": {
+            "leadershipAccuracy": "91%",
+            "businessMetrics": "15+",
+            "companies": "500+"
+          }
+        },
+        {
+          "id": "ipro-student",
+          "subtitle": "iPro Student Assessment",
+          "description": "Specialized assessment tools for academic institutions and early career professionals to identify potential and guide development",
+          "image": "/images/services/assessment-ipro-student.jpg",
+          "keyBenefits": [
+            "Academic Potential",
+            "Career Guidance",
+            "Skill Mapping",
+            "Development Planning"
+          ],
+          "stats": {
+            "students": "50000+",
+            "universities": "100+",
+            "careerMatching": "88%"
+          }
+        }
       ]
     },
     {
       "id": "lhh",
       "title": "LHH Solutions",
-      "subtitle": "Global Talent Expertise",
-      "description": "Career transition and leadership consulting",
-      "icon": "building",
-      "featured": false,
       "category": "consulting",
-      "keyBenefits": [
-        "Global Network",
-        "Expert Consulting"
-      ]
-    },
-    {
-      "id": "iradat-go",
-      "title": "Iradat Go",
-      "subtitle": "Mobile Assessment Platform",
-      "description": "Psychological assessments on your smartphone",
-      "icon": "smartphone",
       "featured": false,
-      "category": "mobile",
-      "keyBenefits": [
-        "Mobile Access",
-        "Instant Results"
-      ]
-    },
-    {
-      "id": "iradat-profiling",
-      "title": "Iradat Profiling",
-      "subtitle": "Deep Psychological Insights",
-      "description": "Advanced personality and behavioral profiling",
-      "icon": "user",
-      "featured": false,
-      "category": "profiling",
-      "keyBenefits": [
-        "Behavioral Analysis",
-        "Personal Development"
+      "icon": "building",
+      "animationConfig": {
+        "interval": 6200,
+        "animationType": "fade"
+      },
+      "variations": [
+        {
+          "id": "career-transition",
+          "subtitle": "Career Transition Services",
+          "description": "Global outplacement and career transition support helping individuals navigate job changes with dignity and confidence",
+          "image": "/images/services/lhh-career-transition.jpg",
+          "keyBenefits": [
+            "Outplacement Support",
+            "Career Coaching",
+            "Resume Optimization",
+            "Interview Preparation"
+          ],
+          "stats": {
+            "transitionSuccess": "89%",
+            "averagePlacement": "4.2 months",
+            "globalReach": "60 countries"
+          }
+        },
+        {
+          "id": "leadership-development",
+          "subtitle": "Leadership Development",
+          "description": "Comprehensive leadership development programs designed to build next-generation leaders and organizational capability",
+          "image": "/images/services/lhh-leadership.jpg",
+          "keyBenefits": [
+            "Leadership Training",
+            "Succession Planning",
+            "Executive Coaching",
+            "Organizational Development"
+          ],
+          "stats": {
+            "leaders": "25000+",
+            "promotionRate": "78%",
+            "engagementIncrease": "65%"
+          }
+        },
+        {
+          "id": "global-network",
+          "subtitle": "Global Talent Network",
+          "description": "Access to LHH's worldwide network of talent solutions, connecting Indonesian organizations with global best practices",
+          "image": "/images/services/lhh-global.jpg",
+          "keyBenefits": [
+            "Global Expertise",
+            "Best Practices",
+            "International Network",
+            "Cultural Intelligence"
+          ],
+          "stats": {
+            "countries": "60",
+            "consultants": "4000+",
+            "languages": "40+"
+          }
+        }
       ]
     }
   ]

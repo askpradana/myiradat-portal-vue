@@ -9,10 +9,8 @@
     "username": "Username",
     "phone": "Phone Number",
     "role": "Role",
-    "organization": "Organization",
     "industry": "Industry",
     "description": "Description",
-    "size": "Organization Size",
     "status": "Status",
     "contactEmail": "Contact Email",
     "contactPhone": "Contact Phone",
@@ -42,13 +40,10 @@
     "quickSearch": "Quick search by name or email...",
     "searchServices": "Search services by name or code...",
     "searchUsers": "Search user by username...",
-    "searchOrganization": "Search organization...",
     "searchQuizzes": "Search quizzes...",
     "searchTerm": "Enter search term...",
     "enterIndustry": "Enter industry...",
-    "enterOrganizationName": "Enter organization name",
     "industryExample": "e.g. Technology, Healthcare",
-    "describeOrganization": "Describe your organization",
     "contactEmailExample": "contact email",
     "phoneExample": "+1234567890",
     "websiteExample": "https://website.com",
@@ -67,8 +62,6 @@
   "options": {
     "selectRole": "Select role",
     "chooseRole": "Choose a role",
-    "selectOrganizationSize": "Select organization size",
-    "selectOrganizationStatus": "Select organization status",
     "selectField": "Select field",
     "selectSize": "Select size",
     "selectStatus": "Select status",
@@ -81,10 +74,6 @@
   "titles": {
     "createAccount": "Create Account",
     "resetPassword": "Reset Password",
-    "createNewOrganization": "Create New Organization",
     "filterUsers": "Filter Users",
-    "filterOrganizations": "Filter Organizations",
-    "organizationDetail": "Organization detail",
-    "updateDataOrganization": "Update data organization"
   }
 }

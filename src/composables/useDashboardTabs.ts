@@ -70,12 +70,6 @@ export function useDashboardTabs(options: DashboardTabsOptions): DashboardTabsRe
       icon: 'Users',
       requiresAdmin: true,
     },
-    organizations: {
-      id: 'organizations',
-      label: 'Organization Management',
-      icon: 'Building',
-      requiresAdmin: true,
-    },
     data: {
       id: 'data',
       label: 'Data',

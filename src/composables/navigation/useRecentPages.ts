@@ -1,6 +1,6 @@
 import { ref, computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
+import { i18n } from '@/i18n'
 
 export interface RecentPage {
   path: string
@@ -14,13 +14,12 @@ const MAX_RECENT_PAGES = 5
 
 export function useRecentPages() {
   const router = useRouter()
-  const { t } = useI18n()
+  const t = i18n.global.t
 
   // Get icon based on route path
   const getRouteIcon = (path: string): string => {
     if (path.includes('/dashboard/admin')) return 'settings'
     if (path.includes('/dashboard/users')) return 'users'
-    if (path.includes('/dashboard/organizations')) return 'building'
     if (path.includes('/dashboard/assessments')) return 'clipboard'
     if (path.includes('/dashboard/profile')) return 'user'
     if (path.includes('/dashboard')) return 'dashboard'
@@ -37,9 +36,7 @@ export function useRecentPages() {
 
     // Fallback titles based on path
     if (path.includes('/dashboard/admin/create-user')) return t('pages.createUser', 'Create User')
-    if (path.includes('/dashboard/admin/create-organization')) return t('pages.createOrganization', 'Create Organization')
     if (path.includes('/dashboard/users')) return t('pages.userManagement', 'User Management')
-    if (path.includes('/dashboard/organizations')) return t('pages.organizationManagement', 'Organizations')
     if (path.includes('/dashboard/assessments')) return t('pages.assessments', 'Assessments')
     if (path.includes('/dashboard/profile')) return t('pages.profile', 'Profile')
     if (path.includes('/dashboard')) return t('pages.dashboard', 'Dashboard')

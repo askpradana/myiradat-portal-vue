@@ -23,13 +23,6 @@
   "role": {
     "required": "Role selection is required"
   },
-  "organization": {
-    "nameRequired": "Organization name is required",
-    "industryRequired": "Industry is required",
-    "sizeRequired": "Organization size is required",
-    "emailRequired": "Contact email is required",
-    "phoneRequired": "Contact phone is required"
-  },
   "batch": {
     "atLeastOneUser": "At least one user is required",
     "invalidCSV": "Invalid CSV format",

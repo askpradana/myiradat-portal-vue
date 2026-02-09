@@ -9,7 +9,8 @@ export function useContactActions() {
   const openEmail = (email: string = 'support@iradat.com') => {
     try {
       window.open(`mailto:${email}`, '_blank')
-    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       // Error logged
     }
   }
@@ -17,13 +18,14 @@ export function useContactActions() {
   const openPhone = (phone: string = '+62-XXX-XXXX-XXXX') => {
     try {
       window.open(`tel:${phone}`, '_self')
-    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       // Error logged
     }
   }
 
   const goToContactPage = () => {
-    router.push('/contact-us')
+    router.push('/contact')
   }
 
   const handleContactAction = (action: ContactAction) => {
@@ -45,7 +47,7 @@ export function useContactActions() {
         case 'chat':
           break
         default:
-          // Warning logged
+        // Warning logged
       }
     } finally {
       setTimeout(() => {
@@ -59,6 +61,6 @@ export function useContactActions() {
     openEmail,
     openPhone,
     goToContactPage,
-    handleContactAction
+    handleContactAction,
   }
 }

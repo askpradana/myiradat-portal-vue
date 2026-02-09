@@ -3,7 +3,7 @@ import { ref } from 'vue'
 declare global {
   interface Window {
     umami?: {
-      track: (event: string, data?: Record<string, any>) => void
+      track: (event: string, data?: Record<string, unknown>) => void
     }
   }
 }
@@ -85,7 +85,7 @@ export function useUmami() {
     }
   }
 
-  const trackEvent = (event: string, data?: Record<string, any>) => {
+  const trackEvent = (event: string, data?: Record<string, unknown>) => {
     if (!isInitialized.value || !window.umami) {
       console.warn('Umami is not initialized or not loaded')
       return
@@ -105,7 +105,7 @@ export function useUmami() {
     }
 
     try {
-      const eventData: Record<string, any> = {}
+      const eventData: Record<string, unknown> = {}
       if (path) eventData.path = path
       if (title) eventData.title = title
 

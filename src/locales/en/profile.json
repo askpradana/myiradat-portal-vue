@@ -7,13 +7,6 @@
     "verified": "Verified",
     "invalidDate": "Invalid date"
   },
-  "organization": {
-    "memberOf": "Member of {name}",
-    "ariaLabel": "Organization: {name}",
-    "personal": "Personal",
-    "personalAccount": "Personal account",
-    "personalAriaLabel": "Personal account - not affiliated with an organization"
-  },
   "actions": {
     "loadingProfile": "Loading profile data",
     "retryLoading": "Retry loading profile data",

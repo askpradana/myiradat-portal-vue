@@ -23,13 +23,6 @@
   "role": {
     "required": "Pemilihan peran wajib diisi"
   },
-  "organization": {
-    "nameRequired": "Nama organisasi wajib diisi",
-    "industryRequired": "Industri wajib diisi",
-    "sizeRequired": "Ukuran organisasi wajib diisi",
-    "emailRequired": "Email kontak wajib diisi",
-    "phoneRequired": "Telepon kontak wajib diisi"
-  },
   "batch": {
     "atLeastOneUser": "Setidaknya satu pengguna diperlukan",
     "invalidCSV": "Format CSV tidak valid",
