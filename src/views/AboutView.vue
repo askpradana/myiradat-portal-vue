@@ -5,11 +5,24 @@
 
     <!-- Hero Section -->
     <section
-      class="relative overflow-hidden bg-gradient-to-br from-background via-card/30 to-background py-20 mt-8"
+      class="relative overflow-hidden bg-gradient-to-br from-background via-primary/5 to-background py-20 mt-8"
     >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Subtle background elements for visual interest -->
+      <div class="absolute inset-0 opacity-40">
+        <div class="absolute top-20 left-10 w-32 h-32 bg-primary/8 rounded-full blur-xl"></div>
+        <div class="absolute bottom-20 right-10 w-40 h-40 bg-primary/5 rounded-full blur-xl"></div>
+        <div
+          class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-primary/3 rounded-full blur-lg"
+        ></div>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center max-w-3xl mx-auto">
-          <h1 class="text-4xl sm:text-5xl font-bold mb-6">About Iradat</h1>
+          <h1
+            class="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent"
+          >
+            About Iradat
+          </h1>
           <p class="text-xl text-muted-foreground">
             Pioneering psychological assessment and human resource solutions across Indonesia
           </p>
@@ -24,28 +37,28 @@
           <div>
             <h2 class="text-3xl font-bold mb-6">Our Story</h2>
             <p class="text-lg text-muted-foreground mb-6">
-              Founded with a mission to revolutionize psychological assessment and human resource
-              management in Indonesia, Iradat has become a trusted partner for organizations seeking
-              to understand and develop their most valuable asset - their people.
+              Didirikan pada 1983 oleh sekelompok psikolog lulusan Universitas Indonesia dengan
+              tujuan untuk memecahkan berbagai masalah adlam mengelola dan meningkatkan kualitas
+              Sumber Daya Manusia.
             </p>
             <p class="text-lg text-muted-foreground mb-6">
-              With over a decade of experience, we've helped thousands of organizations make
-              informed decisions about talent acquisition, development, and management through
-              scientifically validated assessment tools and expert consultation.
+              Dengan berbagai macam keahlian dan sertifikasi seperti Myer-Briggs type indicator,
+              personal profile analysis, Hypnotheraphy, Eye Movement Desensitization Reprocessing,
+              dan berbagai macam teknik psikologi lainnya.
             </p>
             <div class="flex items-center space-x-8">
               <div class="text-center">
-                <div class="text-3xl font-bold text-primary">300+</div>
+                <div class="text-3xl font-bold text-primary">100+</div>
                 <div class="text-sm text-muted-foreground">Trusted Psychologists</div>
               </div>
               <div class="text-center">
-                <div class="text-3xl font-bold text-primary">10+</div>
+                <div class="text-3xl font-bold text-primary">40+</div>
                 <div class="text-sm text-muted-foreground">Years Experience</div>
               </div>
-              <div class="text-center">
+              <!-- <div class="text-center">
                 <div class="text-3xl font-bold text-primary">1000+</div>
                 <div class="text-sm text-muted-foreground">Organizations Served</div>
-              </div>
+              </div> -->
             </div>
           </div>
           <div class="bg-gradient-to-br from-primary/10 to-primary/5 rounded-2xl p-8">
@@ -107,44 +120,76 @@
         </div>
 
         <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-          <div class="text-center">
+          <div
+            class="text-center group hover:scale-105 transition-all duration-300 p-4 rounded-xl hover:bg-blue-50/50 dark:hover:bg-blue-950/20"
+          >
             <div
-              class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4"
+              class="w-12 h-12 bg-gradient-to-br from-blue-500/10 to-blue-600/15 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:from-blue-500/20 group-hover:to-blue-600/25 transition-all duration-300 shadow-sm group-hover:shadow-blue-100 dark:group-hover:shadow-blue-950/50"
             >
-              <Award class="w-6 h-6 text-primary" />
+              <Award
+                class="w-6 h-6 text-blue-600 group-hover:scale-110 transition-transform duration-300"
+              />
             </div>
-            <h3 class="text-xl font-semibold mb-3">Excellence</h3>
+            <h3
+              class="text-xl font-semibold mb-3 group-hover:text-blue-700 dark:group-hover:text-blue-300 transition-colors"
+            >
+              Excellence
+            </h3>
             <p class="text-muted-foreground">
               Committed to delivering the highest quality services and solutions
             </p>
           </div>
-          <div class="text-center">
+          <div
+            class="text-center group hover:scale-105 transition-all duration-300 p-4 rounded-xl hover:bg-emerald-50/50 dark:hover:bg-emerald-950/20"
+          >
             <div
-              class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4"
+              class="w-12 h-12 bg-gradient-to-br from-emerald-500/10 to-emerald-600/15 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:from-emerald-500/20 group-hover:to-emerald-600/25 transition-all duration-300 shadow-sm group-hover:shadow-emerald-100 dark:group-hover:shadow-emerald-950/50"
             >
-              <Brain class="w-6 h-6 text-primary" />
+              <Brain
+                class="w-6 h-6 text-emerald-600 group-hover:scale-110 transition-transform duration-300"
+              />
             </div>
-            <h3 class="text-xl font-semibold mb-3">Innovation</h3>
+            <h3
+              class="text-xl font-semibold mb-3 group-hover:text-emerald-700 dark:group-hover:text-emerald-300 transition-colors"
+            >
+              Innovation
+            </h3>
             <p class="text-muted-foreground">Continuously advancing our methods and technologies</p>
           </div>
-          <div class="text-center">
+          <div
+            class="text-center group hover:scale-105 transition-all duration-300 p-4 rounded-xl hover:bg-amber-50/50 dark:hover:bg-amber-950/20"
+          >
             <div
-              class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4"
+              class="w-12 h-12 bg-gradient-to-br from-amber-500/10 to-amber-600/15 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:from-amber-500/20 group-hover:to-amber-600/25 transition-all duration-300 shadow-sm group-hover:shadow-amber-100 dark:group-hover:shadow-amber-950/50"
             >
-              <Shield class="w-6 h-6 text-primary" />
+              <Shield
+                class="w-6 h-6 text-amber-600 group-hover:scale-110 transition-transform duration-300"
+              />
             </div>
-            <h3 class="text-xl font-semibold mb-3">Integrity</h3>
+            <h3
+              class="text-xl font-semibold mb-3 group-hover:text-amber-700 dark:group-hover:text-amber-300 transition-colors"
+            >
+              Integrity
+            </h3>
             <p class="text-muted-foreground">
               Maintaining the highest ethical standards in all our practices
             </p>
           </div>
-          <div class="text-center">
+          <div
+            class="text-center group hover:scale-105 transition-all duration-300 p-4 rounded-xl hover:bg-rose-50/50 dark:hover:bg-rose-950/20"
+          >
             <div
-              class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mx-auto mb-4"
+              class="w-12 h-12 bg-gradient-to-br from-rose-500/10 to-rose-600/15 rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:from-rose-500/20 group-hover:to-rose-600/25 transition-all duration-300 shadow-sm group-hover:shadow-rose-100 dark:group-hover:shadow-rose-950/50"
             >
-              <Heart class="w-6 h-6 text-primary" />
+              <Heart
+                class="w-6 h-6 text-rose-600 group-hover:scale-110 transition-transform duration-300"
+              />
             </div>
-            <h3 class="text-xl font-semibold mb-3">Empathy</h3>
+            <h3
+              class="text-xl font-semibold mb-3 group-hover:text-rose-700 dark:group-hover:text-rose-300 transition-colors"
+            >
+              Empathy
+            </h3>
             <p class="text-muted-foreground">
               Understanding and caring for the human side of business
             </p>
@@ -170,7 +215,10 @@
               <h3 class="text-2xl font-bold mb-2">
                 {{ teamCategories[teamKey as keyof typeof teamCategories] }}
               </h3>
-              <div class="w-16 h-1 bg-primary mx-auto rounded-full"></div>
+              <div
+                class="w-16 h-1 mx-auto rounded-full"
+                :class="getTeamCategoryColor(teamKey)"
+              ></div>
             </div>
 
             <!-- Team Members Grid -->
@@ -185,10 +233,10 @@
               <div
                 v-for="member in members"
                 :key="member.email"
-                class="bg-background rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-shadow"
+                class="bg-background rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-all duration-300 group hover:scale-[1.02] border border-transparent hover:border-primary/10"
               >
                 <div
-                  class="w-24 h-24 rounded-full mx-auto mb-4 overflow-hidden ring-2 ring-primary/10"
+                  class="w-24 h-24 rounded-full mx-auto mb-4 overflow-hidden ring-2 ring-primary/10 group-hover:ring-primary/30 transition-all duration-300"
                 >
                   <img
                     :src="member.image"
@@ -261,5 +309,18 @@ const teamCategories = {
   lnd: 'Learning & Development',
   hr: 'Human Resources',
   esas: 'Employee Satisfaction & Assessment Specialists',
+}
+
+// Team category color mapping
+const getTeamCategoryColor = (teamKey: string) => {
+  const colors: Record<string, string> = {
+    director: 'bg-gradient-to-r from-primary to-primary/70',
+    eap: 'bg-gradient-to-r from-blue-500 to-blue-400',
+    lhh: 'bg-gradient-to-r from-emerald-500 to-emerald-400',
+    lnd: 'bg-gradient-to-r from-amber-500 to-amber-400',
+    hr: 'bg-gradient-to-r from-rose-500 to-rose-400',
+    esas: 'bg-gradient-to-r from-purple-500 to-purple-400',
+  }
+  return colors[teamKey] || 'bg-primary'
 }
 </script>
