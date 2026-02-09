@@ -70,11 +70,11 @@ const companyLinks = [
 ]
 
 const supportLinks = [
-  { label: 'Help Center', href: '/contact-us' },
-  { label: 'Documentation', href: '/contact-us' },
-  { label: 'API Reference', href: '/contact-us' },
-  { label: 'Community Forum', href: '/contact-us' },
-  { label: 'Contact Support', href: '/contact-us' },
+  { label: 'Help Center', href: '/contact' },
+  { label: 'Documentation', href: '/contact' },
+  { label: 'API Reference', href: '/contact' },
+  { label: 'Community Forum', href: '/contact' },
+  { label: 'Contact Support', href: '/contact' },
 ]
 
 const legalLinks = [

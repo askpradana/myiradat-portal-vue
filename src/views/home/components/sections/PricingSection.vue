@@ -301,6 +301,6 @@ const purchasePro = () => {
 }
 
 const contactSales = () => {
-  router.push('/contact-us')
+  router.push('/contact')
 }
 </script>

@@ -16,7 +16,7 @@ const SPA_ROUTES = [
   // Public routes
   '/book-demo',
   '/case-studies',
-  '/contact-us',
+  '/contact',
   '/about',
   '/articles',
   '/contact',
@@ -34,7 +34,7 @@ const SPA_ROUTES = [
   '/dashboard/admin/create-user-batch',
 
   // Quiz routes
-  '/quiz'
+  '/quiz',
 ]
 
 // Route patterns that should be validated dynamically
@@ -44,7 +44,7 @@ const DYNAMIC_ROUTE_PATTERNS = [
   /^\/dashboard\/[^\/]+\/services$/, // /dashboard/:id/services
   /^\/dashboard\/admin\/users\/[^\/]+\/profile$/, // /dashboard/admin/users/:id/profile
   /^\/quiz\/[^\/]+$/, // /quiz/:id
-  /^\/quiz\/[^\/]+\/results$/ // /quiz/:id/results
+  /^\/quiz\/[^\/]+\/results$/, // /quiz/:id/results
 ]
 
 function isValidSPARoute(pathname: string): boolean {
@@ -54,7 +54,7 @@ function isValidSPARoute(pathname: string): boolean {
   }
 
   // Check dynamic route patterns
-  return DYNAMIC_ROUTE_PATTERNS.some(pattern => pattern.test(pathname))
+  return DYNAMIC_ROUTE_PATTERNS.some((pattern) => pattern.test(pathname))
 }
 
 async function serveStatic(pathname: string): Promise<Response | null> {
@@ -80,7 +80,7 @@ async function serveStatic(pathname: string): Promise<Response | null> {
         '.woff': 'font/woff',
         '.woff2': 'font/woff2',
         '.ttf': 'font/ttf',
-        '.eot': 'application/vnd.ms-fontobject'
+        '.eot': 'application/vnd.ms-fontobject',
       }
 
       const contentType = mimeTypes[ext] || 'application/octet-stream'
@@ -88,8 +88,8 @@ async function serveStatic(pathname: string): Promise<Response | null> {
       return new Response(fileObj, {
         headers: {
           'Content-Type': contentType,
-          'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=31536000'
-        }
+          'Cache-Control': ext === '.html' ? 'no-cache' : 'public, max-age=31536000',
+        },
       })
     }
   } catch (error) {
@@ -125,13 +125,16 @@ const server = Bun.serve({
       } else {
         // Invalid route - return hard 404
         console.log(`❌ Hard 404 for invalid route: ${pathname}`)
-        return new Response('<!DOCTYPE html><html><head><title>404 Not Found</title><style>body{font-family:Arial,sans-serif;text-align:center;padding:50px;background:#f5f5f5}h1{color:#e74c3c;font-size:48px;margin:0}p{font-size:18px;color:#666;margin:20px 0}a{color:#3498db;text-decoration:none}a:hover{text-decoration:underline}</style></head><body><h1>404</h1><p>The page you are looking for does not exist.</p><p><a href="/">Go back to homepage</a></p></body></html>', {
-          status: 404,
-          headers: {
-            'Content-Type': 'text/html',
-            'Cache-Control': 'no-cache'
-          }
-        })
+        return new Response(
+          '<!DOCTYPE html><html><head><title>404 Not Found</title><style>body{font-family:Arial,sans-serif;text-align:center;padding:50px;background:#f5f5f5}h1{color:#e74c3c;font-size:48px;margin:0}p{font-size:18px;color:#666;margin:20px 0}a{color:#3498db;text-decoration:none}a:hover{text-decoration:underline}</style></head><body><h1>404</h1><p>The page you are looking for does not exist.</p><p><a href="/">Go back to homepage</a></p></body></html>',
+          {
+            status: 404,
+            headers: {
+              'Content-Type': 'text/html',
+              'Cache-Control': 'no-cache',
+            },
+          },
+        )
       }
     }
 
@@ -141,7 +144,7 @@ const server = Bun.serve({
   error(error) {
     console.error('Server error:', error)
     return new Response('Internal Server Error', { status: 500 })
-  }
+  },
 })
 
 console.log(`🚀 Production server running at http://localhost:${server.port}`)

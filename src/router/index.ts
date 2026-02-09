@@ -68,20 +68,42 @@ const publicRoutes: RouteRecordRaw[] = [
     () => import('@/views/CaseStudiesView.vue'),
     'Case Studies',
   ),
-  createRoute(
-    '/contact-us',
-    'contact-us',
-    () => import('@/views/ContactUsView.vue'),
-    'Contact Us',
-  ),
   // New navigation pages
   createRoute('/about', 'about', () => import('@/views/AboutView.vue'), 'About Us'),
   createRoute('/articles', 'articles', () => import('@/views/ArticlesView.vue'), 'Articles'),
-  createRoute('/articles/:slug', 'article-detail', () => import('@/views/ArticleView.vue'), 'Article'),
+  createRoute(
+    '/articles/:slug',
+    'article-detail',
+    () => import('@/views/ArticleView.vue'),
+    'Article',
+  ),
   createRoute('/contact', 'contact', () => import('@/views/ContactView.vue'), 'Contact'),
   // Solutions and services pages
   createRoute('/solutions', 'solutions', () => import('@/views/SolutionsView.vue'), 'Solutions'),
-  createRoute('/services/:slug', 'service-detail', () => import('@/views/services/ServiceView.vue'), 'Service Detail'),
+  createRoute(
+    '/services/:slug',
+    'service-detail',
+    () => import('@/views/services/ServiceView.vue'),
+    'Service Detail',
+  ),
+  // Legal pages
+  createRoute(
+    '/privacy',
+    'privacy',
+    () => import('@/views/PrivacyPolicyView.vue'),
+    'Privacy Policy',
+  ),
+  createRoute(
+    '/terms',
+    'terms',
+    () => import('@/views/TermsOfServiceView.vue'),
+    'Terms of Service',
+  ),
+  // Redirect contact-us to contact
+  {
+    path: '/contact-us',
+    redirect: '/contact',
+  },
 ]
 
 const guestOnlyRoutes: RouteRecordRaw[] = [
@@ -103,7 +125,12 @@ const protectedRoutes: RouteRecordRaw[] = [
   // Clean dashboard tab routes
   createProtectedRoute('/dashboard/users', 'dashboard-users', DashboardView, 'User Management'),
   createProtectedRoute('/dashboard/data', 'dashboard-data', DashboardView, 'Data'),
-  createProtectedRoute('/dashboard/assessments', 'dashboard-assessments', DashboardView, 'Assessments'),
+  createProtectedRoute(
+    '/dashboard/assessments',
+    'dashboard-assessments',
+    DashboardView,
+    'Assessments',
+  ),
   createProtectedRoute('/dashboard/profile', 'dashboard-profile', DashboardView, 'Profile'),
 
   // Admin routes with clean fallback
@@ -196,7 +223,8 @@ router.beforeEach(async (to, from, next) => {
     try {
       const redirectUrl = new URL(url, window.location.origin)
       return redirectUrl.origin === window.location.origin
-    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       return false
     }
   }
@@ -246,7 +274,12 @@ router.beforeEach(async (to, from, next) => {
   }
 
   // Handle dashboard tab accessibility for authenticated users
-  if (isAuthenticated && to.path.startsWith('/dashboard/') && to.path !== '/dashboard' && !to.path.startsWith('/dashboard/admin/')) {
+  if (
+    isAuthenticated &&
+    to.path.startsWith('/dashboard/') &&
+    to.path !== '/dashboard' &&
+    !to.path.startsWith('/dashboard/admin/')
+  ) {
     // Skip tab validation for user service routes (e.g., /dashboard/{userId}/services)
     const pathSegments = to.path.split('/dashboard/')[1].split('/')
     const isUserServiceRoute = pathSegments.length >= 2 && pathSegments[1] === 'services'
