@@ -8,9 +8,6 @@ import UserServicesListView from '@/views/admin/UserServicesListView.vue'
 import CreateUserBatchView from '@/views/admin/CreateUserBatchView.vue'
 import ForgotPasswordUserView from '@/views/auth/ForgotPasswordUserView.vue'
 import NotFoundView from '@/views/errors/NotFoundView.vue'
-import ProfileUserDetailView from '@/views/admin/ProfileUserDetailView.vue'
-import QuizTakingView from '@/views/quiz/QuizTakingView.vue'
-import QuizResultView from '@/views/quiz/QuizResultView.vue'
 import { useUserStore } from '@/stores/userStores'
 import { getUserRole, getRoleRedirectPath, isTabAccessible } from '@/lib/dashboard-utils'
 import type { DashboardTab } from '@/types/dashboard'
@@ -60,7 +57,7 @@ const createProtectedRoute = (
 
 // Route groups
 const publicRoutes: RouteRecordRaw[] = [
-  createRoute('/verify-email', 'verify-email', EmailVerificationView, 'Verify Email'),
+  createRoute('/verify-email', 'verify-email', () => import('@/views/auth/EmailVerificationView.vue'), 'Verify Email'),
   createRoute('/book-demo', 'book-demo', () => import('@/views/BookDemoView.vue'), 'Book Demo'),
   createRoute(
     '/case-studies',
@@ -108,19 +105,19 @@ const publicRoutes: RouteRecordRaw[] = [
 
 const guestOnlyRoutes: RouteRecordRaw[] = [
   createGuestRoute('/', 'home', () => import('@/views/home/HomeView.vue'), 'Home'),
-  createGuestRoute('/register', 'register', RegisterView, 'Register'),
-  createGuestRoute('/login', 'login', LoginView, 'Login'),
+  createGuestRoute('/register', 'register', () => import('@/views/auth/RegisterView.vue'), 'Register'),
+  createGuestRoute('/login', 'login', () => import('@/views/auth/LoginView.vue'), 'Login'),
   createGuestRoute(
     '/forgot-password',
     'forgot-password',
-    ForgotPasswordUserView,
+    () => import('@/views/auth/ForgotPasswordUserView.vue'),
     'Forgot-password',
   ),
 ]
 
 const protectedRoutes: RouteRecordRaw[] = [
   // Main dashboard route
-  createProtectedRoute('/dashboard', 'dashboard', DashboardView, 'Dashboard'),
+  createProtectedRoute('/dashboard', 'dashboard', () => import('@/views/DashboardView.vue'), 'Dashboard'),
 
   // Clean dashboard tab routes
   createProtectedRoute('/dashboard/users', 'dashboard-users', DashboardView, 'User Management'),
@@ -137,7 +134,7 @@ const protectedRoutes: RouteRecordRaw[] = [
   createRoute(
     '/dashboard/admin/create-user',
     'create-user-page',
-    CreateNewUserView,
+    () => import('@/views/admin/CreateNewUserView.vue'),
     'Create User',
     {
       requiresAuth: true,
@@ -148,7 +145,7 @@ const protectedRoutes: RouteRecordRaw[] = [
   createRoute(
     '/dashboard/admin/create-user-batch',
     'create-user-batch-page',
-    CreateUserBatchView,
+    () => import('@/views/admin/CreateUserBatchView.vue'),
     'Create User Batch',
     {
       requiresAuth: true,
@@ -159,13 +156,13 @@ const protectedRoutes: RouteRecordRaw[] = [
   createProtectedRoute(
     '/dashboard/:id/services',
     'user-service-list',
-    UserServicesListView,
+    () => import('@/views/admin/UserServicesListView.vue'),
     'User Services',
   ),
   createRoute(
     '/dashboard/admin/users/:id/profile',
     'profile-detail-user',
-    ProfileUserDetailView,
+    () => import('@/views/admin/ProfileUserDetailView.vue'),
     'Profile User Details',
     {
       requiresAuth: true,
@@ -179,8 +176,8 @@ const protectedRoutes: RouteRecordRaw[] = [
     path: '/quiz',
     redirect: '/dashboard/assessments',
   },
-  createProtectedRoute('/quiz/:id', 'quiz-taking', QuizTakingView, 'Take Quiz'),
-  createProtectedRoute('/quiz/:id/results', 'quiz-result', QuizResultView, 'Quiz Results'),
+  createProtectedRoute('/quiz/:id', 'quiz-taking', () => import('@/views/quiz/QuizTakingView.vue'), 'Take Quiz'),
+  createProtectedRoute('/quiz/:id/results', 'quiz-result', () => import('@/views/quiz/QuizResultView.vue'), 'Quiz Results'),
 ]
 
 const router = createRouter({

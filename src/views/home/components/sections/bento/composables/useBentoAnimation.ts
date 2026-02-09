@@ -50,7 +50,7 @@ export function useBentoAnimation(animationId?: string) {
     })
 
     // Store controller for cleanup if animationId provided
-    if (animationId) {
+    if (animationId && animationController.value) {
       animationControllers.set(animationId, {
         isAnimating: isAnimating.value,
         activeIndex: activeSource.value,
@@ -164,6 +164,7 @@ export function useBentoAnimationWithIntersection(animationId?: string) {
   let observer: IntersectionObserver | null = null
 
   const observeElement = (element: HTMLElement, sources: string[], interval = 2000) => {
+    if (!element) return
     targetElement.value = element
     
     observer = new IntersectionObserver(
