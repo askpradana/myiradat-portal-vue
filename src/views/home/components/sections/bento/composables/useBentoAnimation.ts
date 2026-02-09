@@ -38,16 +38,20 @@ export function useBentoAnimation(animationId?: string) {
       }, interval)
 
       // Store timeout ID for proper cleanup
-      animationController.value.signal.addEventListener('abort', () => {
-        clearTimeout(timeoutId)
-      })
+      if (animationController.value) {
+        animationController.value.signal.addEventListener('abort', () => {
+          clearTimeout(timeoutId)
+        })
+      }
     }
 
     // Start animation after initial delay
     const initialTimeoutId = setTimeout(animate, interval)
-    animationController.value.signal.addEventListener('abort', () => {
-      clearTimeout(initialTimeoutId)
-    })
+    if (animationController.value) {
+      animationController.value.signal.addEventListener('abort', () => {
+        clearTimeout(initialTimeoutId)
+      })
+    }
 
     // Store controller for cleanup if animationId provided
     if (animationId && animationController.value) {
@@ -111,16 +115,20 @@ export function useBentoAnimation(animationId?: string) {
           }
         }, interval)
 
-        animationController.value.signal.addEventListener('abort', () => {
-          clearTimeout(timeoutId)
-        })
+        if (animationController.value) {
+          animationController.value.signal.addEventListener('abort', () => {
+            clearTimeout(timeoutId)
+          })
+        }
       }
 
       // Start with calculated delay to maintain timing
       const resumeTimeoutId = setTimeout(animate, nextDelay)
-      animationController.value.signal.addEventListener('abort', () => {
-        clearTimeout(resumeTimeoutId)
-      })
+      if (animationController.value) {
+        animationController.value.signal.addEventListener('abort', () => {
+          clearTimeout(resumeTimeoutId)
+        })
+      }
     }
   }
 
