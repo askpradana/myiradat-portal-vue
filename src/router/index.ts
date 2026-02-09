@@ -6,9 +6,6 @@ import EmailVerificationView from '@/views/auth/EmailVerificationView.vue'
 import CreateNewUserView from '@/views/admin/CreateNewUserView.vue'
 import UserServicesListView from '@/views/admin/UserServicesListView.vue'
 import CreateUserBatchView from '@/views/admin/CreateUserBatchView.vue'
-import CreateNewOrganizationView from '@/views/admin/CreateNewOrganizationView.vue'
-import OrganizationDetailView from '@/views/admin/OrganizationDetailView.vue'
-import EditOrganizationView from '@/views/admin/EditOrganizationView.vue'
 import ForgotPasswordUserView from '@/views/auth/ForgotPasswordUserView.vue'
 import NotFoundView from '@/views/errors/NotFoundView.vue'
 import ProfileUserDetailView from '@/views/admin/ProfileUserDetailView.vue'
@@ -71,20 +68,42 @@ const publicRoutes: RouteRecordRaw[] = [
     () => import('@/views/CaseStudiesView.vue'),
     'Case Studies',
   ),
-  createRoute(
-    '/contact-us',
-    'contact-us',
-    () => import('@/views/ContactUsView.vue'),
-    'Contact Us',
-  ),
   // New navigation pages
   createRoute('/about', 'about', () => import('@/views/AboutView.vue'), 'About Us'),
   createRoute('/articles', 'articles', () => import('@/views/ArticlesView.vue'), 'Articles'),
-  createRoute('/articles/:slug', 'article-detail', () => import('@/views/ArticleView.vue'), 'Article'),
+  createRoute(
+    '/articles/:slug',
+    'article-detail',
+    () => import('@/views/ArticleView.vue'),
+    'Article',
+  ),
   createRoute('/contact', 'contact', () => import('@/views/ContactView.vue'), 'Contact'),
   // Solutions and services pages
   createRoute('/solutions', 'solutions', () => import('@/views/SolutionsView.vue'), 'Solutions'),
-  createRoute('/services/:slug', 'service-detail', () => import('@/views/services/ServiceView.vue'), 'Service Detail'),
+  createRoute(
+    '/services/:slug',
+    'service-detail',
+    () => import('@/views/services/ServiceView.vue'),
+    'Service Detail',
+  ),
+  // Legal pages
+  createRoute(
+    '/privacy',
+    'privacy',
+    () => import('@/views/PrivacyPolicyView.vue'),
+    'Privacy Policy',
+  ),
+  createRoute(
+    '/terms',
+    'terms',
+    () => import('@/views/TermsOfServiceView.vue'),
+    'Terms of Service',
+  ),
+  // Redirect contact-us to contact
+  {
+    path: '/contact-us',
+    redirect: '/contact',
+  },
 ]
 
 const guestOnlyRoutes: RouteRecordRaw[] = [
@@ -105,12 +124,13 @@ const protectedRoutes: RouteRecordRaw[] = [
 
   // Clean dashboard tab routes
   createProtectedRoute('/dashboard/users', 'dashboard-users', DashboardView, 'User Management'),
-  createRoute('/dashboard/organizations', 'dashboard-organizations', DashboardView, 'Organization Management', {
-    requiresAuth: true,
-    requiredRoles: ['admin', 'cs'],
-  }),
   createProtectedRoute('/dashboard/data', 'dashboard-data', DashboardView, 'Data'),
-  createProtectedRoute('/dashboard/assessments', 'dashboard-assessments', DashboardView, 'Assessments'),
+  createProtectedRoute(
+    '/dashboard/assessments',
+    'dashboard-assessments',
+    DashboardView,
+    'Assessments',
+  ),
   createProtectedRoute('/dashboard/profile', 'dashboard-profile', DashboardView, 'Profile'),
 
   // Admin routes with clean fallback
@@ -141,39 +161,6 @@ const protectedRoutes: RouteRecordRaw[] = [
     'user-service-list',
     UserServicesListView,
     'User Services',
-  ),
-  createRoute(
-    '/dashboard/admin/create-organization',
-    'create-organization-page',
-    CreateNewOrganizationView,
-    'Create Organization',
-    {
-      requiresAuth: true,
-      requiredRoles: ['admin'],
-      fallbackRoute: '/dashboard',
-    },
-  ),
-  createRoute(
-    '/dashboard/admin/organization/:id/update',
-    'edit-organization-page',
-    EditOrganizationView,
-    'Edit Organization',
-    {
-      requiresAuth: true,
-      requiredRoles: ['admin'],
-      fallbackRoute: '/dashboard',
-    },
-  ),
-  createRoute(
-    '/dashboard/admin/organization/:id/details',
-    'organization-detail-page',
-    OrganizationDetailView,
-    'Organization Details',
-    {
-      requiresAuth: true,
-      requiredRoles: ['admin'],
-      fallbackRoute: '/dashboard',
-    },
   ),
   createRoute(
     '/dashboard/admin/users/:id/profile',
@@ -236,7 +223,8 @@ router.beforeEach(async (to, from, next) => {
     try {
       const redirectUrl = new URL(url, window.location.origin)
       return redirectUrl.origin === window.location.origin
-    } catch (error) { // eslint-disable-line @typescript-eslint/no-unused-vars
+    } catch (error) {
+      // eslint-disable-line @typescript-eslint/no-unused-vars
       return false
     }
   }
@@ -286,7 +274,12 @@ router.beforeEach(async (to, from, next) => {
   }
 
   // Handle dashboard tab accessibility for authenticated users
-  if (isAuthenticated && to.path.startsWith('/dashboard/') && to.path !== '/dashboard' && !to.path.startsWith('/dashboard/admin/')) {
+  if (
+    isAuthenticated &&
+    to.path.startsWith('/dashboard/') &&
+    to.path !== '/dashboard' &&
+    !to.path.startsWith('/dashboard/admin/')
+  ) {
     // Skip tab validation for user service routes (e.g., /dashboard/{userId}/services)
     const pathSegments = to.path.split('/dashboard/')[1].split('/')
     const isUserServiceRoute = pathSegments.length >= 2 && pathSegments[1] === 'services'

@@ -110,7 +110,6 @@ export interface MessageSchema {
     navigation: {
       dashboard: string
       userManagement: string
-      organizationManagement: string
       services: string
       profile: string
       quiz: string
@@ -132,14 +131,6 @@ export interface MessageSchema {
         deleteUser: string
         batchCreate: string
         userDetails: string
-      }
-      organizations: {
-        title: string
-        createOrganization: string
-        editOrganization: string
-        deleteOrganization: string
-        organizationDetails: string
-        members: string
       }
     }
     user: {

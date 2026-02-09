@@ -2,7 +2,6 @@
   "navigation": {
     "dashboard": "Dashboard",
     "userManagement": "User Management",
-    "organizationManagement": "Organization Management",
     "services": "Services",
     "profile": "Profile",
     "quiz": "Quiz",
@@ -12,7 +11,7 @@
     "adminDashboard": "Admin Dashboard",
     "csDashboard": "CS Dashboard",
     "iradat": "Iradat",
-    "adminSubtitle": "Manage users and organizations",
+    "adminSubtitle": "Manage users and system data",
     "csSubtitle": "Customer support panel",
     "welcomeSubtitle": "Welcome to your dashboard"
   },
@@ -25,14 +24,6 @@
       "batchCreate": "Batch Create Users",
       "userDetails": "User Details"
     },
-    "organizations": {
-      "title": "Organization Management",
-      "createOrganization": "Create New Organization",
-      "editOrganization": "Edit Organization",
-      "deleteOrganization": "Delete Organization",
-      "organizationDetails": "Organization Details",
-      "members": "Members"
-    }
   },
   "user": {
     "profile": {

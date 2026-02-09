@@ -64,6 +64,10 @@
     "refresh": "Refresh",
     "refreshing": "Refreshing"
   },
+  "theme": {
+    "switchToDark": "Switch to dark mode",
+    "switchToLight": "Switch to light mode"
+  },
   "logout": {
     "logout": "Logout",
     "cancel": "Cancel",

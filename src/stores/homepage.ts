@@ -25,7 +25,8 @@ export const useHomepageStore = defineStore('homepage', () => {
     {
       id: 'professional-standards',
       title: 'Standar Profesional Teruji',
-      description: 'Memenuhi kode etik psikologi HIMPSI dan standar HR Indonesia dengan dukungan organisasi profesi untuk aplikasi klinis dan organisasional',
+      description:
+        'Memenuhi kode etik psikologi HIMPSI dan standar HR Indonesia dengan dukungan organisasi profesi untuk aplikasi klinis dan organisasional',
       icon: 'shield-check',
       iconColor: 'text-primary',
       iconBgColor: 'bg-primary/10',
@@ -38,7 +39,8 @@ export const useHomepageStore = defineStore('homepage', () => {
     {
       id: 'enterprise-security',
       title: 'Keamanan Data Enterprise',
-      description: 'Enkripsi end-to-end dan penyimpanan data sesuai regulasi Indonesia dengan audit trail lengkap untuk data karyawan dan klien',
+      description:
+        'Enkripsi end-to-end dan penyimpanan data sesuai regulasi Indonesia dengan audit trail lengkap untuk data karyawan dan klien',
       icon: 'lock',
       iconColor: 'text-green-600 dark:text-green-400',
       iconBgColor: 'bg-green-100 dark:bg-green-900/30',
@@ -55,7 +57,8 @@ export const useHomepageStore = defineStore('homepage', () => {
     {
       id: 'expert-support',
       title: 'Dukungan Tim Ahli',
-      description: 'Tim support yang terdiri dari psikolog, HR specialist, dan technical expert untuk konsultasi profesional dan implementasi',
+      description:
+        'Tim support yang terdiri dari psikolog, HR specialist, dan technical expert untuk konsultasi profesional dan implementasi',
       icon: 'users',
       iconColor: 'text-blue-600 dark:text-blue-400',
       iconBgColor: 'bg-blue-100 dark:bg-blue-900/30',
@@ -68,17 +71,35 @@ export const useHomepageStore = defineStore('homepage', () => {
 
   const config = ref<HomepageConfig>({
     hero: {
-      title: 'Solusi Assessment Psikologi untuk Profesional dan Organisasi Indonesia',
+      title: 'Human Potential is The Only Limitless Resource We Have in This World',
       subtitle:
-        'Platform terdepan yang menggabungkan assessment evidence-based dengan analytics canggih. Dari praktik psikologi hingga manajemen talent, tingkatkan keputusan berbasis data bersama 500+ profesional Indonesia.',
+        'Kombinasi dari fleksibilitas, pertumbuhan bersama, dan komitmen dapat menciptakan lingkungan yang inklusif dan produktif, serta memperkuat hubungan di berbagai aspek kehidupan.',
       cta: {
         primary: { label: 'Mulai Uji Coba Gratis', href: '/register' },
         secondary: { label: 'Demo untuk Tim HR', href: '/book-demo' },
       },
       metrics: [
-        { value: '95', suffix: '%', label: 'Tingkat Akurasi Assessment', animated: true, countUp: true },
-        { value: '500', suffix: '+', label: 'Organisasi & Praktik Terdaftar', animated: true, countUp: true },
-        { value: '75', suffix: 'K+', label: 'Profil Assessment Terkelola', animated: true, countUp: true },
+        {
+          value: '95',
+          suffix: '%',
+          label: 'Tingkat Akurasi Assessment',
+          animated: true,
+          countUp: true,
+        },
+        {
+          value: '500',
+          suffix: '+',
+          label: 'Organisasi & Praktik Terdaftar',
+          animated: true,
+          countUp: true,
+        },
+        {
+          value: '75',
+          suffix: 'K+',
+          label: 'Profil Assessment Terkelola',
+          animated: true,
+          countUp: true,
+        },
         { value: '24/7', label: 'Support Profesional', animated: false },
       ],
     },
@@ -208,37 +229,69 @@ export const useHomepageStore = defineStore('homepage', () => {
         {
           id: 'hr-talent-management',
           title: 'Solusi HR & Talent Management',
-          description: 'Digitalisasi proses rekrutmen, employee assessment, dan performance management dengan tools psikologi terintegrasi untuk keputusan talent yang lebih objektif.',
+          description:
+            'Digitalisasi proses rekrutmen, employee assessment, dan performance management dengan tools psikologi terintegrasi untuk keputusan talent yang lebih objektif.',
           industry: 'Human Resources',
           image: '/use-cases/hr-talent.jpg',
-          features: ['Pre-employment Screening', '360° Assessment', 'Performance Analytics', 'Talent Mapping', 'Succession Planning', 'Culture Fit Analysis'],
+          features: [
+            'Pre-employment Screening',
+            '360° Assessment',
+            'Performance Analytics',
+            'Talent Mapping',
+            'Succession Planning',
+            'Culture Fit Analysis',
+          ],
           cta: { label: 'Lihat Case Study', action: '/case-studies/hr-talent' },
         },
         {
           id: 'organizational-development',
           title: 'Organizational Development & Change',
-          description: 'Assessment dan analytics untuk transformation initiatives, team dynamics, leadership development, dan culture assessment di era digital.',
+          description:
+            'Assessment dan analytics untuk transformation initiatives, team dynamics, leadership development, dan culture assessment di era digital.',
           industry: 'Organizational Development',
           image: '/use-cases/org-dev.jpg',
-          features: ['Culture Assessment', 'Leadership 360°', 'Team Dynamics', 'Change Readiness', 'Engagement Surveys', 'OD Analytics'],
+          features: [
+            'Culture Assessment',
+            'Leadership 360°',
+            'Team Dynamics',
+            'Change Readiness',
+            'Engagement Surveys',
+            'OD Analytics',
+          ],
           cta: { label: 'Lihat Case Study', action: '/case-studies/org-development' },
         },
         {
           id: 'clinical-practice',
           title: 'Praktik Psikologi Profesional',
-          description: 'Digitalisasi lengkap praktik klinis dengan manajemen pasien, clinical assessment, dan administrative support dalam satu platform terintegrasi.',
+          description:
+            'Digitalisasi lengkap praktik klinis dengan manajemen pasien, clinical assessment, dan administrative support dalam satu platform terintegrasi.',
           industry: 'Praktik Psikologi',
           image: '/use-cases/clinical.jpg',
-          features: ['Clinical Assessment', 'Patient Management', 'Progress Tracking', 'Telehealth Ready', 'Clinical Reports', 'Supervision Tools'],
+          features: [
+            'Clinical Assessment',
+            'Patient Management',
+            'Progress Tracking',
+            'Telehealth Ready',
+            'Clinical Reports',
+            'Supervision Tools',
+          ],
           cta: { label: 'Lihat Case Study', action: '/case-studies/clinical-practice' },
         },
         {
           id: 'educational-institutions',
           title: 'Institusi Pendidikan & Training',
-          description: 'Platform assessment untuk academic counseling, student evaluation, dan professional training program dengan tracking progress yang komprehensif.',
+          description:
+            'Platform assessment untuk academic counseling, student evaluation, dan professional training program dengan tracking progress yang komprehensif.',
           industry: 'Pendidikan',
           image: '/use-cases/education.jpg',
-          features: ['Student Assessment', 'Career Counseling', 'Academic Analytics', 'Training Management', 'Competency Tracking', 'Certification'],
+          features: [
+            'Student Assessment',
+            'Career Counseling',
+            'Academic Analytics',
+            'Training Management',
+            'Competency Tracking',
+            'Certification',
+          ],
           cta: { label: 'Lihat Case Study', action: '/case-studies/education' },
         },
       ],
@@ -248,7 +301,13 @@ export const useHomepageStore = defineStore('homepage', () => {
           name: 'Individual Professional',
           price: { amount: 79, currency: 'IDR', period: 'ribu/bulan' },
           description: 'Ideal untuk psikolog praktik mandiri atau HR consultant',
-          features: ['Hingga 50 profil assessment', 'Tools assessment dasar', 'Support email', 'Cloud storage 5GB', 'Mobile access'],
+          features: [
+            'Hingga 50 profil assessment',
+            'Tools assessment dasar',
+            'Support email',
+            'Cloud storage 5GB',
+            'Mobile access',
+          ],
           cta: { label: 'Mulai Uji Coba Gratis', action: '/register?plan=individual' },
         },
         {
@@ -281,7 +340,7 @@ export const useHomepageStore = defineStore('homepage', () => {
             'Compliance & audit tools',
           ],
           enterprise: true,
-          cta: { label: 'Hubungi Sales', action: '/contact-us' },
+          cta: { label: 'Hubungi Sales', action: '/contact' },
         },
       ],
       faq: [
@@ -334,7 +393,8 @@ export const useHomepageStore = defineStore('homepage', () => {
           name: 'HIMPSI Endorsed',
           logo: '/certifications/himpsi.svg',
           category: 'professional',
-          description: 'Didukung oleh Himpunan Psikologi Indonesia untuk standar praktik profesional',
+          description:
+            'Didukung oleh Himpunan Psikologi Indonesia untuk standar praktik profesional',
         },
         {
           id: 'iso27001',
@@ -348,7 +408,8 @@ export const useHomepageStore = defineStore('homepage', () => {
           name: 'HR Compliance Ready',
           logo: '/certifications/hr-standards.svg',
           category: 'compliance',
-          description: 'Kepatuhan penuh terhadap regulasi HR dan perlindungan data karyawan Indonesia',
+          description:
+            'Kepatuhan penuh terhadap regulasi HR dan perlindungan data karyawan Indonesia',
         },
         {
           id: 'trusted-organizations',

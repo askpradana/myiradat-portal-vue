@@ -6,7 +6,6 @@ export interface UserFilterParams {
   search_by?: 'name' | 'email' | 'phone'
   search_query?: string
   filter_role?: string
-  filter_organization_id?: string
   filter_email_verified?: string | boolean
   order_by?: 'created_at' | 'updated_at' | 'name' | 'email'
   order_direction?: 'asc' | 'desc'
@@ -17,10 +16,6 @@ export interface FilterOption {
   label: string
 }
 
-export interface Organization {
-  id: string
-  name: string
-}
 
 // Updated User List Interface to support additional filter metadata
 export interface UserListResponse {
@@ -38,8 +33,6 @@ export interface User {
   phone: string
   role_id: number
   role_name: string
-  organization_id?: string
-  organization_name?: string
   email_verified_at?: string | null
   created_at: string
   updated_at: string
@@ -171,9 +164,6 @@ export const buildFilterSummary = (filters: UserFilterParams): string => {
     summaries.push(`Role: ${filters.filter_role}`)
   }
 
-  if (filters.filter_organization_id) {
-    summaries.push(`Organization: ${filters.filter_organization_id}`)
-  }
 
   if (filters.filter_email_verified) {
     const status = filters.filter_email_verified === 'true' ? 'Verified' : 'Unverified'

@@ -1,7 +1,5 @@
-export { default as CreateNewOrganizationForm } from './CreateNewOrganizationForm.vue'
 export { default as CreateNewUserForm } from './CreateNewUserForm.vue'
 export { default as DatePickerForm } from './DatePickerForm.vue'
-export { default as EditOrganizationForm } from './EditOrganizationForm.vue'
 export { default as ForgotPasswordUserForm } from './ForgotPasswordUserForm.vue'
 export { default as LoginForm } from './LoginForm.vue'
 export { default as ProfileUserForm } from './ProfileUserForm.vue'

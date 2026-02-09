@@ -5,7 +5,6 @@
     "content": "Loading content...",
     "page": "Loading page...",
     "quiz": "Loading quiz...",
-    "organization": "Loading organization data...",
     "profile": "Loading profile...",
     "users": "Loading users...",
     "services": "Loading services...",
@@ -17,7 +16,6 @@
   "saving": {
     "default": "Saving...",
     "profile": "Saving profile...",
-    "organization": "Saving organization...",
     "user": "Saving user...",
     "settings": "Saving settings...",
     "data": "Saving data...",
@@ -59,7 +57,6 @@
     "default": "No data available",
     "results": "No results found",
     "users": "No users found",
-    "organizations": "No organizations found",
     "services": "No services found",
     "quizzes": "No quizzes available",
     "assessments": "No assessments available",

@@ -5,11 +5,29 @@
 
     <!-- Hero Section -->
     <section
-      class="relative overflow-hidden bg-gradient-to-br from-background via-card/30 to-background py-20 mt-8"
+      class="relative overflow-hidden bg-gradient-to-br from-background via-primary/5 to-background py-20 mt-8"
     >
-      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Subtle background elements for visual interest -->
+      <div class="absolute inset-0 opacity-40">
+        <div class="absolute top-20 left-10 w-32 h-32 bg-primary/8 rounded-full blur-xl"></div>
+        <div class="absolute bottom-20 right-10 w-40 h-40 bg-primary/5 rounded-full blur-xl"></div>
+        <div
+          class="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-24 h-24 bg-primary/3 rounded-full blur-lg"
+        ></div>
+      </div>
+
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         <div class="text-center max-w-3xl mx-auto">
-          <h1 class="text-4xl sm:text-5xl font-bold text-foreground mb-6">Contact Us</h1>
+          <div
+            class="inline-flex items-center justify-center w-16 h-16 bg-primary/10 rounded-2xl mb-6"
+          >
+            <Mail class="w-8 h-8 text-primary" />
+          </div>
+          <h1
+            class="text-4xl sm:text-5xl font-bold mb-6 bg-gradient-to-r from-foreground via-primary to-foreground bg-clip-text text-transparent"
+          >
+            Contact Us
+          </h1>
           <p class="text-xl text-muted-foreground">
             Get in touch with our team to discuss how we can help your organization
           </p>
@@ -20,84 +38,122 @@
     <!-- Contact Information & Form -->
     <section class="py-20">
       <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="grid lg:grid-cols-2 gap-12">
-          <!-- Contact Information -->
-          <div>
-            <h2 class="text-3xl font-bold text-foreground mb-8">Get in Touch</h2>
-            <div class="space-y-6">
-              <div class="flex items-start space-x-4">
-                <div
-                  class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0"
-                >
-                  <MapPin class="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 class="font-semibold text-foreground mb-1">Office Address</h3>
-                  <div class="text-muted-foreground">
-                    <p>Gedung Vinilon lt 3, Suite 3-5</p>
-                    <p>Jl. Raden Saleh No</p>
-                    <p>13-17 Jakarta 10430</p>
-                  </div>
-                </div>
-              </div>
-
-              <div class="flex items-start space-x-4">
-                <div
-                  class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0"
-                >
-                  <Phone class="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 class="font-semibold text-foreground mb-1">Phone</h3>
-                  <p class="text-muted-foreground">+62-21-2957-8187</p>
-                </div>
-              </div>
-
-              <div class="flex items-start space-x-4">
-                <div
-                  class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0"
-                >
-                  <Mail class="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 class="font-semibold text-foreground mb-1">Email</h3>
-                  <p class="text-muted-foreground">iradat@iradatkonsultan.com</p>
-                </div>
-              </div>
-
-              <div class="flex items-start space-x-4">
-                <div
-                  class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center flex-shrink-0"
-                >
-                  <Clock class="w-6 h-6 text-primary" />
-                </div>
-                <div>
-                  <h3 class="font-semibold text-foreground mb-1">Business Hours</h3>
-                  <p class="text-muted-foreground">Monday - Friday: 09:00 - 18:00</p>
-                </div>
-              </div>
+        <!-- Contact Information Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
+          <!-- Address Card -->
+          <div
+            class="bg-card rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-all duration-300 group hover:scale-[1.02] border border-transparent hover:border-primary/10"
+          >
+            <div
+              class="w-12 h-12 bg-blue-100 dark:bg-blue-900/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform"
+            >
+              <MapPin class="w-6 h-6 text-blue-600 dark:text-blue-400" />
             </div>
+            <h3 class="font-semibold text-foreground mb-2">Office Address</h3>
+            <div class="text-muted-foreground text-sm">
+              <p>Gedung Vinilon lt 3, Suite 3-5</p>
+              <p>Jl. Raden Saleh No 13-17</p>
+              <p>Jakarta 10430</p>
+            </div>
+          </div>
+
+          <!-- Phone Card -->
+          <div
+            class="bg-card rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-all duration-300 group hover:scale-[1.02] border border-transparent hover:border-primary/10"
+          >
+            <div
+              class="w-12 h-12 bg-green-100 dark:bg-green-900/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform"
+            >
+              <Phone class="w-6 h-6 text-green-600 dark:text-green-400" />
+            </div>
+            <h3 class="font-semibold text-foreground mb-2">Phone</h3>
+            <a
+              href="tel:+622129578187"
+              class="text-muted-foreground text-sm hover:text-primary transition-colors"
+            >
+              +62-21-2957-8187
+            </a>
+          </div>
+
+          <!-- Email Card -->
+          <div
+            class="bg-card rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-all duration-300 group hover:scale-[1.02] border border-transparent hover:border-primary/10"
+          >
+            <div
+              class="w-12 h-12 bg-purple-100 dark:bg-purple-900/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform"
+            >
+              <Mail class="w-6 h-6 text-purple-600 dark:text-purple-400" />
+            </div>
+            <h3 class="font-semibold text-foreground mb-2">Email</h3>
+            <a
+              href="mailto:iradat@iradatkonsultan.com"
+              class="text-muted-foreground text-sm hover:text-primary transition-colors"
+            >
+              iradat@iradatkonsultan.com
+            </a>
+          </div>
+
+          <!-- Business Hours Card -->
+          <div
+            class="bg-card rounded-2xl p-6 text-center shadow-sm hover:shadow-md transition-all duration-300 group hover:scale-[1.02] border border-transparent hover:border-primary/10"
+          >
+            <div
+              class="w-12 h-12 bg-amber-100 dark:bg-amber-900/20 rounded-full flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform"
+            >
+              <Clock class="w-6 h-6 text-amber-600 dark:text-amber-400" />
+            </div>
+            <h3 class="font-semibold text-foreground mb-2">Business Hours</h3>
+            <p class="text-muted-foreground text-sm">Monday - Friday</p>
+            <p class="text-muted-foreground text-sm">09:00 - 18:00</p>
+          </div>
+        </div>
+
+        <div class="grid lg:grid-cols-2 gap-12">
+          <!-- Social Media & Additional Info -->
+          <div>
+            <h2 class="text-3xl font-bold text-foreground mb-8">Connect With Us</h2>
 
             <!-- Social Media -->
-            <div class="mt-8">
-              <h3 class="font-semibold text-foreground mb-4">Follow Us</h3>
+            <div class="bg-card rounded-2xl p-6 mb-6">
+              <h3 class="font-semibold text-foreground mb-4 flex items-center">
+                <Users class="w-5 h-5 mr-2 text-primary" />
+                Follow Us
+              </h3>
               <div class="flex space-x-4">
                 <Button
                   variant="outline"
                   size="sm"
-                  class="w-10 h-10 p-0"
+                  class="w-12 h-12 p-0 hover:bg-blue-50 hover:border-blue-200 dark:hover:bg-blue-950/20"
                   @click="() => openUrl(linkedinUrl)"
                 >
-                  <Linkedin class="w-4 h-4" />
+                  <Linkedin class="w-5 h-5 text-blue-600" />
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
-                  class="w-10 h-10 p-0"
+                  class="w-12 h-12 p-0 hover:bg-pink-50 hover:border-pink-200 dark:hover:bg-pink-950/20"
                   @click="() => openUrl(instagramUrl)"
                 >
-                  <Instagram class="w-4 h-4" />
+                  <Instagram class="w-5 h-5 text-pink-600" />
                 </Button>
+              </div>
+            </div>
+
+            <!-- Quick Contact Info -->
+            <div class="bg-gradient-to-br from-primary/5 to-primary/10 rounded-2xl p-6">
+              <h3 class="font-semibold text-foreground mb-4">Quick Contact</h3>
+              <p class="text-muted-foreground text-sm mb-4">
+                For immediate assistance or urgent inquiries, feel free to contact us directly.
+              </p>
+              <div class="space-y-2 text-sm">
+                <div class="flex items-center space-x-2">
+                  <div class="w-2 h-2 bg-green-500 rounded-full"></div>
+                  <span class="text-muted-foreground">Available during business hours</span>
+                </div>
+                <div class="flex items-center space-x-2">
+                  <div class="w-2 h-2 bg-blue-500 rounded-full"></div>
+                  <span class="text-muted-foreground">Email responses within 24 hours</span>
+                </div>
               </div>
             </div>
           </div>
@@ -229,7 +285,7 @@ import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
 import { Checkbox } from '@/components/ui/checkbox'
-import { MapPin, Phone, Mail, Clock, Linkedin, Instagram, Send, ChevronDown } from 'lucide-vue-next'
+import { MapPin, Phone, Mail, Clock, Linkedin, Instagram, Send, ChevronDown, Users } from 'lucide-vue-next'
 import HeaderSection from '@/views/home/components/sections/HeaderSection.vue'
 import FooterSection from '@/views/home/components/sections/FooterSection.vue'
 

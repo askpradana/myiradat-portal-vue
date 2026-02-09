@@ -165,10 +165,10 @@ const filteredFAQs = computed(() => {
 })
 
 const contactSupport = () => {
-  router.push('/contact-us')
+  router.push('/contact')
 }
 
 const scheduleCall = () => {
-  router.push('/contact-us')
+  router.push('/contact')
 }
 </script>

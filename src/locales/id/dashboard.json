@@ -2,7 +2,6 @@
   "navigation": {
     "dashboard": "Beranda",
     "userManagement": "Manajemen Pengguna",
-    "organizationManagement": "Manajemen Organisasi",
     "services": "Layanan",
     "profile": "Profil",
     "quiz": "Kuis",
@@ -12,7 +11,7 @@
     "adminDashboard": "Beranda Admin",
     "csDashboard": "Beranda CS",
     "iradat": "Iradat",
-    "adminSubtitle": "Kelola pengguna dan organisasi",
+    "adminSubtitle": "Kelola pengguna dan data sistem",
     "csSubtitle": "Panel dukungan pelanggan",
     "welcomeSubtitle": "Selamat datang di beranda Anda"
   },
@@ -24,14 +23,6 @@
       "deleteUser": "Hapus Pengguna",
       "batchCreate": "Buat Pengguna Massal",
       "userDetails": "Detail Pengguna"
-    },
-    "organizations": {
-      "title": "Manajemen Organisasi",
-      "createOrganization": "Buat Organisasi Baru",
-      "editOrganization": "Edit Organisasi",
-      "deleteOrganization": "Hapus Organisasi",
-      "organizationDetails": "Detail Organisasi",
-      "members": "Anggota"
     }
   },
   "user": {

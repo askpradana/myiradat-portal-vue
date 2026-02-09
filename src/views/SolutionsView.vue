@@ -56,7 +56,7 @@
           >
             <!-- Service Icon -->
             <div class="w-12 h-12 bg-primary/10 rounded-xl flex items-center justify-center mb-6 group-hover:bg-primary/20 transition-colors">
-              <component :is="service.icon" class="w-6 h-6 text-primary" />
+              <img :src="service.icon" alt="Service Icon" class="w-6 h-6 object-contain" />
             </div>
 
             <!-- Service Title -->

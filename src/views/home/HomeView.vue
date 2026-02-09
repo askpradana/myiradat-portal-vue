@@ -6,20 +6,11 @@
     <!-- Hero Section with Metrics -->
     <HeroSection />
 
-    <!-- Trust Indicators -->
-    <!-- <TrustIndicatorsSection /> -->
-
     <!-- Interactive Bento Grid Features -->
     <BentoGridSection />
 
-    <!-- Use Case Carousel -->
-    <!-- <UseCaseCarouselSection /> -->
-
     <!-- Enhanced Testimonials -->
     <TestimonialsSection />
-
-    <!-- Pricing Section -->
-    <!-- <PricingSection /> -->
 
     <!-- FAQ Section -->
     <FAQSection />
