@@ -2,17 +2,17 @@
   <div class="mt-12 pt-8 border-t border-border">
     <div class="flex flex-col md:flex-row justify-between items-center gap-4">
       <p class="text-sm text-muted-foreground">
-        &copy; {{ currentYear }} IRADAT. All rights reserved.
+        &copy; {{ currentYear }} IRADAT. Hak cipta dilindungi.
       </p>
 
       <!-- Status Indicator -->
       <div class="flex items-center space-x-4 text-sm">
         <div class="flex items-center space-x-2">
           <div class="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-          <span class="text-muted-foreground">All systems operational</span>
+          <span class="text-muted-foreground">Semua sistem beroperasi normal</span>
         </div>
         <a href="/status" class="text-primary hover:text-primary/80 transition-colors">
-          Status Page
+          Halaman Status
         </a>
       </div>
     </div>

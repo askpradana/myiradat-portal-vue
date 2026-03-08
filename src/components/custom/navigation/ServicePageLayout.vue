@@ -51,7 +51,7 @@
               size="lg"
               class="group relative text-lg px-8 py-4 rounded-lg bg-gradient-to-b from-primary to-primary/90 border border-primary/20 shadow-sm text-white font-medium transition-all duration-200 hover:from-primary/90 hover:to-primary hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm"
             >
-              <span class="relative z-10">Get Started</span>
+              <span class="relative z-10">Mulai Sekarang</span>
               <div
                 class="absolute inset-0 rounded-lg bg-gradient-to-b from-white/20 to-transparent opacity-50 group-hover:opacity-30 transition-opacity duration-200"
               ></div>
@@ -61,7 +61,7 @@
               size="lg"
               class="group relative text-lg px-8 py-4 rounded-lg bg-gradient-to-b from-background to-background/90 border border-border hover:border-primary/30 shadow-sm font-medium transition-all duration-200 hover:shadow-md hover:-translate-y-0.5 hover:bg-gradient-to-b hover:from-background/90 hover:to-background active:translate-y-0 active:shadow-sm"
             >
-              <span class="relative z-10">Learn More</span>
+              <span class="relative z-10">Pelajari Lebih Lanjut</span>
               <div
                 class="absolute inset-0 rounded-lg bg-gradient-to-b from-white/10 to-transparent opacity-0 group-hover:opacity-30 transition-opacity duration-200"
               ></div>
@@ -81,13 +81,13 @@
           <div
             class="inline-flex items-center justify-center px-4 py-2 bg-primary/10 rounded-full text-primary text-sm font-medium mb-6 ring-1 ring-primary/20"
           >
-            Key Features
+            Fitur Utama
           </div>
           <h2 class="text-4xl sm:text-5xl font-bold text-foreground mb-6 tracking-tight">
-            Powerful capabilities
+            Kemampuan Unggulan
           </h2>
           <p class="text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            Discover what makes {{ service.title }} unique and powerful
+            Temukan hal yang membuat {{ service.title }} unik dan unggul
           </p>
         </div>
 
@@ -123,9 +123,9 @@
       <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <!-- Header -->
         <div class="text-center mb-12">
-          <div class="text-primary text-sm font-medium mb-3">Benefits</div>
+          <div class="text-primary text-sm font-medium mb-3">Manfaat</div>
           <h2 class="text-2xl sm:text-3xl font-bold text-foreground mb-4">
-            Why Choose {{ service.title }}?
+            Mengapa Memilih {{ service.title }}?
           </h2>
         </div>
 
@@ -166,16 +166,16 @@
       <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-white/5 rounded-full blur-3xl"></div>
 
       <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-        <h2 class="text-4xl sm:text-5xl font-bold mb-6 tracking-tight">Ready to Get Started?</h2>
+        <h2 class="text-4xl sm:text-5xl font-bold mb-6 tracking-tight">Siap untuk Mulai?</h2>
         <p class="text-xl sm:text-2xl mb-12 opacity-90 leading-relaxed max-w-3xl mx-auto">
-          Join thousands of professionals who trust {{ service.title }}
+          Bergabunglah dengan ribuan profesional yang mempercayai {{ service.title }}
         </p>
         <div class="flex flex-col sm:flex-row gap-6 justify-center items-center">
           <Button
             size="lg"
             class="group relative text-lg px-8 py-4 rounded-lg bg-gradient-to-b from-white to-white/90 border border-white/20 shadow-sm text-primary font-medium transition-all duration-200 hover:from-white/95 hover:to-white hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm"
           >
-            <span class="relative z-10">Start Free Trial</span>
+            <span class="relative z-10">Mulai Uji Coba</span>
             <div
               class="absolute inset-0 rounded-lg bg-gradient-to-b from-white/30 to-transparent opacity-50 group-hover:opacity-30 transition-opacity duration-200"
             ></div>
@@ -184,7 +184,7 @@
             size="lg"
             class="group relative text-lg px-8 py-4 rounded-lg bg-gradient-to-b from-white/10 to-white/5 border border-white/30 shadow-sm text-white font-medium transition-all duration-200 hover:from-white/15 hover:to-white/10 hover:border-white/40 hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 active:shadow-sm backdrop-blur-sm"
           >
-            <span class="relative z-10">Contact Sales</span>
+            <span class="relative z-10">Hubungi Tim Sales</span>
             <div
               class="absolute inset-0 rounded-lg bg-gradient-to-b from-white/20 to-transparent opacity-0 group-hover:opacity-30 transition-opacity duration-200"
             ></div>

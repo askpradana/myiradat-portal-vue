@@ -1,14 +1,9 @@
 <template>
   <div class="lg:col-span-2">
-    <div class="flex items-center space-x-3 mb-6">
-      <div class="w-10 h-10 bg-primary rounded-lg flex items-center justify-center">
-        <span class="text-primary-foreground font-bold text-sm">IR</span>
-      </div>
-      <div>
-        <span class="text-xl font-bold text-foreground">IRADAT</span>
-        <div class="text-xs text-muted-foreground">All-in-One Portal</div>
-      </div>
+    <div class="mb-8">
+      <img :src="logoIradat" alt="Logo IRADAT" class="w-28 sm:w-36 md:w-40 lg:w-48 h-auto object-contain" />
     </div>
+
     <div class="text-muted-foreground mb-6 max-w-md">
       <p>Gedung Vinilon lt 3, Suite 3-5</p>
       <p>Jl. Raden Saleh No 13-17</p>
@@ -35,11 +30,16 @@
 
 <script setup lang="ts">
 import { Instagram, Youtube, Linkedin } from 'lucide-vue-next'
+import logoIradat from '@/images/logoiradat.png'
 
 // Social media links
 const socialLinks = [
   { name: 'Instagram', icon: Instagram, url: 'https://www.instagram.com/iradat.konsultan/' },
-  { name: 'YouTube', icon: Youtube, url: 'https://www.youtube.com/channel/UC0TkH_E4eqxmDzu6MvaSXYQ' },
+  {
+    name: 'YouTube',
+    icon: Youtube,
+    url: 'https://www.youtube.com/channel/UC0TkH_E4eqxmDzu6MvaSXYQ',
+  },
   { name: 'LinkedIn', icon: Linkedin, url: 'https://id.linkedin.com/company/iradatkonsultan' },
 ]
 </script>

@@ -20,7 +20,7 @@
     </div>
     <div class="text-center text-muted-foreground text-sm">
       <span :class="{ 'text-primary animate-pulse': isAnimating }">
-        {{ isAnimating ? 'Syncing data...' : 'All systems synchronized' }}
+        {{ isAnimating ? 'Menyinkronkan data...' : 'Semua sistem tersinkronisasi' }}
       </span>
     </div>
   </div>

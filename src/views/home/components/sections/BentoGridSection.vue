@@ -12,14 +12,14 @@
           class="inline-flex items-center px-3 py-1 rounded-full bg-primary/10 text-primary text-sm font-medium mb-4"
           role="banner"
         >
-          COMPREHENSIVE SOLUTIONS
+          SOLUSI KOMPREHENSIF
         </div>
         <h2 id="services-title" class="text-3xl md:text-4xl font-bold text-foreground mb-4">
-          What we offer
+          Yang kami tawarkan
         </h2>
         <p id="services-description" class="text-lg text-muted-foreground max-w-2xl mx-auto">
-          Discover our range of professional services designed to elevate your organization and
-          empower your people.
+          Temukan rangkaian layanan profesional kami yang dirancang untuk meningkatkan kinerja
+          organisasi dan memberdayakan tim Anda.
         </p>
       </header>
 
@@ -28,7 +28,7 @@
         ref="gridElement"
         class="services-grid"
         role="region"
-        aria-label="Our services showcase"
+        aria-label="Katalog layanan kami"
         :class="{
           'services-grid--animating': isAnyCardAnimating,
         }"

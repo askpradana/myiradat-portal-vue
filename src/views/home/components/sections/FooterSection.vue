@@ -7,14 +7,14 @@
         <FooterCompanyInfo />
 
         <!-- Solutions -->
-        <FooterNavigationColumn title="Solutions" :links="solutionsLinks" />
+        <FooterNavigationColumn title="Solusi" :links="solutionsLinks" />
 
         <!-- Company -->
-        <FooterNavigationColumn title="Company" :links="companyLinks" />
+        <FooterNavigationColumn title="Perusahaan" :links="companyLinks" />
 
         <!-- Support & Legal -->
         <FooterNavigationColumn
-          title="Support"
+          title="Dukungan"
           :links="supportLinks"
           additional-list-classes="mb-8"
         >
@@ -58,29 +58,23 @@ const solutionsLinks = [
     label: service.title,
     href: `/services/${service.slug}`,
   })),
-  { label: 'View All Solutions', href: '/solutions' },
+  { label: 'Lihat Semua Solusi', href: '/solutions' },
 ]
 
 const companyLinks = [
-  { label: 'About Us', href: '/about' },
-  { label: 'Careers', href: '/careers' },
-  { label: 'News & Blog', href: '/blog' },
-  { label: 'Customer Stories', href: '/case-studies' },
-  { label: 'Press Kit', href: '/press' },
+  { label: 'Tentang Kami', href: '/about' },
+  { label: 'Karier', href: '/careers' },
+  { label: 'Berita & Blog', href: '/articles' },
+  { label: 'Kisah Pelanggan', href: '/case-studies' },
 ]
 
 const supportLinks = [
-  { label: 'Help Center', href: '/contact' },
-  { label: 'Documentation', href: '/contact' },
-  { label: 'API Reference', href: '/contact' },
-  { label: 'Community Forum', href: '/contact' },
-  { label: 'Contact Support', href: '/contact' },
+  { label: 'Pusat Bantuan', href: '/contact' },
+  { label: 'Hubungi Dukungan', href: '/contact' },
 ]
 
 const legalLinks = [
-  { label: 'Privacy Policy', href: '/privacy' },
-  { label: 'Terms of Service', href: '/terms' },
-  { label: 'Security', href: '/security' },
-  { label: 'Compliance', href: '/compliance' },
+  { label: 'Kebijakan Privasi', href: '/privacy' },
+  { label: 'Syarat Layanan', href: '/terms' },
 ]
 </script>

@@ -3,61 +3,61 @@
     {
       "id": "improve-care",
       "slug": "improve-care",
-      "title": "Improve Care",
-      "description": "Comprehensive Employee Assistance Program designed to support your workforce's mental health and well-being",
+      "title": "Improve by Iradat",
+      "description": "Program Bantuan Karyawan komprehensif yang dirancang untuk mendukung kesehatan mental dan kesejahteraan tenaga kerja Anda",
       "iconName": "Heart",
       "features": [
         {
           "iconName": "Heart",
-          "title": "Mental Health Support",
-          "description": "Professional counseling and psychological support for employees facing personal or work-related challenges"
+          "title": "Dukungan Kesehatan Mental",
+          "description": "Konseling profesional dan dukungan psikologis bagi karyawan yang menghadapi tantangan pribadi maupun pekerjaan"
         },
         {
           "iconName": "Users",
-          "title": "24/7 Helpline",
-          "description": "Round-the-clock access to trained counselors and mental health professionals"
+          "title": "Layanan Bantuan 24/7",
+          "description": "Akses sepanjang waktu ke konselor terlatih dan profesional kesehatan mental"
         },
         {
           "iconName": "Shield",
-          "title": "Confidential Services",
-          "description": "Complete privacy and confidentiality for all employee interactions and sessions"
+          "title": "Layanan Rahasia",
+          "description": "Privasi dan kerahasiaan penuh untuk seluruh interaksi dan sesi karyawan"
         },
         {
           "iconName": "TrendingUp",
-          "title": "Performance Improvement",
-          "description": "Proven strategies to enhance employee performance and workplace satisfaction"
+          "title": "Peningkatan Kinerja",
+          "description": "Strategi teruji untuk meningkatkan kinerja karyawan dan kepuasan di tempat kerja"
         },
         {
           "iconName": "Clock",
-          "title": "Crisis Intervention",
-          "description": "Immediate support and intervention services for employees in crisis situations"
+          "title": "Intervensi Krisis",
+          "description": "Layanan dukungan dan intervensi segera bagi karyawan dalam situasi krisis"
         },
         {
           "iconName": "Award",
-          "title": "Expert Therapists",
-          "description": "Access to certified and experienced mental health professionals across Indonesia"
+          "title": "Terapis Ahli",
+          "description": "Akses ke profesional kesehatan mental bersertifikat dan berpengalaman di seluruh Indonesia"
         }
       ],
       "benefits": [
         {
-          "title": "Reduced Absenteeism",
-          "description": "Significant decrease in sick days and unplanned absences through proactive mental health support"
+          "title": "Absensi Berkurang",
+          "description": "Penurunan signifikan hari sakit dan ketidakhadiran tidak terencana melalui dukungan kesehatan mental yang proaktif"
         },
         {
-          "title": "Improved Productivity",
-          "description": "Enhanced focus and performance when employees feel supported and valued"
+          "title": "Produktivitas Meningkat",
+          "description": "Fokus dan performa meningkat ketika karyawan merasa didukung dan dihargai"
         },
         {
-          "title": "Lower Turnover",
-          "description": "Increased employee retention through comprehensive well-being programs"
+          "title": "Turnover Lebih Rendah",
+          "description": "Retensi karyawan meningkat melalui program kesejahteraan yang komprehensif"
         },
         {
-          "title": "Cost Savings",
-          "description": "Reduced healthcare costs and improved overall organizational efficiency"
+          "title": "Penghematan Biaya",
+          "description": "Biaya kesehatan menurun dan efisiensi organisasi secara keseluruhan meningkat"
         },
         {
-          "title": "Better Workplace Culture",
-          "description": "Creating a supportive environment that prioritizes employee mental health"
+          "title": "Budaya Kerja Lebih Baik",
+          "description": "Menciptakan lingkungan suportif yang memprioritaskan kesehatan mental karyawan"
         }
       ]
     },
@@ -65,121 +65,121 @@
       "id": "learning-development",
       "slug": "learning-development",
       "title": "Learning & Development",
-      "description": "Comprehensive training and skill development programs to enhance your workforce capabilities and drive organizational growth",
+      "description": "Program pelatihan dan pengembangan keterampilan komprehensif untuk meningkatkan kapabilitas tenaga kerja dan mendorong pertumbuhan organisasi",
       "iconName": "GraduationCap",
       "features": [
         {
           "iconName": "BookOpen",
-          "title": "Customized Training Programs",
-          "description": "Tailored learning solutions designed to meet your organization's specific needs and objectives"
+          "title": "Program Pelatihan Kustom",
+          "description": "Solusi pembelajaran yang disesuaikan untuk memenuhi kebutuhan dan tujuan spesifik organisasi Anda"
         },
         {
           "iconName": "Target",
-          "title": "Skills Assessment",
-          "description": "Comprehensive evaluation of current skill levels and identification of development opportunities"
+          "title": "Asesmen Keterampilan",
+          "description": "Evaluasi komprehensif atas tingkat keterampilan saat ini dan identifikasi peluang pengembangan"
         },
         {
           "iconName": "Users",
-          "title": "Team Building Workshops",
-          "description": "Interactive sessions to enhance collaboration, communication, and team dynamics"
+          "title": "Workshop Penguatan Tim",
+          "description": "Sesi interaktif untuk meningkatkan kolaborasi, komunikasi, dan dinamika tim"
         },
         {
           "iconName": "Award",
-          "title": "Leadership Development",
-          "description": "Specialized programs to develop effective leaders at all organizational levels"
+          "title": "Pengembangan Kepemimpinan",
+          "description": "Program khusus untuk membentuk pemimpin efektif di seluruh level organisasi"
         },
         {
           "iconName": "TrendingUp",
-          "title": "Performance Tracking",
-          "description": "Continuous monitoring and evaluation of learning outcomes and skill development progress"
+          "title": "Pelacakan Kinerja",
+          "description": "Pemantauan dan evaluasi berkelanjutan terhadap hasil pembelajaran dan progres pengembangan keterampilan"
         },
         {
           "iconName": "GraduationCap",
-          "title": "Professional Certification",
-          "description": "Industry-recognized certifications to validate and enhance employee credentials"
+          "title": "Sertifikasi Profesional",
+          "description": "Sertifikasi yang diakui industri untuk memvalidasi dan meningkatkan kredensial karyawan"
         }
       ],
       "benefits": [
         {
-          "title": "Enhanced Skills",
-          "description": "Systematic development of technical and soft skills across your organization"
+          "title": "Keterampilan Meningkat",
+          "description": "Pengembangan terstruktur keterampilan teknis dan soft skill di seluruh organisasi Anda"
         },
         {
-          "title": "Improved Performance",
-          "description": "Measurable increases in employee productivity and job performance"
+          "title": "Performa Meningkat",
+          "description": "Peningkatan terukur pada produktivitas dan kinerja kerja karyawan"
         },
         {
-          "title": "Career Advancement",
-          "description": "Clear pathways for employee growth and professional development"
+          "title": "Kemajuan Karier",
+          "description": "Jalur yang jelas untuk pertumbuhan karyawan dan pengembangan profesional"
         },
         {
-          "title": "Innovation Culture",
-          "description": "Foster a learning environment that encourages creativity and innovation"
+          "title": "Budaya Inovasi",
+          "description": "Mendorong lingkungan belajar yang menumbuhkan kreativitas dan inovasi"
         },
         {
-          "title": "Competitive Advantage",
-          "description": "Stay ahead of industry trends with cutting-edge training and development"
+          "title": "Keunggulan Kompetitif",
+          "description": "Tetap terdepan dari tren industri melalui pelatihan dan pengembangan mutakhir"
         }
       ]
     },
     {
       "id": "evaluation-assessment",
       "slug": "evaluation-assessment",
-      "title": "Evaluation Selection & Assessment",
-      "description": "Comprehensive assessment solutions for talent evaluation, selection, and performance measurement to make informed hiring and development decisions",
+      "title": "Evaluasi Seleksi & Asesmen",
+      "description": "Solusi asesmen komprehensif untuk evaluasi talenta, seleksi, dan pengukuran kinerja agar keputusan rekrutmen serta pengembangan lebih tepat",
       "iconName": "ClipboardCheck",
       "features": [
         {
           "iconName": "Search",
-          "title": "Talent Assessment",
-          "description": "In-depth evaluation of candidate skills, competencies, and cultural fit"
+          "title": "Asesmen Talenta",
+          "description": "Evaluasi mendalam terhadap keterampilan, kompetensi, dan kecocokan budaya kandidat"
         },
         {
           "iconName": "BarChart",
-          "title": "Psychometric Testing",
-          "description": "Scientific psychological assessments to understand personality traits and cognitive abilities"
+          "title": "Tes Psikometrik",
+          "description": "Asesmen psikologis ilmiah untuk memahami karakteristik kepribadian dan kemampuan kognitif"
         },
         {
           "iconName": "Users",
-          "title": "Interview Evaluation",
-          "description": "Structured interview processes with standardized evaluation criteria"
+          "title": "Evaluasi Wawancara",
+          "description": "Proses wawancara terstruktur dengan kriteria penilaian yang terstandar"
         },
         {
           "iconName": "CheckCircle",
-          "title": "Competency Mapping",
-          "description": "Detailed analysis of required competencies for specific roles and positions"
+          "title": "Pemetaan Kompetensi",
+          "description": "Analisis rinci kompetensi yang dibutuhkan untuk peran dan posisi tertentu"
         },
         {
           "iconName": "Target",
-          "title": "Performance Prediction",
-          "description": "Data-driven insights to predict candidate success and job performance"
+          "title": "Prediksi Kinerja",
+          "description": "Insight berbasis data untuk memprediksi keberhasilan kandidat dan performa kerja"
         },
         {
           "iconName": "ClipboardCheck",
-          "title": "Comprehensive Reports",
-          "description": "Detailed assessment reports with actionable insights and recommendations"
+          "title": "Laporan Komprehensif",
+          "description": "Laporan asesmen rinci dengan insight dan rekomendasi yang dapat ditindaklanjuti"
         }
       ],
       "benefits": [
         {
-          "title": "Better Hiring Decisions",
-          "description": "Reduce hiring mistakes with comprehensive candidate evaluation and assessment"
+          "title": "Keputusan Rekrutmen Lebih Tepat",
+          "description": "Kurangi kesalahan rekrutmen dengan evaluasi dan asesmen kandidat yang komprehensif"
         },
         {
-          "title": "Reduced Turnover",
-          "description": "Improve employee retention by selecting candidates who are the right fit"
+          "title": "Turnover Berkurang",
+          "description": "Tingkatkan retensi karyawan dengan memilih kandidat yang paling sesuai"
         },
         {
-          "title": "Objective Selection",
-          "description": "Eliminate bias with standardized, scientific assessment methodologies"
+          "title": "Seleksi Objektif",
+          "description": "Hilangkan bias dengan metodologi asesmen ilmiah dan terstandar"
         },
         {
-          "title": "Time Efficiency",
-          "description": "Streamline the selection process with efficient and reliable assessment tools"
+          "title": "Efisiensi Waktu",
+          "description": "Sederhanakan proses seleksi dengan alat asesmen yang efisien dan andal"
         },
         {
-          "title": "Quality Workforce",
-          "description": "Build a high-performing team with candidates who match your requirements"
+          "title": "Tenaga Kerja Berkualitas",
+          "description": "Bangun tim berkinerja tinggi dengan kandidat yang sesuai kebutuhan Anda"
         }
       ]
     },
@@ -187,60 +187,60 @@
       "id": "lhh",
       "slug": "lhh",
       "title": "LHH (Lee Hecht Harrison)",
-      "description": "Global talent solutions and career transition services to help organizations and individuals navigate workforce transformation and career development",
+      "description": "Solusi talenta global dan layanan transisi karier untuk membantu organisasi serta individu menghadapi transformasi tenaga kerja dan pengembangan karier",
       "iconName": "Building",
       "features": [
         {
           "iconName": "Briefcase",
-          "title": "Career Transition",
-          "description": "Professional outplacement services to support employees during career transitions"
+          "title": "Transisi Karier",
+          "description": "Layanan outplacement profesional untuk mendukung karyawan selama masa transisi karier"
         },
         {
           "iconName": "Users",
-          "title": "Leadership Consulting",
-          "description": "Strategic leadership development and executive coaching services"
+          "title": "Konsultasi Kepemimpinan",
+          "description": "Layanan pengembangan kepemimpinan strategis dan executive coaching"
         },
         {
           "iconName": "TrendingUp",
-          "title": "Talent Mobility",
-          "description": "Internal talent movement and career progression planning solutions"
+          "title": "Mobilitas Talenta",
+          "description": "Solusi perpindahan talenta internal dan perencanaan progres karier"
         },
         {
           "iconName": "Globe",
-          "title": "Global Network",
-          "description": "Access to LHH's worldwide network of career transition and talent experts"
+          "title": "Jaringan Global",
+          "description": "Akses ke jaringan ahli transisi karier dan talenta LHH di seluruh dunia"
         },
         {
           "iconName": "Award",
-          "title": "Executive Search",
-          "description": "Premium executive search and recruitment services for senior-level positions"
+          "title": "Pencarian Eksekutif",
+          "description": "Layanan executive search dan rekrutmen premium untuk posisi senior"
         },
         {
           "iconName": "Building",
-          "title": "Organizational Consulting",
-          "description": "Strategic consulting to optimize organizational structure and performance"
+          "title": "Konsultasi Organisasi",
+          "description": "Konsultasi strategis untuk mengoptimalkan struktur dan kinerja organisasi"
         }
       ],
       "benefits": [
         {
-          "title": "Seamless Transitions",
-          "description": "Smooth career transitions with minimal disruption to business operations"
+          "title": "Transisi Mulus",
+          "description": "Transisi karier yang lancar dengan gangguan minimal pada operasional bisnis"
         },
         {
-          "title": "Enhanced Reputation",
-          "description": "Maintain positive employer brand during organizational changes"
+          "title": "Reputasi Meningkat",
+          "description": "Menjaga citra employer brand tetap positif saat terjadi perubahan organisasi"
         },
         {
-          "title": "Cost Optimization",
-          "description": "Efficient workforce transition solutions that control costs and risks"
+          "title": "Optimasi Biaya",
+          "description": "Solusi transisi tenaga kerja yang efisien untuk mengendalikan biaya dan risiko"
         },
         {
-          "title": "Global Expertise",
-          "description": "Leverage international best practices and proven methodologies"
+          "title": "Keahlian Global",
+          "description": "Manfaatkan praktik terbaik internasional dan metodologi yang telah terbukti"
         },
         {
-          "title": "Strategic Alignment",
-          "description": "Align talent strategies with business objectives and market demands"
+          "title": "Keselarasan Strategis",
+          "description": "Selaraskan strategi talenta dengan tujuan bisnis dan kebutuhan pasar"
         }
       ]
     }
