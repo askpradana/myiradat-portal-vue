@@ -21,7 +21,7 @@
     <div class="mt-auto pt-4">
       <div class="inline-flex items-center px-2 py-1 rounded-md bg-muted/20 text-muted-foreground/70 text-xs">
         <div class="w-1.5 h-1.5 bg-amber-500/60 rounded-full animate-pulse mr-2"></div>
-        {{ card.content.comingSoon?.eta || 'Coming Soon' }}
+        {{ card.content.comingSoon?.eta || 'Segera Hadir' }}
       </div>
     </div>
   </div>

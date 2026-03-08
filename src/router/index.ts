@@ -67,6 +67,7 @@ const publicRoutes: RouteRecordRaw[] = [
   ),
   // New navigation pages
   createRoute('/about', 'about', () => import('@/views/AboutView.vue'), 'About Us'),
+  createRoute('/careers', 'careers', () => import('@/views/CareersView.vue'), 'Careers'),
   createRoute('/articles', 'articles', () => import('@/views/ArticlesView.vue'), 'Articles'),
   createRoute(
     '/articles/:slug',
@@ -75,6 +76,7 @@ const publicRoutes: RouteRecordRaw[] = [
     'Article',
   ),
   createRoute('/contact', 'contact', () => import('@/views/ContactView.vue'), 'Contact'),
+  createRoute('/status', 'status', () => import('@/views/StatusView.vue'), 'Status'),
   // Solutions and services pages
   createRoute('/solutions', 'solutions', () => import('@/views/SolutionsView.vue'), 'Solutions'),
   createRoute(

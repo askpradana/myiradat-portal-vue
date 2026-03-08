@@ -57,13 +57,13 @@
                 <div class="text-lg font-bold text-primary">
                   {{ testimonial.metrics.improvement }}
                 </div>
-                <div class="text-xs text-muted-foreground">Improvement</div>
+                <div class="text-xs text-muted-foreground">Peningkatan</div>
               </div>
               <div class="text-center">
                 <div class="text-lg font-bold text-foreground">
                   {{ testimonial.metrics.timeframe }}
                 </div>
-                <div class="text-xs text-muted-foreground">Timeframe</div>
+                <div class="text-xs text-muted-foreground">Rentang Waktu</div>
               </div>
             </div>
 
@@ -103,60 +103,60 @@ import DynamicAvatar from '@/components/ui/avatar/DynamicAvatar.vue'
 import { Star } from 'lucide-vue-next'
 
 const overallMetrics = computed(() => [
-  { value: '500', suffix: '+', label: 'Enterprise Clients' },
-  { value: '75', suffix: '%', label: 'Average Time Savings' },
-  { value: '99.9', suffix: '%', label: 'Customer Satisfaction' },
-  { value: '2M', suffix: '+', label: 'Daily Transactions' },
+  { value: '500', suffix: '+', label: 'Klien Enterprise' },
+  { value: '75', suffix: '%', label: 'Rata-rata Efisiensi Waktu' },
+  { value: '99.9', suffix: '%', label: 'Kepuasan Klien' },
+  { value: '2M', suffix: '+', label: 'Transaksi Harian' },
 ])
 
 const featuredTestimonials = computed(() => [
   {
     id: '1',
-    name: 'Sarah Chen',
-    role: 'CTO',
-    company: 'TechCorp Solutions',
+    name: 'Sari Indrawati',
+    role: 'Head of People & Culture',
+    company: 'TechCorp Solutions Indonesia',
     avatar: '/avatars/sarah-chen.jpg',
     content:
-      'IRADAT transformed our operations, reducing processing time by 75% and eliminating manual errors in compliance reporting.',
+      'IRADAT mengubah proses kerja kami, memangkas waktu pemrosesan hingga 75% dan mengurangi kesalahan manual pada pelaporan kepatuhan.',
     metrics: {
       improvement: '75%',
-      timeframe: '6 months',
+      timeframe: '6 bulan',
       category: 'efficiency',
     },
     rating: 5,
-    industry: 'Technology',
+    industry: 'Teknologi',
   },
   {
     id: '2',
-    name: 'Michael Rodriguez',
+    name: 'Ahmad Pratama',
     role: 'CFO',
     company: 'GlobalBank Financial',
     avatar: '/avatars/michael-rodriguez.jpg',
     content:
-      "The security and compliance features have been game-changing for our regulatory requirements. We've passed every audit since implementation.",
+      'Fitur keamanan dan kepatuhan menjadi pengubah permainan untuk kebutuhan regulasi kami. Sejak implementasi, setiap audit bisa kami lewati dengan baik.',
     metrics: {
       improvement: '100%',
-      timeframe: '1 year',
+      timeframe: '1 tahun',
       category: 'compliance',
     },
     rating: 5,
-    industry: 'Financial Services',
+    industry: 'Jasa Keuangan',
   },
   {
     id: '3',
-    name: 'Dr. Emily Watson',
-    role: 'Chief Medical Officer',
+    name: 'Dr. Maya Kusuma',
+    role: 'Direktur Medis',
     company: 'HealthFirst Medical Center',
     avatar: '/avatars/emily-watson.jpg',
     content:
-      "Patient data management has never been more secure and efficient. IRADAT's HIPAA compliance features give us complete peace of mind.",
+      'Manajemen data pasien kini jauh lebih aman dan efisien. Fitur kepatuhan IRADAT memberi kami ketenangan penuh dalam operasional harian.',
     metrics: {
       improvement: '60%',
-      timeframe: '8 months',
+      timeframe: '8 bulan',
       category: 'security',
     },
     rating: 5,
-    industry: 'Healthcare',
+    industry: 'Kesehatan',
   },
 ])
 
@@ -164,10 +164,10 @@ const getIndustryVariant = (
   industry?: string,
 ): 'default' | 'secondary' | 'destructive' | 'outline' => {
   const variants: Record<string, 'default' | 'secondary' | 'destructive' | 'outline'> = {
-    Technology: 'default',
-    'Financial Services': 'secondary',
-    Healthcare: 'outline',
-    Manufacturing: 'destructive',
+    Teknologi: 'default',
+    'Jasa Keuangan': 'secondary',
+    Kesehatan: 'outline',
+    Manufaktur: 'destructive',
   }
   return variants[industry || ''] || 'default'
 }

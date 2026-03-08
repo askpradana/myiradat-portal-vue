@@ -2,7 +2,7 @@
   "services": [
     {
       "id": "improve-care",
-      "title": "Improve Care",
+      "title": "Improve by Iradat",
       "category": "wellness",
       "featured": true,
       "icon": "heart",
@@ -13,53 +13,36 @@
       "variations": [
         {
           "id": "eap-consultation",
-          "subtitle": "Employee Assistance Program",
-          "description": "Comprehensive mental health support with licensed professionals for immediate crisis intervention and ongoing counseling",
+          "subtitle": "Program Bantuan Karyawan",
+          "description": "Dukungan kesehatan mental menyeluruh dengan profesional berlisensi untuk intervensi krisis segera dan konseling berkelanjutan",
           "image": "/images/services/improve-care-eap.jpg",
           "keyBenefits": [
-            "24/7 Crisis Hotline",
-            "Licensed Counselors",
-            "Confidential Services",
-            "Multi-language Support"
+            "Hotline Krisis 24/7",
+            "Konselor Berlisensi",
+            "Layanan Rahasia",
+            "Dukungan Multi-bahasa"
           ],
           "stats": {
             "availability": "24/7",
             "languages": "10+",
-            "responseTime": "< 2 minutes"
+            "responseTime": "< 2 menit"
           }
         },
         {
           "id": "journaling-wellness",
-          "subtitle": "Digital Wellness Platform",
-          "description": "Interactive journaling tools and mindfulness resources designed to promote daily mental wellness and emotional regulation",
+          "subtitle": "Platform Kesejahteraan Digital",
+          "description": "Alat journaling interaktif dan sumber mindfulness yang dirancang untuk mendukung kesehatan mental harian dan regulasi emosi",
           "image": "/images/services/improve-care-journaling.jpg",
           "keyBenefits": [
-            "Guided Journaling",
-            "Mood Tracking",
-            "Mindfulness Exercises",
-            "Progress Analytics"
+            "Journaling Terpandu",
+            "Pelacakan Mood",
+            "Latihan Mindfulness",
+            "Analitik Progres"
           ],
           "stats": {
             "dailyUsers": "5000+",
             "moodImprovement": "85%",
             "exercises": "200+"
-          }
-        },
-        {
-          "id": "wellbeing-programs",
-          "subtitle": "Corporate Wellbeing",
-          "description": "Holistic workplace wellness programs focusing on stress management, work-life balance, and team mental health",
-          "image": "/images/services/improve-care-wellbeing.jpg",
-          "keyBenefits": [
-            "Stress Management",
-            "Team Workshops",
-            "Wellbeing Assessments",
-            "Manager Training"
-          ],
-          "stats": {
-            "programsDelivered": "500+",
-            "participantSatisfaction": "94%",
-            "stressReduction": "72%"
           }
         }
       ]
@@ -77,14 +60,14 @@
       "variations": [
         {
           "id": "ilearning-platform",
-          "subtitle": "iLearning Digital Platform",
-          "description": "Comprehensive e-learning ecosystem with AI-powered personalized learning paths and interactive content delivery",
+          "subtitle": "Platform Digital iLearning",
+          "description": "Ekosistem e-learning komprehensif dengan jalur belajar personal berbasis AI dan penyampaian konten interaktif",
           "image": "/images/services/lnd-ilearning.jpg",
           "keyBenefits": [
-            "AI-Powered Learning",
-            "Mobile Compatible",
-            "Progress Tracking",
-            "Certification Programs"
+            "Pembelajaran Berbasis AI",
+            "Kompatibel Mobile",
+            "Pelacakan Progres",
+            "Program Sertifikasi"
           ],
           "stats": {
             "courses": "1000+",
@@ -94,14 +77,14 @@
         },
         {
           "id": "coaching-mentoring",
-          "subtitle": "Professional Coaching",
-          "description": "One-on-one executive coaching and structured mentoring programs designed to accelerate leadership development",
+          "subtitle": "Coaching Profesional",
+          "description": "Coaching eksekutif one-on-one dan program mentoring terstruktur untuk mempercepat pengembangan kepemimpinan",
           "image": "/images/services/lnd-coaching.jpg",
           "keyBenefits": [
-            "Executive Coaching",
-            "Leadership Development",
+            "Coaching Eksekutif",
+            "Pengembangan Kepemimpinan",
             "360° Feedback",
-            "Goal Achievement"
+            "Pencapaian Tujuan"
           ],
           "stats": {
             "coaches": "200+",
@@ -111,14 +94,14 @@
         },
         {
           "id": "custom-training",
-          "subtitle": "Custom Training Solutions",
-          "description": "Tailored training programs designed specifically for your organization's needs, culture, and strategic objectives",
+          "subtitle": "Solusi Pelatihan Kustom",
+          "description": "Program pelatihan yang dirancang khusus sesuai kebutuhan, budaya, dan tujuan strategis organisasi Anda",
           "image": "/images/services/lnd-training.jpg",
           "keyBenefits": [
-            "Customized Content",
-            "Expert Facilitators",
-            "Blended Learning",
-            "ROI Measurement"
+            "Konten Kustom",
+            "Fasilitator Ahli",
+            "Pembelajaran Campuran",
+            "Pengukuran ROI"
           ],
           "stats": {
             "programs": "300+",
@@ -130,7 +113,7 @@
     },
     {
       "id": "evaluation-assessment",
-      "title": "Evaluation & Assessment",
+      "title": "Evaluasi & Asesmen",
       "category": "assessment",
       "featured": false,
       "icon": "clipboard-check",
@@ -141,14 +124,14 @@
       "variations": [
         {
           "id": "intact-assessment",
-          "subtitle": "INTACT Personality Assessment",
-          "description": "Comprehensive personality and behavioral assessment tool for recruitment, development, and team optimization",
+          "subtitle": "Asesmen Kepribadian INTACT",
+          "description": "Alat asesmen kepribadian dan perilaku yang komprehensif untuk rekrutmen, pengembangan, dan optimasi tim",
           "image": "/images/services/assessment-intact.jpg",
           "keyBenefits": [
-            "Personality Insights",
-            "Behavioral Prediction",
-            "Team Compatibility",
-            "Cultural Fit Analysis"
+            "Insight Kepribadian",
+            "Prediksi Perilaku",
+            "Kecocokan Tim",
+            "Analisis Kesesuaian Budaya"
           ],
           "stats": {
             "accuracy": "94%",
@@ -158,14 +141,14 @@
         },
         {
           "id": "ipro-business",
-          "subtitle": "iPro Business Solutions",
-          "description": "Advanced psychometric assessments for leadership potential, decision-making, and business acumen evaluation",
+          "subtitle": "Solusi Bisnis iPro",
+          "description": "Asesmen psikometrik lanjutan untuk potensi kepemimpinan, pengambilan keputusan, dan evaluasi ketajaman bisnis",
           "image": "/images/services/assessment-ipro-business.jpg",
           "keyBenefits": [
-            "Leadership Assessment",
-            "Business Acumen",
-            "Decision Making",
-            "Strategic Thinking"
+            "Asesmen Kepemimpinan",
+            "Ketajaman Bisnis",
+            "Pengambilan Keputusan",
+            "Pemikiran Strategis"
           ],
           "stats": {
             "leadershipAccuracy": "91%",
@@ -175,14 +158,14 @@
         },
         {
           "id": "ipro-student",
-          "subtitle": "iPro Student Assessment",
-          "description": "Specialized assessment tools for academic institutions and early career professionals to identify potential and guide development",
+          "subtitle": "Asesmen Pelajar iPro",
+          "description": "Alat asesmen khusus untuk institusi pendidikan dan profesional awal karier guna mengidentifikasi potensi serta memandu pengembangan",
           "image": "/images/services/assessment-ipro-student.jpg",
           "keyBenefits": [
-            "Academic Potential",
-            "Career Guidance",
-            "Skill Mapping",
-            "Development Planning"
+            "Potensi Akademik",
+            "Bimbingan Karier",
+            "Pemetaan Keterampilan",
+            "Perencanaan Pengembangan"
           ],
           "stats": {
             "students": "50000+",
@@ -194,7 +177,7 @@
     },
     {
       "id": "lhh",
-      "title": "LHH Solutions",
+      "title": "Lee Hecht Harrison",
       "category": "consulting",
       "featured": false,
       "icon": "building",
@@ -205,31 +188,31 @@
       "variations": [
         {
           "id": "career-transition",
-          "subtitle": "Career Transition Services",
-          "description": "Global outplacement and career transition support helping individuals navigate job changes with dignity and confidence",
+          "subtitle": "Layanan Transisi Karier",
+          "description": "Dukungan outplacement global dan transisi karier untuk membantu individu menghadapi perubahan pekerjaan dengan percaya diri",
           "image": "/images/services/lhh-career-transition.jpg",
           "keyBenefits": [
-            "Outplacement Support",
-            "Career Coaching",
-            "Resume Optimization",
-            "Interview Preparation"
+            "Dukungan Outplacement",
+            "Coaching Karier",
+            "Optimasi Resume",
+            "Persiapan Wawancara"
           ],
           "stats": {
             "transitionSuccess": "89%",
-            "averagePlacement": "4.2 months",
-            "globalReach": "60 countries"
+            "averagePlacement": "4.2 bulan",
+            "globalReach": "60 negara"
           }
         },
         {
           "id": "leadership-development",
-          "subtitle": "Leadership Development",
-          "description": "Comprehensive leadership development programs designed to build next-generation leaders and organizational capability",
+          "subtitle": "Pengembangan Kepemimpinan",
+          "description": "Program pengembangan kepemimpinan komprehensif untuk membentuk pemimpin generasi berikutnya dan meningkatkan kapabilitas organisasi",
           "image": "/images/services/lhh-leadership.jpg",
           "keyBenefits": [
-            "Leadership Training",
-            "Succession Planning",
-            "Executive Coaching",
-            "Organizational Development"
+            "Pelatihan Kepemimpinan",
+            "Perencanaan Suksesi",
+            "Coaching Eksekutif",
+            "Pengembangan Organisasi"
           ],
           "stats": {
             "leaders": "25000+",
@@ -239,14 +222,14 @@
         },
         {
           "id": "global-network",
-          "subtitle": "Global Talent Network",
-          "description": "Access to LHH's worldwide network of talent solutions, connecting Indonesian organizations with global best practices",
+          "subtitle": "Jaringan Talenta Global",
+          "description": "Akses ke jaringan solusi talenta LHH di seluruh dunia, menghubungkan organisasi Indonesia dengan praktik terbaik global",
           "image": "/images/services/lhh-global.jpg",
           "keyBenefits": [
-            "Global Expertise",
-            "Best Practices",
-            "International Network",
-            "Cultural Intelligence"
+            "Keahlian Global",
+            "Praktik Terbaik",
+            "Jaringan Internasional",
+            "Kecerdasan Budaya"
           ],
           "stats": {
             "countries": "60",

@@ -1,10 +1,10 @@
 import type { BentoGridConfig } from '@/types/homepage'
 
 export const bentoGridConfig: BentoGridConfig = {
-  title: 'Everything you need in one platform',
-  subtitle: 'POWERFUL FEATURES',
+  title: 'Semua yang Anda butuhkan dalam satu platform',
+  subtitle: 'FITUR UNGGULAN',
   description:
-    'IRADAT combines enterprise-grade security, seamless integrations, and powerful analytics to streamline your business operations.',
+    'IRADAT menggabungkan keamanan kelas enterprise, integrasi mulus, dan analitik canggih untuk merapikan operasional bisnis Anda.',
   animations: {
     enabled: true,
     reducedMotion: false,
@@ -37,9 +37,9 @@ export const bentoGridConfig: BentoGridConfig = {
   cards: [
     {
       id: 'unified-data',
-      title: 'Unified Data Platform',
+      title: 'Platform Data Terpadu',
       description:
-        'Connect all your data sources in one secure, compliant platform. Real-time synchronization with advanced transformation capabilities.',
+        'Hubungkan semua sumber data Anda dalam satu platform yang aman dan patuh regulasi. Sinkronisasi real-time dengan kemampuan transformasi lanjutan.',
       icon: 'database',
       gridArea: 'hero',
       size: 'xl',
@@ -63,8 +63,8 @@ export const bentoGridConfig: BentoGridConfig = {
     },
     {
       id: 'lightning-fast',
-      title: 'Lightning Fast Operations',
-      description: 'Unified performance across all your services with intelligent optimization.',
+      title: 'Operasional Super Cepat',
+      description: 'Performa terpadu di seluruh layanan Anda dengan optimasi cerdas.',
       icon: 'zap',
       gridArea: 'lightning',
       size: 'large',
@@ -78,26 +78,26 @@ export const bentoGridConfig: BentoGridConfig = {
       },
       content: {
         highlights: [
-          'Single-click service switching (< 200ms)',
-          'Cached authentication across platforms',
-          'Pre-loaded service contexts',
-          'Intelligent resource allocation',
+          'Perpindahan layanan sekali klik (< 200ms)',
+          'Autentikasi cache lintas platform',
+          'Konteks layanan siap pakai',
+          'Alokasi sumber daya cerdas',
         ],
         metrics: [
           {
             value: '< 200ms',
-            label: 'Service Switching',
+            label: 'Perpindahan Layanan',
             animated: false,
           },
           {
             value: '99.9%',
-            label: 'Cross-platform Availability',
+            label: 'Ketersediaan Lintas Platform',
             animated: false,
           },
           {
             value: '5x',
-            label: 'Faster Multi-service Workflows',
-            suffix: ' faster',
+            label: 'Alur Kerja Multi-layanan Lebih Cepat',
+            suffix: ' lebih cepat',
             animated: false,
           },
         ],
@@ -105,9 +105,9 @@ export const bentoGridConfig: BentoGridConfig = {
     },
     {
       id: 'security',
-      title: 'Enterprise Security',
+      title: 'Keamanan Enterprise',
       description:
-        'SOC 2 Type II compliant with end-to-end encryption and advanced threat protection.',
+        'Patuh SOC 2 Type II dengan enkripsi end-to-end dan perlindungan ancaman tingkat lanjut.',
       icon: 'shield-check',
       gridArea: 'security',
       size: 'medium',
@@ -122,17 +122,17 @@ export const bentoGridConfig: BentoGridConfig = {
       content: {
         statusList: [
           {
-            label: 'All systems operational',
+            label: 'Semua sistem beroperasi normal',
             status: 'operational',
             color: 'green-500',
           },
           {
-            label: 'SOC 2 Type II Certified',
+            label: 'Tersertifikasi SOC 2 Type II',
             status: 'verified',
             color: 'muted-foreground',
           },
           {
-            label: 'ISO 27001 Compliant',
+            label: 'Patuh ISO 27001',
             status: 'verified',
             color: 'muted-foreground',
           },
@@ -141,8 +141,8 @@ export const bentoGridConfig: BentoGridConfig = {
     },
     {
       id: 'integrations',
-      title: '500+ Integrations',
-      description: 'Seamlessly connect with your existing tools and workflows.',
+      title: '500+ Integrasi',
+      description: 'Hubungkan dengan mudah ke tools dan alur kerja yang sudah Anda gunakan.',
       icon: 'plug',
       gridArea: 'integration',
       size: 'medium',
@@ -166,9 +166,9 @@ export const bentoGridConfig: BentoGridConfig = {
     },
     {
       id: 'improve-care',
-      title: 'Consult with psycholog',
+      title: 'Konsultasi dengan Psikolog',
       description:
-        'Consult with psycholog with various background and specialize in mental health.',
+        'Konsultasi dengan psikolog dari berbagai latar belakang dan spesialisasi kesehatan mental.',
       icon: 'activity',
       gridArea: 'auto-scaling',
       size: 'medium',
@@ -182,15 +182,15 @@ export const bentoGridConfig: BentoGridConfig = {
       },
       content: {
         highlights: [
-          'Dynamic resource allocation',
-          'Automatic load balancing',
-          'Cost optimization algorithms',
-          'Predictive scaling',
+          'Alokasi sumber daya dinamis',
+          'Load balancing otomatis',
+          'Algoritma optimasi biaya',
+          'Skalabilitas prediktif',
         ],
         metrics: [
           {
             value: '40%',
-            label: 'Cost Reduction',
+            label: 'Pengurangan Biaya',
             animated: false,
           },
           {
@@ -203,9 +203,9 @@ export const bentoGridConfig: BentoGridConfig = {
     },
     {
       id: 'smart-routing',
-      title: 'Smart Routing',
+      title: 'Rute Cerdas',
       description:
-        'Intelligent service recommendations with context-aware navigation and workflow optimization.',
+        'Rekomendasi layanan cerdas dengan navigasi kontekstual dan optimasi alur kerja.',
       icon: 'route',
       gridArea: 'smart-routing',
       size: 'medium',
@@ -219,20 +219,20 @@ export const bentoGridConfig: BentoGridConfig = {
       },
       content: {
         highlights: [
-          'Context-aware navigation',
-          'Intelligent service recommendations',
-          'Workflow optimization',
-          'Cross-service data flow',
+          'Navigasi berbasis konteks',
+          'Rekomendasi layanan cerdas',
+          'Optimasi alur kerja',
+          'Alur data lintas layanan',
         ],
         metrics: [
           {
             value: '60%',
-            label: 'Navigation Efficiency',
+            label: 'Efisiensi Navigasi',
             animated: false,
           },
           {
             value: '3.2s',
-            label: 'Average Task Completion',
+            label: 'Rata-rata Penyelesaian Tugas',
             animated: false,
           },
         ],
@@ -240,9 +240,9 @@ export const bentoGridConfig: BentoGridConfig = {
     },
     {
       id: 'ai-insights',
-      title: 'AI-Powered Insights',
+      title: 'Insight Berbasis AI',
       description:
-        'Service usage analytics with optimization recommendations and predictive scaling.',
+        'Analitik penggunaan layanan dengan rekomendasi optimasi dan skalabilitas prediktif.',
       icon: 'brain',
       gridArea: 'ai-insights',
       size: 'medium',
@@ -257,18 +257,18 @@ export const bentoGridConfig: BentoGridConfig = {
       },
       content: {
         comingSoon: {
-          title: 'AI-Powered Insights',
+          title: 'Insight Berbasis AI',
           description:
-            'Advanced analytics and predictive recommendations for service optimization.',
-          eta: 'Coming Q1 2025',
+            'Analitik lanjutan dan rekomendasi prediktif untuk optimasi layanan.',
+          eta: 'Hadir Q1 2025',
         },
       },
     },
     {
       id: 'workflows',
-      title: 'Custom Workflows',
+      title: 'Workflow Kustom',
       description:
-        'Drag-and-drop automation with cross-service triggers and business process optimization.',
+        'Otomasi drag-and-drop dengan pemicu lintas layanan dan optimasi proses bisnis.',
       icon: 'workflow',
       gridArea: 'workflows',
       size: 'medium',
@@ -283,9 +283,9 @@ export const bentoGridConfig: BentoGridConfig = {
       },
       content: {
         comingSoon: {
-          title: 'Custom Workflows',
-          description: 'Visual workflow builder for complex business process automation.',
-          eta: 'In Development',
+          title: 'Workflow Kustom',
+          description: 'Builder workflow visual untuk otomasi proses bisnis yang kompleks.',
+          eta: 'Dalam Pengembangan',
         },
       },
     },

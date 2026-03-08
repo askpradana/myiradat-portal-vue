@@ -33,7 +33,7 @@
     <div v-if="card.status === 'coming-soon'" class="mt-4">
       <div class="inline-flex items-center px-3 py-1 rounded-full bg-muted/80 text-muted-foreground text-sm font-medium">
         <div class="w-2 h-2 bg-amber-500 rounded-full animate-pulse mr-2"></div>
-        {{ card.content.comingSoon?.eta || 'Coming Soon' }}
+        {{ card.content.comingSoon?.eta || 'Segera Hadir' }}
       </div>
     </div>
   </div>
